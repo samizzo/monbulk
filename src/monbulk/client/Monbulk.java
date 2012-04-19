@@ -1,7 +1,9 @@
 package monbulk.client;
 
 import arc.mf.client.RemoteServer;
+import arc.mf.session.DefaultLoginDialog;
 import arc.mf.session.ErrorDialog;
+import arc.mf.session.LoginDialog;
 import arc.mf.session.Session;
 import arc.mf.session.SessionHandler;
 
@@ -14,23 +16,54 @@ import com.google.gwt.user.client.ui.RootPanel;
 import monbulk.MediaFlux.Services.MediaFluxServices;
 
 /**
- * Entry point classes define <code>onModuleLoad()</code>.
+ * Monbulk entry point.
  */
 public class Monbulk implements EntryPoint
 {
-	
-	/**
-	 * This is the entry point method.
-	 */
 	public void onModuleLoad()
 	{
+		String hostName = Window.Location.getHostName();
+		if (hostName.equals("127.0.0.1"))
+		{
+			debugLogon();
+		}
+		else
+		{
+			showLogin();
+		}
+	}
+	
+	private void showLogin()
+	{
+		Session.setLoginTitle("Monbulk Logon");
+		LoginDialog dlg = new DefaultLoginDialog();
+		dlg.setVersion(Version.VERSION);
+		dlg.setTitle("Monbulk");
+		Session.setLoginDialog(dlg);
+		Session.setLoginTitle("Monbulk");
+		initialise();
+	}
+	
+	private void debugLogon()
+	{
+		// HACK: If we're running from the localhost, connect automatically
+		// to medimage so we have a live system to get data from.
 		RemoteServer.SVC_URL = "http://medimage.versi.edu.au:443" + RemoteServer.SVC_URL;
 		Session.setAutoLogonCredentials("system", "manager", "change_me");
+		initialise();
+	}
+	
+	private void initialise()
+	{
 		Session.initialize(new SessionHandler()
 		{
 			@Override
 			public void sessionCreated(boolean initial)
 			{
+				MediaFluxServices.registerMediaFluxServices();
+				HandlerManager eventBus = new HandlerManager(null);
+				appManager appViewer = new appManager(eventBus);
+				appViewer.go(RootPanel.get());
 			}
 
 			@Override
@@ -62,11 +95,5 @@ public class Monbulk implements EntryPoint
 			}
 		},
 		null);
-
-		MediaFluxServices.registerMediaFluxServices();
-		HandlerManager eventBus = new HandlerManager(null);
-		//MonbulkRegistry.initialise(serviceFascade);
-		appManager appViewer = new appManager(eventBus);
-		appViewer.go(RootPanel.get());
 	}
 }
