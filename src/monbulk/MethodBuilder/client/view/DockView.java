@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client.view;
+package monbulk.MethodBuilder.client.view;
 
 
 import java.util.ArrayList;
@@ -17,15 +17,15 @@ import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.shared.Architecture.IPresenter.DockedPresenter;
-import daris.Monbulk.shared.Architecture.IView.IDockView;
-import daris.Monbulk.shared.Architecture.IView.IDraggable;
-import daris.Monbulk.shared.Architecture.IPresenter;
-import daris.Monbulk.shared.Model.IPojo;
-import daris.Monbulk.shared.Model.StackedCategories;
-import daris.Monbulk.shared.Model.StackedCategories.ItemData;
-import daris.Monbulk.shared.Model.StackedCategories.ParentCategory;
-import daris.Monbulk.shared.Model.pojo.pojoMetaData;
+import monbulk.shared.Architecture.IPresenter.DockedPresenter;
+import monbulk.shared.Architecture.IView.IDockView;
+import monbulk.shared.Architecture.IView.IDraggable;
+import monbulk.shared.Architecture.IPresenter;
+import monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.StackedCategories;
+import monbulk.shared.Model.StackedCategories.ItemData;
+import monbulk.shared.Model.StackedCategories.ParentCategory;
+import monbulk.shared.Model.pojo.pojoMetaData;
 
 public class DockView extends Composite implements IDockView, IDraggable {
 

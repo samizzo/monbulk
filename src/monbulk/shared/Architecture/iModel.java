@@ -1,16 +1,16 @@
-package daris.Monbulk.shared.Architecture;
+package monbulk.shared.Architecture;
 
 import java.util.ArrayList;
 
 
-import daris.Monbulk.shared.Architecture.IPresenter.FormPresenter;
-import daris.Monbulk.shared.Form.FormBuilder;
-import daris.Monbulk.shared.Form.FormField;
-import daris.Monbulk.shared.Form.iFormField;
-import daris.Monbulk.shared.Model.IPojo;
-import daris.Monbulk.shared.Model.StackedCategories;
-import daris.Monbulk.shared.view.IResult;
-import daris.Monbulk.shared.view.ISearchFilter;
+import monbulk.shared.Architecture.IPresenter.FormPresenter;
+import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Form.FormField;
+import monbulk.shared.Form.iFormField;
+import monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.StackedCategories;
+import monbulk.shared.view.IResult;
+import monbulk.shared.view.ISearchFilter;
 
 public interface iModel {
 	public ArrayList<IResult> Search(ArrayList<ISearchFilter> searchFilters) ;

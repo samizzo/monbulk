@@ -17,7 +17,7 @@
 	<!-- Other module inherits                        	              -->
 
 	<!-- Specify the app entry point class.                         -->
-	<entry-point class='daris.Monbulk.client.Monbulk_x' />
+	<entry-point class='monbulk.client.Monbulk_x' />
 
 	<!-- Specify the paths for translatable code                    -->
 	<source path='client' />

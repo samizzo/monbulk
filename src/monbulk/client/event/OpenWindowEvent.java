@@ -1,4 +1,4 @@
-package daris.Monbulk.client.event;
+package monbulk.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
 
@@ -23,7 +23,7 @@ public class OpenWindowEvent extends GwtEvent<OpenWindowEventHandler> {
 
 	 @Override
 	protected void dispatch(
-			daris.Monbulk.client.event.OpenWindowEventHandler handler) {
+			monbulk.client.event.OpenWindowEventHandler handler) {
 		// TODO Auto-generated method stub
 		handler.onOpenWindow(this);
 		

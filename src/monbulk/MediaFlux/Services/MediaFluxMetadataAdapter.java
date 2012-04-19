@@ -1,10 +1,10 @@
-package daris.Monbulk.MediaFlux.Services;
+package monbulk.MediaFlux.Services;
 
 import java.util.ArrayList;
 import java.util.List;
 import arc.mf.client.xml.XmlElement;
 
-import daris.Monbulk.shared.Services.*; 
+import monbulk.shared.Services.*; 
 
 public class MediaFluxMetadataAdapter
 {

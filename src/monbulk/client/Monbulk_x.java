@@ -1,4 +1,4 @@
-package daris.Monbulk.client;
+package monbulk.client;
 
 import arc.mf.client.RemoteServer;
 import arc.mf.session.ErrorDialog;
@@ -11,7 +11,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 
-import daris.Monbulk.MediaFlux.Services.MediaFluxServices;
+import monbulk.MediaFlux.Services.MediaFluxServices;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.

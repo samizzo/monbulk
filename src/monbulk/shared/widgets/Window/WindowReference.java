@@ -1,6 +1,6 @@
-package daris.Monbulk.shared.widgets.Window;
+package monbulk.shared.widgets.Window;
 
-import daris.Monbulk.shared.util.MonbulkEnums.WindowStates;
+import monbulk.shared.util.MonbulkEnums.WindowStates;
 
 public class WindowReference
 {

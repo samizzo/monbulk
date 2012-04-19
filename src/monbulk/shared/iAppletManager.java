@@ -1,4 +1,4 @@
-package daris.Monbulk.shared;
+package monbulk.shared;
 
 import com.google.gwt.user.client.ui.Widget;
 

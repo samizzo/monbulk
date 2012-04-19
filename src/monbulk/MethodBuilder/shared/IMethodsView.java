@@ -1,13 +1,13 @@
-package daris.Monbulk.MethodBuilder.shared;
+package monbulk.MethodBuilder.shared;
 
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.shared.Architecture.IView;
-import daris.Monbulk.shared.Form.FormBuilder;
-import daris.Monbulk.shared.Form.iFormField;
+import monbulk.shared.Architecture.IView;
+import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Form.iFormField;
 
 public interface IMethodsView extends IView{
 	 public void setMethodData(ArrayList<iFormField> StaticFieldList);

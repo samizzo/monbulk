@@ -1,6 +1,6 @@
-package daris.Monbulk.MediaFlux.Services;
+package monbulk.MediaFlux.Services;
 
-import daris.Monbulk.shared.Services.ServiceRegistry;
+import monbulk.shared.Services.ServiceRegistry;
 
 public class MediaFluxServices
 {

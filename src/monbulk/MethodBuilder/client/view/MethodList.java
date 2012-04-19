@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client.view;
+package monbulk.MethodBuilder.client.view;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,14 +25,14 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.MethodBuilder.client.event.MenuChangeEvent;
-import daris.Monbulk.MethodBuilder.shared.MenuCommand;
-import daris.Monbulk.shared.Model.pojo.pojoMethod;
-import daris.Monbulk.shared.Model.pojo.pojoMethodComplete;
-import daris.Monbulk.shared.Services.MethodService;
-import daris.Monbulk.shared.Services.ServiceRegistry;
-import daris.Monbulk.shared.util.MonbulkEnums;
-import daris.Monbulk.shared.view.iMenuWidget;
+import monbulk.MethodBuilder.client.event.MenuChangeEvent;
+import monbulk.MethodBuilder.shared.MenuCommand;
+import monbulk.shared.Model.pojo.pojoMethod;
+import monbulk.shared.Model.pojo.pojoMethodComplete;
+import monbulk.shared.Services.MethodService;
+import monbulk.shared.Services.ServiceRegistry;
+import monbulk.shared.util.MonbulkEnums;
+import monbulk.shared.view.iMenuWidget;
 
 public class MethodList extends Composite implements iMenuWidget, MethodService.MethodServiceHandler {
 

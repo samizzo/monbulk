@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.Form;
+package monbulk.shared.Form;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;

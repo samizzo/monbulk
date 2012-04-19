@@ -1,11 +1,11 @@
-package daris.Monbulk.client;
+package monbulk.client;
 
 import com.google.gwt.event.shared.HandlerManager;
 
-import daris.Monbulk.shared.Services.iServiceFascade;
-import daris.Monbulk.shared.Services.ServiceFactory;
-import daris.Monbulk.shared.widgets.Window.WindowFactory;
-import daris.Monbulk.shared.widgets.Window.iWindowRegistry;
+import monbulk.shared.Services.iServiceFascade;
+import monbulk.shared.Services.ServiceFactory;
+import monbulk.shared.widgets.Window.WindowFactory;
+import monbulk.shared.widgets.Window.iWindowRegistry;
 
 public final class MonbulkRegistry {
 

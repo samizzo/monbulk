@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client.view;
+package monbulk.MethodBuilder.client.view;
 
 import java.util.Iterator;
 import java.util.List;
@@ -8,8 +8,8 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 
-import daris.Monbulk.MethodBuilder.shared.MenuCommand;
-import daris.Monbulk.shared.view.iMenuWidget;
+import monbulk.MethodBuilder.shared.MenuCommand;
+import monbulk.shared.view.iMenuWidget;
 
 
 public class MethodBuilderMenu extends MenuBar implements iMenuWidget {

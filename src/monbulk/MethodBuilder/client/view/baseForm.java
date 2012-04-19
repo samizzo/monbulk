@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client.view;
+package monbulk.MethodBuilder.client.view;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,14 +20,14 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.shared.Architecture.IPresenter;
+import monbulk.shared.Architecture.IPresenter;
 
-import daris.Monbulk.shared.Architecture.IPresenter.FormPresenter;
-import daris.Monbulk.shared.Architecture.IView.IFormView;
-import daris.Monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Architecture.IPresenter.FormPresenter;
+import monbulk.shared.Architecture.IView.IFormView;
+import monbulk.shared.Form.FormBuilder;
 
-import daris.Monbulk.shared.Form.FormWidget;
-import daris.Monbulk.shared.Form.iFormField;
+import monbulk.shared.Form.FormWidget;
+import monbulk.shared.Form.iFormField;
 
 
 public class baseForm extends VerticalPanel implements IFormView {

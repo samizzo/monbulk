@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.widgets;
+package monbulk.shared.widgets;
 
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;

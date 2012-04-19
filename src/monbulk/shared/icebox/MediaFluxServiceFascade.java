@@ -1,10 +1,10 @@
-package daris.Monbulk.shared.icebox;
+package monbulk.shared.icebox;
 
-import daris.Monbulk.MediaFlux.Services.MediaFluxMetadataService;
-import daris.Monbulk.shared.Services.iService;
-import daris.Monbulk.shared.Services.iServiceFascade;
-import daris.Monbulk.shared.util.MonbulkEnums.ServiceActions;
-import daris.Monbulk.shared.util.MonbulkEnums.ServiceNames;
+import monbulk.MediaFlux.Services.MediaFluxMetadataService;
+import monbulk.shared.Services.iService;
+import monbulk.shared.Services.iServiceFascade;
+import monbulk.shared.util.MonbulkEnums.ServiceActions;
+import monbulk.shared.util.MonbulkEnums.ServiceNames;
 
 
 public final class MediaFluxServiceFascade implements iServiceFascade {

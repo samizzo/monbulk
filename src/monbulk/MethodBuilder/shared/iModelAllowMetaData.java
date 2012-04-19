@@ -1,18 +1,18 @@
-package daris.Monbulk.MethodBuilder.shared;
+package monbulk.MethodBuilder.shared;
 
 import java.util.ArrayList;
 
-import daris.Monbulk.shared.Architecture.IPresenter.FormPresenter;
-import daris.Monbulk.shared.Architecture.iModel;
+import monbulk.shared.Architecture.IPresenter.FormPresenter;
+import monbulk.shared.Architecture.iModel;
 
 
 
 public interface iModelAllowMetaData extends iModel {
-	public daris.Monbulk.shared.Model.StackedCategories getMetaDataCategories();
+	public monbulk.shared.Model.StackedCategories getMetaDataCategories();
 	
 	public interface iModelHasHelpExtendsMetaData extends iModelAllowMetaData
 	{
-		public daris.Monbulk.shared.Model.StackedCategories getHelpCategories();	
+		public monbulk.shared.Model.StackedCategories getHelpCategories();	
 		public void AddMetaDataItem(String MetaDataName, String MetaDataParent);
 		public ArrayList<String> GetMetaDataList();
 		public Boolean RemoveMetaDataItem(String MDName);

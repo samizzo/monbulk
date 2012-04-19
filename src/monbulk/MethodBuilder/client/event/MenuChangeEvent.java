@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client.event;
+package monbulk.MethodBuilder.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
 

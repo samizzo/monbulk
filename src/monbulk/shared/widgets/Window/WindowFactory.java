@@ -1,9 +1,9 @@
-package daris.Monbulk.shared.widgets.Window;
+package monbulk.shared.widgets.Window;
 
 import com.google.gwt.event.shared.HandlerManager;
 
-import daris.Monbulk.shared.util.MonbulkEnums.WindowStates;
-import daris.Monbulk.shared.util.MonbulkEnums.WindowTypes;
+import monbulk.shared.util.MonbulkEnums.WindowStates;
+import monbulk.shared.util.MonbulkEnums.WindowTypes;
 
 /*
  * Class: WindowFactory
@@ -31,14 +31,14 @@ public final class WindowFactory {
 		newWin.setManager(WindowManager.getInstance());
 		return newWin;
 	}
-	public static iWindow Create(WindowTypes Type,String WindowName,daris.Monbulk.shared.widgets.Window.WindowProperties wp)
+	public static iWindow Create(WindowTypes Type,String WindowName,monbulk.shared.widgets.Window.WindowProperties wp)
 	{
 		iWindow newWin = _WinRegister.createWindow(Type,wp);
 		WindowManager.AddWindow(newWin, WindowStates.OPEN_DEFAULT);
 		newWin.setManager(WindowManager.getInstance());
 		return newWin;
 	}
-	public static iWindow Create(WindowTypes Type,String WindowName,daris.Monbulk.shared.widgets.Window.WindowProperties wp,HandlerManager eventBus)
+	public static iWindow Create(WindowTypes Type,String WindowName,monbulk.shared.widgets.Window.WindowProperties wp,HandlerManager eventBus)
 	{
 		iWindow newWin = _WinRegister.createWindow(Type,wp);
 		WindowManager.AddWindow(newWin, WindowStates.OPEN_DEFAULT);

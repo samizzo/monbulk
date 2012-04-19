@@ -1,4 +1,4 @@
-package daris.Monbulk.client.presenter;
+package monbulk.client.presenter;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
@@ -6,8 +6,8 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.client.event.OpenWindowEvent;
-import daris.Monbulk.client.view.iDesktopView;
+import monbulk.client.event.OpenWindowEvent;
+import monbulk.client.view.iDesktopView;
 
 
 public class DesktopPresenter implements Presenter, iDesktopView.Presenter{

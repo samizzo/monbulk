@@ -1,11 +1,11 @@
-package daris.Monbulk.shared.Architecture;
+package monbulk.shared.Architecture;
 
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 
-import daris.Monbulk.shared.Events.DragEvent;
-import daris.Monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Events.DragEvent;
+import monbulk.shared.Form.FormBuilder;
 
 
 public interface IPresenter {

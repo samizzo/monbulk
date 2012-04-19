@@ -1,13 +1,13 @@
-package daris.Monbulk.shared.Model.pojo;
+package monbulk.shared.Model.pojo;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import daris.Monbulk.shared.Form.FormBuilder;
-import daris.Monbulk.shared.Form.FormField;
-import daris.Monbulk.shared.Form.iFormField;
+import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Form.FormField;
+import monbulk.shared.Form.iFormField;
 
-import daris.Monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.IPojo;
 
 public class pojoMetaData implements IPojo{
 

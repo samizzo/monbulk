@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client.view;
+package monbulk.MethodBuilder.client.view;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,12 +17,12 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.MethodBuilder.shared.IMethodsView;
-import daris.Monbulk.shared.Architecture.IPresenter;
-import daris.Monbulk.shared.Architecture.IPresenter.FormPresenter;
-import daris.Monbulk.shared.Form.FormBuilder;
-import daris.Monbulk.shared.Form.FormField;
-import daris.Monbulk.shared.Form.iFormField;
+import monbulk.MethodBuilder.shared.IMethodsView;
+import monbulk.shared.Architecture.IPresenter;
+import monbulk.shared.Architecture.IPresenter.FormPresenter;
+import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Form.FormField;
+import monbulk.shared.Form.iFormField;
 
 public class MethodDetailsView extends Composite implements IMethodsView {
 

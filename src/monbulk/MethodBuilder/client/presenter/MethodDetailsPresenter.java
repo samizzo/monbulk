@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client.presenter;
+package monbulk.MethodBuilder.client.presenter;
 
 public class MethodDetailsPresenter {
 

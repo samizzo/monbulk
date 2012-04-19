@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client.model;
+package monbulk.MethodBuilder.client.model;
 
 
 import java.util.ArrayList;
@@ -6,13 +6,13 @@ import java.util.Date;
 import java.util.Iterator;
 
 
-import daris.Monbulk.shared.view.IResult;
-import daris.Monbulk.shared.view.ISearchFilter;
-import daris.Monbulk.shared.Form.FormBuilder;
-import daris.Monbulk.shared.Model.IPojo;
-import daris.Monbulk.shared.Model.StackedCategories;
-import daris.Monbulk.shared.Model.pojo.pojoMethod;
-import daris.Monbulk.MethodBuilder.shared.iMBModel;
+import monbulk.shared.view.IResult;
+import monbulk.shared.view.ISearchFilter;
+import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.StackedCategories;
+import monbulk.shared.Model.pojo.pojoMethod;
+import monbulk.MethodBuilder.shared.iMBModel;
 
 
 

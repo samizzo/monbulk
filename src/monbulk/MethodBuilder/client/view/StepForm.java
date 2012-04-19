@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client.view;
+package monbulk.MethodBuilder.client.view;
 
 import java.util.ArrayList;
 
@@ -12,12 +12,12 @@ import com.google.gwt.user.client.ui.Label;
 
 
 
-import daris.Monbulk.shared.Architecture.IView.IFormView;
-import daris.Monbulk.shared.Architecture.IView.IDraggable;
-import daris.Monbulk.shared.Form.FormBuilder;
-import daris.Monbulk.shared.Form.FormWidget;
-import daris.Monbulk.shared.Model.pojo.pojoStepDetails;
-import daris.Monbulk.shared.Model.pojo.pojoStudy;
+import monbulk.shared.Architecture.IView.IFormView;
+import monbulk.shared.Architecture.IView.IDraggable;
+import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Form.FormWidget;
+import monbulk.shared.Model.pojo.pojoStepDetails;
+import monbulk.shared.Model.pojo.pojoStudy;
 
 
 public class StepForm extends SubjectPropertiesForm implements IFormView,IDraggable {

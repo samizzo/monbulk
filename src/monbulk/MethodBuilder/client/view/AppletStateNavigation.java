@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client.view;
+package monbulk.MethodBuilder.client.view;
 
 import java.util.ArrayList;
 
@@ -13,9 +13,9 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.shared.Architecture.IPresenter;
-import daris.Monbulk.shared.Architecture.IPresenter.FormPresenter;
-import daris.Monbulk.shared.Architecture.IView;
+import monbulk.shared.Architecture.IPresenter;
+import monbulk.shared.Architecture.IPresenter.FormPresenter;
+import monbulk.shared.Architecture.IView;
 
 
 public class AppletStateNavigation extends Composite implements IView {

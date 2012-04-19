@@ -1,4 +1,4 @@
-package daris.Monbulk.client;
+package monbulk.client;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,17 +14,17 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.Desktop.Services.MonbulkServices;
-import daris.Monbulk.MethodBuilder.client.MethodBuilder;
-import daris.Monbulk.MetadataEditor.MetadataEditor;
-import daris.Monbulk.client.event.CloseWindowEvent;
-import daris.Monbulk.client.event.CloseWindowEventHandler;
-import daris.Monbulk.client.event.OpenWindowEvent;
-import daris.Monbulk.client.event.OpenWindowEventHandler;
-import daris.Monbulk.client.presenter.DesktopPresenter;
-import daris.Monbulk.client.presenter.Presenter;
-import daris.Monbulk.client.view.MonbulkDesktop;
-import daris.Monbulk.shared.widgets.Window.view.appletWindow;
+import monbulk.Desktop.Services.MonbulkServices;
+import monbulk.MethodBuilder.client.MethodBuilder;
+import monbulk.MetadataEditor.MetadataEditor;
+import monbulk.client.event.CloseWindowEvent;
+import monbulk.client.event.CloseWindowEventHandler;
+import monbulk.client.event.OpenWindowEvent;
+import monbulk.client.event.OpenWindowEventHandler;
+import monbulk.client.presenter.DesktopPresenter;
+import monbulk.client.presenter.Presenter;
+import monbulk.client.view.MonbulkDesktop;
+import monbulk.shared.widgets.Window.view.appletWindow;
 
 public class appManager implements Presenter, ValueChangeHandler<String>{
 	  private final HandlerManager eventBus;

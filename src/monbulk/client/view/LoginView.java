@@ -1,4 +1,4 @@
-package daris.Monbulk.client.view;
+package monbulk.client.view;
 
 public class LoginView {
 

@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.Events;
+package monbulk.shared.Events;
 
 public interface iEvent {
 

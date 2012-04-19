@@ -1,8 +1,8 @@
-package daris.Monbulk.Desktop.Services;
+package monbulk.Desktop.Services;
 
 import java.util.Arrays;
 
-import daris.Monbulk.shared.Services.*;
+import monbulk.shared.Services.*;
 
 // NOTE: The monbulk services would actually talk to the monbulk back end, whatever that may be.
 public class MonbulkMetadataService extends MetadataService

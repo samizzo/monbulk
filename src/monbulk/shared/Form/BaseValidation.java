@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.Form;
+package monbulk.shared.Form;
 
 public class BaseValidation {
 

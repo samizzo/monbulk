@@ -1,4 +1,4 @@
-package daris.Monbulk.shared;
+package monbulk.shared;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.client.presenter.Presenter;
+import monbulk.client.presenter.Presenter;
 
 public class baseAppletManager implements iAppletManager{
 

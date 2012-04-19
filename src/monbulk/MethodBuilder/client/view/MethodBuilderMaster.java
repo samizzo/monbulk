@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client.view;
+package monbulk.MethodBuilder.client.view;
 
 import java.util.Iterator;
 
@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.shared.view.ILayoutWidget;
+import monbulk.shared.view.ILayoutWidget;
 
 
 public class MethodBuilderMaster extends Composite implements ILayoutWidget, HasWidgets {

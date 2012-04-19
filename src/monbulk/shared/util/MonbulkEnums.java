@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.util;
+package monbulk.shared.util;
 
 public class MonbulkEnums {
 	public enum SearchFilters{

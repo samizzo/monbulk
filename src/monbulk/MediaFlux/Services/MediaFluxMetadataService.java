@@ -1,4 +1,4 @@
-package daris.Monbulk.MediaFlux.Services;
+package monbulk.MediaFlux.Services;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import arc.mf.client.xml.XmlElement;
 import arc.mf.session.ServiceResponseHandler;
 import arc.mf.session.Session;
 
-import daris.Monbulk.shared.Services.*;
+import monbulk.shared.Services.*;
 
 public class MediaFluxMetadataService extends MetadataService
 {

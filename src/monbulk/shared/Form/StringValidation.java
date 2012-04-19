@@ -1,6 +1,6 @@
-package daris.Monbulk.shared.Form;
+package monbulk.shared.Form;
 
-import daris.Monbulk.shared.Form.iFormField.iFormFieldValidation;
+import monbulk.shared.Form.iFormField.iFormFieldValidation;
 
 public class StringValidation implements iFormFieldValidation{
 	

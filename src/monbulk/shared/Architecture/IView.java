@@ -1,11 +1,11 @@
-package daris.Monbulk.shared.Architecture;
+package monbulk.shared.Architecture;
 
 import java.util.ArrayList;
 import com.google.gwt.user.client.ui.Widget;
-import daris.Monbulk.shared.Form.FormField;
-import daris.Monbulk.shared.Form.FormBuilder;
-import daris.Monbulk.shared.Model.IPojo;
-import daris.Monbulk.shared.Model.StackedCategories;
+import monbulk.shared.Form.FormField;
+import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.StackedCategories;
 
 
 
@@ -22,7 +22,7 @@ public interface IView {
 	 {
 		 public void setTabData(StackedCategories someData,String TabName);
 		 public void setPojoData(ArrayList<IPojo>someData,String TabName);
-		 public void setPresenter(daris.Monbulk.shared.Architecture.IPresenter.DockedPresenter presenter);
+		 public void setPresenter(monbulk.shared.Architecture.IPresenter.DockedPresenter presenter);
 	 }
 	 public interface IFormView extends IView
 	 {
@@ -33,7 +33,7 @@ public interface IView {
 		 public void LoadForm(FormBuilder someForm);
 		 public FormBuilder getFormData();
 		 
-		 public void setPresenter(daris.Monbulk.shared.Architecture.IPresenter.FormPresenter presenter);
+		 public void setPresenter(monbulk.shared.Architecture.IPresenter.FormPresenter presenter);
 	 }
 	 public interface IDraggable
 	 {

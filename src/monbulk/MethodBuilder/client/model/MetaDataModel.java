@@ -1,18 +1,18 @@
-package daris.Monbulk.MethodBuilder.client.model;
+package monbulk.MethodBuilder.client.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 
-import daris.Monbulk.shared.Architecture.IView.IDraggable;
-import daris.Monbulk.shared.Architecture.iModel;
-import daris.Monbulk.shared.Architecture.iModel.iListModel;
-import daris.Monbulk.shared.Model.IPojo;
-import daris.Monbulk.shared.Model.StackedCategories;
-import daris.Monbulk.shared.Model.StackedCategories.ParentCategory;
-import daris.Monbulk.shared.Model.pojo.pojoMetaData;
-import daris.Monbulk.shared.view.IResult;
-import daris.Monbulk.shared.view.ISearchFilter;
+import monbulk.shared.Architecture.IView.IDraggable;
+import monbulk.shared.Architecture.iModel;
+import monbulk.shared.Architecture.iModel.iListModel;
+import monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.StackedCategories;
+import monbulk.shared.Model.StackedCategories.ParentCategory;
+import monbulk.shared.Model.pojo.pojoMetaData;
+import monbulk.shared.view.IResult;
+import monbulk.shared.view.ISearchFilter;
 
 public class MetaDataModel implements iModel,iListModel,IDraggable {
 

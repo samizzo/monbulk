@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client.view;
+package monbulk.MethodBuilder.client.view;
 
 
 
@@ -19,14 +19,14 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.shared.Architecture.IPresenter;
-import daris.Monbulk.shared.Architecture.IPresenter.DockedPresenter;
-import daris.Monbulk.shared.Architecture.IPresenter.FormPresenter;
-import daris.Monbulk.shared.Architecture.IView.IFormView;
-import daris.Monbulk.shared.Form.FormBuilder;
-import daris.Monbulk.shared.Form.FormField;
-import daris.Monbulk.shared.Model.IPojo;
-import daris.Monbulk.shared.Model.StackedCategories;
+import monbulk.shared.Architecture.IPresenter;
+import monbulk.shared.Architecture.IPresenter.DockedPresenter;
+import monbulk.shared.Architecture.IPresenter.FormPresenter;
+import monbulk.shared.Architecture.IView.IFormView;
+import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Form.FormField;
+import monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.StackedCategories;
 
 
 public class MethodForm extends baseForm implements IFormView {

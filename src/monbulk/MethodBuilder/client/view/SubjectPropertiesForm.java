@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client.view;
+package monbulk.MethodBuilder.client.view;
 
 import java.util.Iterator;
 
@@ -6,13 +6,13 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.shared.Architecture.IPresenter;
-import daris.Monbulk.shared.Architecture.IView.IFormView;
-import daris.Monbulk.shared.Model.IPojo;
-import daris.Monbulk.shared.Model.pojo.pojoMetaData;
-import daris.Monbulk.MethodBuilder.client.view.DraggableCellWidget;
-import daris.Monbulk.shared.Architecture.IView.IDraggable;
-import daris.Monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Architecture.IPresenter;
+import monbulk.shared.Architecture.IView.IFormView;
+import monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.pojo.pojoMetaData;
+import monbulk.MethodBuilder.client.view.DraggableCellWidget;
+import monbulk.shared.Architecture.IView.IDraggable;
+import monbulk.shared.Form.FormBuilder;
 
 public class SubjectPropertiesForm extends baseForm implements IFormView,IDraggable{
 

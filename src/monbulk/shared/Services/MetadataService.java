@@ -1,14 +1,14 @@
-package daris.Monbulk.shared.Services;
+package monbulk.shared.Services;
 
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gwt.core.client.GWT;
 
-import daris.Monbulk.shared.Architecture.IPresenter;
-import daris.Monbulk.shared.Architecture.iModel;
-import daris.Monbulk.shared.Form.iFormField;
-import daris.Monbulk.shared.Model.IPojo;
-import daris.Monbulk.shared.util.MonbulkEnums.*;
+import monbulk.shared.Architecture.IPresenter;
+import monbulk.shared.Architecture.iModel;
+import monbulk.shared.Form.iFormField;
+import monbulk.shared.Model.IPojo;
+import monbulk.shared.util.MonbulkEnums.*;
 
 public abstract class MetadataService implements iService
 {

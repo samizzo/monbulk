@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client.model;
+package monbulk.MethodBuilder.client.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,17 +10,17 @@ import arc.mf.object.CollectionResolveHandler;
 import com.google.gwt.user.client.Window;
 
 
-import daris.Monbulk.shared.Model.IPojo;
-import daris.Monbulk.shared.Model.StackedCategories;
-import daris.Monbulk.MethodBuilder.shared.iMBModel;
-import daris.Monbulk.MethodBuilder.shared.iModelAllowMetaData.iModelHasHelpExtendsMetaData;
-import daris.Monbulk.shared.Architecture.IPresenter.FormPresenter;
-import daris.Monbulk.shared.Architecture.IView.IDraggable;
-import daris.Monbulk.shared.Form.FormBuilder;
-import daris.Monbulk.shared.Form.FormField;
-import daris.Monbulk.shared.Form.iFormField;
-import daris.Monbulk.shared.view.IResult;
-import daris.Monbulk.shared.view.ISearchFilter;
+import monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.StackedCategories;
+import monbulk.MethodBuilder.shared.iMBModel;
+import monbulk.MethodBuilder.shared.iModelAllowMetaData.iModelHasHelpExtendsMetaData;
+import monbulk.shared.Architecture.IPresenter.FormPresenter;
+import monbulk.shared.Architecture.IView.IDraggable;
+import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Form.FormField;
+import monbulk.shared.Form.iFormField;
+import monbulk.shared.view.IResult;
+import monbulk.shared.view.ISearchFilter;
 
 public class StepModel implements iMBModel,IDraggable {
 

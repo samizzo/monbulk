@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.widgets.Window;
+package monbulk.shared.widgets.Window;
 /*
  * Class: WindowProperties
  * Author: Andrew Glenn

@@ -1,10 +1,10 @@
-package daris.Monbulk.shared.Model.pojo;
+package monbulk.shared.Model.pojo;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import daris.Monbulk.shared.Form.FormBuilder;
-import daris.Monbulk.shared.Model.IPojo;
+import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Model.IPojo;
 
 public class pojoSubjectProperties implements IPojo {
 

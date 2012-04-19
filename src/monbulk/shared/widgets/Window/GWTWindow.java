@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.widgets.Window;
+package monbulk.shared.widgets.Window;
 
 public class GWTWindow {
 

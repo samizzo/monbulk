@@ -1,4 +1,4 @@
-package daris.Monbulk.client.event;
+package monbulk.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
 
@@ -20,7 +20,7 @@ public class CloseWindowEvent extends GwtEvent<CloseWindowEventHandler> {
 
 	 @Override
 	protected void dispatch(
-			daris.Monbulk.client.event.CloseWindowEventHandler handler) {
+			monbulk.client.event.CloseWindowEventHandler handler) {
 		// TODO Auto-generated method stub
 		handler.onCloseWindow(this);
 		

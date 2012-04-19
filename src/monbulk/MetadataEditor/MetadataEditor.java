@@ -1,4 +1,4 @@
-package daris.Monbulk.MetadataEditor;
+package monbulk.MetadataEditor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +27,8 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import daris.Monbulk.shared.Services.*;
-import daris.Monbulk.shared.Services.MetadataService.*;
+import monbulk.shared.Services.*;
+import monbulk.shared.Services.MetadataService.*;
 
 public class MetadataEditor extends ResizeComposite implements KeyUpHandler, KeyDownHandler, SelectionHandler<TreeItem>, CommonElementPanel.ChangeTypeHandler
 {

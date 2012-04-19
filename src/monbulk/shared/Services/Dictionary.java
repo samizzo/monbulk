@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.Services;
+package monbulk.shared.Services;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,8 @@
-package daris.Monbulk.MethodBuilder.shared;
+package monbulk.MethodBuilder.shared;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Command;
-import daris.Monbulk.MethodBuilder.client.event.MenuChangeEvent;
+import monbulk.MethodBuilder.client.event.MenuChangeEvent;
 
 public class MenuCommand implements Command{
 	    HandlerManager eventBus;

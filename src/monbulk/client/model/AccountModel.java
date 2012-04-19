@@ -1,4 +1,4 @@
-package daris.Monbulk.client.model;
+package monbulk.client.model;
 
 public class AccountModel {
 

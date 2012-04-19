@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.Architecture;
+package monbulk.shared.Architecture;
 
 import com.google.gwt.user.client.ui.Widget;
 

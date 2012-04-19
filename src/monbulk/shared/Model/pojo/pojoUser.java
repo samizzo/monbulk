@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.Model.pojo;
+package monbulk.shared.Model.pojo;
 
 public class pojoUser {
 

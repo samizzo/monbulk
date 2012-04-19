@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.icebox;
+package monbulk.shared.icebox;
 
 public class MediaFLuxServiceRegistry {
 

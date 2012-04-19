@@ -1,9 +1,9 @@
-package daris.Monbulk.shared.widgets.Window;
+package monbulk.shared.widgets.Window;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import daris.Monbulk.shared.util.MonbulkEnums.WindowStates;
+import monbulk.shared.util.MonbulkEnums.WindowStates;
 
 /*
  * Class: WindowManager

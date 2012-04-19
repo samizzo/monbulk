@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.util;
+package monbulk.shared.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;

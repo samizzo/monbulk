@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.widgets.Window.view;
+package monbulk.shared.widgets.Window.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
@@ -16,9 +16,9 @@ import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.ui.RootPanel;
 
-import daris.Monbulk.shared.widgets.Window.WindowManager;
-import daris.Monbulk.shared.widgets.Window.WindowProperties;
-import daris.Monbulk.shared.widgets.Window.iWindow;
+import monbulk.shared.widgets.Window.WindowManager;
+import monbulk.shared.widgets.Window.WindowProperties;
+import monbulk.shared.widgets.Window.iWindow;
 
 public class appletWindow extends DialogBox implements NativePreviewHandler, iWindow
 {

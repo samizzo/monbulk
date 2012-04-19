@@ -1,7 +1,7 @@
-package daris.Monbulk.shared.Services;
+package monbulk.shared.Services;
 
-import daris.Monbulk.shared.util.MonbulkEnums;
-import daris.Monbulk.shared.Model.IPojo;
+import monbulk.shared.util.MonbulkEnums;
+import monbulk.shared.Model.IPojo;
 
 public abstract class baseService implements iService{
 

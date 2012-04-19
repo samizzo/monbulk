@@ -1,6 +1,6 @@
-package daris.Monbulk.Desktop.Services;
+package monbulk.Desktop.Services;
 
-import daris.Monbulk.shared.Services.ServiceRegistry;
+import monbulk.shared.Services.ServiceRegistry;
 
 public class MonbulkServices
 {

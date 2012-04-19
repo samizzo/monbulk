@@ -1,4 +1,4 @@
-package daris.Monbulk.MetadataEditor;
+package monbulk.MetadataEditor;
 
 import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 
-import daris.Monbulk.shared.Services.*;
+import monbulk.shared.Services.*;
 
 public class EnumerationElementPanel extends ElementPanel implements ValueChangeHandler<Boolean>
 {

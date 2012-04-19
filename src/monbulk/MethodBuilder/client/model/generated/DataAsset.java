@@ -1,5 +1,5 @@
 
-package daris.Monbulk.MethodBuilder.client.model.generated;
+package monbulk.MethodBuilder.client.model.generated;
 
 
 

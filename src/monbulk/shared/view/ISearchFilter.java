@@ -1,6 +1,6 @@
-package daris.Monbulk.shared.view;
+package monbulk.shared.view;
 
-import daris.Monbulk.MethodBuilder.shared.EnumDefinitions;
+import monbulk.MethodBuilder.shared.EnumDefinitions;
 
 public interface ISearchFilter {
 	public String GetFieldName();

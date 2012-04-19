@@ -1,4 +1,4 @@
-package daris.Monbulk.shared;
+package monbulk.shared;
 
 /**
  * <p>

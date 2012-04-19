@@ -1,8 +1,8 @@
-package daris.Monbulk.shared.icebox;
+package monbulk.shared.icebox;
 
-import daris.Monbulk.shared.Services.iService;
-import daris.Monbulk.shared.util.MonbulkEnums.ServiceActions;
-import daris.Monbulk.shared.util.MonbulkEnums.ServiceNames;
+import monbulk.shared.Services.iService;
+import monbulk.shared.util.MonbulkEnums.ServiceActions;
+import monbulk.shared.util.MonbulkEnums.ServiceNames;
 
 
 public interface iServiceFascade {

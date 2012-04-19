@@ -1,9 +1,9 @@
-package daris.Monbulk.Desktop.Services;
+package monbulk.Desktop.Services;
 
 import java.util.ArrayList;
 
-import daris.Monbulk.shared.Services.Dictionary;
-import daris.Monbulk.shared.Services.DictionaryService;
+import monbulk.shared.Services.Dictionary;
+import monbulk.shared.Services.DictionaryService;
 
 public class MonbulkDictionaryService extends DictionaryService
 {	

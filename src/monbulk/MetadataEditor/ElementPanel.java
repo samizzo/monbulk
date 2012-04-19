@@ -1,7 +1,7 @@
-package daris.Monbulk.MetadataEditor;
+package monbulk.MetadataEditor;
 
 import com.google.gwt.user.client.ui.Composite;
-import daris.Monbulk.shared.Services.Metadata;
+import monbulk.shared.Services.Metadata;
 
 public abstract class ElementPanel extends Composite
 {

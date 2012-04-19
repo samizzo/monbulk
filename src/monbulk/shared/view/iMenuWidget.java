@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.view;
+package monbulk.shared.view;
 
 import java.util.List;
 

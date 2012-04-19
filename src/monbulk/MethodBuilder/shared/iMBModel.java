@@ -1,10 +1,10 @@
-package daris.Monbulk.MethodBuilder.shared;
+package monbulk.MethodBuilder.shared;
 
 
 
 
-import daris.Monbulk.shared.Architecture.iModel.iFormModel;
-import daris.Monbulk.shared.Model.IPojo;
+import monbulk.shared.Architecture.iModel.iFormModel;
+import monbulk.shared.Model.IPojo;
 
 public interface iMBModel extends iFormModel{
 

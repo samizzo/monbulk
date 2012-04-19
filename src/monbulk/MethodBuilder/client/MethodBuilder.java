@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client;
+package monbulk.MethodBuilder.client;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,24 +11,24 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.MethodBuilder.client.event.MenuChangeEvent;
-import daris.Monbulk.MethodBuilder.client.event.MenuChangeEventHandler;
-import daris.Monbulk.MethodBuilder.client.presenter.MethodCreatorPresenter;
-import daris.Monbulk.MethodBuilder.client.view.MethodBuilderMaster;
-import daris.Monbulk.MethodBuilder.client.view.MethodBuilderMenu;
-import daris.Monbulk.MethodBuilder.client.view.MethodList;
+import monbulk.MethodBuilder.client.event.MenuChangeEvent;
+import monbulk.MethodBuilder.client.event.MenuChangeEventHandler;
+import monbulk.MethodBuilder.client.presenter.MethodCreatorPresenter;
+import monbulk.MethodBuilder.client.view.MethodBuilderMaster;
+import monbulk.MethodBuilder.client.view.MethodBuilderMenu;
+import monbulk.MethodBuilder.client.view.MethodList;
 
 
-import daris.Monbulk.shared.Architecture.IPresenter.DockedPresenter;
-import daris.Monbulk.shared.Services.MetadataService;
-import daris.Monbulk.shared.Services.MethodService;
-import daris.Monbulk.shared.Services.ServiceRegistry;
-import daris.Monbulk.shared.util.MonbulkEnums;
-import daris.Monbulk.shared.view.ILayoutWidget;
-import daris.Monbulk.shared.view.iMenuWidget;
-import daris.Monbulk.shared.widgets.Window.view.appletWindow;
-import daris.Monbulk.shared.baseAppletManager;
-import daris.Monbulk.shared.iAppletManager;
+import monbulk.shared.Architecture.IPresenter.DockedPresenter;
+import monbulk.shared.Services.MetadataService;
+import monbulk.shared.Services.MethodService;
+import monbulk.shared.Services.ServiceRegistry;
+import monbulk.shared.util.MonbulkEnums;
+import monbulk.shared.view.ILayoutWidget;
+import monbulk.shared.view.iMenuWidget;
+import monbulk.shared.widgets.Window.view.appletWindow;
+import monbulk.shared.baseAppletManager;
+import monbulk.shared.iAppletManager;
 
 public class MethodBuilder extends baseAppletManager implements iAppletManager {
 	private ILayoutWidget LayoutPanel;

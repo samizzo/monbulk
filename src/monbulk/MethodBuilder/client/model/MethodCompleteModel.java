@@ -1,21 +1,21 @@
-package daris.Monbulk.MethodBuilder.client.model;
+package monbulk.MethodBuilder.client.model;
 
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 
-import daris.Monbulk.shared.Architecture.IPresenter.FormPresenter;
-import daris.Monbulk.shared.Architecture.iModel.iFormModel;
-import daris.Monbulk.shared.Form.FormBuilder;
-import daris.Monbulk.shared.Form.iFormField;
-import daris.Monbulk.shared.Model.IPojo;
-import daris.Monbulk.shared.Model.pojo.pojoMethod;
-import daris.Monbulk.shared.Model.pojo.pojoMethodComplete;
-import daris.Monbulk.shared.Services.MethodService;
-import daris.Monbulk.shared.Services.ServiceRegistry;
-import daris.Monbulk.shared.util.MonbulkEnums;
-import daris.Monbulk.shared.view.IResult;
-import daris.Monbulk.shared.view.ISearchFilter;
+import monbulk.shared.Architecture.IPresenter.FormPresenter;
+import monbulk.shared.Architecture.iModel.iFormModel;
+import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Form.iFormField;
+import monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.pojo.pojoMethod;
+import monbulk.shared.Model.pojo.pojoMethodComplete;
+import monbulk.shared.Services.MethodService;
+import monbulk.shared.Services.ServiceRegistry;
+import monbulk.shared.util.MonbulkEnums;
+import monbulk.shared.view.IResult;
+import monbulk.shared.view.ISearchFilter;
 
 public class MethodCompleteModel implements iFormModel, MethodService.MethodServiceHandler{
 

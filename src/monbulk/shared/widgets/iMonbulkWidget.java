@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.widgets;
+package monbulk.shared.widgets;
 
 public class iMonbulkWidget {
 

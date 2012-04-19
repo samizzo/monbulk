@@ -1,4 +1,4 @@
-package daris.Monbulk.MediaFlux.Services;
+package monbulk.MediaFlux.Services;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,15 +13,15 @@ import arc.mf.session.ServiceResponseHandler;
 import arc.mf.session.Session;
 
 
-import daris.Monbulk.shared.Architecture.IPresenter;
-import daris.Monbulk.shared.Architecture.iModel;
-import daris.Monbulk.shared.Form.iFormField;
-import daris.Monbulk.shared.Model.IPojo;
-import daris.Monbulk.shared.Model.pojo.pojoMethod;
-import daris.Monbulk.shared.Services.MethodService;
+import monbulk.shared.Architecture.IPresenter;
+import monbulk.shared.Architecture.iModel;
+import monbulk.shared.Form.iFormField;
+import monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.pojo.pojoMethod;
+import monbulk.shared.Services.MethodService;
 
 
-import daris.Monbulk.shared.util.MonbulkEnums.ServiceActions;
+import monbulk.shared.util.MonbulkEnums.ServiceActions;
 
 public class mfMethodService extends MethodService {
 

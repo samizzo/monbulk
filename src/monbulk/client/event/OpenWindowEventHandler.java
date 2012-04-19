@@ -1,4 +1,4 @@
-package daris.Monbulk.client.event;
+package monbulk.client.event;
 
 import com.google.gwt.event.shared.EventHandler;
 

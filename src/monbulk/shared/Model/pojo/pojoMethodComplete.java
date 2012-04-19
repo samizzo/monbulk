@@ -1,12 +1,12 @@
-package daris.Monbulk.shared.Model.pojo;
+package monbulk.shared.Model.pojo;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 
-import daris.Monbulk.shared.Form.FormBuilder;
-import daris.Monbulk.shared.Model.IPojo;
-import daris.Monbulk.shared.Services.MethodService;
+import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Model.IPojo;
+import monbulk.shared.Services.MethodService;
 
 public class pojoMethodComplete implements IPojo{
 

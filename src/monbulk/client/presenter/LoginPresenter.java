@@ -1,4 +1,4 @@
-package daris.Monbulk.client.presenter;
+package monbulk.client.presenter;
 
 public class LoginPresenter {
 

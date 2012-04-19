@@ -1,10 +1,10 @@
-package daris.Monbulk.shared.Form;
+package monbulk.shared.Form;
 
 import java.util.Date;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 
-import daris.Monbulk.shared.Form.iFormField.iFormFieldValidation;
+import monbulk.shared.Form.iFormField.iFormFieldValidation;
 
 public class DateValidation implements iFormFieldValidation
 {

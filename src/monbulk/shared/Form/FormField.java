@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.Form;
+package monbulk.shared.Form;
 
 import java.util.Date;
 
@@ -17,10 +17,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.shared.Form.DateValidation;
-import daris.Monbulk.shared.Form.IntegerValidation;
-import daris.Monbulk.shared.Form.StringValidation;
-import daris.Monbulk.shared.Form.TextFieldValidation;
+import monbulk.shared.Form.DateValidation;
+import monbulk.shared.Form.IntegerValidation;
+import monbulk.shared.Form.StringValidation;
+import monbulk.shared.Form.TextFieldValidation;
 
 	public class FormField implements iFormField
 	{

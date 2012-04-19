@@ -1,13 +1,13 @@
-package daris.Monbulk.shared.Services;
+package monbulk.shared.Services;
 
 import java.util.ArrayList;
 
-import daris.Monbulk.shared.util.MonbulkEnums;
-import daris.Monbulk.shared.util.MonbulkEnums.ServiceActions;
-import daris.Monbulk.shared.Architecture.IPresenter;
-import daris.Monbulk.shared.Architecture.iModel;
-import daris.Monbulk.shared.Form.iFormField;
-import daris.Monbulk.shared.Model.IPojo;
+import monbulk.shared.util.MonbulkEnums;
+import monbulk.shared.util.MonbulkEnums.ServiceActions;
+import monbulk.shared.Architecture.IPresenter;
+import monbulk.shared.Architecture.iModel;
+import monbulk.shared.Form.iFormField;
+import monbulk.shared.Model.IPojo;
 
 /*
  * Services provide an interface to do two things: send data and retrieve data.

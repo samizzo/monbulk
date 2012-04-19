@@ -1,4 +1,4 @@
-package daris.Monbulk.client;
+package monbulk.client;
 
 public class Version {
 

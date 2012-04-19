@@ -1,15 +1,15 @@
-package daris.Monbulk.MethodBuilder.client.model;
+package monbulk.MethodBuilder.client.model;
 
 import java.util.Iterator;
 
-import daris.Monbulk.MethodBuilder.shared.iModelAllowMetaData.iModelHasHelpExtendsMetaData;
-import daris.Monbulk.shared.Architecture.IPresenter.FormPresenter;
-import daris.Monbulk.shared.Architecture.iModel;
-import daris.Monbulk.shared.Architecture.iModel.iFormModel;
-import daris.Monbulk.shared.Form.FormBuilder;
-import daris.Monbulk.shared.Form.FormField;
-import daris.Monbulk.shared.Form.iFormField;
-import daris.Monbulk.shared.Model.IPojo;
+import monbulk.MethodBuilder.shared.iModelAllowMetaData.iModelHasHelpExtendsMetaData;
+import monbulk.shared.Architecture.IPresenter.FormPresenter;
+import monbulk.shared.Architecture.iModel;
+import monbulk.shared.Architecture.iModel.iFormModel;
+import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Form.FormField;
+import monbulk.shared.Form.iFormField;
+import monbulk.shared.Model.IPojo;
 
 /*
  * Class baseModel

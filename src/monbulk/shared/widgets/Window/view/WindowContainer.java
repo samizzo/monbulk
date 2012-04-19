@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.widgets.Window.view;
+package monbulk.shared.widgets.Window.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

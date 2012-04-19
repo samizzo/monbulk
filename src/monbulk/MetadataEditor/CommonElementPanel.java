@@ -1,4 +1,4 @@
-package daris.Monbulk.MetadataEditor;
+package monbulk.MetadataEditor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.event.dom.client.ChangeEvent;
 
-import daris.Monbulk.shared.Services.*;
+import monbulk.shared.Services.*;
 
 public class CommonElementPanel extends ElementPanel
 {

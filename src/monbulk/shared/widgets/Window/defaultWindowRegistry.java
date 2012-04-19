@@ -1,10 +1,10 @@
-package daris.Monbulk.shared.widgets.Window;
+package monbulk.shared.widgets.Window;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.shared.util.MonbulkEnums.WindowTypes;
-import daris.Monbulk.shared.widgets.Window.view.appletWindow;
+import monbulk.shared.util.MonbulkEnums.WindowTypes;
+import monbulk.shared.widgets.Window.view.appletWindow;
 
 public class defaultWindowRegistry implements iWindowRegistry {
 

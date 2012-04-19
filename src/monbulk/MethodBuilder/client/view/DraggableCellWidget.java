@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.client.view;
+package monbulk.MethodBuilder.client.view;
 
 import java.util.ArrayList;
 
@@ -13,10 +13,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.shared.Events.DragEvent;
-import daris.Monbulk.shared.Model.IPojo;
-import daris.Monbulk.shared.Architecture.IPresenter;
-import daris.Monbulk.shared.Architecture.IView;
+import monbulk.shared.Events.DragEvent;
+import monbulk.shared.Model.IPojo;
+import monbulk.shared.Architecture.IPresenter;
+import monbulk.shared.Architecture.IView;
 
 public class DraggableCellWidget extends Composite implements IView {
 

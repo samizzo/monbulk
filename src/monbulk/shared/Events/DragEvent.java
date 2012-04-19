@@ -1,8 +1,8 @@
-package daris.Monbulk.shared.Events;
+package monbulk.shared.Events;
 
 import com.google.gwt.event.shared.GwtEvent;
 
-import daris.Monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.IPojo;
 
 public class DragEvent extends GwtEvent<DragEventHandler>{ 
 	

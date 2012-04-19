@@ -1,4 +1,4 @@
-package daris.Monbulk.MethodBuilder.shared;
+package monbulk.MethodBuilder.shared;
 
 public class EnumDefinitions {
 

@@ -1,7 +1,7 @@
-package daris.Monbulk.shared.Services;
+package monbulk.shared.Services;
 
 import java.util.ArrayList;
-import daris.Monbulk.shared.util.MonbulkEnums;
+import monbulk.shared.util.MonbulkEnums;
 
 public class ServiceRegistry
 {

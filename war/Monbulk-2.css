@@ -1,0 +1,988 @@
+@CHARSET "ISO-8859-1";
+/** Add css rules here for your application. */
+
+
+/** Example rules used by the template application (remove for your app) */
+
+body.Monash
+{
+	/*background-image:url(images/MBI-InterfaceProposalBGFull.jpg);*/
+	background-color:#b6bce0;
+	background-position:top left;
+	margin:0px 0px;
+	background-repeat:no-repeat;
+	padding:0px;
+	height:100%;
+	font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Arial, sans-serif;
+}
+html
+{
+	margin:0px;
+	height:100%;
+	padding:0px;
+}
+.lwrPanel
+{
+		
+}
+.Container
+{
+	position:relative;
+	min-height:100%;
+	width:100%;
+}
+
+.ribbonItem
+{
+	border: Solid 1px white;
+}
+.ribbonHome
+{
+	background-image:url(images/SpriteSheetStatic.png);
+	background-repeat:no-repeat;
+	width:80px;
+	height:90px;
+	background-position:0px 0px;
+	vertical-align:bottom;
+}
+.ribbonHome:Hover
+{
+	background-position:-103px 0px;
+}
+.ribbon
+{
+	position:absolute;
+	bottom:0px;
+	height:108px;
+	width:100%;
+	background-image:url(images/SpriteSheetHorizontalTiles.png);
+	background-repeat:repeat-x;
+	background-position:0px -48px;
+		
+	
+}
+.Desktop
+{
+	position:absolute;
+	padding-top:50px;
+	padding-left:10px;
+	padding-bottom:50px;
+	
+	width:100%;
+}
+.TopNav
+{
+	position:absolute;
+	top:0px;
+	background-image:url(images/SpriteSheetHorizontalTiles.png);
+	background-repeat:repeat-x;
+	background-position:0px -207px;
+	Height:38px;
+	width:100%;
+	
+}
+.MethodIcon
+{
+	background-position:0px 0px;
+	height:108px;
+	width:105px;
+	color: white;
+	background-repeat: no-repeat;
+	background-image: url(images/SpriteSheetStatic.png);
+	background-position:0px -93px;
+	}
+.MethodIcon:hover
+{
+	background-image:url(images/SpriteSheetStatic.png);
+	background-position:-230px -93px;
+	height:108px;
+	width:105px;
+	color:red;
+}
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+  color: #777777;
+  margin: 40px 0px 70px;
+  text-align: center;
+}
+
+.sendButton {
+  display: block;
+  font-size: 16pt;
+  
+	background-position:10px 10px;
+	height:50px;
+	width:50px;
+	color:white;
+	background-color:red;
+}
+
+/** Most GWT widgets already have a style name defined */
+.gwt-DialogBox {
+  width: 400px;
+}
+
+.dialogVPanel {
+  margin: 5px;
+}
+
+.serverResponseLabelError {
+  color: red;
+}
+
+/** Set ids using widget.getElement().setId("idOfElement") */
+#closeButton {
+  margin: 15px 6px 6px;
+}
+
+
+/***Tab Panels **/
+.ribbon-TabLayoutPanel {
+}
+.ribbon-TabLayoutPanel .gwt-TabLayoutPanelTabs {
+  
+  padding-top: 6px;
+  padding-left: 5px;
+  
+}
+.ribbon-TabLayoutPanel .gwt-TabLayoutPanelContentContainer {
+  
+  
+}
+.ribbon-TabLayoutPanel .gwt-TabLayoutPanelContent {
+  overflow: hidden;
+  padding-left: 8px;
+}
+.tab1
+{
+	border:Solid;
+	border-color:#AAA;
+	border-width:0px 2px 1px 2px;
+	height:40px;
+	width:106px;
+	Color:White;
+	text-align:center;
+	font-family:Arial;
+}
+.ribbon-TabLayoutPanel .gwt-TabLayoutPanelTab {
+  margin-left: 4px;
+  padding: 4px 8px 4px 8px;
+  cursor: pointer;
+  cursor: hand;
+  color: White;
+  font-weight: normal;
+  text-align: center;
+  background-color:#455363;
+  border-color: #455363;
+  border-style: solid;
+  border-width: 0px 0px 0px 0px;
+  background-repeat:repeat-x;
+  -moz-border-radius: 3px 3px 0px 0px;
+  border-radius: 3px 3px 0px 0px;
+  height:15px;
+  vertical-align:bottom;
+  
+  
+}
+.ribbon-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
+  cursor: default;
+  background: white;
+  color: White;
+  background:url(images/SpriteSheetHorizontalTiles.png);
+  font-weight: bold;
+  height:25px;
+  background-color:White;
+  -moz-border-radius: 3px 3px 0px 0px;
+  border-radius: 3px 3px 0px 0px;
+  border-width: 0px 1px 0px 1px;
+  
+}
+
+.divTopMenu {
+    cursor: default;
+	width:100%;
+	Height:36px;
+}
+.divTopMenu .gwt-MenuItem {
+  cursor: default;
+  font-family: Myriad Pro, Arial, sans-serif;
+  color:#333;
+  height:36px;
+  padding:0px 20px 0px 20px;
+  vertical-align: middle;  
+  font-weight: bold;
+}
+.divTopMenu .gwt-MenuItem-selected {
+  background: #E3E8F3;
+}
+.divTopMenu .Versi
+{
+	background-repeat: no-repeat;
+	background-image: url(images/SpriteSheetStatic.png);
+	background-position:-340px -200px;
+	height:36px;
+	width:60px;
+}
+ .divTopMenu .AppTitle
+ {
+  cursor: default;
+  font-family: Myriad Pro, Arial, sans-serif;
+  color:#333;
+  height:36px;
+  padding:0px 80px 0px 15px;
+  vertical-align: middle;  
+  font-weight: bold;
+  font-size:18px;
+ }
+ .Search
+ {
+  cursor: default;
+  height:36px;
+  text-align:right;
+  vertical-align: middle;  
+  background-repeat: no-repeat;
+	background-image: url(images/SpriteSheetStatic.png);
+	background-position:-430px -205px;
+	width:30px;
+	padding:0px;
+ }
+ 
+.divTopMenu .gwt-MenuItemSeparator {
+  width: 1px;
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  border-left: 1px solid #ccc;
+  background: white;
+  height:30px;
+}
+.divTopMenu .MenuSpace
+{
+	width:400px;
+	
+}
+.divTopMenu .gwt-MenuItemSeparator .menuSeparatorInner {
+  width: 1px;
+  height: 1px;
+  background: white; 
+}
+
+.WindowMenu {
+  margin-top: 0px;
+  margin-left: 0px;
+  
+  padding:0px 0px;
+  font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Helvetica, Arial, sans-serif;
+  
+  margin:0px;
+}
+
+
+.gwt-MenuBar-vertical {
+  margin-top: 0px;
+  margin-left: 0px;
+  background: white;
+  padding:0px 0px;
+}
+.WindowMenu table {
+  border-collapse: collapse;
+  padding:0px 0px;
+  border-spacing:0px;
+  margin:0px;
+}
+.WindowMenu .gwt-MenuItem {
+  /*padding: 2px 40px 2px 1px;*/
+  background-image: url(images/SpriteSheetStatic.png);
+  background-position:-793px 0px;
+  height:60px;
+    color:#666;
+  font-size: 14px;
+  padding-left:8px;
+  padding-bottom:5px;
+  font-weight:bold;
+}
+.WindowMenu td
+{
+	border-spacing:0px;
+	margin:0px;
+}
+.BodyPanel
+{
+	border-bottom:Solid 3px #666;
+
+}
+.WindowMenu .ActiveTab, .WindowMenu .gwt-MenuItem:hover {
+  /*padding: 2px 40px 2px 1px;*/
+  background-image: url(images/SpriteSheetStatic.png);
+  background-position:-637px 0px;
+  
+  width:140px;
+  height:60px;
+  color:White;
+  padding-left:8px;
+  padding-bottom:5px;
+  font-size: 16px;
+}
+.WindowMenu .gwt-MenuItemSeparator {
+  padding: 0px 0px;
+}
+.WindowMenu .gwt-MenuItemSeparator .menuSeparatorInner {
+  height: 1px;
+  padding: 0px;
+  border: 0px;
+  border-top: 1px solid #ccc;
+  overflow: hidden;
+}
+.WindowMenu .subMenuIcon {
+  padding-right: 4px;
+}
+.WindowMenu .subMenuIcon-selected {
+  background: #E3E8F3;
+}
+.gwt-MenuBarPopup {
+  margin: 0px 0px 0px 3px;
+}
+.gwt-MenuBarPopup .menuPopupTopCenter {
+  background: url(images/hborder.png) 0px -12px repeat-x;
+}
+.gwt-MenuBarPopup .menuPopupBottomCenter {
+  background: url(images/hborder.png) 0px -13px repeat-x;
+  -background: url(images/hborder_ie6.png) 0px -13px repeat-x;
+  
+}
+.gwt-MenuBarPopup .menuPopupMiddleLeft {
+  background: url(images/vborder.png) -12px 0px repeat-y;
+  -background: url(images/vborder_ie6.png) -12px 0px repeat-y;
+}
+.gwt-MenuBarPopup .menuPopupMiddleRight {
+  background: url(images/vborder.png) -13px 0px repeat-y;
+  -background: url(images/vborder_ie6.png) -13px 0px repeat-y;
+}
+.gwt-MenuBarPopup .menuPopupTopLeftInner {
+  width: 5px;
+  height: 5px;
+  zoom: 1;
+}
+.gwt-MenuBarPopup .menuPopupTopRightInner {
+  width: 8px;
+  height: 5px;
+  zoom: 1;
+}
+.gwt-MenuBarPopup .menuPopupBottomLeftInner {
+  width: 5px;
+  height: 8px;
+  zoom: 1;
+}
+.gwt-MenuBarPopup .menuPopupBottomRightInner {
+  width: 8px;
+  height: 8px;
+  zoom: 1;
+}
+.gwt-MenuBarPopup .menuPopupTopLeft {
+  background: url(images/corner.png) no-repeat 0px -36px;
+  -background: url(images/corner_ie6.png) no-repeat 0px -36px;
+}
+.gwt-MenuBarPopup .menuPopupTopRight {
+  background: url(images/corner.png) no-repeat -5px -36px;
+  -background: url(images/corner_ie6.png) no-repeat -5px -36px;
+}
+.gwt-MenuBarPopup .menuPopupBottomLeft {
+  background: url(images/corner.png) no-repeat 0px -41px;
+  -background: url(images/corner_ie6.png) no-repeat 0px -41px;
+}
+.gwt-MenuBarPopup .menuPopupBottomRight {
+  background: url(images/corner.png) no-repeat -5px -41px;
+  -background: url(images/corner_ie6.png) no-repeat -5px -41px;
+}
+* html .gwt-MenuBarPopup .menuPopupTopLeftInner {
+  width: 5px;
+  height: 5px;
+  overflow: hidden;
+}
+* html .gwt-MenuBarPopup .menuPopupTopRightInner {
+  width: 8px;
+  height: 5px;
+  overflow: hidden;
+}
+* html .gwt-MenuBarPopup .menuPopupBottomLeftInner {
+  width: 5px;
+  height: 8px;
+  overflow: hidden;
+}
+* html .gwt-MenuBarPopup .menuPopupBottomRightInner {
+  width: 8px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.WindowHeader
+{
+	
+}
+.WindowBody
+{
+
+	
+}
+.WindowFooter
+{
+	position:absolute;
+	bottom:0px;
+	width:100%;
+	min-width:800px;
+	height:50px;
+	text-align:right;
+}
+
+/* This style is overridden in code and not actually used. */
+.AppletWindow
+{
+	
+	min-height:100%;
+	min-width:1000px;
+	position:relative;
+	left:-10px;
+}
+
+/**Dialogs boxes */
+.WindowCaption{
+  
+  padding: 0px 0px 0px 0px;
+  cursor: default;
+  
+	Background:url(images/SpriteSheetHorizontalTiles.png);
+	Background-position:0px -159px;
+	Background-repeat:repeat-x;
+	height:44px;
+	color:White;
+	position:relative;
+	
+}
+.MethodHeader
+{
+	
+	width:217px;
+	background:url(images/SubTitles.png) 0px 0px no-repeat;
+	height:43px;
+}
+.FormHeader
+{
+	width:415px;
+	background:url(images/SubTitles.png) -216px 0px no-repeat;
+	height:43px;
+	margin-left:5px;
+}
+.AppletTitle
+{
+	font-family: Myriad Pro, Arial, sans-serif;
+  font-weight: bold;
+  	font-size:24px;
+} 
+.WindowClose
+{
+	background-image:url(images/SpriteSheetStatic.png);
+	background-position:-1019px -38px;
+	height:37px;
+	width:40px;
+}
+.WindowExpand
+{
+	background-image:url(images/SpriteSheetStatic.png);
+	background-position:-980px -38px;
+	height:37px;
+	width:39px;
+}
+.WindowShrink
+{
+	background-image:url(images/SpriteSheetStatic.png);
+	background-position:-939px -38px;
+	height:37px;
+	width:40px;
+}
+
+.WindowClose:Hover
+{
+	background-position: -1019px -1px;
+}
+
+.WindowExpand:Hover
+{
+	background-position: -980px -1px;
+}
+
+.WindowShrink:Hover
+{
+	background-position: -939px -1px;
+}
+
+.appWindow-Dialog .dialogContent
+{
+}
+
+.appWindow-Dialog  .dialogBottomCenter
+{
+ 	background: url(images/SpriteSheetHorizontalTiles.png) repeat-x 0px -258px;
+	height: 26px;
+}
+
+.appWindow-Dialog .dialogMiddleCenter
+{
+	padding: 0px;
+	background: white;
+}
+
+.appWindow-Dialog .dialogMiddleLeft
+{
+	background: url(images/VerticalBorders.png) repeat-y 1px 0px;
+}
+
+.appWindow-Dialog .dialogMiddleRight
+{
+	background: url(images/VerticalBorders.png) repeat-y -86px 0px;
+	width: 30px;
+}
+
+.gwt-StackPanelContent{
+    height:0;
+}
+
+.appWindow-Dialog  .dialogTopLeft
+{
+	background: url(images/circles.png) no-repeat 0px -75px;
+	height: 44px;
+	width: 20px;
+}
+.appWindow-Dialog  .dialogTopRight
+{
+	background: url(images/circles.png) no-repeat -105px -75px;
+	height: 44px;
+	width: 20px;
+}
+.appWindow-Dialog  .dialogBottomLeft
+{
+	background: url(images/circles.png) no-repeat 0px -166px;
+}
+.appWindow-Dialog  .dialogBottomRight {
+  background: url(images/circles.png) no-repeat -105px -166px;
+  -background: url(images/circles_ie6.png) no-repeat -105px -166px;
+}
+
+.MethodBuilderPlugins {
+  border-bottom: 1px solid #bbbbbb;
+}
+.selectedTabOverlapRight
+{
+	background: url(images/SpriteSheetStatic.png) no-repeat -373px 0px;
+	width:26px;
+	height:45px;
+	
+}
+.StandardStack
+{
+	
+}
+.StandardStack .StandardStackHeader 
+{
+	background: url(images/SpriteSheetHorizontalTiles.png) 0px -341px;
+	height:41px;
+	
+}
+
+.StandardStack  .gwt-StackLayoutPanelHeader {
+  cursor: pointer;
+  cursor: hand;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 8px;
+  border: 1px solid #bbbbbb;
+  border-bottom: 0px;
+  background: url(images/SpriteSheetHorizontalTiles.png) 0px -341px;
+	height:41px;
+}
+.StandardStack .gwt-StackLayoutPanelHeader-hovering {
+  background: #d3def6;
+}
+.StandardStack .gwt-StackLayoutPanelContent {
+  border: 1px solid #bbbbbb;
+  border-bottom: 0px;
+  background: white;
+  padding: 2px 2px 10px 5px;
+  
+}
+.selectedTabOverlapLeft
+{
+	background: url(images/SpriteSheetStatic.png) no-repeat -762px 0px;
+	width:20px;
+	height:60px;
+}
+.MethodBuilderPlugins .PassivePanel
+{
+	height:30px;
+	background:url(images/SpriteSheetHorizontalTiles.png) repeat-x 0px -351px;
+	width:100%;
+	font-size: 14px; 
+	padding-left:115px;
+	font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Helvetica, Arial, sans-serif;
+	color:#333;
+	padding-top:5px;
+	border-top:Solid 1px #AAA;
+	 
+}
+
+.StepHeader
+{
+	width:100%;
+	height:100%;
+}
+.StepHeader .StepHeaderLabel
+{
+	font-size:15px;
+	padding-bottom:8px;
+}
+.StepHeader .DeletingHeader
+{
+	text-align:right;
+	border-left:Solid 1px White;
+	width:20px;
+	padding-left:5px;
+}
+.StepHeader .DeletingHeader .RemoveButton
+{
+	background-image:url(images/ICONS.png);
+	background-position:-326px -382px;
+	height:26px;
+	width:23px;
+	float:right;
+}
+.StepHeader .EditingHeader .btnEditing
+{
+	background-image:url(images/ICONS.png);
+	background-position:-76px -382px;
+	height:26px;
+	width:23px;
+	float:right;
+}
+.StepHeader .EditingHeader
+{
+	text-align:right;
+	width:20px;
+} 
+.btnEditing
+{
+	background-image:url(images/ICONS.png);
+	background-position:-109px -184px;
+	height:30px;
+	width:32px;
+	float:right;
+}
+
+/*A StackedPanel with a row for each item - used on MetaData */
+ .DraggablePanel 
+ {
+ 	
+ 	background-color:#FFF;
+ 	padding:0px;
+ 	margin:0px;
+ 	text-align:left;
+ 	float:left;
+ 	vertical-align:top;
+ }
+ .DraggableChild
+ {
+ 	
+ 	margin:0px;
+ 	background: url(images/SpriteSheetStatic.png) no-repeat -759px -274px;
+ 	height:36px;
+ 	width:140px;
+ 	width:100%;
+ 	color:#333;
+ }
+ .DraggableChild:hover
+ {
+ 	text-decoration:underline
+ }
+ .DraggableChild-disabled
+ {
+ 	margin:0px;
+ 	background: url(images/SpriteSheetStatic.png) no-repeat -973px -274px;
+ 	height:36px;
+ 	width:140px;
+ 	width:100%;
+ 	color:#333;
+ 	
+ }
+ .DraggableChild .LabelCell
+ {
+	width:140px;
+	vertical-align:middle; 
+ }
+ .DraggableChild .mdItemLabel
+{
+	padding-left:4px;
+	font-size:12px;
+}
+.DraggableChild .AddButton
+{
+	background-image:url(images/ICONS.png);
+	height:30px;
+	width:32px;
+	background-position:-680px -908px;
+}
+.DraggableChild .AddButton:Hover,.AddButton-down
+{
+	background-position:-758px -908px;
+}
+.DraggableChild .ActiveAdd
+{
+	background-position:-680px -908px;
+}
+.DraggableChild .AddButton-up-disabled, .AddButton-down-disabled
+{
+	background-position:-680px -908px;
+}
+.DraggableChild .RemoveButton
+{
+	background-image:url(images/ICONS.png);
+	background-position:-466px -184px;
+	height:30px;
+	width:32px;
+	float:right;
+}
+
+/* End Draggable Widget */
+ 
+ .MethodBuilderPlugins .btnMeta-active, .MethodBuilderPlugins .btnMeta-passive:hover {
+   background: url(images/SpriteSheetStatic.png) no-repeat -234px 8px;
+   height:60px;
+   width:114px;
+}
+.MethodBuilderPlugins .btnMeta-passive{
+	background: url(images/SpriteSheetStatic.png) no-repeat -340px -250px;
+   height:60px;
+   width:114px;
+}
+
+.MethodBuilderPlugins .btnHelp-passive {
+   background: url(images/SpriteSheetStatic.png) no-repeat -348px 8px;
+   height:60px;
+   width:86px;
+}
+.MethodBuilderPlugins .btnHelp-active, .MethodBuilderPlugins .btnHelp-passive:hover {
+   background: url(images/SpriteSheetStatic.png) no-repeat -453px -250px;
+   height:60px;
+   width:86px;
+}
+.MethodBuilderPlugins
+{
+	padding-top:0px;
+  	padding-left:0px;
+}
+.MethodBuilderPlugins .ChildWidgets
+{
+  border-left: Solid 2px #253349;
+  border-right: Solid 2px #253349;
+  border-bottom: Solid 2px #253349;
+  color:White;
+  padding-top:0px;
+  padding-left:0px;
+  height:429px;
+  width:200px;
+  
+}
+/*
+.MethodBuilderPlugins .ActivePanel,.MethodBuilderPlugins .ActivePanel:Hover,.MethodBuilderPlugins .gwt-TabLayoutPanelTabs.MethodBuilderPlugins .PassivePanel:Hover {
+  cursor: pointer;
+  cursor: hand;
+  font-weight: bold;
+    border-right: 1px solid #bbbbbb;
+  border-bottom: 0px;
+  background: red url(images/SpriteSheetStatic.png) no-repeat -413px 0px;
+  color:White;
+  width:100%;
+  height:45px;
+  padding-top:10px;
+  padding-left:10px; 
+
+  z-index:1001;
+  
+}*/
+.Doctypes
+{
+	text-align:right;
+}
+.optionalHeaderStyle td
+{
+	border-bottom:Solid 1px #DDD;
+	color:#333;
+	height:50px;
+}
+.optionalHeaderStyle td.FieldName
+{
+	font-weight:bold;
+	text-align:right;
+}
+.FormGrid
+{
+	padding:0px;
+	margin:0px;
+	border-bottom:Solid 2px #333;
+}
+.FormGrid td.ButtonCell
+{
+	text-align:right;
+	float:right;
+	vertical-align:bottom;
+}
+
+.FormGrid td.FieldValue
+{
+	padding-left:5px;
+	width:300px;
+	height:35px;
+}
+.FormGrid td.FieldValue
+{
+	padding-left:5px;
+	width:300px;
+	height:35px;
+}
+.FormGrid td.FieldError
+{
+	color:Red;
+	border-bottom:none;
+	width:35px;
+	text-align:left;
+}
+.Hidden
+{
+	display:none;
+}
+.Visible
+{
+	display:inline;
+}
+
+/****Updated Styles 6/3/12 */
+.MethodTitlePanel
+{
+	width:671px;
+	height:55px;
+	background-image:url(images/ICONS.png);
+	background-position:-2px -898px;
+	padding-top:10px;
+	padding-left:20px;
+	
+}
+.MethodTitlePanel .MethodTitleLabel
+{
+	font-size:20px;
+	color:White;
+	width:70px;
+}
+.MethodTitlePanel .SubjectTitleLabel
+{
+	font-size:20px;
+	color:White;
+}
+.MethodTitlePanel .StepTitleLabel
+{
+	font-size:20px;
+	color:White;
+}
+.MethodTitlePanel .ActiveTitle
+{
+	
+}
+.icon-small-correct
+{
+	width:23px;
+	height:23px;
+	background-image:url(images/ICONS.png);
+	background-position:-375px -463px;
+}
+.icon-small-incorrect
+{
+	width:23px;
+	height:23px;
+	background-image:url(images/ICONS.png);
+	background-position:-325px -873px;
+}
+
+.mdStack
+{
+	padding:0px;
+	margin:0px;
+	width:100%;
+}
+.mdStack  .gwt-StackLayoutPanelHeader {
+  cursor: pointer;
+  cursor: hand; 
+  font-weight: bold;
+  font-size: 16px;
+  padding: 8px;
+  border: 1px solid #bbbbbb;
+  border-bottom: 0px;
+  background: url(images/SpriteSheetStatic.png) no-repeat -556px -270px;
+	height:41px;
+ width:100%;
+ margin:0px;
+	
+}
+.mdStack .gwt-StackLayoutPanelHeader-hovering {
+  background: #CCC;
+  color:#333;
+}
+.mdStack .gwt-StackLayoutPanelContent {
+  border: 1px solid #bbbbbb;
+  border-bottom: 0px;
+  background: white;
+  padding: 0px;
+  
+}
+.mbDarisMain
+{
+	font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Arial, sans-serif;
+	font-size:12px;
+}
+MethodEditorDynamicFieldsPanel
+{
+	border-style: solid;
+	border-width: 1px;
+	margin: 10px;
+}
+
+.globalMoveCursor *, .globalMoveCursor .absolutelyPositioned
+{ 
+	cursor: nw-resize;
+}
+
+.gwt-Tree .gwt-TreeItem
+{
+	padding-left: 1px;
+}
+
+.gwt-Tree .itemHighlight:hover
+{
+	padding-left: 0px;
+	background-color: #90a6cc;
+	cursor: default;
+}
+
+.gwt-Tree .noItemHighlight
+{
+	background-color: #ffffff;
+}
+
+.gwt-Tree .itemSelected
+{
+	padding-left: 0px;
+	background-color: #c3d9ff;
+	cursor: default;
+}
+
+/* HACK: This is for text boxes that are getting the end cut off because we are in strict/standards mode. */
+.textBoxPadding
+{
+	padding-right: 8px !important;
+}

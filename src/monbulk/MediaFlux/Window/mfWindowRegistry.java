@@ -1,12 +1,12 @@
-package daris.Monbulk.MediaFlux.Window;
+package monbulk.MediaFlux.Window;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.shared.util.MonbulkEnums.WindowTypes;
-import daris.Monbulk.shared.widgets.Window.WindowProperties;
-import daris.Monbulk.shared.widgets.Window.iWindow;
-import daris.Monbulk.shared.widgets.Window.iWindowRegistry;
+import monbulk.shared.util.MonbulkEnums.WindowTypes;
+import monbulk.shared.widgets.Window.WindowProperties;
+import monbulk.shared.widgets.Window.iWindow;
+import monbulk.shared.widgets.Window.iWindowRegistry;
 
 public class mfWindowRegistry implements iWindowRegistry{
 

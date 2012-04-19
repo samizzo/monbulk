@@ -1,4 +1,4 @@
-package daris.Monbulk.shared.widgets.Window.view;
+package monbulk.shared.widgets.Window.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -20,8 +20,8 @@ import com.google.gwt.user.client.ui.DialogBox.Caption;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.InlineLabel;
 
-import daris.Monbulk.MethodBuilder.client.event.ChangeWindowEvent;
-import daris.Monbulk.client.event.CloseWindowEvent;
+import monbulk.MethodBuilder.client.event.ChangeWindowEvent;
+import monbulk.client.event.CloseWindowEvent;
 
 public class appletWindowCaption extends Composite implements Caption {
 

@@ -1,4 +1,4 @@
-package daris.Monbulk.MediaFlux.Window;
+package monbulk.MediaFlux.Window;
 
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -6,8 +6,8 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import arc.gui.gwt.widget.panel.AbsolutePanel;
 import arc.gui.gwt.widget.window.Window;
 import arc.gui.window.WindowProperties;
-import daris.Monbulk.shared.widgets.Window.WindowManager;
-import daris.Monbulk.shared.widgets.Window.iWindow;
+import monbulk.shared.widgets.Window.WindowManager;
+import monbulk.shared.widgets.Window.iWindow;
 
 
 public class MFWindow implements iWindow {
@@ -33,7 +33,7 @@ public class MFWindow implements iWindow {
 		//_win = Window.create(_mfContainer,_wp);
 		_windowName = WindowName;
 	}
-	public MFWindow(String WindowName,daris.Monbulk.shared.widgets.Window.WindowProperties wp)
+	public MFWindow(String WindowName,monbulk.shared.widgets.Window.WindowProperties wp)
 	{
 		_gwtContainer = new HTMLPanel("");
 		_mfContainer = new AbsolutePanel();
@@ -97,7 +97,7 @@ public class MFWindow implements iWindow {
 	}
 	@Override
 	public void setProperties(
-			daris.Monbulk.shared.widgets.Window.WindowProperties wp) {
+			monbulk.shared.widgets.Window.WindowProperties wp) {
 		
 		// TODO Auto-generated method stub
 		_wp.setModal(wp.get_isModal());

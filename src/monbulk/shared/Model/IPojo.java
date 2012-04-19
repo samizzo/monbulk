@@ -1,6 +1,6 @@
-package daris.Monbulk.shared.Model;
+package monbulk.shared.Model;
 
-import daris.Monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Form.FormBuilder;
 
 public interface IPojo {
 

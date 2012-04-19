@@ -1,11 +1,11 @@
-<binding xmlns:ns1="http://www.generated.model.client.MethodBuilder.Monbulk.versi.edu" name="binding" package="daris.monbulk.methodbuilder.client.model.generated" trim-whitespace="true">
+<binding xmlns:ns1="http://www.generated.model.client.MethodBuilder.Monbulk.versi.edu" name="binding" package="monbulk.methodbuilder.client.model.generated" trim-whitespace="true">
   <namespace uri="http://www.generated.model.client.MethodBuilder.Monbulk.versi.edu" default="elements"/>
-  <format label="ns1:metaDataCategories" type="daris.monbulk.methodbuilder.client.model.generated.MetaDataCategories" enum-value-method="xmlValue"/>
-  <format label="ns1:FormControls" type="daris.monbulk.methodbuilder.client.model.generated.FormControls" enum-value-method="xmlValue"/>
-  <format label="ns1:CommandType" type="daris.monbulk.methodbuilder.client.model.generated.CommandType" enum-value-method="xmlValue"/>
-  <format label="ns1:FormElementType" type="daris.monbulk.methodbuilder.client.model.generated.FormElementType" enum-value-method="xmlValue"/>
-  <format label="ns1:XMLObjectTypes" type="daris.monbulk.methodbuilder.client.model.generated.XMLObjectTypes"/>
-  <mapping class="daris.monbulk.methodbuilder.client.model.generated.MethodList" name="MethodList">
+  <format label="ns1:metaDataCategories" type="monbulk.methodbuilder.client.model.generated.MetaDataCategories" enum-value-method="xmlValue"/>
+  <format label="ns1:FormControls" type="monbulk.methodbuilder.client.model.generated.FormControls" enum-value-method="xmlValue"/>
+  <format label="ns1:CommandType" type="monbulk.methodbuilder.client.model.generated.CommandType" enum-value-method="xmlValue"/>
+  <format label="ns1:FormElementType" type="monbulk.methodbuilder.client.model.generated.FormElementType" enum-value-method="xmlValue"/>
+  <format label="ns1:XMLObjectTypes" type="monbulk.methodbuilder.client.model.generated.XMLObjectTypes"/>
+  <mapping class="monbulk.methodbuilder.client.model.generated.MethodList" name="MethodList">
     <collection get-method="getMethodList" set-method="setMethodList" usage="optional" create-type="java.util.ArrayList">
       <structure map-as="ns1:Method" name="Method"/>
     </collection>
@@ -13,7 +13,7 @@
       <value style="element" name="MethodURI" type="java.lang.String"/>
     </collection>
   </mapping>
-  <mapping abstract="true" type-name="ns1:Method" class="daris.monbulk.methodbuilder.client.model.generated.Method">
+  <mapping abstract="true" type-name="ns1:Method" class="monbulk.methodbuilder.client.model.generated.Method">
     <structure map-as="ns1:DataAsset" get-method="getMethodDetails" set-method="setMethodDetails" name="MethodDetails"/>
     <value style="element" name="subjectProperties" get-method="getSubjectProperties" set-method="setSubjectProperties" usage="optional"/>
     <collection get-method="getStepIDList" set-method="setStepIDList" create-type="java.util.ArrayList">
@@ -21,14 +21,14 @@
     </collection>
     <value style="attribute" name="MethodID" get-method="getMethodID" set-method="setMethodID" usage="optional"/>
   </mapping>
-  <mapping class="daris.monbulk.methodbuilder.client.model.generated.MetaDataList" name="MetaDataList">
+  <mapping class="monbulk.methodbuilder.client.model.generated.MetaDataList" name="MetaDataList">
     <collection get-method="getMetaDataList" set-method="setMetaDataList" create-type="java.util.ArrayList">
       <structure map-as="ns1:MetaData" name="MetaData"/>
     </collection>
   </mapping>
-  <mapping abstract="true" type-name="ns1:MetaData" class="daris.monbulk.methodbuilder.client.model.generated.MetaData">
+  <mapping abstract="true" type-name="ns1:MetaData" class="monbulk.methodbuilder.client.model.generated.MetaData">
     <collection get-method="getMetaDataCategoryList" set-method="setMetaDataCategoryList" create-type="java.util.ArrayList">
-      <value style="element" name="MetaDataCategory" type="daris.monbulk.methodbuilder.client.model.generated.MetaDataCategories" format="ns1:metaDataCategories"/>
+      <value style="element" name="MetaDataCategory" type="monbulk.methodbuilder.client.model.generated.MetaDataCategories" format="ns1:metaDataCategories"/>
     </collection>
     <structure map-as="ns1:DataAsset" get-method="getMetaDataDetails" set-method="setMetaDataDetails" name="MetaDataDetails"/>
     <collection get-method="getMetaDataFieldList" set-method="setMetaDataFieldList" create-type="java.util.ArrayList">
@@ -37,10 +37,10 @@
     <value style="attribute" name="MetaDataName" get-method="getMetaDataName" set-method="setMetaDataName" usage="optional"/>
     <value style="attribute" name="MetaDataID" get-method="getMetaDataID" set-method="setMetaDataID" usage="optional"/>
   </mapping>
-  <mapping class="daris.monbulk.methodbuilder.client.model.generated.MetaData" name="MetaData">
+  <mapping class="monbulk.methodbuilder.client.model.generated.MetaData" name="MetaData">
     <structure map-as="ns1:MetaData"/>
   </mapping>
-  <mapping abstract="true" type-name="ns1:MetaDataField" class="daris.monbulk.methodbuilder.client.model.generated.MetaDataField">
+  <mapping abstract="true" type-name="ns1:MetaDataField" class="monbulk.methodbuilder.client.model.generated.MetaDataField">
     <value style="element" name="FieldName" get-method="getFieldName" set-method="setFieldName"/>
     <value style="element" name="FieldType" get-method="getFieldType" set-method="setFieldType"/>
     <value style="element" name="FieldControl" get-method="getFieldControl" set-method="setFieldControl" format="ns1:FormControls"/>
@@ -50,7 +50,7 @@
     <value style="attribute" name="FieldValue" get-method="getFieldValue" set-method="setFieldValue" usage="optional"/>
     <value style="attribute" name="FieldID" get-method="getFieldID" set-method="setFieldID" usage="optional"/>
   </mapping>
-  <mapping abstract="true" type-name="ns1:DataAsset" class="daris.monbulk.methodbuilder.client.model.generated.DataAsset">
+  <mapping abstract="true" type-name="ns1:DataAsset" class="monbulk.methodbuilder.client.model.generated.DataAsset">
     <value style="element" name="ID" get-method="getID" set-method="setID"/>
     <value style="element" name="Title" get-method="getTitle" set-method="setTitle"/>
     <value style="element" name="Author" get-method="getAuthor" set-method="setAuthor"/>
@@ -59,18 +59,18 @@
     <value style="element" name="DateCreated" get-method="getDateCreated" set-method="setDateCreated"/>
     <value style="element" name="Keywords" get-method="getKeywords" set-method="setKeywords"/>
   </mapping>
-  <mapping abstract="true" type-name="ns1:ElementLinkage" class="daris.monbulk.methodbuilder.client.model.generated.ElementLinkage">
+  <mapping abstract="true" type-name="ns1:ElementLinkage" class="monbulk.methodbuilder.client.model.generated.ElementLinkage">
     <value style="attribute" name="foreignXMLFileURI" get-method="getForeignXMLFileURI" set-method="setForeignXMLFileURI" usage="optional"/>
     <value style="attribute" name="ForeignID" get-method="getForeignID" set-method="setForeignID" usage="optional"/>
     <value style="attribute" name="LinkType" get-method="getLinkType" set-method="setLinkType" usage="optional" format="ns1:XMLObjectTypes"/>
   </mapping>
-  <mapping abstract="true" type-name="ns1:FormCompleted" class="daris.monbulk.methodbuilder.client.model.generated.FormCompleted">
+  <mapping abstract="true" type-name="ns1:FormCompleted" class="monbulk.methodbuilder.client.model.generated.FormCompleted">
     <collection get-method="getCompletedFormElementList" set-method="setCompletedFormElementList" create-type="java.util.ArrayList">
       <structure map-as="ns1:CompletedField" name="CompletedFormElement"/>
     </collection>
     <value style="attribute" name="formId" get-method="getFormId" set-method="setFormId" usage="optional"/>
   </mapping>
-  <mapping abstract="true" type-name="ns1:Form" class="daris.monbulk.methodbuilder.client.model.generated.Form">
+  <mapping abstract="true" type-name="ns1:Form" class="monbulk.methodbuilder.client.model.generated.Form">
     <collection get-method="getFormElementList" set-method="setFormElementList" create-type="java.util.ArrayList">
       <structure map-as="ns1:FormElement" name="FormElement"/>
     </collection>
@@ -78,13 +78,13 @@
     <value style="attribute" name="FormID" get-method="getFormID" set-method="setFormID" usage="optional"/>
     <value style="attribute" name="FormScope" get-method="getFormScope" set-method="setFormScope" usage="optional" format="ns1:FormElementType"/>
   </mapping>
-  <mapping abstract="true" type-name="ns1:CompletedField" class="daris.monbulk.methodbuilder.client.model.generated.CompletedField">
+  <mapping abstract="true" type-name="ns1:CompletedField" class="monbulk.methodbuilder.client.model.generated.CompletedField">
     <value style="attribute" name="FieldID" get-method="getFieldID" set-method="setFieldID" usage="optional"/>
     <value style="attribute" name="FieldValue" get-method="getFieldValue" set-method="setFieldValue" usage="optional"/>
     <value style="attribute" name="FieldType" get-method="getFieldType" set-method="setFieldType" usage="optional"/>
     <value style="attribute" name="FieldScope" get-method="getFieldScope" set-method="setFieldScope" usage="optional" format="ns1:FormElementType"/>
   </mapping>
-  <mapping abstract="true" type-name="ns1:FormElement" class="daris.monbulk.methodbuilder.client.model.generated.FormElement">
+  <mapping abstract="true" type-name="ns1:FormElement" class="monbulk.methodbuilder.client.model.generated.FormElement">
     <value style="element" name="FieldName" get-method="getFieldName" set-method="setFieldName"/>
     <value style="element" name="FieldType" get-method="getFieldType" set-method="setFieldType"/>
     <value style="element" name="FieldControl" get-method="getFieldControl" set-method="setFieldControl" format="ns1:FormControls"/>
@@ -93,22 +93,22 @@
     <value style="attribute" name="ElementID" get-method="getElementID" set-method="setElementID" usage="optional"/>
     <value style="attribute" name="ElementType" get-method="getElementType" set-method="setElementType" usage="optional" format="ns1:FormElementType"/>
   </mapping>
-  <mapping abstract="true" type-name="ns1:Command" class="daris.monbulk.methodbuilder.client.model.generated.Command">
+  <mapping abstract="true" type-name="ns1:Command" class="monbulk.methodbuilder.client.model.generated.Command">
     <structure map-as="ns1:CommandParameter" get-method="getParameter" set-method="setParameter" usage="optional" name="Parameter"/>
     <value style="attribute" name="CommandName" get-method="getCommandName" set-method="setCommandName" usage="optional"/>
     <value style="attribute" name="CommandType" get-method="getCommandType" set-method="setCommandType" usage="optional" format="ns1:CommandType"/>
   </mapping>
-  <mapping abstract="true" type-name="ns1:CommandParameter" class="daris.monbulk.methodbuilder.client.model.generated.CommandParameter">
+  <mapping abstract="true" type-name="ns1:CommandParameter" class="monbulk.methodbuilder.client.model.generated.CommandParameter">
     <value style="attribute" name="ParameterName" get-method="getParameterName" set-method="setParameterName" usage="optional"/>
     <value style="attribute" name="ParameterValue" get-method="getParameterValue" set-method="setParameterValue" usage="optional"/>
     <value style="attribute" name="ParameterType" get-method="getParameterType" set-method="setParameterType" usage="optional"/>
   </mapping>
-  <mapping abstract="true" type-name="ns1:Options" class="daris.monbulk.methodbuilder.client.model.generated.Options">
+  <mapping abstract="true" type-name="ns1:Options" class="monbulk.methodbuilder.client.model.generated.Options">
     <collection get-method="getOptionList" set-method="setOptionList" create-type="java.util.ArrayList">
       <structure map-as="ns1:Option" name="Option"/>
     </collection>
   </mapping>
-  <mapping abstract="true" type-name="ns1:Option" class="daris.monbulk.methodbuilder.client.model.generated.Option">
+  <mapping abstract="true" type-name="ns1:Option" class="monbulk.methodbuilder.client.model.generated.Option">
     <value style="attribute" name="OptionName" get-method="getOptionName" set-method="setOptionName" usage="optional"/>
     <value style="attribute" name="OptionValue" get-method="getOptionValue" set-method="setOptionValue" usage="optional"/>
   </mapping>

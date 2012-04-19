@@ -1,4 +1,4 @@
-package daris.Monbulk.client.view;
+package monbulk.client.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 
-import daris.Monbulk.client.view.iDesktopView;
+import monbulk.client.view.iDesktopView;
 
 public class MonbulkDesktop extends Composite implements iDesktopView {
 
