@@ -27,9 +27,6 @@ public class MonbulkDesktop extends Composite implements iDesktopView {
 	PushButton btnMethodApp;
 	
 	@UiField
-	PushButton btnArcMethodApp;
-	
-	@UiField
 	PushButton btnMetadataEditor;
 
 	@UiField
@@ -53,13 +50,6 @@ public class MonbulkDesktop extends Composite implements iDesktopView {
 	    
 		if (presenter != null) {
 		      presenter.onLauncherClicked("Method Builder");
-		    }
-	  }
-	@UiHandler("btnArcMethodApp")
-	public void onClick1(ClickEvent e) {
-	    
-		if (presenter != null) {
-		      presenter.onLauncherClicked("Arc Method Builder");
 		    }
 	  }
 
