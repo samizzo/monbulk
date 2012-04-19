@@ -107,36 +107,6 @@ public class appManager implements Presenter, ValueChangeHandler<String>{
 			  metadataEditor.setSize(width + "px", height + "px");
 			  winManager.add(window);
 		  }
-		  else if(WindowName =="Arc Method Builder")
-		  {
-			  this.myDesktop.getContainer().add(arcContainer);
-			  
-			  WindowProperties wp = new WindowProperties();
-				wp.setModal(false);
-				wp.setTitle("Method Builder");
-				wp.setCanBeResized(true);
-				wp.setCanBeClosed(true);
-				wp.setCanBeMoved(true);
-				wp.setSize(1020, 500);
-				wp.setPosition(0, 0);
-				wp.setGlassOpacity(0.7);
-				arc.gui.gwt.widget.window.Window tmpWin = arc.gui.gwt.widget.window.Window.create(arcContainer, wp);
-				
-				AbsolutePanel  tmpPanel = new AbsolutePanel();
-				tmpPanel.setStyleName("mbPanel");
-				tmpPanel.setHeight("768px");
-				HandlerManager eventBus = new HandlerManager(null);
-				MethodBuilder  myMethodBuilder = new MethodBuilder(eventBus,tmpPanel);
-				tmpWin.setContent(tmpPanel);
-			
-				tmpWin.show();
-				
-				tmpWin.bringToFront();
-				myMethodBuilder.ChangeAppletState();
-				WindowManager tmpManager = WindowManager.manager();
-				tmpManager.setDefaultParentWidget(arcContainer);
-				tmpManager.add(tmpWin);
-		  }
 	  }
 
 	  private void doChangeWindow(String id,WindowState Change)
