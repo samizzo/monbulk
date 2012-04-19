@@ -14,7 +14,6 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
-import monbulk.Desktop.Services.MonbulkServices;
 import monbulk.MethodBuilder.client.MethodBuilder;
 import monbulk.MetadataEditor.MetadataEditor;
 import monbulk.client.event.CloseWindowEvent;

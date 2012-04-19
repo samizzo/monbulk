@@ -8,7 +8,6 @@ import monbulk.shared.util.MonbulkEnums.ServiceNames;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.StackedCategories;
 import monbulk.shared.Model.StackedCategories.ParentCategory;
-import monbulk.shared.Services.ServiceFactory;
 import monbulk.MethodBuilder.shared.iMBModel;
 import monbulk.MethodBuilder.shared.iModelAllowMetaData.iModelHasHelpExtendsMetaData;
 import monbulk.shared.Architecture.IPresenter.FormPresenter;
@@ -50,7 +49,6 @@ public class SubjectPropertiesModel implements iMBModel,IDraggable{
 		SubjectPropertiesForm.AddSummaryItem("SubjectType", "String");
 		//SubjectPropertiesForm.AddSummaryItem("isPublic", "Boolen",);
 		SubjectPropertiesForm.AddItem("isPublic", "Boolean", true);
-		//ServiceFactory.executeReader(ServiceNames.MetaData, null, this);
 		//MetaDataList tmpObject = new MetaDataList(this);
 	}
 	
