@@ -2,7 +2,7 @@
 #                                                                            #
 #                             Uninstaller Script                             #
 #                                     for                                    #
-#                           Mediaflux Package: daris                         #
+#                           Mediaflux Package: monbulk                       #
 #                                                                            #
 ##############################################################################
 

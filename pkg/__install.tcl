@@ -2,7 +2,7 @@
 #                                                                            #
 #                               Installer Script                             #
 #                                      for                                   #
-#                           Mediaflux Package: daris                         #
+#                           Mediaflux Package: monbulk                       #
 #                                                                            #
 ##############################################################################
 
@@ -12,7 +12,7 @@
 source requireServerVersion.tcl
 
 set label [string toupper PACKAGE_$package]
-set entryPoint DaRIS.html
+set entryPoint Monbulk.html
 
 #
 # Set up authentication
@@ -34,7 +34,7 @@ if { [xvalue exists [asset.namespace.exists :namespace ${namespace}]] == "true" 
 	asset.namespace.destroy :namespace ${namespace}	
 }
 puts "Installing package ${package} -- Creating namespace: ${namespace}" 
-asset.namespace.create :namespace -all true ${namespace} :description "the namespace for daris web application"
+asset.namespace.create :namespace -all true ${namespace} :description "the namespace for Monbulk web application"
 
 #
 # Import web contents
@@ -52,4 +52,4 @@ if { [xvalue exists [http.processor.exists :url ${url}]] == "true" } {
 	http.processor.destroy :url ${url}
 }
 puts "Installing package ${package} -- Creating http processor: url=${url}"
-http.processor.create :app daris :url ${url} :type asset :translate ${namespace} :authentication < :domain $domain :user $user > :entry-point $entryPoint
+http.processor.create :app monbulk :url ${url} :type asset :translate ${namespace} :authentication < :domain $domain :user $user > :entry-point $entryPoint
