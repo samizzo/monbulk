@@ -1,0 +1,19 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel>
+		<g:Grid styleName="DraggableChild" ui:field="grdDragableChild">
+			<g:row>
+				<g:customCell styleName="LabelCell">
+					<g:Label ui:field="Name" styleName="mdItemLabel" text="Test"/>
+				</g:customCell>
+				<g:customCell styleName="ButtonCell">
+					<g:PushButton ui:field="Add" styleName="AddButton ActiveAdd"></g:PushButton>
+				</g:customCell>
+			</g:row>
+		</g:Grid>
+	</g:HTMLPanel>
+</ui:UiBinder> 

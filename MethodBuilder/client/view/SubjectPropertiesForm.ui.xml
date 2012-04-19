@@ -1,0 +1,65 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel>
+		<g:StackLayoutPanel height="426px" unit="PX" styleName="StandardStack" ui:field="MethodNavigationStack">
+			<g:stack>
+				<g:header size="41">Subject Properties</g:header>
+				<g:Grid width="99%" height="100%" styleName="FormGrid" ui:field="FormTable">
+					<g:row styleName="optionalHeaderStyle">
+					    <g:customCell styleName="FieldName">
+					      <g:Label text="Subject Type:" />
+					    </g:customCell>
+					    <g:customCell styleName="FieldValue">
+					      <g:ListBox ui:field="SubjectType" width="300px" >
+					      		<g:item value="Animal">
+					      			Animal
+					      		</g:item>
+					      		<g:item value="Human">
+					      			Human
+					      		</g:item>
+					      		<g:item value="Other">
+					      			Other
+					      		</g:item>
+					      </g:ListBox>
+					    </g:customCell>
+					    <g:customCell styleName="FieldError">
+					      <g:Label ui:field="completionLabel1" />
+					    </g:customCell>
+			  		</g:row>
+			  		<g:row styleName="optionalHeaderStyle">
+					    <g:customCell styleName="FieldName">
+					      <g:Label text="Subject Name:" />
+					    </g:customCell>
+					    <g:customCell styleName="FieldValue">
+					      <g:TextBox ui:field="SubjectName" text="" width="300px" />
+					    </g:customCell>
+					    <g:customCell styleName="FieldError">
+					      <g:Label ui:field="completionLabel2" />
+					    </g:customCell>
+			  		</g:row>
+			  		<g:row>
+			  			<g:cell></g:cell>
+			  			<g:customCell styleName="FieldName">
+					       <g:FlexTable ui:field="MetaDatatable" styleName="MetaDataFormList" width="100%" />
+					    </g:customCell>
+					    <g:cell></g:cell>
+					 </g:row>
+			  		<g:row>
+			  			<g:cell></g:cell>
+			  			<g:customCell styleName="ButtonCell">
+			  				<g:HorizontalPanel>
+			  					<g:Button ui:field="buttonPrev" text="Prev" /><g:Button ui:field="buttonSubmit" text="Next" />
+			  				</g:HorizontalPanel>
+			  			</g:customCell>
+			  			<g:cell></g:cell>
+			  		</g:row>
+				</g:Grid>
+				     
+			</g:stack>
+		</g:StackLayoutPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 
