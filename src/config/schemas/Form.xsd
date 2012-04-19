@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.generated.model.client.MethodBuilder.Monbulk.versi.edu" xmlns="http://www.generated.model.client.MethodBuilder.Monbulk.versi.edu" elementFormDefault="qualified">
+
+	<xsi:include schemaLocation="SimpleTypes.xsd" />
+	
+	<xsi:complexType name="FormCompleted">
+			<xsi:sequence>									   
+				<xsi:element name="CompletedFormElement" type="CompletedField" maxOccurs="unbounded" />
+			</xsi:sequence>
+		<xsi:attribute name="formId" type="ObjectID"/>
+	</xsi:complexType>
+	
+	
+	<xsi:complexType name="Form">
+		<xsi:sequence>
+			<xsi:element name="FormElement" type="FormElement" maxOccurs="unbounded"/> 
+		</xsi:sequence>
+		<xsi:attribute name="formName" type="xsi:string"/>
+		<xsi:attribute name="FormID" type="ObjectID"/>
+		<xsi:attribute name="FormScope" type="FormElementType"/>
+	</xsi:complexType>
+	
+	<xsi:complexType name="CompletedField">
+		<xsi:attribute name="FieldID" type="ObjectID"/>
+		<xsi:attribute name="FieldValue" type="xsi:anySimpleType" />
+		<xsi:attribute name="FieldType" type="xsi:string" />
+		<xsi:attribute name="FieldScope" type="FormElementType" />
+	</xsi:complexType>
+	
+	<!-- should add validation -->
+	<xsi:complexType name="FormElement">
+	    	<xsi:sequence>
+	    		<xsi:element name="FieldName" type="xsi:string"/>
+	    		<xsi:element name="FieldType" type="xsi:string"/>
+	    		<xsi:element name="FieldControl" type="FormControls"/>
+	    		<xsi:element name="Options" type="Options" minOccurs="0"/>
+	    		<xsi:element name="isRequired" type="xsi:boolean" />    		
+	    	</xsi:sequence>
+	    	<xsi:attribute name="ElementID" type="ObjectID" />
+	    	<xsi:attribute name="ElementType" type="FormElementType" />
+	    </xsi:complexType>
+    
+    <xsi:complexType name="Command">
+    	<xsi:sequence>
+    		<xsi:element name="Parameter" type="CommandParameter" minOccurs="0"></xsi:element>
+    	</xsi:sequence>
+    	<xsi:attribute name="CommandName" type="xsi:string" />
+    	<xsi:attribute name="CommandType" type="CommandType" />
+    </xsi:complexType>
+    
+    <xsi:complexType name="CommandParameter">
+    	<xsi:attribute name="ParameterName" type="xsi:string" />
+    	<xsi:attribute name="ParameterValue" type="xsi:string" />
+    	<xsi:attribute name="ParameterType" type="xsi:string" />
+    </xsi:complexType>
+    <xsi:complexType name="Options">
+		<xsi:sequence>
+			<xsi:element name="Option" type="Option" maxOccurs="unbounded" />
+		</xsi:sequence>
+    </xsi:complexType>
+    
+    <xsi:complexType name="Option">
+    	<xsi:attribute name="OptionName" type="xsi:string" />
+    	<xsi:attribute name="OptionValue" type="xsi:string" />
+    </xsi:complexType>
+	 <xsi:simpleType name="FormControls">
+    	<xsi:restriction base="xsi:string">
+    		<xsi:enumeration value="TextBox"/>
+    		<xsi:enumeration value="DropDownList"/>
+    		<xsi:enumeration value="RadioButtonList"/>
+    		<xsi:enumeration value="CheckBox"/>
+    		<xsi:enumeration value="CheckBoxList"/>
+    		<xsi:enumeration value="Calendar"/>
+    		<xsi:enumeration value="TextArea"/>
+    		<xsi:enumeration value="ListBox"/>
+    		<xsi:enumeration value="FileUpload"/>
+    	</xsi:restriction>
+    </xsi:simpleType> 
+    <xsi:simpleType name="CommandType">
+    	<xsi:restriction base="xsi:string">
+    		<xsi:enumeration value="WriteStaticCommand"/>
+    		<xsi:enumeration value="WriteDynamicCommand"/>
+    		<xsi:enumeration value="ReadDynamicCommand"/>
+    		<xsi:enumeration value="ReadStaticCommand"/>
+    		<xsi:enumeration value="EdiStaticCommand"/>
+    		<xsi:enumeration value="EditDynamicCommand"/>
+    		<xsi:enumeration value="RemoveStaticCommand"/>
+    		<xsi:enumeration value="RemoveDynamicommand"/>
+    		<xsi:enumeration value="ViewCommand"/>
+    		<xsi:enumeration value="InitCommand"/>
+    		<xsi:enumeration value="LoadCommand"/>
+    		<xsi:enumeration value="SearchResultCommand"/>
+    		<xsi:enumeration value="loadMetaData"/>
+    	</xsi:restriction>
+    </xsi:simpleType> 
+     <xsi:simpleType name="FormElementType">
+    	<xsi:restriction base="xsi:string">
+    		<xsi:enumeration value="CompleteOnInit"/>
+    		<xsi:enumeration value="CompleteOnSubject"/>
+    		<xsi:enumeration value="final"/>
+    	</xsi:restriction>
+    </xsi:simpleType> 
+</xsi:schema>

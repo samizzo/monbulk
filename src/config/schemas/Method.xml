@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MethodList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.generated.model.client.MethodBuilder.Monbulk.versi.edu" xsi:schemaLocation="http://www.generated.model.client.MethodBuilder.Monbulk.versi.edu Method.xsd">
+	<Method MethodID="MD.001.001.000001">
+		<MethodDetails>
+			<ID>DA.001.001.000006</ID>
+			<Title>A Sample Method</Title>
+			<Author>Andrew Glenn</Author>
+			<Description>A Test Method</Description>
+			<DataUsage>n/a</DataUsage>
+			<DateCreated>14/2/2012</DateCreated>
+			<Keywords>Test Method, testing</Keywords>
+		</MethodDetails>
+		<subjectProperties>SP.001.001.000001</subjectProperties>
+		<StepID>ST.001.001.000001</StepID>
+	</Method>
+
+</MethodList>

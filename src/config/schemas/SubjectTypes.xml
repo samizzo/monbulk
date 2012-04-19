@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<SubjectPropertiesList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.generated.model.client.MethodBuilder.Monbulk.versi.edu" xsi:schemaLocation="http://www.generated.model.client.MethodBuilder.Monbulk.versi.edu Step.xsd">
+	<SubjectProperties StepID="SP.001.001.000001">
+		<Details>
+			<ID>DA.001.001.000006</ID>
+			<Title>Common house mouse</Title>
+			<Author>Andrew Glenn</Author>
+			<Description>Common House mouse with no knwon condition</Description>
+			<DataUsage>n/a</DataUsage>
+			<DateCreated>8/2/2011</DateCreated>
+			<Keywords>Common mouse, mus, etc</Keywords>
+		</Details>
+		<SubjectPropertiesInterface InterfaceID="SI.001.001.000001" >
+			<SupportedMetaDataCategory>SubjectPropertyExtension</SupportedMetaDataCategory>
+			<SpeciesReference SpeciesID="SC.001.001.000001" allowAll="false" /> 
+		</SubjectPropertiesInterface>
+		
+	</SubjectProperties>
+</SubjectPropertiesList>

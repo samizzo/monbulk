@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StepTypeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.generated.model.client.MethodBuilder.Monbulk.versi.edu" xsi:schemaLocation="http://www.generated.model.client.MethodBuilder.Monbulk.versi.edu Step.xsd">
+	<StepTypeInterface InterfaceType="hasFileData">
+		<HasDynamicData InterfaceID="SI.001.001.000002">
+				<ControlData ClassName="IDataAcqusition.class" PackageName="verse.edu.Monbulk.MethodBuilder.shared.StepType">
+					<Control CommandName="showMetaData" CommandType="loadMetaData" />
+					<Control CommandName="WriteData" CommandType="loadMetaData" />
+					<Control CommandName="showMetaData" CommandType="WriteStaticCommand" />
+				</ControlData>
+				<SupportedMetaDataCategory>BasicStepExstension</SupportedMetaDataCategory>
+				<SupportedMetaDataCategory>DataAcquisitionStepProperties</SupportedMetaDataCategory>
+				<dynamicData>
+				<DynamicFields formName="FileUpload" FormID="FM.001.001.000002">
+						<FormElement ElementID="FD.001.001.000001" ElementType="CompleteOnSubject">
+							<FieldName>Data Types</FieldName>
+							<FieldType>string</FieldType>
+							<FieldControl>DropDownList</FieldControl>
+							<Options>
+								<Option OptionName="Dicom" OptionValue=".dicom" />
+								<Option OptionName="OWL" OptionValue=".owl" />
+								<Option OptionName="XML" OptionValue=".xml" />
+								<Option OptionName="csv" OptionValue=".csv" />
+								<Option OptionName="XML" OptionValue=".xml" />
+								<Option OptionName="ZIP" OptionValue=".zip" />									
+							</Options>
+							<isRequired>true</isRequired>
+						</FormElement>
+							<FormElement ElementID="FD.001.001.000002" ElementType="CompleteOnSubject">
+							<FieldName>File Location</FieldName>
+							<FieldType>URL</FieldType>
+							<FieldControl>FileUpload</FieldControl>
+							<isRequired>true</isRequired>
+						</FormElement>
+						<FormElement ElementID="FD.001.001.000003" ElementType="CompleteOnSubject">
+							<FieldName>Data Description</FieldName>
+							<FieldType>string</FieldType>
+							<FieldControl>TextArea</FieldControl>
+							<isRequired>true</isRequired>
+						</FormElement>
+						<FormElement ElementID="FD.001.001.000004" ElementType="CompleteOnSubject">
+							<FieldName>MetaData to dexribe this data (XML file preferred)</FieldName>
+							<FieldType>xml</FieldType>
+							<FieldControl>FileUpload</FieldControl>
+							<isRequired>false</isRequired>
+						</FormElement>
+						<FormElement ElementID="FD.001.001.000005" ElementType="CompleteOnInit">
+								<FieldName>Visualisation Command</FieldName>
+								<FieldType>string</FieldType>
+								<FieldControl>DropDownList</FieldControl>
+								<Options>
+									<Option OptionName="DicomViewer" OptionValue="vwDicom" />
+									<Option OptionName="XML Viewer" OptionValue="vwXML" />
+									<Option OptionName="TCL Viewer" OptionValue="vwTCL" />
+									<Option OptionName="Image Viewer" OptionValue="vwImage" />
+									<Option OptionName="CSV Viewer" OptionValue="vwCSV" />						
+								</Options>
+								<isRequired>true</isRequired>
+						</FormElement>
+						<FormElement ElementID="FD.001.001.000006" ElementType="CompleteOnInit">
+								<FieldName>Maximum Files Allowed</FieldName>
+								<FieldType>int</FieldType>
+								<FieldControl>TextBox</FieldControl>
+								<isRequired>true</isRequired>
+						</FormElement>
+					</DynamicFields>
+			</dynamicData>
+		</HasDynamicData>
+	</StepTypeInterface>
+</StepTypeList>

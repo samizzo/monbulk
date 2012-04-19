@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.generated.model.client.MethodBuilder.Monbulk.versi.edu" xmlns="http://www.generated.model.client.MethodBuilder.Monbulk.versi.edu" elementFormDefault="qualified">
+<xsd:include schemaLocation="Step.xsd" />
+
+<xsd:complexType name="Study">
+		<xsd:sequence>
+			<xsd:element name="StudyType" type="StudyTypes" />
+			<xsd:element name="StudyDate" type="xsd:string"/>
+			<xsd:element name="SubjectID" type="xsd:string" />
+			<xsd:element name="SessionID" type="xsd:string"/>
+			<xsd:element name="StudyInterface" type="stepTypeInterface"/>				
+		</xsd:sequence>
+		<xsd:attribute name="StudyID" type="ObjectID" />
+</xsd:complexType>
+
+<xsd:simpleType name="StudyTypes">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="MRI" />
+			<xsd:enumeration value="PET" />
+			<xsd:enumeration value="CT" />
+			<xsd:enumeration value="MRf" />
+			<xsd:enumeration value="Synchotron" />			
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
