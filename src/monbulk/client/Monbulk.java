@@ -16,7 +16,7 @@ import monbulk.MediaFlux.Services.MediaFluxServices;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class Monbulk_x implements EntryPoint
+public class Monbulk implements EntryPoint
 {
 	
 	/**
