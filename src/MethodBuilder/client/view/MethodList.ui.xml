@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.important {
+			font-weight: bold;
+		}
+	</ui:style>
+	<g:HTMLPanel>
+		<g:VerticalPanel>
+		<g:ScrollPanel height="420px">
+			<g:MenuBar ui:field="_MethodList" vertical="true"></g:MenuBar>
+		</g:ScrollPanel>
+		<g:PushButton ui:field="_Newbutton" text="New Method"></g:PushButton>
+		</g:VerticalPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

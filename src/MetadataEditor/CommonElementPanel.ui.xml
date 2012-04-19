@@ -1,0 +1,75 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:u="urn:import:daris.Monbulk.shared.widgets">
+
+	<ui:style>
+		.HintText
+		{
+			color: gray;
+			font-style: italic;
+		}
+	</ui:style>
+
+	<g:LayoutPanel width="100%" height="150px">
+		<!-- Name elements -->
+		<g:layer top="0px" height="24px" left="0px" width="82px">
+			<g:Label text="Name:" width="" />
+		</g:layer>
+		<g:layer left="100px" right="10px" top="0px" height="24px">
+			<g:HTMLPanel>
+				<div class="textBoxPadding">
+					<g:TextBox width="100%" ui:field="m_name" />
+				</div>
+			</g:HTMLPanel>
+		</g:layer>
+
+		<!-- Description elements -->
+		<g:layer top="30px" height="24px" left="0px" width="82px">
+			<g:Label text="Description:" />
+		</g:layer>
+		<g:layer left="100px" right="10px" top="30px" height="24px">
+			<g:HTMLPanel>
+				<div class="textBoxPadding">
+					<g:TextBox width="100%" ui:field="m_description" />
+				</div>
+			</g:HTMLPanel>
+		</g:layer>
+
+		<!-- Min occurrences elements -->
+		<g:layer top="60px" height="24px" left="0px" width="250px">
+			<g:Label text="Minimum number of occurrences:" />
+		</g:layer>
+		<g:layer top="60px" height="22px" left="250px" width="60px">
+			<g:HTMLPanel>
+				<div class="textBoxPadding">
+					<g:TextBox width="100%" ui:field="m_minOccurs" />
+				</div>
+			</g:HTMLPanel>
+		</g:layer>
+		
+		<!-- Max occurrences elements -->
+		<g:layer top="90px" height="24px" left="0px" width="260px">
+			<g:Label text="Maximum number of occurrences:" />
+		</g:layer>
+		<g:layer top="90px" height="22px" left="250px" width="60px">
+			<g:HTMLPanel>
+				<div class="textBoxPadding">
+					<u:TextBoxEx width="100%" ui:field="m_maxOccurs" hintText="infinite" hintTextStyle="{style.HintText}" onlyNumbers="true" />
+				</div>
+			</g:HTMLPanel>
+		</g:layer>
+		
+		<!-- Type elements -->
+		<g:layer top="120px" height="24px" left="0px" width="82px">
+			<g:Label text="Type:" width="" height="24"/>
+		</g:layer>
+		<g:layer left="100px" width="120px" top="120px" height="22px">
+			<g:HTMLPanel>
+				<div class="textBoxPadding">
+					<g:ListBox visibleItemCount="1" ui:field="m_type" />
+				</div>
+			</g:HTMLPanel>
+		</g:layer>
+	</g:LayoutPanel>
+</ui:UiBinder> 
