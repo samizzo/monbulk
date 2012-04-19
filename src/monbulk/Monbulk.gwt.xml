@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module rename-to='monbulk_x'>
+<module rename-to='monbulk'>
 	<!-- Inherit the core Web Toolkit stuff.                        -->
 	<inherits name='com.google.gwt.user.User' />
 	<inherits name='com.google.gwt.uibinder.UiBinder' />
@@ -17,7 +17,7 @@
 	<!-- Other module inherits                        	              -->
 
 	<!-- Specify the app entry point class.                         -->
-	<entry-point class='monbulk.client.Monbulk_x' />
+	<entry-point class='monbulk.client.Monbulk' />
 
 	<!-- Specify the paths for translatable code                    -->
 	<source path='client' />
