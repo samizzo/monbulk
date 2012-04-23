@@ -134,7 +134,7 @@
 
 	<target name="package" depends="gwtc" description="build Mediaflux package.">
 		<!-- zip the www contents to www.zip -->
-		<zip basedir="war" includes="**/*" excludes="**/WEB-INF/** **/testdata/**" destfile="${build}/www.zip" />
+		<zip basedir="war" includes="**/*" excludes="**/WEB-INF/** **/testdata/** **/*.log" destfile="${build}/www.zip" />
 		<!-- prepare the MFLUX package contents -->
 		<delete file="${build}/__manifest.xml" />
 		<tstamp>
