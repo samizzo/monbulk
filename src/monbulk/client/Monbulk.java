@@ -6,6 +6,7 @@ import arc.mf.session.ErrorDialog;
 import arc.mf.session.LoginDialog;
 import arc.mf.session.Session;
 import arc.mf.session.SessionHandler;
+import arc.gui.gwt.widget.ContainerWidget;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Window;
@@ -41,7 +42,6 @@ public class Monbulk implements EntryPoint
 		dlg.setVersion(Version.VERSION);
 		dlg.setTitle("Monbulk");
 		Session.setLoginDialog(dlg);
-		Session.setLoginTitle("Monbulk");
 		initialise();
 	}
 	
@@ -62,6 +62,10 @@ public class Monbulk implements EntryPoint
 			public void sessionCreated(boolean initial)
 			{
 				MediaFluxServices.registerMediaFluxServices();
+				// HACK: Remove the arc root panel because it gets in the way
+				// of our own panels.
+				ContainerWidget c = arc.gui.gwt.widget.panel.RootPanel.container();
+				RootPanel.get().remove(c);
 				Desktop d = new Desktop(RootPanel.get());
 				
 				try
