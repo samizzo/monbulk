@@ -122,7 +122,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 		this.ImplementedDockView = new DockView();
 		this.ImplementedDockView.setPresenter(this);
 		AllStates = new ArrayList<PresenterState>();
-		tclBox = new appletWindow("TCL Viewer",this.eventBus);
+		tclBox = new appletWindow("TCL Viewer", "TCLViewer", this.eventBus, null);
 		SetStates(ID);
 		bind();
 	}

@@ -4,6 +4,5 @@
 
 	<!-- This style is overridden in code and not actually used.  Doesn't seem to work if I just set it directly here though. -->
 	<g:HTMLPanel width="100%" styleName="AppletWindow">
-		<g:HTMLPanel width="100%" height="100%" styleName="WindowBody" ui:field="AppletContainer" />
 	</g:HTMLPanel>
 </ui:UiBinder>

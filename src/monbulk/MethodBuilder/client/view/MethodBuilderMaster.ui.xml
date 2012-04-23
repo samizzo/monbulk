@@ -4,37 +4,41 @@
 	<ui:style>
 		
 	</ui:style>
-	<g:HTMLPanel ui:field="_container">
-		<table style="padding:0px 0px;margin:0px;" cellspacing="0" cellpadding="0"><!-- 
-			 -->
-			 	<tr><!-- 
-			 	 -->
-			 	 	<td rowspan="2" style="vertical-align:top;width:140px;padding:0px 0px;border-left:Solid 2px #999;border-righ:Solid 2px #999; border-bottom:Solid 3px #666;background-color:#dadada;">
-			 	 				<g:HTMLPanel ui:field="MenuPanel"/>
-			 	 	</td>
-			 	 	<td style="height:60px;background-color:#dadada;vertical-align:top;">
-			 	 				<g:HorizontalPanel styleName="MethodTitlePanel">
-			 	 					<g:Label styleName="MethodTitleLabel" text="Method"></g:Label>
-			 	 					<g:Label styleName="SubjectTitleLabel ActiveTitle" text="Subject"></g:Label>
-			 	 					<g:Label text="Steps" styleName="StepTitleLabel"></g:Label>
-			 	 				</g:HorizontalPanel>
-			 	 	</td>
-			 	 	<td rowspan="2" style="width:180px;text-align:center;border-bottom:Solid 0px #999;background-color:#dadada;">
-			 	 		 
-			 	 		 <div style="position:absolute;left:818px;top:0px;width:200px;z-index:1000;background-color:#dadada;border-bottom:Solid 4px #666;Border-top:Solid 1px White;">
-			 	 		 	<g:HTMLPanel ui:field="DockPanel"/>
-						</div>
-					</td>
-					</tr>
-					<tr>
-			 	 	<td  style="height:60px;background-color:#dadada;vertical-align:top;">
-			 	 				<g:HTMLPanel ui:field="BodyPanel"/>
-			 	 	</td>
-					</tr>
-					<tr>
-			 	 		<td style="text-align:left;height:45px;border-top:Solid 2px #999;width:108px;"><g:HTMLPanel ui:field="OptionsPanel"/></td>
-						<td colspan="2" style="text-align:right;padding-right:5px;border-top:Solid 2px #999;width:850px;float:right;"><g:HTMLPanel ui:field="NavigationsPanel"></g:HTMLPanel></td>
-			 	 	</tr>
-			 </table>
-		</g:HTMLPanel>
+	<g:LayoutPanel>
+		<g:layer>
+			<g:HTMLPanel>
+				<table style="padding:0px 0px;margin:0px;" cellspacing="0" cellpadding="0"><!-- 
+					 -->
+					 	<tr><!-- 
+					 	 -->
+					 	 	<td rowspan="2" style="vertical-align:top;width:140px;padding:0px 0px;border-left:Solid 2px #999;border-righ:Solid 2px #999; border-bottom:Solid 3px #666;background-color:#dadada;">
+					 	 				<g:HTMLPanel ui:field="MenuPanel"/>
+					 	 	</td>
+					 	 	<td style="height:60px;background-color:#dadada;vertical-align:top;">
+					 	 				<g:HorizontalPanel styleName="MethodTitlePanel">
+					 	 					<g:Label styleName="MethodTitleLabel" text="Method"></g:Label>
+					 	 					<g:Label styleName="SubjectTitleLabel ActiveTitle" text="Subject"></g:Label>
+					 	 					<g:Label text="Steps" styleName="StepTitleLabel"></g:Label>
+					 	 				</g:HorizontalPanel>
+					 	 	</td>
+					 	 	<td rowspan="2" style="width:180px;text-align:center;border-bottom:Solid 0px #999;background-color:#dadada;">
+					 	 		 
+					 	 		 <div style="position:absolute;left:818px;top:0px;width:200px;z-index:1000;background-color:#dadada;border-bottom:Solid 4px #666;Border-top:Solid 1px White;">
+					 	 		 	<g:HTMLPanel ui:field="DockPanel"/>
+								</div>
+							</td>
+							</tr>
+							<tr>
+					 	 	<td  style="height:60px;background-color:#dadada;vertical-align:top;">
+					 	 				<g:HTMLPanel ui:field="BodyPanel"/>
+					 	 	</td>
+							</tr>
+							<tr>
+					 	 		<td style="text-align:left;height:45px;border-top:Solid 2px #999;width:108px;"><g:HTMLPanel ui:field="OptionsPanel"/></td>
+								<td colspan="2" style="text-align:right;padding-right:5px;border-top:Solid 2px #999;width:850px;float:right;"><g:HTMLPanel ui:field="NavigationsPanel"></g:HTMLPanel></td>
+					 	 	</tr>
+					 </table>
+			</g:HTMLPanel>
+		</g:layer>
+	</g:LayoutPanel>
 </ui:UiBinder> 

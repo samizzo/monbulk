@@ -4,13 +4,14 @@
 
 /** Example rules used by the template application (remove for your app) */
 
-body.Monash
+body.Monbulk
 {
 	/*background-image:url(images/MBI-InterfaceProposalBGFull.jpg);*/
-	background-color:#b6bce0;
-	background-position:top left;
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAFhUlEQVRo3t2a60qsORBF82j9/q8hIiIiIiIi4rCF1Sw3lW7PjHJ0fnz0d0kqVbvuSa/r6+vDw8PD4e3t7fjLdX9/f3h6enq/v729Pb6/uro6PD4+Hsff3d0dXl9fDy8vL+/3phH6GR9a+Z57vmUOv6xzc3PzYa0855fvnh96oZv7lYUvLy/fHy4uLj4wkYF+3l0hBg2eYSY0IvRuLmA8Pz8fQbFQ0IM3A8i3d0GaoBmCMATyDRStHb4H/Vz+nvFemO+hGyFh9k8vQEbLiwckRsIslHszHoYQtFFmfjRhdPMM87xvIHKFNmNhEiENrk3XIKxT6oqKM7hR5mIBvkcYzKL9CrqMhVm0GB7CJMLCQ94DWnixz5jnhUmADItnYLTRyIcQAuTXCLVZGkUEyJgI7EDCvDAWQUwTE8RMbT3QOmoE6VG1UW1z6MjmdwEBWhHYZrkTMnNZr0GzVqbAE95yZd1lM4Bgh9AQdNjzZfNhMaNoUCZG+J77aQ3eZR1H1QZ0MRDkyQXNQFCxc2VeEDfxzO0F/Jw18gxQoWd/7IjotTI3YzvKfYhaIQBBmxLmgG1CFOZPod2mZqEyj0Bi5p2cO4TbMlpzAeZoWiHsCOEIgh1OTuxFWoMsiB8EmNCZEuQu+fJ+mmO/W+cGO+FhDhkPepM5ZAGiVOZjSg7jhNsdjY5SmNSOx8XCDMj9lLiM/rnSJQyHDojZrnNPyDfq0ZijVAsEGA48GYd5L9vgZ2orShUzuCszdom0g4DzwhT2HUV30W39m0ldIrT/5Bm/aN+BnhPbzrnzva0jtDOXCAify0hPiSuD2oewa8pzlx8sPOUXaANQfjFlaFNlNC9974Izz8sRikiTQTi0q99JGzsttSZB2bVUhA0T0ZwFJ1GCuoXNe4pM01pThdnXZALkAgTsnBK61FRhshsmAGpTnnxp8rUOUEdnZ9EmbhvHFFyJYqcgTvk/lTEWlsSWsQhgk4pFOCzDNJ1mC73aH9AQKGRiiOwSYpvN1BHy/J0VxOpS2463C6lZAE1QDfztVmBhh6h1ske0ZBRhbic0ewFsVJyrnCOwGzUyv9ftCsB5b9msLISjlc3F9j85uhGGMeorV7uu6aaka+GnMV43v2tXhE0EvG2zQ3lXYHY4du1GSN3VWqEXXmj6mq/36te7EV4EhrtsCVFU/JN6mbVrZMwgqLVWaHRikrk3UjZHaxrmDdBX1Hrrt9ZWXQqtdtTuP05d3d3t+mnMrYX8zNVmauAN6PpJOyHTnKn13Uat31iSdO223JpOoROTMVOt7s5Bk+mR8JyNTzVhtMGTdgEBDWfc2jn0tOPuQOAd94lxL9xHEpPmpi3bU5WAQ/EHjUCo8wqDwwCoTYHAEQVmzaCZ8FZnA5H3uzDsuq3HrFNamLq9Xd+w61tO0Z1CNZ3nVAEYwN4VXX/jdMlbRY6QVAZdwBIobDkceZAgjx1i2zeFG734ZP8Oz+5fTiXT7/K99ds24nY7kYuwe648aZR8ENqJ8txxWsZT9E0asB913trtjK7vOAYzAwanG7MWgLV2wYR6i7nxRbaFVjPnA02EsVOeq8HYymnt7vruTnpugz3P2z8WlnXW/+Fo+kM/MnVdPi3iPKMjG07sHcdzJc4usrk3nxq4U1X48i77ThCjuos8pyJMO+p0LrnT3K767eZv/aQtnf9yuru+6jDyb/9zYn22A+MwcjJFbJ78AIPkil58yhP0Ot7Rhxf+iMD7DlDvZbx33EluLtAcipmETU8hFUfFJPlLR1et1i6MuTqg1utcY3PGpENrfUUJDXEfj02Z/jvrucUG2HRWuCvu/N8TC7PLyN6Y7vNxwAkt+CAR/8n/yNbkHyECirvwd+p88NTV9BwcMNsOGO7fvY+Aeef9PxP44jFlv0aHAAAAAElFTkSuQmCC");
+	background-color:#949494; /*b6bce0;*/
+	/*background-position:top left;*/
 	margin:0px 0px;
-	background-repeat:no-repeat;
+	background-repeat: repeat;
 	padding:0px;
 	height:100%;
 	font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Arial, sans-serif;
@@ -81,6 +82,143 @@ html
 	width:100%;
 	
 }
+
+/* ---- Begin button styling ---- */
+
+/*
+	TODO: Make it simpler to specify buttons.  Shouldn't
+	have to create all these styles for every button.
+*/
+
+/* Metadata editor button styles */
+.MetadataEditorButton
+{
+	color: black;
+	background-position: -4px 0px;
+	width: 44px;
+	height: 46px;
+	background-repeat: no-repeat;
+	background-image: url(images/sprites.png);
+}
+
+.MetadataEditorButton .html-face
+{
+	text-align: left;
+	width: 150px;
+	height: 46px;
+	line-height: 46px;
+	margin-left: 44px;
+	padding-left: 10px;
+}
+
+.MetadataEditorButton-up-hovering
+{
+	background-color: #e0e0e0;
+	border-top: solid 1px;
+	border-left: solid 1px;
+	border-bottom: solid 1px;
+	margin-top: -1px;
+	margin-left: -1px;
+	margin-bottom: -1px;
+}
+
+.MetadataEditorButton-up-hovering .html-face
+{
+	background-color: #e0e0e0;
+	border-top: solid 1px;
+	border-right: solid 1px;
+	border-bottom: solid 1px;
+	margin-top: -1px;
+	margin-bottom: -1px;
+}
+
+.MetadataEditorButton-down-hovering
+{
+	background-color: #e0e0e0;
+	border-top: solid 1px;
+	border-left: solid 1px;
+	border-bottom: solid 1px;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-bottom: -2px;
+}
+
+.MetadataEditorButton-down-hovering .html-face
+{
+	background-color: #e0e0e0;
+	border-top: solid 1px;
+	border-right: solid 1px;
+	border-bottom: solid 1px;
+	margin-top: -1px;
+	margin-bottom: -2px;
+}
+
+/* Method builder button styles */
+.MethodBuilderButton
+{
+	color: black;
+	background-position: -64px -3px;
+	width: 44px;
+	height: 46px;
+	background-repeat: no-repeat;
+	background-image: url(images/sprites.png);
+}
+
+.MethodBuilderButton .html-face
+{
+	text-align: left;
+	width: 150px;
+	height: 46px;
+	line-height: 46px;
+	margin-left: 44px;
+	padding-left: 10px;
+}
+
+.MethodBuilderButton-up-hovering
+{
+	background-color: #e0e0e0;
+	border-top: solid 1px;
+	border-left: solid 1px;
+	border-bottom: solid 1px;
+	margin-top: -1px;
+	margin-left: -1px;
+	margin-bottom: -1px;
+}
+
+.MethodBuilderButton-up-hovering .html-face
+{
+	background-color: #e0e0e0;
+	border-top: solid 1px;
+	border-right: solid 1px;
+	border-bottom: solid 1px;
+	margin-top: -1px;
+	margin-bottom: -1px;
+}
+
+.MethodBuilderButton-down-hovering
+{
+	background-color: #e0e0e0;
+	border-top: solid 1px;
+	border-left: solid 1px;
+	border-bottom: solid 1px;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-bottom: -2px;
+}
+
+.MethodBuilderButton-down-hovering .html-face
+{
+	background-color: #e0e0e0;
+	border-top: solid 1px;
+	border-right: solid 1px;
+	border-bottom: solid 1px;
+	margin-top: -1px;
+	margin-bottom: -1px;
+	margin-bottom: -2px;
+}
+
+/* ---- End button styling ---- */
+
 .MethodIcon
 {
 	background-position:0px 0px;
@@ -90,7 +228,8 @@ html
 	background-repeat: no-repeat;
 	background-image: url(images/SpriteSheetStatic.png);
 	background-position:0px -93px;
-	}
+}
+
 .MethodIcon:hover
 {
 	background-image:url(images/SpriteSheetStatic.png);

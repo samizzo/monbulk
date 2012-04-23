@@ -2,8 +2,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
-		
 	</ui:style>
+
 	<g:HTMLPanel styleName="Container">
 		<div class="TopNav" width="100%">
 			<g:HorizontalPanel width="100%">
@@ -17,9 +17,9 @@
 		</div>
 
 		<div class="Desktop">
-			<g:HorizontalPanel>
-				<g:Grid>
-					<g:row>
+			<g:VerticalPanel ui:field="m_buttons" spacing="20">
+<!--  			<g:Grid ui:field="m_buttonGrid">
+ 					<g:row>
 						<g:customCell>
 							<g:PushButton text="" ui:field="btnMethodApp" styleName="MethodIcon" ></g:PushButton>
 						</g:customCell>
@@ -29,9 +29,9 @@
 							<g:PushButton text="" ui:field="btnMetadataEditor" styleName="MethodIcon" />
 						</g:customCell>
 					</g:row>
-				</g:Grid>
-				<g:HTMLPanel width="1200px" height="800px" ui:field="ArcContainer" />
-			</g:HorizontalPanel>
+				</g:Grid>-->
+				<!--  <g:HTMLPanel width="1200px" height="800px" ui:field="ArcContainer" />-->
+			</g:VerticalPanel>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

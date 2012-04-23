@@ -20,7 +20,6 @@ import com.google.gwt.user.client.ui.DialogBox.Caption;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.InlineLabel;
 
-import monbulk.MethodBuilder.client.event.ChangeWindowEvent;
 import monbulk.client.event.CloseWindowEvent;
 
 public class appletWindowCaption extends Composite implements Caption {
@@ -31,7 +30,6 @@ public class appletWindowCaption extends Composite implements Caption {
 	interface appletWindowCaptionUiBinder extends
 			UiBinder<Widget, appletWindowCaption> {
 	}
-    private String strTitle;
     private HandlerManager eventBus;
     
     @UiField 
@@ -40,16 +38,21 @@ public class appletWindowCaption extends Composite implements Caption {
     @UiField
     InlineLabel WindowTitle;
     
-	public appletWindowCaption(String Title,HandlerManager evntBus) {
-		
-		this.strTitle = Title;
+    private appletWindow m_parentWindow;
+    
+    public void setParentApplet(appletWindow parent)
+    {
+		m_parentWindow = parent;
+    }
+    
+	public appletWindowCaption(String Title, HandlerManager evntBus)
+	{	
 		this.eventBus = evntBus;
-		
-		//this.WindowTitle.setText(Title);
 		
     	initWidget(uiBinder.createAndBindUi(this));
     	this.WindowTitle.setText(Title);
 	}
+
 	@Override
 	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
 		// TODO Auto-generated method stub
@@ -118,18 +121,6 @@ public class appletWindowCaption extends Composite implements Caption {
 	@UiHandler("btnClose")
 	public void onClick(ClickEvent e)
 	{
-		// FIXME: This is a dirty hack.  This class shouldn't care what the title
-		// of the window is.
-		if (strTitle != "Method Builder" && strTitle != "Metadata Editor")
-		{
-			//Needs to be more elegant for Subwindows not registered - or else we register!!!
-			eventBus.fireEvent(new  ChangeWindowEvent(strTitle,"Close"));
-		}
-		else
-		{
-			eventBus.fireEvent(new CloseWindowEvent(strTitle));
-			
-		}
-		
+		eventBus.fireEvent(new CloseWindowEvent(m_parentWindow.getTokenName()));
 	}
 }

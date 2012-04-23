@@ -59,7 +59,7 @@ public class MetadataEditor extends ResizeComposite implements KeyUpHandler, Key
 	// Item to select after metadata list is populated.
 	private String m_itemToSelect = "";
 	
-	public MetadataEditor(HandlerManager eventBus)
+	public MetadataEditor()
 	{
 		Widget widget = s_uiBinder.createAndBindUi(this);
 		initWidget(widget);

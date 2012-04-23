@@ -14,6 +14,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import monbulk.MediaFlux.Services.MediaFluxServices;
+import monbulk.client.desktop.*;
+import monbulk.MetadataEditor.MetadataEditor;
+import monbulk.MethodBuilder.client.MethodBuilder;
 
 /**
  * Monbulk entry point.
@@ -61,9 +64,24 @@ public class Monbulk implements EntryPoint
 			public void sessionCreated(boolean initial)
 			{
 				MediaFluxServices.registerMediaFluxServices();
-				HandlerManager eventBus = new HandlerManager(null);
-				appManager appViewer = new appManager(eventBus);
-				appViewer.go(RootPanel.get());
+				Desktop d = new Desktop(RootPanel.get());
+				
+				try
+				{
+					d.registerWindow("MetadataEditor", "Metadata editor", new MetadataEditor());
+					MethodBuilder mb = new MethodBuilder(d.getEventBus());
+					d.registerWindow("MethodBuilder", "Method builder", mb);
+				}
+				catch (Exception e)
+				{
+					String msg = e.toString();
+					if (e.getCause() != null)
+					{
+						msg = e.getCause().toString();
+					}
+					
+					Window.alert("Monbulk desktop: " + msg);
+				}
 			}
 
 			@Override

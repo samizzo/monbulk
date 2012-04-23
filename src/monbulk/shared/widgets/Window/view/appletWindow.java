@@ -16,17 +16,14 @@ import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.ui.RootPanel;
 
-import monbulk.shared.widgets.Window.WindowManager;
-import monbulk.shared.widgets.Window.WindowProperties;
-import monbulk.shared.widgets.Window.iWindow;
-
-public class appletWindow extends DialogBox implements NativePreviewHandler, iWindow
+public class appletWindow extends DialogBox implements NativePreviewHandler
 {
 	private static appletWindowUiBinder uiBinder = GWT
 			.create(appletWindowUiBinder.class);
 
 	interface appletWindowUiBinder extends UiBinder<Widget, appletWindow> {	}
 
+	private String m_tokenName;
     public String WindowTitle;
     private HandlerManager eventBus;
 	private boolean m_activatedResize = false;
@@ -36,18 +33,13 @@ public class appletWindow extends DialogBox implements NativePreviewHandler, iWi
 	private int m_lastMouseY;
 	private int m_minWidth;
 	private int m_minHeight;
-    
-    @UiField
-    HTMLPanel AppletContainer;
-    
-	public appletWindow(String tmpTitle, HandlerManager evntBus)
-	{
-		this(tmpTitle, evntBus, null);
-	}
 
-	public appletWindow(String title, HandlerManager eventBus, Widget widget)
+	public appletWindow(String title, String tokenName, HandlerManager eventBus, Widget widget)
 	{
 		super(new appletWindowCaption(title, eventBus));
+		appletWindowCaption c = (appletWindowCaption)getCaption();
+		c.setParentApplet(this);
+		m_tokenName = tokenName;
 		this.WindowTitle = title;
 		this.eventBus = eventBus;
 		
@@ -67,11 +59,6 @@ public class appletWindow extends DialogBox implements NativePreviewHandler, iWi
 		m_minHeight = minHeight;
 	}
 	
-	public HasWidgets getContainer()
-	{
-		return AppletContainer;
-	}
-
 	@Override
 	public void onPreviewNativeEvent(NativePreviewEvent nativeEvent)
 	{
@@ -193,72 +180,8 @@ public class appletWindow extends DialogBox implements NativePreviewHandler, iWi
 		}
 	}
 
-	@Override
-	public String getWindowName() {
-		// TODO Auto-generated method stub
-		return this.getWindowName();
-	}
-
-	@Override
-	public void setWindowName(String Name) {
-		// TODO Auto-generated method stub
-		this.setWindowName(Name);
-	}
-
-	@Override
-	public void Shrink() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void Maximise() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setManager(WindowManager winManager) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setWindowSize(int width, int height) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setProperties(WindowProperties wp) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setOwner(Object Owner) {
-		DialogBox tmp = new DialogBox();
-		
-		//Not required yet
-		
-	}
-
-	@Override
-	public HasWidgets getChild() {
-		// TODO Auto-generated method stub
-		return  AppletContainer;
-	}
-
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void close() {
-		// TODO Auto-generated method stub
-		this.hide();
-		
-	}
+    public String getTokenName()
+    {
+    	return m_tokenName;
+    }
 }
