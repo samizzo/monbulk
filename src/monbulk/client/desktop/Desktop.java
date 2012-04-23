@@ -2,13 +2,13 @@ package monbulk.client.desktop;
 
 import java.util.HashMap;
 
-import monbulk.client.event.CloseWindowEvent;
-import monbulk.shared.widgets.Window.view.appletWindow;
-
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.PushButton;
@@ -16,30 +16,41 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Event.NativePreviewHandler;
 
-import monbulk.client.event.CloseWindowEventHandler;
+import monbulk.client.event.WindowEvent;
+import monbulk.client.event.WindowEventHandler;
+import monbulk.shared.widgets.Window.view.appletWindow;
 
-public class Desktop extends Composite implements CloseWindowEventHandler
+public class Desktop extends Composite implements WindowEventHandler, NativePreviewHandler
 {
 	private static DesktopUiBinder uiBinder = GWT.create(DesktopUiBinder.class);
 	interface DesktopUiBinder extends UiBinder<Widget, Desktop> { }
 
 	@UiField VerticalPanel m_buttons;
-	
 	// TODO: Use a SimpleEventBus instead of HandlerManager.
 	private HandlerManager m_eventBus = new HandlerManager(null);
+	private HashMap<String, Launcher> m_windows = new HashMap<String, Launcher>();
+	private Launcher m_resizingLauncher = null;
+	private boolean m_activatedResize = false;
+	private boolean m_resizeWidth = false;
+	private boolean m_resizeHeight = false;
+	private int m_lastMouseX;
+	private int m_lastMouseY;
 
 	private class Launcher implements ClickHandler
 	{
 		public PushButton m_button;
 		public appletWindow m_applet;
-		public String m_tokenName;
+		public String m_windowId;
 		public String m_title;
 		private boolean m_firstShow = true;
 		
-		public Launcher(String tokenName, String title, Widget widget)
+		public Launcher(String windowId, String title, Widget widget)
 		{
-			m_tokenName = tokenName;
+			m_windowId = windowId;
 			m_title = title;
 			createAppletWindow(widget);
 			createButton();
@@ -47,9 +58,10 @@ public class Desktop extends Composite implements CloseWindowEventHandler
 
 		private void createAppletWindow(Widget widget)
 		{
-			appletWindow newWindow = new appletWindow(m_title, m_tokenName, m_eventBus, widget);
+			appletWindow newWindow = new appletWindow(m_title, m_windowId, m_eventBus, widget);
+			// HACK: So we can identify our window when processing native events.
+			newWindow.getElement().setId("appletWindowId-" + m_windowId);
 			newWindow.setStyleName("appWindow-Dialog");
-			newWindow.setModal(true);
 			int width = 1000;
 			int height = 670;
 			newWindow.setWidth(width + "px");
@@ -70,7 +82,7 @@ public class Desktop extends Composite implements CloseWindowEventHandler
 		{
 			m_button = new PushButton();
 			m_button.setText(m_title);
-			m_button.setStyleName(m_tokenName + "Button");
+			m_button.setStyleName(m_windowId + "Button");
 			m_buttons.add(m_button);
 			m_button.addClickHandler(this);
 		}
@@ -80,49 +92,237 @@ public class Desktop extends Composite implements CloseWindowEventHandler
 			if (m_firstShow)
 			{
 				m_applet.center();
+				m_firstShow = false;
 			}
-			else
+			else if (!m_applet.isShowing())
 			{
 				m_applet.show();
 			}
+
+			bringToFront(this);
 		}
 	}
-
-	private HashMap<String, Launcher> m_windows = new HashMap<String, Launcher>();
 
 	public Desktop(RootPanel rootPanel)
 	{
 		initWidget(uiBinder.createAndBindUi(this));
 		rootPanel.add(this);
-		
-		m_eventBus.addHandler(CloseWindowEvent.TYPE, this);
+		Event.addNativePreviewHandler(this);
+		m_eventBus.addHandler(WindowEvent.TYPE, this);
 	}
 	
 	// Registers a new window with the desktop environment.
-	// tokenName should only use alphanumeric characters.
-	public void registerWindow(String tokenName, String title, Composite window) throws Exception
+	// windowId should only use alphanumeric characters.
+	public void registerWindow(String windowId, String title, Composite window) throws Exception
 	{
-		if (m_windows.containsKey(tokenName))
+		if (m_windows.containsKey(windowId))
 		{
-			throw new Exception("Window '" + tokenName + "' has already been registered!");
+			throw new Exception("Window '" + windowId + "' has already been registered!");
 		}
 
-		Launcher launcher = new Launcher(tokenName, title, window);
-		m_windows.put(tokenName, launcher);
+		Launcher launcher = new Launcher(windowId, title, window);
+		m_windows.put(windowId, launcher);
 	}
 	
-	public void onCloseWindow(CloseWindowEvent event)
+	public void onWindowEvent(WindowEvent event)
 	{
-		String token = event.getId();
-		if (m_windows.containsKey(token))
+		String windowId = event.getWindowId();
+		if (m_windows.containsKey(windowId))
 		{
-			Launcher launcher = m_windows.get(token);
-			launcher.m_applet.hide();
+			Launcher launcher = m_windows.get(windowId);
+
+			switch (event.getEventType())
+			{
+				case ActivateWindow:
+				{
+					bringToFront(launcher);
+					break; 
+				}
+				
+				case CloseWindow:
+				{
+					launcher.m_applet.hide();
+					break;
+				}
+			}
 		}
 	}
-	
+
 	public HandlerManager getEventBus()
 	{
 		return m_eventBus;
+	}
+
+	// Handle native events so we can perform window resizing.	
+	public void onPreviewNativeEvent(NativePreviewEvent nativeEvent)
+	{
+		if (nativeEvent.getNativeEvent() instanceof Event)
+		{
+			Event event = (Event)nativeEvent.getNativeEvent();
+
+			int eventType = event.getTypeInt();
+			EventTarget target = event.getEventTarget();
+			if (Element.is(target))
+			{
+				Element element = Element.as(target);
+
+				Launcher launcher = m_resizingLauncher;
+				if (launcher == null)
+				{
+					// If we aren't currently resizing a window, then find
+					// the window this event is for.
+					for (Launcher l : m_windows.values())
+					{
+						Element e = element;
+						String name = "appletWindowId-" + l.m_windowId;
+						while (e != null)
+						{
+							if (e.getId().equals(name))
+							{
+								launcher = l;
+								break;
+							}
+		
+							e = e.getParentElement();
+						}
+						
+						if (launcher != null)
+						{
+							break;
+						}
+					}
+				}
+
+				if (launcher != null)
+				{
+					boolean overResizeGrip = element.getClassName().equals("dialogBottomRight");
+					if (overResizeGrip)
+					{
+						// Mouse is over a window, we are currently not resizing a window,
+						// and the mouse is over the resize grip.
+						RootPanel.get().addStyleName("globalMoveCursor");
+	
+						if (eventType == Event.ONMOUSEDOWN)
+						{ 
+							// Mouse is down so prepare for resizing.
+							m_resizingLauncher = launcher;
+							m_activatedResize = true;
+							m_resizeWidth = m_resizeHeight = true;
+							m_lastMouseX = event.getClientX();
+							m_lastMouseY = event.getClientY();
+							bringToFront(launcher);
+							nativeEvent.cancel();
+						}
+					}
+					else
+					{
+						// Not over a resize grip and not currently resizing so remove cursor.
+						RootPanel.get().removeStyleName("globalMoveCursor");
+					}
+				}
+			}
+			
+			if (m_activatedResize)
+			{
+				RootPanel.get().addStyleName("globalMoveCursor");
+
+				switch (eventType)
+				{
+					case Event.ONMOUSEUP:
+					{
+						RootPanel.get().removeStyleName("globalMoveCursor");
+						m_activatedResize = false;
+						m_resizingLauncher = null;
+						nativeEvent.cancel();
+						break;
+					}
+					
+					case Event.ONMOUSEMOVE:
+					{
+						int x = event.getClientX();
+						int y = event.getClientY();
+						int deltax = x - m_lastMouseX;
+						int deltay = y - m_lastMouseY;
+						m_lastMouseX = x;
+						m_lastMouseY = y;
+	
+						boolean doResize = false;
+						appletWindow w = m_resizingLauncher.m_applet;
+						
+						// If we aren't resizing the width (because we previously tried to
+						// resize to less than the minimum), then we can resize again once
+						// the cursor is past the edge of the panel.
+						if (m_resizeWidth || (x > w.getAbsoluteLeft() + w.getOffsetWidth()))
+						{
+							int newWidth = w.getOffsetWidth() + deltax;
+							if (newWidth > w.getMinWidth())
+							{
+								m_resizeWidth = true;
+								w.setWidth(newWidth + "px");
+								
+								// Update the width of our wrapped widget.
+								Widget widget = w.getWidget();
+								newWidth = widget.getOffsetWidth() + deltax;
+								widget.setWidth(newWidth + "px");
+								doResize = true;
+							}
+							else
+							{
+								m_resizeWidth = false;
+							}
+						}
+
+						// If we aren't resizing the height (because we previously tried to
+						// resize to less than the minimum), then we can resize again once
+						// the cursor is past the bottom of the panel.
+						if (m_resizeHeight || (y > w.getAbsoluteTop() + w.getOffsetHeight()))
+						{
+							int newHeight = w.getOffsetHeight() + deltay;						
+							if (newHeight > w.getMinHeight())
+							{
+								m_resizeHeight = true;
+								w.setHeight(newHeight + "px");
+
+								// Update the width of our wrapped widget.
+								Widget widget = w.getWidget();
+								newHeight = widget.getOffsetHeight() + deltay;
+								widget.setHeight(newHeight + "px");
+								doResize = true;
+							}
+							else
+							{
+								m_resizeHeight = false;
+							}
+						}
+						
+						if (doResize)
+						{
+							// Inform our wrapped widget that we resized.
+							Widget widget = w.getWidget();
+							if (widget instanceof RequiresResize)
+							{
+								((RequiresResize)widget).onResize();
+							}
+						}
+						
+						break;
+					}
+				}
+
+				nativeEvent.cancel();
+				nativeEvent.getNativeEvent().stopPropagation();
+				nativeEvent.getNativeEvent().preventDefault();
+			}
+		}
+	}
+	
+	private void bringToFront(Launcher launcher)
+	{
+		for (Launcher l : m_windows.values())
+		{
+			l.m_applet.removeStyleName("foregroundWindow");
+		}
+		
+		launcher.m_applet.addStyleName("foregroundWindow");
 	}
 }

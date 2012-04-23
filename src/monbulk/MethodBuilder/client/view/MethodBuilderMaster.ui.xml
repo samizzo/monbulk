@@ -23,7 +23,7 @@
 					 	 	</td>
 					 	 	<td rowspan="2" style="width:180px;text-align:center;border-bottom:Solid 0px #999;background-color:#dadada;">
 					 	 		 
-					 	 		 <div style="position:absolute;left:818px;top:0px;width:200px;z-index:1000;background-color:#dadada;border-bottom:Solid 4px #666;Border-top:Solid 1px White;">
+					 	 		 <div style="position:absolute;left:818px;top:0px;width:200px;z-index:10;background-color:#dadada;border-bottom:Solid 4px #666;Border-top:Solid 1px White;">
 					 	 		 	<g:HTMLPanel ui:field="DockPanel"/>
 								</div>
 							</td>

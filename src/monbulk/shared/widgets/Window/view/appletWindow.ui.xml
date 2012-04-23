@@ -2,7 +2,6 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-	<!-- This style is overridden in code and not actually used.  Doesn't seem to work if I just set it directly here though. -->
-	<g:HTMLPanel width="100%" styleName="AppletWindow">
+	<g:HTMLPanel width="100%">
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -20,26 +20,23 @@ import com.google.gwt.user.client.ui.DialogBox.Caption;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.InlineLabel;
 
-import monbulk.client.event.CloseWindowEvent;
+import monbulk.client.event.WindowEvent;
 
-public class appletWindowCaption extends Composite implements Caption {
+public class appletWindowCaption extends Composite implements Caption
+{
+	private static appletWindowCaptionUiBinder uiBinder = GWT.create(appletWindowCaptionUiBinder.class);
 
-	private static appletWindowCaptionUiBinder uiBinder = GWT
-			.create(appletWindowCaptionUiBinder.class);
+	interface appletWindowCaptionUiBinder extends UiBinder<Widget, appletWindowCaption> { }
 
-	interface appletWindowCaptionUiBinder extends
-			UiBinder<Widget, appletWindowCaption> {
-	}
     private HandlerManager eventBus;
-    
+    private appletWindow m_parentWindow;
+
     @UiField 
 	PushButton btnClose;
     
     @UiField
     InlineLabel WindowTitle;
-    
-    private appletWindow m_parentWindow;
-    
+
     public void setParentApplet(appletWindow parent)
     {
 		m_parentWindow = parent;
@@ -54,73 +51,71 @@ public class appletWindowCaption extends Composite implements Caption {
 	}
 
 	@Override
-	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
-		// TODO Auto-generated method stub
+	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler)
+	{
 		return null;
 	}
 
 	@Override
-	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
-		// TODO Auto-generated method stub
+	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler)
+	{
 		return null;
 	}
 
 	@Override
-	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
-		// TODO Auto-generated method stub
+	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler)
+	{
 		return null;
 	}
 
 	@Override
-	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
-		// TODO Auto-generated method stub
+	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler)
+	{
 		return null;
 	}
 
 	@Override
-	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
-		// TODO Auto-generated method stub
+	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler)
+	{
 		return null;
 	}
 
 	@Override
-	public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
-		// TODO Auto-generated method stub
+	public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler)
+	{
 		return null;
 	}
 
 	@Override
-	public String getHTML() {
-		// TODO Auto-generated method stub
+	public String getHTML()
+	{
 		return null;
 	}
 
 	@Override
-	public void setHTML(String html) {
-		// TODO Auto-generated method stub
-		
+	public void setHTML(String html)
+	{
 	}
 
 	@Override
-	public String getText() {
-		// TODO Auto-generated method stub
+	public String getText()
+	{
 		return null;
 	}
 
 	@Override
-	public void setText(String text) {
-		// TODO Auto-generated method stub
-		
+	public void setText(String text)
+	{
 	}
 
 	@Override
-	public void setHTML(SafeHtml html) {
-		// TODO Auto-generated method stub
-		
+	public void setHTML(SafeHtml html)
+	{
 	}
+
 	@UiHandler("btnClose")
 	public void onClick(ClickEvent e)
 	{
-		eventBus.fireEvent(new CloseWindowEvent(m_parentWindow.getTokenName()));
+		eventBus.fireEvent(new WindowEvent(m_parentWindow.getId(), WindowEvent.EventType.CloseWindow));
 	}
 }

@@ -28,6 +28,7 @@ import monbulk.MethodBuilder.client.view.MethodDetailsView;
 import monbulk.MethodBuilder.client.view.MethodForm;
 import monbulk.MethodBuilder.client.view.StepForm;
 import monbulk.MethodBuilder.client.view.SubjectPropertiesForm;
+import monbulk.client.event.WindowEvent;
 import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Architecture.IView;
 import monbulk.shared.Architecture.IView.IDockView;
@@ -48,7 +49,6 @@ import monbulk.shared.widgets.Window.view.appletWindow;
 import monbulk.MethodBuilder.shared.IMethodsView;
 import monbulk.MethodBuilder.shared.iMBModel;
 import monbulk.MethodBuilder.shared.iModelAllowMetaData.iModelHasHelpExtendsMetaData;
-import monbulk.client.event.CloseWindowEvent;
 
 public class MethodCreatorPresenter implements FormPresenter{
 
@@ -478,7 +478,10 @@ public class MethodCreatorPresenter implements FormPresenter{
 		}
 		else if(Command=="Cancel")
 		{
-			eventBus.fireEvent(new CloseWindowEvent("Method Builder"));
+			// HACK: This shouldn't be specifying "MethodBuilder" here.  It should
+			// know what window it's in, or the type name should be a static that
+			// all windows implement.
+			eventBus.fireEvent(new WindowEvent("MethodBuilder", WindowEvent.EventType.CloseWindow));
 		}
 	
 	}
