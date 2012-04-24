@@ -1,8 +1,12 @@
 package monbulk.client.desktop;
 
+import java.util.Date;
 import java.util.HashMap;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.RepeatingCommand;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -12,6 +16,7 @@ import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -30,6 +35,8 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 	interface DesktopUiBinder extends UiBinder<Widget, Desktop> { }
 
 	@UiField VerticalPanel m_buttons;
+	@UiField Label m_time;
+
 	// TODO: Use a SimpleEventBus instead of HandlerManager.
 	private HandlerManager m_eventBus = new HandlerManager(null);
 	private HashMap<String, Launcher> m_windows = new HashMap<String, Launcher>();
@@ -111,6 +118,18 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 		rootPanel.add(this);
 		Event.addNativePreviewHandler(this);
 		m_eventBus.addHandler(WindowEvent.TYPE, this);
+		Scheduler.get().scheduleFixedPeriod(new RepeatingCommand()
+		{
+			public boolean execute()
+			{
+				Date now = new Date();
+				DateTimeFormat format = DateTimeFormat.getFormat("h:mm a");
+				String time = format.format(now);
+				m_time.setText(time);
+				return true;
+			}
+		},
+		1000);
 	}
 	
 	// Registers a new window with the desktop environment.

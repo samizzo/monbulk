@@ -75,9 +75,9 @@ public class Monbulk implements EntryPoint
 				{
 					MetadataEditor me = new MetadataEditor();
 					me.setPixelSize(1000, 678);
-					d.registerWindow("MetadataEditor", "Metadata editor", me);
+					d.registerWindow("MetadataEditor", "Metadata Editor", me);
 					MethodBuilder mb = new MethodBuilder(d.getEventBus());
-					d.registerWindow("MethodBuilder", "Method builder", mb);
+					d.registerWindow("MethodBuilder", "Method Builder", mb);
 					mb.setPixelSize(1200, 800);
 				}
 				catch (Exception e)

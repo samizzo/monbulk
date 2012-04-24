@@ -8,9 +8,8 @@
 		<table style="width:100%;padding:0px;"> 
 		 	<tr>
 		 		<td style="min-width:40%"><g:InlineLabel ui:field="WindowTitle" styleName="AppletTitle"/></td>
-		 		<td style="horizontal-align:right;vertical-align:bottom;padding-top:4px;float:right;"><g:PushButton ui:field="btnClose" text="" styleName="WindowClose" /></td>
-		 		<td style="horizontal-align:right;vertical-align:bottom;padding-top:4px;float:right;"><g:PushButton text="" styleName="WindowExpand" /></td>
-		 		<td style="horizontal-align:right;vertical-align:bottom;padding-top:4px;float:right;"><g:PushButton text="" styleName="WindowShrink" /></td>
+		 		<td style="horizontal-align:right;vertical-align:bottom;padding-top:7px;float:right;"><g:PushButton ui:field="btnClose" text="" styleName="WindowClose" /></td>
+		 		<td style="horizontal-align:right;vertical-align:bottom;padding-top:7px;float:right;"><g:PushButton text="" styleName="WindowExpand" /></td>
 		 	</tr>
 		 </table>
 	</g:HTMLPanel>

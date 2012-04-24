@@ -1,29 +1,27 @@
 @CHARSET "ISO-8859-1";
-/** Add css rules here for your application. */
 
-
-/** Example rules used by the template application (remove for your app) */
+.noise
+{
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAFhUlEQVRo3t2a60qsORBF82j9/q8hIiIiIiIi4rCF1Sw3lW7PjHJ0fnz0d0kqVbvuSa/r6+vDw8PD4e3t7fjLdX9/f3h6enq/v729Pb6/uro6PD4+Hsff3d0dXl9fDy8vL+/3phH6GR9a+Z57vmUOv6xzc3PzYa0855fvnh96oZv7lYUvLy/fHy4uLj4wkYF+3l0hBg2eYSY0IvRuLmA8Pz8fQbFQ0IM3A8i3d0GaoBmCMATyDRStHb4H/Vz+nvFemO+hGyFh9k8vQEbLiwckRsIslHszHoYQtFFmfjRhdPMM87xvIHKFNmNhEiENrk3XIKxT6oqKM7hR5mIBvkcYzKL9CrqMhVm0GB7CJMLCQ94DWnixz5jnhUmADItnYLTRyIcQAuTXCLVZGkUEyJgI7EDCvDAWQUwTE8RMbT3QOmoE6VG1UW1z6MjmdwEBWhHYZrkTMnNZr0GzVqbAE95yZd1lM4Bgh9AQdNjzZfNhMaNoUCZG+J77aQ3eZR1H1QZ0MRDkyQXNQFCxc2VeEDfxzO0F/Jw18gxQoWd/7IjotTI3YzvKfYhaIQBBmxLmgG1CFOZPod2mZqEyj0Bi5p2cO4TbMlpzAeZoWiHsCOEIgh1OTuxFWoMsiB8EmNCZEuQu+fJ+mmO/W+cGO+FhDhkPepM5ZAGiVOZjSg7jhNsdjY5SmNSOx8XCDMj9lLiM/rnSJQyHDojZrnNPyDfq0ZijVAsEGA48GYd5L9vgZ2orShUzuCszdom0g4DzwhT2HUV30W39m0ldIrT/5Bm/aN+BnhPbzrnzva0jtDOXCAify0hPiSuD2oewa8pzlx8sPOUXaANQfjFlaFNlNC9974Izz8sRikiTQTi0q99JGzsttSZB2bVUhA0T0ZwFJ1GCuoXNe4pM01pThdnXZALkAgTsnBK61FRhshsmAGpTnnxp8rUOUEdnZ9EmbhvHFFyJYqcgTvk/lTEWlsSWsQhgk4pFOCzDNJ1mC73aH9AQKGRiiOwSYpvN1BHy/J0VxOpS2463C6lZAE1QDfztVmBhh6h1ske0ZBRhbic0ewFsVJyrnCOwGzUyv9ftCsB5b9msLISjlc3F9j85uhGGMeorV7uu6aaka+GnMV43v2tXhE0EvG2zQ3lXYHY4du1GSN3VWqEXXmj6mq/36te7EV4EhrtsCVFU/JN6mbVrZMwgqLVWaHRikrk3UjZHaxrmDdBX1Hrrt9ZWXQqtdtTuP05d3d3t+mnMrYX8zNVmauAN6PpJOyHTnKn13Uat31iSdO223JpOoROTMVOt7s5Bk+mR8JyNTzVhtMGTdgEBDWfc2jn0tOPuQOAd94lxL9xHEpPmpi3bU5WAQ/EHjUCo8wqDwwCoTYHAEQVmzaCZ8FZnA5H3uzDsuq3HrFNamLq9Xd+w61tO0Z1CNZ3nVAEYwN4VXX/jdMlbRY6QVAZdwBIobDkceZAgjx1i2zeFG734ZP8Oz+5fTiXT7/K99ds24nY7kYuwe648aZR8ENqJ8txxWsZT9E0asB913trtjK7vOAYzAwanG7MWgLV2wYR6i7nxRbaFVjPnA02EsVOeq8HYymnt7vruTnpugz3P2z8WlnXW/+Fo+kM/MnVdPi3iPKMjG07sHcdzJc4usrk3nxq4U1X48i77ThCjuos8pyJMO+p0LrnT3K767eZv/aQtnf9yuru+6jDyb/9zYn22A+MwcjJFbJ78AIPkil58yhP0Ot7Rhxf+iMD7DlDvZbx33EluLtAcipmETU8hFUfFJPlLR1et1i6MuTqg1utcY3PGpENrfUUJDXEfj02Z/jvrucUG2HRWuCvu/N8TC7PLyN6Y7vNxwAkt+CAR/8n/yNbkHyECirvwd+p88NTV9BwcMNsOGO7fvY+Aeef9PxP44jFlv0aHAAAAAElFTkSuQmCC");
+}
 
 body.Monbulk
 {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAFhUlEQVRo3t2a60qsORBF82j9/q8hIiIiIiIi4rCF1Sw3lW7PjHJ0fnz0d0kqVbvuSa/r6+vDw8PD4e3t7fjLdX9/f3h6enq/v729Pb6/uro6PD4+Hsff3d0dXl9fDy8vL+/3phH6GR9a+Z57vmUOv6xzc3PzYa0855fvnh96oZv7lYUvLy/fHy4uLj4wkYF+3l0hBg2eYSY0IvRuLmA8Pz8fQbFQ0IM3A8i3d0GaoBmCMATyDRStHb4H/Vz+nvFemO+hGyFh9k8vQEbLiwckRsIslHszHoYQtFFmfjRhdPMM87xvIHKFNmNhEiENrk3XIKxT6oqKM7hR5mIBvkcYzKL9CrqMhVm0GB7CJMLCQ94DWnixz5jnhUmADItnYLTRyIcQAuTXCLVZGkUEyJgI7EDCvDAWQUwTE8RMbT3QOmoE6VG1UW1z6MjmdwEBWhHYZrkTMnNZr0GzVqbAE95yZd1lM4Bgh9AQdNjzZfNhMaNoUCZG+J77aQ3eZR1H1QZ0MRDkyQXNQFCxc2VeEDfxzO0F/Jw18gxQoWd/7IjotTI3YzvKfYhaIQBBmxLmgG1CFOZPod2mZqEyj0Bi5p2cO4TbMlpzAeZoWiHsCOEIgh1OTuxFWoMsiB8EmNCZEuQu+fJ+mmO/W+cGO+FhDhkPepM5ZAGiVOZjSg7jhNsdjY5SmNSOx8XCDMj9lLiM/rnSJQyHDojZrnNPyDfq0ZijVAsEGA48GYd5L9vgZ2orShUzuCszdom0g4DzwhT2HUV30W39m0ldIrT/5Bm/aN+BnhPbzrnzva0jtDOXCAify0hPiSuD2oewa8pzlx8sPOUXaANQfjFlaFNlNC9974Izz8sRikiTQTi0q99JGzsttSZB2bVUhA0T0ZwFJ1GCuoXNe4pM01pThdnXZALkAgTsnBK61FRhshsmAGpTnnxp8rUOUEdnZ9EmbhvHFFyJYqcgTvk/lTEWlsSWsQhgk4pFOCzDNJ1mC73aH9AQKGRiiOwSYpvN1BHy/J0VxOpS2463C6lZAE1QDfztVmBhh6h1ske0ZBRhbic0ewFsVJyrnCOwGzUyv9ftCsB5b9msLISjlc3F9j85uhGGMeorV7uu6aaka+GnMV43v2tXhE0EvG2zQ3lXYHY4du1GSN3VWqEXXmj6mq/36te7EV4EhrtsCVFU/JN6mbVrZMwgqLVWaHRikrk3UjZHaxrmDdBX1Hrrt9ZWXQqtdtTuP05d3d3t+mnMrYX8zNVmauAN6PpJOyHTnKn13Uat31iSdO223JpOoROTMVOt7s5Bk+mR8JyNTzVhtMGTdgEBDWfc2jn0tOPuQOAd94lxL9xHEpPmpi3bU5WAQ/EHjUCo8wqDwwCoTYHAEQVmzaCZ8FZnA5H3uzDsuq3HrFNamLq9Xd+w61tO0Z1CNZ3nVAEYwN4VXX/jdMlbRY6QVAZdwBIobDkceZAgjx1i2zeFG734ZP8Oz+5fTiXT7/K99ds24nY7kYuwe648aZR8ENqJ8txxWsZT9E0asB913trtjK7vOAYzAwanG7MWgLV2wYR6i7nxRbaFVjPnA02EsVOeq8HYymnt7vruTnpugz3P2z8WlnXW/+Fo+kM/MnVdPi3iPKMjG07sHcdzJc4usrk3nxq4U1X48i77ThCjuos8pyJMO+p0LrnT3K767eZv/aQtnf9yuru+6jDyb/9zYn22A+MwcjJFbJ78AIPkil58yhP0Ot7Rhxf+iMD7DlDvZbx33EluLtAcipmETU8hFUfFJPlLR1et1i6MuTqg1utcY3PGpENrfUUJDXEfj02Z/jvrucUG2HRWuCvu/N8TC7PLyN6Y7vNxwAkt+CAR/8n/yNbkHyECirvwd+p88NTV9BwcMNsOGO7fvY+Aeef9PxP44jFlv0aHAAAAAElFTkSuQmCC");
-	background-color:#949494;
+	background-color: #C0C0C0;
 	margin:0px 0px;
 	background-repeat: repeat;
 	padding:0px;
 	height:100%;
 	font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Arial, sans-serif;
 }
+
 html
 {
 	margin:0px;
 	height:100%;
 	padding:0px;
 }
-.lwrPanel
-{
-		
-}
+
 .Container
 {
 	position:relative;
@@ -31,56 +29,60 @@ html
 	width:100%;
 }
 
-.ribbonItem
-{
-	border: Solid 1px white;
-}
-.ribbonHome
-{
-	background-image:url(images/SpriteSheetStatic.png);
-	background-repeat:no-repeat;
-	width:80px;
-	height:90px;
-	background-position:0px 0px;
-	vertical-align:bottom;
-}
-.ribbonHome:Hover
-{
-	background-position:-103px 0px;
-}
-.ribbon
-{
-	position:absolute;
-	bottom:0px;
-	height:108px;
-	width:100%;
-	background-image:url(images/SpriteSheetHorizontalTiles.png);
-	background-repeat:repeat-x;
-	background-position:0px -48px;
-		
-	
-}
 .Desktop
 {
-	position:absolute;
-	padding-top:50px;
-	padding-left:10px;
-	padding-bottom:50px;
-	
-	width:100%;
-}
-.TopNav
-{
-	position:absolute;
-	top:0px;
-	background-image:url(images/SpriteSheetHorizontalTiles.png);
-	background-repeat:repeat-x;
-	background-position:0px -207px;
-	Height:38px;
-	width:100%;
-	
+	position: absolute;
+	padding-top: 50px;
+	padding-left: 10px;
+	padding-bottom: 50px;
+	width: 100%;
 }
 
+.TopNav
+{
+	background-color: #D4C4AD;
+    border-bottom: 1px solid #FFFFFF;
+    box-shadow: 0 -4px 4px -4px #666666 inset;
+    height: 45px;
+    position: relative;
+    width: 100%;
+	padding-top: 8px;
+	padding-left: 15px;    
+}
+
+.Versi
+{
+	background-repeat: no-repeat;
+	background-image: url(images/sprites.png);
+	background-position: -120px -8px;
+	height: 42px;
+	width: 36px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.AppTitle
+{
+	cursor: default;
+	font-family: Myriad Pro, Arial, sans-serif;
+	color: #333333;
+	font-weight: bold;
+	font-size: 18px;
+	display: inline-block;
+	text-align: left;
+	vertical-align: sub;
+	padding-left: 10px;
+}
+
+.Time
+{
+	font-size: 14px;
+	display: inline-block;
+	width: 100px;
+	float: right;
+	padding-top: 12px;
+}
+ 
 /* ---- Begin button styling ---- */
 
 /*
@@ -155,7 +157,7 @@ html
 .MethodBuilderButton
 {
 	color: black;
-	background-position: -64px -3px;
+	background-position: -65px -3px;
 	width: 44px;
 	height: 46px;
 	background-repeat: no-repeat;
@@ -217,25 +219,6 @@ html
 
 /* ---- End button styling ---- */
 
-.MethodIcon
-{
-	background-position:0px 0px;
-	height:108px;
-	width:105px;
-	color: white;
-	background-repeat: no-repeat;
-	background-image: url(images/SpriteSheetStatic.png);
-	background-position:0px -93px;
-}
-
-.MethodIcon:hover
-{
-	background-image:url(images/SpriteSheetStatic.png);
-	background-position:-230px -93px;
-	height:108px;
-	width:105px;
-	color:red;
-}
 h1 {
   font-size: 2em;
   font-weight: bold;
@@ -244,97 +227,10 @@ h1 {
   text-align: center;
 }
 
-.sendButton {
-  display: block;
-  font-size: 16pt;
-  
-	background-position:10px 10px;
-	height:50px;
-	width:50px;
-	color:white;
-	background-color:red;
-}
-
 /** Most GWT widgets already have a style name defined */
-.gwt-DialogBox {
+/*.gwt-DialogBox {
   width: 400px;
-}
-
-.dialogVPanel {
-  margin: 5px;
-}
-
-.serverResponseLabelError {
-  color: red;
-}
-
-/** Set ids using widget.getElement().setId("idOfElement") */
-#closeButton {
-  margin: 15px 6px 6px;
-}
-
-
-/***Tab Panels **/
-.ribbon-TabLayoutPanel {
-}
-.ribbon-TabLayoutPanel .gwt-TabLayoutPanelTabs {
-  
-  padding-top: 6px;
-  padding-left: 5px;
-  
-}
-.ribbon-TabLayoutPanel .gwt-TabLayoutPanelContentContainer {
-  
-  
-}
-.ribbon-TabLayoutPanel .gwt-TabLayoutPanelContent {
-  overflow: hidden;
-  padding-left: 8px;
-}
-.tab1
-{
-	border:Solid;
-	border-color:#AAA;
-	border-width:0px 2px 1px 2px;
-	height:40px;
-	width:106px;
-	Color:White;
-	text-align:center;
-	font-family:Arial;
-}
-.ribbon-TabLayoutPanel .gwt-TabLayoutPanelTab {
-  margin-left: 4px;
-  padding: 4px 8px 4px 8px;
-  cursor: pointer;
-  cursor: hand;
-  color: White;
-  font-weight: normal;
-  text-align: center;
-  background-color:#455363;
-  border-color: #455363;
-  border-style: solid;
-  border-width: 0px 0px 0px 0px;
-  background-repeat:repeat-x;
-  -moz-border-radius: 3px 3px 0px 0px;
-  border-radius: 3px 3px 0px 0px;
-  height:15px;
-  vertical-align:bottom;
-  
-  
-}
-.ribbon-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
-  cursor: default;
-  background: white;
-  color: White;
-  background:url(images/SpriteSheetHorizontalTiles.png);
-  font-weight: bold;
-  height:25px;
-  background-color:White;
-  -moz-border-radius: 3px 3px 0px 0px;
-  border-radius: 3px 3px 0px 0px;
-  border-width: 0px 1px 0px 1px;
-  
-}
+}*/
 
 .divTopMenu {
     cursor: default;
@@ -353,25 +249,7 @@ h1 {
 .divTopMenu .gwt-MenuItem-selected {
   background: #E3E8F3;
 }
-.divTopMenu .Versi
-{
-	background-repeat: no-repeat;
-	background-image: url(images/SpriteSheetStatic.png);
-	background-position:-340px -200px;
-	height:36px;
-	width:60px;
-}
- .divTopMenu .AppTitle
- {
-  cursor: default;
-  font-family: Myriad Pro, Arial, sans-serif;
-  color:#333;
-  height:36px;
-  padding:0px 80px 0px 15px;
-  vertical-align: middle;  
-  font-weight: bold;
-  font-size:18px;
- }
+
  .Search
  {
   cursor: default;
@@ -573,19 +451,10 @@ h1 {
 }
 
 /**Dialogs boxes */
-.WindowCaption{
-  
-  padding: 0px 0px 0px 0px;
-  cursor: default;
-  
-	Background:url(images/SpriteSheetHorizontalTiles.png);
-	Background-position:0px -159px;
-	Background-repeat:repeat-x;
-	height:44px;
-	color:White;
-	position:relative;
-	
+.WindowCaption
+{
 }
+
 .MethodHeader
 {
 	
@@ -602,97 +471,102 @@ h1 {
 }
 .AppletTitle
 {
-	font-family: Myriad Pro, Arial, sans-serif;
-  font-weight: bold;
-  	font-size:24px;
+	font-family: verdana,helvetica,arial,sans-serif;
+	font-variant: small-caps;
+  	font-size: 20px;
+  	vertical-align: middle;
+  	color: white;
 } 
+
 .WindowClose
 {
-	background-image:url(images/SpriteSheetStatic.png);
-	background-position:-1019px -38px;
-	height:37px;
-	width:40px;
+	background-image: url("images/sprites.png");
+	background-position: -201px -37px;
+	width: 24px;
+	height: 24px;
+	color: #b4b4b4;
 }
+
 .WindowExpand
 {
-	background-image:url(images/SpriteSheetStatic.png);
-	background-position:-980px -38px;
-	height:37px;
-	width:39px;
-}
-.WindowShrink
-{
-	background-image:url(images/SpriteSheetStatic.png);
-	background-position:-939px -38px;
-	height:37px;
-	width:40px;
+	background-image: url("images/sprites.png");
+	width: 24px;
+	height: 24px;
+	background-position: -167px -37px;
+	color: #b4b4b4;
 }
 
 .WindowClose:Hover
 {
-	background-position: -1019px -1px;
+	background-position: -201px -10px;
 }
 
 .WindowExpand:Hover
 {
-	background-position: -980px -1px;
-}
-
-.WindowShrink:Hover
-{
-	background-position: -939px -1px;
+	background-position: -167px -10px;
+	color: #cccccc;
 }
 
 .appWindow-Dialog .dialogContent
 {
 }
 
-.appWindow-Dialog  .dialogBottomCenter
-{
- 	background: url(images/SpriteSheetHorizontalTiles.png) repeat-x 0px -258px;
-	height: 26px;
-}
-
 .appWindow-Dialog .dialogMiddleCenter
 {
 	padding: 0px;
-	background: white;
+	background: #f9f9f9;
 }
 
 .appWindow-Dialog .dialogMiddleLeft
 {
-	background: url(images/VerticalBorders.png) repeat-y 1px 0px;
+	background: url(images/VerticalBorders.png) repeat-y 0px 0px;
+	width: 10px;
 }
 
 .appWindow-Dialog .dialogMiddleRight
 {
-	background: url(images/VerticalBorders.png) repeat-y -86px 0px;
-	width: 30px;
+	background: url(images/VerticalBorders.png) repeat-y -92px 0px;
+	width: 10px;
 }
 
-.gwt-StackPanelContent{
-    height:0;
+.appWindow-Dialog .dialogTopCenter
+{
+	padding: 0px 0px 0px 0px;
+	background: url(images/hori-sliver.png) repeat-x;
+	height: 41px;
 }
 
-.appWindow-Dialog  .dialogTopLeft
+.appWindow-Dialog  .dialogTopLeftInner
 {
-	background: url(images/circles.png) no-repeat 0px -75px;
-	height: 44px;
-	width: 20px;
+	background: url(images/sprites.png) no-repeat -100px -92px;
+	width: 29px;
+	height: 41px;
 }
-.appWindow-Dialog  .dialogTopRight
+
+.appWindow-Dialog  .dialogTopRightInner
 {
-	background: url(images/circles.png) no-repeat -105px -75px;
-	height: 44px;
-	width: 20px;
+	background: url(images/sprites.png) no-repeat -192px -92px;
+	width: 29px;
+	height: 41px;
 }
-.appWindow-Dialog  .dialogBottomLeft
+.appWindow-Dialog  .dialogBottomLeftInner
 {
-	background: url(images/circles.png) no-repeat 0px -166px;
+	background: url(images/sprites.png) no-repeat -100px -183px;
+	width: 29px;
+	height: 34px;
 }
-.appWindow-Dialog  .dialogBottomRight {
-  background: url(images/circles.png) no-repeat -105px -166px;
-  -background: url(images/circles_ie6.png) no-repeat -105px -166px;
+
+.appWindow-Dialog  .dialogBottomRight
+{
+	background: url(images/sprites.png) no-repeat -192px -183px;
+	width: 29px;
+	height: 34px;
+}
+
+.appWindow-Dialog  .dialogBottomCenter
+{
+ 	background: url(images/hori-bottom.png) repeat-x 0px 0px;
+	height: 22px;
 }
 
 .MethodBuilderPlugins {
@@ -705,6 +579,12 @@ h1 {
 	height:45px;
 	
 }
+.gwt-StackPanelContent
+{
+    height:0;
+}
+
+
 .StandardStack
 {
 	
@@ -917,23 +797,7 @@ h1 {
   width:200px;
   
 }
-/*
-.MethodBuilderPlugins .ActivePanel,.MethodBuilderPlugins .ActivePanel:Hover,.MethodBuilderPlugins .gwt-TabLayoutPanelTabs.MethodBuilderPlugins .PassivePanel:Hover {
-  cursor: pointer;
-  cursor: hand;
-  font-weight: bold;
-    border-right: 1px solid #bbbbbb;
-  border-bottom: 0px;
-  background: red url(images/SpriteSheetStatic.png) no-repeat -413px 0px;
-  color:White;
-  width:100%;
-  height:45px;
-  padding-top:10px;
-  padding-left:10px; 
 
-  z-index:1001;
-  
-}*/
 .Doctypes
 {
 	text-align:right;
@@ -1020,20 +884,6 @@ h1 {
 .MethodTitlePanel .ActiveTitle
 {
 	
-}
-.icon-small-correct
-{
-	width:23px;
-	height:23px;
-	background-image:url(images/ICONS.png);
-	background-position:-375px -463px;
-}
-.icon-small-incorrect
-{
-	width:23px;
-	height:23px;
-	background-image:url(images/ICONS.png);
-	background-position:-325px -873px;
 }
 
 .mdStack
