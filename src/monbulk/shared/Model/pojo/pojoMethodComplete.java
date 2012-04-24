@@ -14,7 +14,7 @@ public class pojoMethodComplete implements IPojo{
 	private pojoSubjectProperties SubjectProperties;
 	private ArrayList<pojoStepDetails> allSteps;
 	private String MethodID;
-	
+	private String _XML; //So we would hope to be bale to add a schema and hope they match
 	public pojoMethodComplete()
 	{
 		
@@ -23,16 +23,11 @@ public class pojoMethodComplete implements IPojo{
 	{
 		this.MethodID = ID;
 	}
+	
 	@Override
 	public String writeOutput(String Format) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public void readInput(String Format) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -90,6 +85,11 @@ public class pojoMethodComplete implements IPojo{
 	public String getMethodID()
 	{
 		return this.MethodID;
+	}
+	@Override
+	public void readInput(String Format, String Input) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

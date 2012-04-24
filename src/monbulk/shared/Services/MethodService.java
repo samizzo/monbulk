@@ -2,6 +2,8 @@ package monbulk.shared.Services;
 
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
+
 import monbulk.shared.Architecture.IPresenter;
 import monbulk.shared.Architecture.iModel;
 import monbulk.shared.Form.iFormField;
@@ -13,6 +15,20 @@ import monbulk.shared.util.MonbulkEnums.ServiceNames;
 
 public abstract class MethodService implements iService{
 
+	public static MethodService get()
+	{
+		try
+		{
+			MethodService service = (MethodService)ServiceRegistry.getService(ServiceNames.Methods);
+			return service;
+		}
+		catch (ServiceRegistry.ServiceNotFoundException e) 
+		{
+			GWT.log(e.toString());
+		}
+		
+		return null;
+	}
 	protected enum MethodRequest
 	{
 		List,

@@ -49,7 +49,10 @@ public class Monbulk implements EntryPoint
 	{
 		// HACK: If we're running from the localhost, connect automatically
 		// to medimage so we have a live system to get data from.
-		RemoteServer.SVC_URL = "http://medimage.versi.edu.au:443" + RemoteServer.SVC_URL;
+		
+		RemoteServer.SVC_URL = "http://localhost:81" + RemoteServer.SVC_URL;
+		
+		//RemoteServer.SVC_URL = "http://medimage.versi.edu.au:443" + RemoteServer.SVC_URL;
 		Session.setAutoLogonCredentials("system", "manager", "change_me");
 		initialise();
 	}
@@ -70,9 +73,12 @@ public class Monbulk implements EntryPoint
 				
 				try
 				{
-					d.registerWindow("MetadataEditor", "Metadata editor", new MetadataEditor());
+					MetadataEditor me = new MetadataEditor();
+					me.setPixelSize(1000, 678);
+					d.registerWindow("MetadataEditor", "Metadata editor", me);
 					MethodBuilder mb = new MethodBuilder(d.getEventBus());
 					d.registerWindow("MethodBuilder", "Method builder", mb);
+					mb.setPixelSize(1200, 800);
 				}
 				catch (Exception e)
 				{

@@ -64,15 +64,17 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 			newWindow.setStyleName("appWindow-Dialog");
 			int width = 1000;
 			int height = 670;
-			newWindow.setWidth(width + "px");
-			newWindow.setHeight(height + "px");
+			newWindow.setHeight("100%");
+			newWindow.setWidth("100%");
+			//newWindow.setWidth(width + "px");
+			//	newWindow.setHeight(height + "px");
 			newWindow.setMinSize(width, height);
 	
 			// HACK: I would have preferred to do this in the ui.xml by setting
 			// the width/height to 100% but I can't get it to work.
-			width -= 50;
-			height -= 100;
-			widget.setSize(width + "px", height + "px");
+			//width -= 50;
+			//height -= 100;
+			//widget.setSize(width + "px", height + "px");
 	
 			newWindow.hide();
 			m_applet = newWindow;

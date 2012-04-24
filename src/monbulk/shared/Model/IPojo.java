@@ -5,7 +5,9 @@ import monbulk.shared.Form.FormBuilder;
 public interface IPojo {
 
 	public String writeOutput(String Format);
-	public void readInput(String Format);
+	
+	//This is for xml or JSON or TCL
+	public void readInput(String Format,String Input);
 	
 	public void saveForm(FormBuilder input);
 	public FormBuilder getFormStructure();

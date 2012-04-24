@@ -2,6 +2,7 @@ package monbulk.MethodBuilder.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -41,6 +42,7 @@ public class MethodBuilder extends ResizeComposite
 
 	public void ChangeAppletState(String initState)
 	{
+		
 		if(!initState.equals(this.CurrentState))
 		{
 			doMenuTransition(initState);
@@ -74,11 +76,17 @@ public class MethodBuilder extends ResizeComposite
 			{
 				
 			}
-			else
+			else if(initState.contains("Edit"))
 			{
 				this.CurrentState="Edit Method";
-				this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
+				
+				String ID = initState.replace("Edit:", "");
+				MethodCreatorPresenter mcp = new MethodCreatorPresenter(this.eventBus, ID);
+				
+				this.CurrentPresenter = mcp;
+				
 				this.CurrentPresenter.go(getBodyContainer(),getDockContainer(),getNavigationContainer());
+				
 				//this.CurrentPresenter.
 			}
 		}

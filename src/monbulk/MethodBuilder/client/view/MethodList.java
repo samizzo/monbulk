@@ -117,26 +117,16 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	public void populateItems(List<String> tmpArray) {
 		
 		Iterator<String> it = tmpArray.iterator();
+		
 		while(it.hasNext())
 		{
 			//What this should be is a 2d array with a string for the text and a string for the command to call
 			//this.addItem(new MenuItem());
 			String MenuText = it.next();
-			MenuCommand tmpCommand = new MenuCommand(MenuText, eventBus);
+			MenuCommand tmpCommand = new MenuCommand("Edit:" + MenuText, eventBus);
 			MenuItem tmpButton = new MenuItem(MenuText,tmpCommand);
 			tmpButton.setText(MenuText);
-			
-			ClickHandler tmpHandler = new ClickHandler(){
-				@Override
-				public void onClick(ClickEvent event) {
-					
-					eventBus.fireEvent(new MenuChangeEvent("" + event.hashCode()));
-					
-				}
-			};
-			
-			MenuItem tmpItem = new MenuItem(MenuText,tmpCommand);
-			tmpItem.setStyleName(this.PassiveClassName);
+			tmpButton.setStyleName(this.PassiveClassName);
 			this._MethodList.addItem(tmpButton);
 			
 		}
@@ -155,7 +145,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 			//What this should be is a 2d array with a string for the text and a string for the command to call
 			//this.addItem(new MenuItem());
 			pojoMethod tmpMethod = it.next();
-			MenuCommand tmpCommand = new MenuCommand(tmpMethod.getMethodID(), eventBus);
+			MenuCommand tmpCommand = new MenuCommand("Edit:" + tmpMethod.getMethodID(), eventBus);
 			MenuItem tmpItem= new MenuItem(tmpMethod.getFieldVale(pojoMethod.MethodNameField),tmpCommand);
 			
 			tmpItem.setStyleName(this.PassiveClassName);

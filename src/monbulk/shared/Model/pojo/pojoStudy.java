@@ -71,12 +71,6 @@ public class pojoStudy implements IPojo {
 	}
 
 	@Override
-	public void readInput(String Format) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void setFieldVale(String FieldName, Object FieldValue) {
 		// TODO Auto-generated method stub
 		
@@ -86,6 +80,11 @@ public class pojoStudy implements IPojo {
 	public String getFieldVale(String FieldName) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public void readInput(String Format, String Input) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

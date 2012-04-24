@@ -190,11 +190,6 @@ public class pojoMethod implements IPojo {
 		return null;
 	}
 
-	@Override
-	public void readInput(String Format) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void setFieldVale(String FieldName, Object FieldValue) {
@@ -256,6 +251,12 @@ public class pojoMethod implements IPojo {
 			return this.DateCreated;
 		}
 		else return "";
+	}
+
+	@Override
+	public void readInput(String Format, String Input) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

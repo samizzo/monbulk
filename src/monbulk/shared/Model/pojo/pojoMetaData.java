@@ -145,11 +145,7 @@ public class pojoMetaData implements IPojo{
 			return ":metadata < :definition " + MetaDataName +" > \\";
 		}
 	}
-	@Override
-	public void readInput(String Format) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	@Override
 	public void setFieldVale(String FieldName, Object FieldValue) {
 		//We may need to split up FieldName from former merges
@@ -203,6 +199,11 @@ public class pojoMetaData implements IPojo{
 		{
 			return "";
 		}
+	}
+	@Override
+	public void readInput(String Format, String Input) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gwt.user.client.Window;
+
 
 import arc.mf.client.Output;
 import arc.mf.client.ServiceContext;
@@ -18,6 +20,7 @@ import monbulk.shared.Architecture.iModel;
 import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.pojo.pojoMethod;
+import monbulk.shared.Model.pojo.pojoMethodComplete;
 import monbulk.shared.Services.MethodService;
 
 
@@ -71,6 +74,35 @@ public class mfMethodService extends MethodService {
 					break;
 				}
 				case Describe:
+					/*<response>
+					 * <method id="727.1.1" asset="92" version="1">
+					 *	<name>Animal-MRI-Simple</name>
+					 *	<description>Animal MRI acquisition with simple method.</description>
+					 *	<version>1.1</version>
+					 *		<step id="1">
+					 *			<name>MRI acquisition</name>
+					 *			<description>MRI acquisition of subject</description>
+					 *			<study><type>Magnetic Resonance Imaging</type><dicom><modality>MR</modality></dicom></study>
+					 *		</step>
+					 *		<subject>
+					 *			<project>
+					 *				<public>
+					 *					<metadata><definition requirement="mandatory">hfi.pssd.animal.disease</definition></metadata>
+					 *					<metadata><definition requirement="mandatory">hfi.pssd.identity</definition></metadata>
+					 *					<metadata><definition requirement="mandatory">hfi.pssd.subject</definition><value><type>constant(animal)</type></value></metadata>
+					 *					<metadata><definition requirement="mandatory">hfi.pssd.animal.subject</definition></metadata>
+					 *
+					 *				</public>
+					 *			</project>
+					 *		</subject>
+					 *	</method>
+					 * </response>
+					*/
+					Window.alert(xe.toString());
+					//We need to create 
+					pojoMethodComplete pmc = new pojoMethodComplete(xe.elements().get(0).attributes().get(0).value());
+					
+					//m_handler.onReadMethod(pmc);
 					break;
 				case Create:
 					break;
@@ -99,16 +131,36 @@ public class mfMethodService extends MethodService {
 		// TODO Auto-generated method stub
 		
 	}
+	private String generateXML(String ID)
+	{
+		
+		return ID;
+		
+	}
+	
 
 	@Override
 	public void getMethodList(MethodServiceHandler handler) {
-		Session.execute(new ServiceContext("mfMethodService.getMethodList"), "om.pssd.method.list", "", null, 0, new MethodResponseHandler(handler, MethodRequest.List), true);
+		Session.execute(new ServiceContext("mfMethodService.getMethodList"), 
+						"om.pssd.method.list", 
+						"", 
+						null, 
+						0, 
+						new MethodResponseHandler(handler, MethodRequest.List), 
+						true);
 		
 	}
 
 	@Override
 	public void getMethod(String ID, MethodServiceHandler handler) {
-		// TODO Auto-generated method stub
+		Session.execute(
+						new ServiceContext("mfMethodService.getMethod"), 
+						"om.pssd.method.describe", 
+						"<id>" + ID + "</id>",
+						null,
+						0, 
+						new MethodResponseHandler(handler, MethodRequest.Describe), 
+						true);
 		
 	}
 

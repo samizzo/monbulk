@@ -13,7 +13,9 @@ import monbulk.shared.Model.pojo.pojoMethod;
 import monbulk.shared.Model.pojo.pojoMethodComplete;
 import monbulk.shared.Services.MethodService;
 import monbulk.shared.Services.ServiceRegistry;
+import monbulk.shared.Services.MethodService.MethodServiceHandler;
 import monbulk.shared.util.MonbulkEnums;
+import monbulk.shared.util.MonbulkEnums.ServiceNames;
 import monbulk.shared.view.IResult;
 import monbulk.shared.view.ISearchFilter;
 
@@ -47,8 +49,16 @@ public class MethodCompleteModel implements iFormModel, MethodService.MethodServ
 	public void loadData(String ID) {
 		try
 		{
-			MethodService service = (MethodService)ServiceRegistry.getService(MonbulkEnums.ServiceNames.Methods);
-			service.getMethod(ID, this);
+			MethodService tmpSvc = MethodService.get();
+			if(tmpSvc != null)
+			{
+				tmpSvc.getMethod(ID, this);
+				
+			}
+			else
+			{
+				throw new ServiceRegistry.ServiceNotFoundException(ServiceNames.Methods);
+			}
 		}
 		catch (ServiceRegistry.ServiceNotFoundException e)
 		{
@@ -83,6 +93,7 @@ public class MethodCompleteModel implements iFormModel, MethodService.MethodServ
 	}
 	@Override
 	public void onReadMethod(pojoMethodComplete method) {
+		
 		this.CompleteModel = method;
 		this.formCompleteModel = this.CompleteModel.getFormStructure();
 		this.Presenter.ModelUpdate("GetMethod");

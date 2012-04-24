@@ -42,6 +42,7 @@ import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.pojo.pojoMethod;
 import monbulk.shared.Model.pojo.pojoMethodComplete;
 import monbulk.shared.Services.MethodService;
+import monbulk.shared.Services.MethodService.MethodServiceHandler;
 import monbulk.shared.Services.ServiceRegistry;
 import monbulk.shared.util.HtmlFormatter;
 import monbulk.shared.util.MonbulkEnums;
@@ -101,7 +102,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 		METHOD_DETAILS,SUBJECT_PROPERTIES,STEP_DETAILS,COMPLETE, INIT
 	};
 	
-	private MethodCompleteModel mainModel; 
+	private final MethodCompleteModel mainModel; 
 	//private MethodForm methodForm;
 	//private MethodModel MethodModel;
 	private final HandlerManager eventBus; 
@@ -115,7 +116,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 		Construct("");
 	
 	}
-	private void Construct(String ID)
+	public void Construct(String ID)
 	{		
 		this.ImplementedMethodView = new MethodDetailsView();
 		
@@ -171,6 +172,8 @@ public class MethodCreatorPresenter implements FormPresenter{
 		}
 		else
 		{
+			
+			
 			MethodModel tmpModel = new MethodModel("SomUrl.xml");
 			tmpModel.setPresenter(this);
 			MethodForm tmpForm = new MethodForm();
