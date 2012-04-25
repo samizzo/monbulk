@@ -8,6 +8,11 @@
 			width: 70px;
 		}
 		
+		.ButtonSaveAsDictionary
+		{
+			width: 138px;
+		}
+		
 		.Enums
 		{
 			width: 300px;
@@ -43,6 +48,7 @@
 					<g:HorizontalPanel>
 						<g:Button ui:field="m_add" styleName="{style.Button}">Add</g:Button>
 						<g:Button ui:field="m_remove" styleName="{style.Button}">Remove</g:Button>
+						<g:Button ui:field="m_saveAsDictionary" styleName="{style.ButtonSaveAsDictionary}">Save as dictionary</g:Button>
 					</g:HorizontalPanel>
 				</g:south>
 			</g:DockLayoutPanel>

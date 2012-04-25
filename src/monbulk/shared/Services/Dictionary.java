@@ -1,6 +1,11 @@
 package monbulk.shared.Services;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Collection;
+
+import monbulk.MediaFlux.Services.MediaFluxMetadataAdapter;
 
 public class Dictionary
 {
@@ -25,7 +30,7 @@ public class Dictionary
 		}
 	}
 	
-	private ArrayList<Entry> m_entries = new ArrayList<Entry>();
+	private HashMap<String, Entry> m_entries = new HashMap<String, Entry>();
 	private String m_name;
 	
 	public Dictionary(String name)
@@ -33,21 +38,59 @@ public class Dictionary
 		m_name = name;
 	}
 
-	public ArrayList<Entry> getEntries()
+	public Collection<Entry> getEntries()
 	{
-		return m_entries;
+		return m_entries.values();
 	}
-	
+
 	public String getName()
 	{
 		return m_name;
 	}
-	
-	public Entry addEntry(String term, String definition)
+
+	public Entry addEntry(String term)
 	{
 		Entry entry = new Entry(term);
-		entry.getDefinitions().add(definition);
-		m_entries.add(entry);
+		m_entries.put(term, entry);
 		return entry;
+	}
+	
+	public Entry addEntry(String term, List<String> definitions)
+	{
+		Entry entry = new Entry(term);
+		if (definitions != null)
+		{
+			entry.getDefinitions().addAll(definitions);
+		}
+		m_entries.put(term, entry);
+		return entry;
+	}
+	
+	// Adds the specified dictionary's entries to this dictionary.
+	public void addDictionary(Dictionary dictionary)
+	{
+		for (Entry e : dictionary.getEntries())
+		{
+			addEntry(e.getTerm(), e.getDefinitions());
+		}
+	}
+	
+	public String getXmlForEntry(Entry entry)
+	{
+		StringBuilder sb = new StringBuilder();
+		
+		// Dictionary name.
+		MediaFluxMetadataAdapter.getXml(sb, "dictionary", m_name);
+
+		// Definitions.
+		for (String d : entry.getDefinitions())
+		{
+			MediaFluxMetadataAdapter.getXml(sb, "definition", d);
+		}
+		
+		// Term.
+		MediaFluxMetadataAdapter.getXml(sb, "term", entry.getTerm());
+		
+		return sb.toString();
 	}
 }

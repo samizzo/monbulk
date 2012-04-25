@@ -8,6 +8,17 @@ import monbulk.shared.Services.*;
 
 public class MediaFluxMetadataAdapter
 {
+	public static void getXml(StringBuilder sb, String tag, String value)
+	{
+		sb.append("<");
+		sb.append(tag);
+		sb.append(">");
+		sb.append(value);
+		sb.append("</");
+		sb.append(tag);
+		sb.append(">");
+	}
+
 	// Create a new metadata object from the specified xml definition.
 	public static Metadata createMetadata(XmlElement element) throws Exception
 	{

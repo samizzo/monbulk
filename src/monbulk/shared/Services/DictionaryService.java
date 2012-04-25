@@ -43,16 +43,48 @@ public abstract class DictionaryService implements iService
 	{
 		public void onGetDictionaryList(ArrayList<String> dictionaries);
 	}
+	
+	public interface RemoveDictionaryHandler
+	{
+		public void onRemoveDictionary(String name);
+	}
+	
+	public interface CreateDictionaryHandler
+	{
+		public void onCreateDictionary(String name);
+	}
+	
+	public interface AddEntryHandler
+	{
+		public void onAddEntry(Dictionary dictionary, Dictionary.Entry entry);
+	}
+	
+	public interface AddEntriesHandler
+	{
+		public void onAddEntries(Dictionary dictionary);
+	}
 
 	// Returns whether the specified dictionary exists.
 	public abstract void dictionaryExists(String name, DictionaryExistsHandler handler);
+
+	// Removes the specified dictionary.
+	public abstract void removeDictionary(String name, RemoveDictionaryHandler handler); 
+
+	// Creates a new dictionary with the specified name.
+	public abstract void createDictionary(String name, CreateDictionaryHandler handler);
+	
+	// Adds all entries in the specified dictionary to the server.
+	public abstract void addEntries(Dictionary dictionary, AddEntriesHandler handler);
+	
+	// Adds the specified entry to the specified dictionary.
+	public abstract void addEntry(Dictionary dictionary, Dictionary.Entry entry, AddEntryHandler handler);
 
 	// Returns the specified dictionary.
 	public abstract void getDictionary(String name, GetDictionaryHandler handler);
 
 	// Returns a list of all existing dictionaries.
 	public abstract void getDictionaryList(GetDictionaryListHandler handler);
-
+	
 	public ServiceNames getServiceType()
 	{
 		return MonbulkEnums.ServiceNames.Dictionary;

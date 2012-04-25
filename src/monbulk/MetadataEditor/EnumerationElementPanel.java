@@ -26,6 +26,7 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 	@UiField ListBox m_values;
 	@UiField Button m_add;
 	@UiField Button m_remove;
+	@UiField Button m_saveAsDictionary;
 	@UiField ListBox m_dictionaryCombo;
 	@UiField CheckBox m_fromDictionary;
 	
@@ -40,17 +41,22 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 		setButtonState();
 
 		m_fromDictionary.addValueChangeHandler(this);
+		refreshDictionaryCombo();
+	}
 	
+	private void refreshDictionaryCombo()
+	{
 		// Populate the dictionary name listbox.
+		m_dictionaryCombo.clear();
 		DictionaryService service = DictionaryService.get();
 		if (service != null)
 		{
+			m_dictionaryComboPopulated = false;
 			service.getDictionaryList(new DictionaryService.GetDictionaryListHandler()
 			{
 				public void onGetDictionaryList(ArrayList<String> dictionaries)
 				{
 					m_dictionaryComboPopulated = true;
-					m_dictionaryCombo.clear();
 					for (String d : dictionaries)
 					{
 						m_dictionaryCombo.addItem(d);
@@ -111,8 +117,8 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 		{
 			// Entries have been explicitly specified, so add them.
 			m_fromDictionary.setValue(false, false);
-			setButtonState();
 			populateValues(e.getValues());
+			setButtonState();
 		}
 	}
 	
@@ -125,7 +131,7 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 			m_values.addItem(v);
 		}
 	}
-	
+
 	@UiHandler("m_add")
 	void onAddClicked(ClickEvent event)
 	{
@@ -134,9 +140,10 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 		if (newValue != null && newValue.length() > 0)
 		{
 			m_values.addItem(newValue);
+			setButtonState();
 		}
 	}
-	
+
 	@UiHandler("m_remove")
 	void onRemoveClicked(ClickEvent event)
 	{
@@ -153,11 +160,93 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 			{
 				m_values.setSelectedIndex(selected);
 			}
-			else
+			
+			setButtonState();
+		}
+	}
+	
+	@UiHandler("m_saveAsDictionary")
+	void onSaveAsDictionaryClicked(ClickEvent event)
+	{
+		// Save the current enum set to a new dictionary.
+		final String dictName = Window.prompt("Enter a name for the dictionary:", "");
+		if (dictName != null && dictName.length() > 0)
+		{
+			// Create a new dictionary object.
+			final Dictionary d = new Dictionary(dictName);
+			int count = m_values.getItemCount();
+			for (int i = 0; i < count; i++)
 			{
-				m_remove.setEnabled(false);
+				String value = m_values.getItemText(i);
+				d.addEntry(value);
+			}
+
+			// Check if the dictionary already exists.
+			final DictionaryService service = DictionaryService.get();
+			service.dictionaryExists(dictName, new DictionaryService.DictionaryExistsHandler()
+			{
+				public void onDictionaryExists(String name, boolean exists)
+				{
+					if (exists)
+					{
+						// Exists, so prompt the user to either overwrite or append.
+						if (Window.confirm("A dictionary called '" + name + "' already exists.  Would you like to add these entries to it?"))
+						{
+							// Add all entries from d to the existing dictionary on the server.
+							addDictionaryEntries(d);
+						}
+						else if (Window.confirm("Would you like to replace its entries with these entries?"))
+						{
+							// Remove existing dictionary first.
+							service.removeDictionary(name, new DictionaryService.RemoveDictionaryHandler()
+							{
+								public void onRemoveDictionary(String name)
+								{
+									// Dictionary was removed, so create a new one from d.
+									createDictionary(d);
+								}
+							});
+						}
+					}
+					else
+					{
+						// Doesn't exist, so create a new dictionary from d.
+						createDictionary(d);
+					}
+				}
+			});
+		}
+	}
+	
+	private void addDictionaryEntries(final Dictionary dictionary)
+	{
+		final DictionaryService service = DictionaryService.get();
+		service.addEntries(dictionary, new DictionaryService.AddEntriesHandler()
+		{
+			public void onAddEntries(Dictionary dictionary)
+			{
+				// Refresh combo.
+				refreshDictionaryCombo();
+				m_fromDictionary.setValue(true);
+				Metadata.EnumerationElement element = (Metadata.EnumerationElement)m_element;
+				element.setDictionaryName(dictionary.getName());
+				setDictionary();
+			}
+		});
+	}
+	
+	private void createDictionary(final Dictionary newDictionary)
+	{
+		final DictionaryService service = DictionaryService.get();
+		service.createDictionary(newDictionary.getName(), new DictionaryService.CreateDictionaryHandler()
+		{
+			public void onCreateDictionary(String name)
+			{
+				// Now add all entries.
+				addDictionaryEntries(newDictionary);
 			}
 		}
+		);
 	}
 	
 	@UiHandler("m_dictionaryCombo")
@@ -236,6 +325,8 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 				{
 					// Doesn't exist so set the checkbox to false.
 					m_fromDictionary.setValue(false, false);
+					Metadata.EnumerationElement e = (Metadata.EnumerationElement)m_element;
+					populateValues(e.getValues());
 					setButtonState();
 				}
 			}
@@ -245,10 +336,8 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 	// Dictionary checkbox value changed handler.	
 	public void onValueChange(ValueChangeEvent<Boolean> event)
 	{
-		// Disable add/remove if we are using a dictionary as the
-		// source of the enum values.
-		setButtonState();
-		
+		m_values.clear();
+
 		// Enable the dictionary if we are using it.
 		m_dictionaryCombo.setEnabled(event.getValue());
 		
@@ -266,6 +355,10 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 			Metadata.EnumerationElement e = (Metadata.EnumerationElement)m_element;
 			populateValues(e.getValues());
 		}
+
+		// Disable add/remove if we are using a dictionary as the
+		// source of the enum values.
+		setButtonState();
 	}
 	
 	private void setButtonState()
@@ -274,6 +367,14 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 		m_dictionaryCombo.setEnabled(useDictionary);
 		m_add.setVisible(!useDictionary);
 		m_remove.setVisible(!useDictionary);
+		m_saveAsDictionary.setVisible(!useDictionary);
+
+		if (!useDictionary)
+		{
+			boolean hasItems = m_values.getItemCount() > 0;
+			m_saveAsDictionary.setEnabled(hasItems);
+			m_remove.setEnabled(hasItems && m_values.getSelectedIndex() >= 0);
+		}
 	}
 	
 	public Metadata.ElementTypes getType()
