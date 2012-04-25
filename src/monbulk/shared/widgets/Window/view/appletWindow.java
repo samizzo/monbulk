@@ -19,6 +19,7 @@ public class appletWindow extends DialogBox
 
 	private boolean m_isMaximised = false;
 	private int m_prevWidth, m_prevHeight;
+	private int m_prevX, m_prevY;
 	private String m_id;
 	private int m_minWidth;
 	private int m_minHeight;
@@ -71,6 +72,7 @@ public class appletWindow extends DialogBox
     public void maximise()
     {
     	int newWidth, newHeight;
+    	int newX, newY;
 		Widget w = getWidget();
 
 		if (m_isMaximised)
@@ -78,23 +80,32 @@ public class appletWindow extends DialogBox
 			// Restore dimensions.
 			newWidth = m_prevWidth;
 			newHeight = m_prevHeight;
+			newX = m_prevX;
+			newY = m_prevY;
 		}
 		else
 		{
 			// Maximise window.
 			m_prevWidth = w.getOffsetWidth();
 			m_prevHeight = w.getOffsetHeight();
+			m_prevX = getPopupLeft();
+			m_prevY = getPopupTop();
 
 			newWidth = Window.getClientWidth() - (getOffsetWidth() - w.getOffsetWidth());
 			newHeight = Window.getClientHeight() - (getOffsetHeight() - w.getOffsetHeight());
+			newX = newY = 0;
 		}
 
 		boolean wasMaximised = m_isMaximised;
 		w.setSize(newWidth + "px", newHeight + "px");
+		setPopupPosition(newX, newY);
 		m_isMaximised = !wasMaximised;
 
-		// Ensure the window is centred.
-		center();
+		if (m_isMaximised)
+		{
+			// Ensure the window is centred.
+			center();
+		}
     }
     
     // Returns true if we actually resized the height.
