@@ -109,7 +109,7 @@ public class Metadata
 	{
 		protected String m_description = "";
 		protected XmlElement m_xmlElement;
-		protected Element m_parent = null;
+		protected DocumentElement m_parent = null;
 		protected ElementTypes m_type;
 		protected HashMap<String, String> m_attributes = new HashMap<String, String>();
 		protected HashMap<String, String> m_restrictions = new HashMap<String, String>();
@@ -192,12 +192,12 @@ public class Metadata
 			}
 		}
 
-		public Element getParent()
+		public DocumentElement getParent()
 		{
 			return m_parent;
 		}
 		
-		public void setParent(Element element)
+		public void setParent(DocumentElement element)
 		{
 			m_parent = element;
 		}
