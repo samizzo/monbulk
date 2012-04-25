@@ -99,6 +99,7 @@ html
 	height: 46px;
 	background-repeat: no-repeat;
 	background-image: url(images/sprites.png);
+	outline: 0;
 }
 
 .MetadataEditorButton .html-face
@@ -162,6 +163,7 @@ html
 	height: 46px;
 	background-repeat: no-repeat;
 	background-image: url(images/sprites.png);
+	outline: 0;
 }
 
 .MethodBuilderButton .html-face
