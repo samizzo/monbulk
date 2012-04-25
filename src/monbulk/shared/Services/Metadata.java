@@ -20,10 +20,10 @@ public class Metadata
 		Float("float", true, true),
 		Double("double", true, true),
 		Long("long", true, true),
-		CiteableId("citeable-id", true, false),
+		CiteableId("citeable-id", false, false),
 		Boolean("boolean", true, false),
 		Keyword("keyword", true, false),
-		EmailAddress("email-address", true, false),
+		EmailAddress("email-address", false, false),
 		
 		// Special types that aren't visible or selectable byt he user.
 		Number("number", false, true),
@@ -170,22 +170,32 @@ public class Metadata
 		public void setXmlElement(XmlElement xmlElement)
 		{
 			m_xmlElement = xmlElement;
-			List<XmlAttribute> attributes = m_xmlElement.attributes();
-			for (XmlAttribute a : attributes)
+
+			if (m_xmlElement.hasAttributes())
 			{
-				m_attributes.put(a.name(), a.value());
-			}
-			
-			for (XmlElement e : xmlElement.elements())
-			{
-				if (e.name().equals("restriction"))
+				List<XmlAttribute> attributes = m_xmlElement.attributes();
+				for (XmlAttribute a : attributes)
 				{
-					if (m_type != ElementTypes.Enumeration)
+					m_attributes.put(a.name(), a.value());
+				}
+			}
+
+			if (xmlElement.hasElements())			
+			{
+				for (XmlElement e : xmlElement.elements())
+				{
+					if (e.name().equals("restriction"))
 					{
-						// Enumerations handle themselves.
-						for (XmlElement r : e.elements())
+						if (m_type != ElementTypes.Enumeration)
 						{
-							m_restrictions.put(r.name(), r.value());
+							// Enumerations handle themselves.
+							if (e.hasElements())
+							{
+								for (XmlElement r : e.elements())
+								{
+									m_restrictions.put(r.name(), r.value());
+								}
+							}
 						}
 					}
 				}
