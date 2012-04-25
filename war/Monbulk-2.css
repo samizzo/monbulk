@@ -485,6 +485,7 @@ h1 {
 	width: 24px;
 	height: 24px;
 	color: #b4b4b4;
+	outline: 0;
 }
 
 .WindowExpand
@@ -494,6 +495,7 @@ h1 {
 	height: 24px;
 	background-position: -167px -37px;
 	color: #b4b4b4;
+	outline: 0;
 }
 
 .WindowClose:Hover

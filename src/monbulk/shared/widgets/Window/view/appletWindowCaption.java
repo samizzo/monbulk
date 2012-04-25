@@ -28,26 +28,23 @@ public class appletWindowCaption extends Composite implements Caption
 
 	interface appletWindowCaptionUiBinder extends UiBinder<Widget, appletWindowCaption> { }
 
-    private HandlerManager eventBus;
+    private HandlerManager m_eventBus;
     private appletWindow m_parentWindow;
 
-    @UiField 
-	PushButton btnClose;
-    
-    @UiField
-    InlineLabel WindowTitle;
+    @UiField PushButton m_close;
+    @UiField PushButton m_maximise;
+    @UiField InlineLabel m_title;
 
     public void setParentApplet(appletWindow parent)
     {
 		m_parentWindow = parent;
     }
     
-	public appletWindowCaption(String Title, HandlerManager evntBus)
+	public appletWindowCaption(String title, HandlerManager eventBus)
 	{	
-		this.eventBus = evntBus;
-		
+		m_eventBus = eventBus;
     	initWidget(uiBinder.createAndBindUi(this));
-    	this.WindowTitle.setText(Title);
+    	m_title.setText(title);
 	}
 
 	@Override
@@ -113,9 +110,15 @@ public class appletWindowCaption extends Composite implements Caption
 	{
 	}
 
-	@UiHandler("btnClose")
-	public void onClick(ClickEvent e)
+	@UiHandler("m_close")
+	public void onCloseClick(ClickEvent e)
 	{
-		eventBus.fireEvent(new WindowEvent(m_parentWindow.getId(), WindowEvent.EventType.CloseWindow));
+		m_eventBus.fireEvent(new WindowEvent(m_parentWindow.getId(), WindowEvent.EventType.CloseWindow));
+	}
+	
+	@UiHandler("m_maximise")
+	public void onMaximiseClick(ClickEvent event)
+	{
+		m_eventBus.fireEvent(new WindowEvent(m_parentWindow.getId(), WindowEvent.EventType.MaximiseWindow));
 	}
 }

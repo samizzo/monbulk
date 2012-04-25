@@ -12,7 +12,6 @@ import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.PushButton;
@@ -165,6 +164,12 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 					launcher.m_applet.hide();
 					break;
 				}
+				
+				case MaximiseWindow:
+				{
+					launcher.m_applet.maximise();
+					break;
+				}
 			}
 		}
 	}
@@ -267,7 +272,6 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 						m_lastMouseX = x;
 						m_lastMouseY = y;
 	
-						boolean doResize = false;
 						appletWindow w = m_resizingLauncher.m_applet;
 						
 						// If we aren't resizing the width (because we previously tried to
@@ -275,22 +279,7 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 						// the cursor is past the edge of the panel.
 						if (m_resizeWidth || (x > w.getAbsoluteLeft() + w.getOffsetWidth()))
 						{
-							int newWidth = w.getOffsetWidth() + deltax;
-							if (newWidth > w.getMinWidth())
-							{
-								m_resizeWidth = true;
-								w.setWidth(newWidth + "px");
-								
-								// Update the width of our wrapped widget.
-								Widget widget = w.getWidget();
-								newWidth = widget.getOffsetWidth() + deltax;
-								widget.setWidth(newWidth + "px");
-								doResize = true;
-							}
-							else
-							{
-								m_resizeWidth = false;
-							}
+							m_resizeWidth = w.resizeWidth(deltax);
 						}
 
 						// If we aren't resizing the height (because we previously tried to
@@ -298,38 +287,16 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 						// the cursor is past the bottom of the panel.
 						if (m_resizeHeight || (y > w.getAbsoluteTop() + w.getOffsetHeight()))
 						{
-							int newHeight = w.getOffsetHeight() + deltay;						
-							if (newHeight > w.getMinHeight())
-							{
-								m_resizeHeight = true;
-								w.setHeight(newHeight + "px");
-
-								// Update the width of our wrapped widget.
-								Widget widget = w.getWidget();
-								newHeight = widget.getOffsetHeight() + deltay;
-								widget.setHeight(newHeight + "px");
-								doResize = true;
-							}
-							else
-							{
-								m_resizeHeight = false;
-							}
-						}
-						
-						if (doResize)
-						{
-							// Inform our wrapped widget that we resized.
-							Widget widget = w.getWidget();
-							if (widget instanceof RequiresResize)
-							{
-								((RequiresResize)widget).onResize();
-							}
+							m_resizeHeight = w.resizeHeight(deltay);
 						}
 						
 						break;
 					}
 				}
 
+				// NOTE: I think we only need to do a preventDefault, which
+				// stops the browser from selecting text when resizing a
+				// window, but just in case I'm doing all through.
 				nativeEvent.cancel();
 				nativeEvent.getNativeEvent().stopPropagation();
 				nativeEvent.getNativeEvent().preventDefault();

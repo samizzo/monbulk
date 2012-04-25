@@ -6,6 +6,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.DialogBox;
 
@@ -16,6 +17,8 @@ public class appletWindow extends DialogBox
 
 	interface appletWindowUiBinder extends UiBinder<Widget, appletWindow> {	}
 
+	private boolean m_isMaximised = false;
+	private int m_prevWidth, m_prevHeight;
 	private String m_id;
 	private int m_minWidth;
 	private int m_minHeight;
@@ -63,5 +66,72 @@ public class appletWindow extends DialogBox
     {
     	super.beginDragging(event);
     	m_eventBus.fireEvent(new WindowEvent(getId(), WindowEvent.EventType.ActivateWindow));
+    }
+    
+    public void maximise()
+    {
+    	int newWidth, newHeight;
+		Widget w = getWidget();
+
+		if (m_isMaximised)
+		{
+			// Restore dimensions.
+			newWidth = m_prevWidth;
+			newHeight = m_prevHeight;
+		}
+		else
+		{
+			// Maximise window.
+			m_prevWidth = w.getOffsetWidth();
+			m_prevHeight = w.getOffsetHeight();
+
+			newWidth = Window.getClientWidth() - (getOffsetWidth() - w.getOffsetWidth());
+			newHeight = Window.getClientHeight() - (getOffsetHeight() - w.getOffsetHeight());
+		}
+
+		boolean wasMaximised = m_isMaximised;
+		w.setSize(newWidth + "px", newHeight + "px");
+		m_isMaximised = !wasMaximised;
+
+		// Ensure the window is centred.
+		center();
+    }
+    
+    // Returns true if we actually resized the height.
+    public boolean resizeHeight(int deltay)
+    {
+    	int newHeight = getOffsetHeight() + deltay;
+    	if (newHeight > getMinHeight())
+    	{
+			// Update the height of our wrapped widget.
+			Widget widget = getWidget();
+			newHeight = widget.getOffsetHeight() + deltay;
+			widget.setHeight(newHeight + "px");
+			
+			// Window is no longer maximised.
+			m_isMaximised = false;
+			return true;
+    	}
+    	
+    	return false;
+    }
+    
+    // Returns true if we actually resized the width.
+    public boolean resizeWidth(int deltax)
+    {
+		int newWidth = getOffsetWidth() + deltax;
+    	if (newWidth > getMinWidth())
+    	{
+			// Update the width of our wrapped widget.
+			Widget widget = getWidget();
+			newWidth = widget.getOffsetWidth() + deltax;
+			widget.setWidth(newWidth + "px");
+			
+			// Window is no longer maximised.
+			m_isMaximised = false;
+			return true;
+    	}
+    	
+    	return false;
     }
 }
