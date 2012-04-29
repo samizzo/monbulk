@@ -1,22 +1,13 @@
 package monbulk.MetadataEditor;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ResizeComposite;
@@ -30,49 +21,49 @@ import monbulk.shared.Services.*;
 import monbulk.shared.Services.Metadata.ElementTypes;
 import monbulk.shared.Services.MetadataService.*;
 
-public class MetadataEditor extends ResizeComposite implements KeyUpHandler, KeyDownHandler, SelectionHandler<TreeItem>, CommonElementPanel.ChangeTypeHandler
+public class MetadataEditor extends ResizeComposite implements SelectionHandler<TreeItem>, CommonElementPanel.ChangeTypeHandler
 {
 	interface MetadataEditorUiBinder extends UiBinder<Widget, MetadataEditor> { }
 	private static MetadataEditorUiBinder s_uiBinder = GWT.create(MetadataEditorUiBinder.class);
 
-	@UiField ListBox m_metadataListBox;
-	@UiField TextBox m_filterTextBox;
 	@UiField TextBox m_name;
 	@UiField TextBox m_label;
 	@UiField TextBox m_description;
-	@UiField Button m_refreshList;
 	@UiField Tree m_elementsTree;
-	@UiField Button m_removeMetadata;
-	@UiField Button m_newMetadata;
 	@UiField VerticalPanel m_properties;
 	@UiField Button m_addElement;
 	@UiField Button m_removeElement;
+	@UiField MetadataList m_metadataList;
 	
-	private List<String> m_metadataTypes = null;
 	private ArrayList<ElementPanel> m_availablePanels = new ArrayList<ElementPanel>();
 	private ArrayList<ElementPanel> m_elementPanels = new ArrayList<ElementPanel>();
 	private TreeItem m_selectedElement = null;
 
-	private String m_newMetadataName = null;
-	private Boolean m_newMetadataExists = false;
-	
 	private Metadata m_selectedMetadata = null;
-	
-	// Item to select after metadata list is populated.
-	private String m_itemToSelect = "";
 	
 	public MetadataEditor()
 	{
 		Widget widget = s_uiBinder.createAndBindUi(this);
 		initWidget(widget);
 
-		m_filterTextBox.addKeyUpHandler(this);
-		m_filterTextBox.addKeyDownHandler(this);
-		m_filterTextBox.setText("");
-
 		m_elementsTree.addSelectionHandler(this);
-		
-		populateListBox();
+		m_metadataList.setHandler(new MetadataList.Handler()
+		{
+			public void onRefreshList()
+			{
+				clearMetadataFields();
+			}
+
+			public void onMetadataSelected(String metadataName)
+			{
+				selectMetadata(metadataName);
+			}
+			
+			public void onRemoveMetadata(String metadataName)
+			{
+				clearMetadataFields();
+			}
+		});
 		
 		// Register all available element panels.
 		m_availablePanels.add(new CommonElementPanel(this));
@@ -82,94 +73,6 @@ public class MetadataEditor extends ResizeComposite implements KeyUpHandler, Key
 		m_availablePanels.add(new NumberElementPanel());
 	}
 
-	private void populateListBox()
-	{
-		m_metadataListBox.clear();
-
-		MetadataService service = MetadataService.get();
-		if (service != null)
-		{
-			service.getMetadataTypes(new GetMetadataTypesHandler()
-			{
-				// Callback for reading a list of metadata.
-				public void onGetMetadataTypes(List<String> types)
-				{
-					m_metadataTypes = types;
-					
-					if (types != null)
-					{
-						// Add all items.
-						int selectionIndex = -1;
-						for (int i = 0; i < types.size(); i++)
-						{
-							String name = types.get(i);
-							m_metadataListBox.addItem(name);
-							if (name.equals(m_itemToSelect))
-							{
-								// We've found the item we need to select.
-								selectionIndex = i;
-							}
-						}
-						
-						if (selectionIndex != -1)
-						{
-							selectMetadata(selectionIndex);
-						}
-					}
-				}
-			});
-		}
-	}
-
-	private void selectMetadata(int index)
-	{
-		m_metadataListBox.setSelectedIndex(index);
-		onMetadataSelected(null);
-		m_itemToSelect = "";
-	}
-	
-	public void onKeyDown(KeyDownEvent event)
-	{
-		if (event.getSource() == m_filterTextBox)
-		{
-			// If user presses down arrow in filter text box, they
-			// automatically start scrolling through the metadata list.
-			if (event.isDownArrow())
-			{
-				m_metadataListBox.setFocus(true);
-			}
-		}
-	}
-	
-	public void onKeyUp(KeyUpEvent event)
-	{
-		if (event.getSource() == m_filterTextBox)
-		{
-			int keyCode = event.getNativeKeyCode();
-			if ((keyCode >= 'a' && keyCode <= 'z') ||
-				(keyCode >= 'A' && keyCode <= 'Z' ) ||
-				(keyCode == '.') ||
-				(keyCode == KeyCodes.KEY_BACKSPACE) ||
-				(keyCode == KeyCodes.KEY_DELETE))
-			{
-				// Filter list using filter text.
-				String filterText = m_filterTextBox.getText();
-				m_metadataListBox.clear();
-				if (m_metadataTypes != null)
-				{
-					for (int i = 0; i < m_metadataTypes.size(); i++)
-					{
-						String m = m_metadataTypes.get(i);
-						if (m.indexOf(filterText) >= 0 || filterText.length() == 0)
-						{
-							m_metadataListBox.addItem(m);
-						}
-					}
-				}
-			}
-		}
-	}
-	
 	private TreeItem createTreeItem(String name, Metadata.Element element, TreeItem root)
 	{
 		TreeItem treeItem = new TreeItem(name);
@@ -216,17 +119,14 @@ public class MetadataEditor extends ResizeComposite implements KeyUpHandler, Key
 		return result;
 	}
 
-	@UiHandler("m_metadataListBox")
-	void onMetadataSelected(ChangeEvent event)
+	private void selectMetadata(String metadataName)
 	{
 		MetadataService service = MetadataService.get();
 		if (service != null)
 		{
 			updateSelectedElement();
 
-			final int index = m_metadataListBox.getSelectedIndex();
-			String selected = m_metadataListBox.getValue(index);
-			service.getMetadata(selected, new GetMetadataHandler()
+			service.getMetadata(metadataName, new GetMetadataHandler()
 			{
 				// Callback for reading a specific metadata object.
 				public void onGetMetadata(Metadata metadata)
@@ -234,7 +134,8 @@ public class MetadataEditor extends ResizeComposite implements KeyUpHandler, Key
 					// If the currently selected metadata doesn't match
 					// the one we kicked off this service call for, then
 					// just ignore the result.												
-					if (m_metadataListBox.getSelectedIndex() == index)
+					String selected = m_metadataList.getSelectedMetadata();
+					if (metadata.getName().equals(selected))
 					{
 						clearMetadataFields();
 						Metadata m = metadata;
@@ -251,7 +152,7 @@ public class MetadataEditor extends ResizeComposite implements KeyUpHandler, Key
 							m_elementsTree.setSelectedItem(treeItem, true);
 							
 							// Now make sure the metadata list box has focus.
-							m_metadataListBox.setFocus(true);
+							m_metadataList.setFocus(true);
 						}
 					}
 				}
@@ -263,113 +164,6 @@ public class MetadataEditor extends ResizeComposite implements KeyUpHandler, Key
 	// Button handlers
 	// -------------------------------------------
 
-	@UiHandler("m_refreshList")
-	void onRefreshList(ClickEvent event)
-	{
-		populateListBox();
-		clearAllFields();
-	}
-	
-	@UiHandler("m_removeMetadata")
-	void onRemoveMetadata(ClickEvent event)
-	{
-		int index = m_metadataListBox.getSelectedIndex();
-		if (index >= 0)
-		{
-			String name = m_metadataListBox.getItemText(index);
-			String msg = "Are you sure you wish to remove '" + name + "'?";
-			if (Window.confirm(msg))
-			{
-				// Call service to destroy metadata.
-				MetadataService service = MetadataService.get();
-				service.destroyMetadata(name, new DestroyMetadataHandler()
-				{
-					public void onDestroyMetadata(String name, boolean success)
-					{
-						if (success)
-						{
-							// Metadata was successfully destroyed, so refresh our list.
-							removeMetadataFromList(name);
-						}
-					}
-				});
-			}
-		}
-	}
-	
-	private void removeMetadataFromList(String name)
-	{
-		int newIndex = 0;
-
-		// Remove from list box.
-		int count = m_metadataListBox.getItemCount();
-		for (int i = 0; i < count; i++)
-		{
-			String foo = m_metadataListBox.getItemText(i);
-			if (foo.equals(name))
-			{
-				newIndex = i < (count - 1) ? i : (count - 2);
-				m_metadataListBox.removeItem(i);
-				break;
-			}
-		}
-		
-		// Remove from list.
-		m_metadataTypes.remove(name);
-		
-		// Select next item in list.
-		selectMetadata(newIndex);
-	}
-	
-	@UiHandler("m_newMetadata")
-	void onNewMetadata(ClickEvent event)
-	{
-		String msg = m_newMetadataExists ? "Metadata already exists!  Please enter a new name" : "Please enter a name";
-		m_newMetadataName = Window.prompt(msg, "new metadata");
-
-		if (m_newMetadataName != null && m_newMetadataName.length() > 0)
-		{
-			// Check if this metadata name exists.
-			final MetadataService service = MetadataService.get();
-			if (service != null)
-			{
-				service.metadataExists(m_newMetadataName, new MetadataExistsHandler()
-				{
-					// Callback for reading a specific metadata object.
-					public void onMetadataExists(String metadataName, boolean exists)
-					{
-						if (exists)
-						{
-							// New metadata name already exists.  Ask the user to try again.
-							m_newMetadataExists = true;
-							onNewMetadata(null);
-						}
-						else
-						{
-							// New metadata name doesn't already exist.
-							m_newMetadataExists = false;
-							createNewMetadata(metadataName);
-						}
-					}
-				});
-			}
-		}
-	}
-	
-	private void createNewMetadata(String name)
-	{
-		MetadataService service = MetadataService.get();
-		service.createMetadata(name, new CreateMetadataHandler()
-		{
-			public void onCreateMetadata(Metadata metadata, boolean success)
-			{
-				// Refresh list and select the new metadata.
-				m_itemToSelect = metadata.getName();
-				onRefreshList(null);
-			}
-		});
-	}
-	
 	@UiHandler("m_addElement")
 	public void onAddElementClicked(ClickEvent event)
 	{
@@ -479,12 +273,6 @@ public class MetadataEditor extends ResizeComposite implements KeyUpHandler, Key
 	// End of button handlers
 	// -------------------------------------------
 
-	private void clearAllFields()
-	{
-		m_filterTextBox.setText("");
-		clearMetadataFields();
-	}
-	
 	private void clearElements()
 	{
 		m_elementPanels.clear();
