@@ -65,15 +65,22 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 		
 		populateListBox();
 	}
-	
-	// Sets each of the default buttons to visible/invisible.
-	public void setButtonsVisible(boolean refreshButton, boolean removeButton, boolean newButton)
-	{
-		m_refreshList.setVisible(refreshButton);
-		m_removeMetadata.setVisible(removeButton);
-		m_newMetadata.setVisible(newButton);
-	}
 
+	public void setShowRefresh(boolean showRefresh)
+	{
+		m_refreshList.setVisible(showRefresh);
+	}
+	
+	public void setShowRemove(boolean showRemove)
+	{
+		m_removeMetadata.setVisible(showRemove);
+	}
+	
+	public void setShowNew(boolean showNew)
+	{
+		m_newMetadata.setVisible(showNew);
+	}
+	
 	// Sets the handler.
 	public void setHandler(Handler handler)
 	{
