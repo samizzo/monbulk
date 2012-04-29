@@ -961,7 +961,7 @@ MethodEditorDynamicFieldsPanel
 /* HACK: This is for text boxes that are getting the end cut off because we are in strict/standards mode. */
 .textBoxPadding
 {
-	padding-right: 8px !important;
+	padding-right: 6px !important;
 }
 
 .foregroundWindow
