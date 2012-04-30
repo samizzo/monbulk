@@ -3,7 +3,9 @@ package monbulk.MetadataEditor;
 import java.util.ArrayList;
 
 import monbulk.shared.Services.Metadata;
+import monbulk.shared.Services.MetadataService;
 import monbulk.shared.Services.Metadata.ElementTypes;
+import monbulk.shared.Services.MetadataService.GetMetadataHandler;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -79,6 +81,22 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		for (ElementPanel e : m_availablePanels)
 		{
 			e.setReadOnly(readOnly);
+		}
+	}
+
+	public void setMetadata(String name)
+	{
+		MetadataService service = MetadataService.get();
+		if (service != null)
+		{
+			service.getMetadata(name, new GetMetadataHandler()
+			{
+				// Callback for reading a specific metadata object.
+				public void onGetMetadata(Metadata metadata)
+				{
+					setMetadata(metadata);
+				}
+			});
 		}
 	}
 
