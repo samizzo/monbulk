@@ -65,23 +65,19 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 		private void createAppletWindow(Widget widget)
 		{
 			appletWindow newWindow = new appletWindow(m_title, m_windowId, m_eventBus, widget);
+
 			// HACK: So we can identify our window when processing native events.
 			newWindow.getElement().setId("appletWindowId-" + m_windowId);
 			newWindow.setStyleName("appWindow-Dialog");
-			int width = 1000;
-			int height = 670;
+
 			newWindow.setHeight("100%");
 			newWindow.setWidth("100%");
-			//newWindow.setWidth(width + "px");
-			//	newWindow.setHeight(height + "px");
-			newWindow.setMinSize(width, height);
-	
-			// HACK: I would have preferred to do this in the ui.xml by setting
-			// the width/height to 100% but I can't get it to work.
-			//width -= 50;
-			//height -= 100;
-			//widget.setSize(width + "px", height + "px");
-	
+
+			// FIXME: Some windows may want to provide their own
+			// minimum width/height.
+			int minWidth = 1000;
+			int minHeight = 670;
+			newWindow.setMinSize(minWidth, minHeight);
 			newWindow.hide();
 			m_applet = newWindow;
 		}
@@ -219,32 +215,29 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 					}
 				}
 
-				if (launcher != null)
+				boolean overResizeGrip = element.getClassName().equals("dialogBottomRight");
+				if (launcher != null && overResizeGrip)
 				{
-					boolean overResizeGrip = element.getClassName().equals("dialogBottomRight");
-					if (overResizeGrip)
-					{
-						// Mouse is over a window, we are currently not resizing a window,
-						// and the mouse is over the resize grip.
-						RootPanel.get().addStyleName("globalMoveCursor");
-	
-						if (eventType == Event.ONMOUSEDOWN)
-						{ 
-							// Mouse is down so prepare for resizing.
-							m_resizingLauncher = launcher;
-							m_activatedResize = true;
-							m_resizeWidth = m_resizeHeight = true;
-							m_lastMouseX = event.getClientX();
-							m_lastMouseY = event.getClientY();
-							bringToFront(launcher);
-							nativeEvent.cancel();
-						}
+					// Mouse is over a window, we are currently not resizing a window,
+					// and the mouse is over the resize grip.
+					RootPanel.get().addStyleName("globalMoveCursor");
+
+					if (eventType == Event.ONMOUSEDOWN)
+					{ 
+						// Mouse is down so prepare for resizing.
+						m_resizingLauncher = launcher;
+						m_activatedResize = true;
+						m_resizeWidth = m_resizeHeight = true;
+						m_lastMouseX = event.getClientX();
+						m_lastMouseY = event.getClientY();
+						bringToFront(launcher);
+						nativeEvent.cancel();
 					}
-					else
-					{
-						// Not over a resize grip and not currently resizing so remove cursor.
-						RootPanel.get().removeStyleName("globalMoveCursor");
-					}
+				}
+				else
+				{
+					// Not over a resize grip and not currently resizing so remove cursor.
+					RootPanel.get().removeStyleName("globalMoveCursor");
 				}
 			}
 			
