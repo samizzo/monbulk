@@ -82,6 +82,16 @@ public class CommonElementPanel extends ElementPanel
 		m_maxOccurs.setValue(maxOccurs);
 	}
 	
+	public void setReadOnly(boolean readOnly)
+	{
+		super.setReadOnly(readOnly);
+		m_name.setEnabled(!readOnly);
+		m_description.setEnabled(!readOnly);
+		m_minOccurs.setEnabled(!readOnly);
+		m_maxOccurs.setEnabled(!readOnly);
+		m_type.setEnabled(!readOnly);
+	}
+	
 	@UiHandler("m_type")
 	void onTypeSelected(ChangeEvent event)
 	{

@@ -45,11 +45,11 @@
 					</g:HorizontalPanel>
 				</g:center>
 				<g:south size="2">
-					<g:HorizontalPanel>
+					<g:HTMLPanel ui:field="m_enumButtons">
 						<g:Button ui:field="m_add" styleName="{style.Button}">Add</g:Button>
 						<g:Button ui:field="m_remove" styleName="{style.Button}">Remove</g:Button>
 						<g:Button ui:field="m_saveAsDictionary" styleName="{style.ButtonSaveAsDictionary}">Save as dictionary</g:Button>
-					</g:HorizontalPanel>
+					</g:HTMLPanel>
 				</g:south>
 			</g:DockLayoutPanel>
 		</g:layer>

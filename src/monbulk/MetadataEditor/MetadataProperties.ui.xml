@@ -52,22 +52,18 @@
 				</g:FlowPanel>
 			</g:CaptionPanel>
 		</g:layer>
-		<g:layer top="126px" left="3px" right="3px" height="175px">
-			<g:CaptionPanel captionText="Elements">
+		<g:layer top="126px" left="3px" right="3px" height="175px"> <!-- NOTE: If this height or top changes setReadOnly will need to be changed in MetadataProperties.java -->
+			<g:CaptionPanel captionText="Elements" ui:field="m_elements">
 				<g:ScrollPanel width="100%" height="100%">
 					<g:Tree width="100%" height="100%" animationEnabled="true" ui:field="m_elementsTree"/>
 				</g:ScrollPanel>
 			</g:CaptionPanel>
 		</g:layer>
-		<g:layer top="304px" left="3px" right="3px" height="29px">
-			<g:LayoutPanel width="100%" height="100%">
-				<g:layer>
-					<g:Button height="26px" text="Add" styleName="{style.Button}" ui:field="m_addElement" enabled="false"/>
-				</g:layer>
-				<g:layer left="65px" width="65px">
-					<g:Button height="26px" text="Remove" styleName="{style.Button}" ui:field="m_removeElement" enabled="false"/>
-				</g:layer>
-			</g:LayoutPanel>
+		<g:layer top="304px" left="3px" right="3px" height="29px">	<!-- NOTE: If this height changes setReadOnly will need to be changed in MetadataProperties.java -->
+			<g:HTMLPanel ui:field="m_addRemovePanel">
+				<g:Button height="26px" text="Add" styleName="{style.Button}" ui:field="m_addElement" enabled="false"/>
+				<g:Button height="26px" text="Remove" styleName="{style.Button}" ui:field="m_removeElement" enabled="false"/>
+			</g:HTMLPanel>
 		</g:layer>
 		<g:layer left="3px" right="3px" bottom="12px" top="336px">
 			<g:CaptionPanel captionText="Element properties">

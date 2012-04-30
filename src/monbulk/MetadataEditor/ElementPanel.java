@@ -6,6 +6,7 @@ import monbulk.shared.Services.Metadata;
 public abstract class ElementPanel extends Composite
 {
 	protected Metadata.Element m_element = null;
+	protected boolean m_readOnly = false;
 
 	// Interface to set UI from a metadata element.
 	public void set(Metadata.Element element)
@@ -18,4 +19,10 @@ public abstract class ElementPanel extends Composite
 
 	// Returns the type that this panel is for.
 	public abstract Metadata.ElementTypes getType();
+
+	// Sets the readonly state for this panel.	
+	public void setReadOnly(boolean readOnly)
+	{
+		m_readOnly = readOnly;
+	}
 }

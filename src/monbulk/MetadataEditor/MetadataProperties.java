@@ -18,6 +18,10 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.CaptionPanel;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Widget;
 
 public class MetadataProperties extends Composite implements SelectionHandler<TreeItem>, CommonElementPanel.ChangeTypeHandler
@@ -32,30 +36,50 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	@UiField VerticalPanel m_properties;
 	@UiField Button m_addElement;
 	@UiField Button m_removeElement;
+	@UiField HTMLPanel m_addRemovePanel;
+	@UiField CaptionPanel m_elements;
 
 	private ArrayList<ElementPanel> m_availablePanels = new ArrayList<ElementPanel>();
 	private ArrayList<ElementPanel> m_elementPanels = new ArrayList<ElementPanel>();
 	private TreeItem m_selectedElement = null;
 	private Metadata m_metadata = null;
-	private boolean m_editable = true;
 
 	public MetadataProperties()
 	{
-		initWidget(uiBinder.createAndBindUi(this));
-		
-		m_elementsTree.addSelectionHandler(this);
-		
 		// Register all available element panels.
 		m_availablePanels.add(new CommonElementPanel(this));
 		m_availablePanels.add(new EnumerationElementPanel());
 		m_availablePanels.add(new StringElementPanel());
 		m_availablePanels.add(new DateElementPanel());
 		m_availablePanels.add(new NumberElementPanel());
+
+		initWidget(uiBinder.createAndBindUi(this));
+		
+		m_elementsTree.addSelectionHandler(this);
 	}
 
-	public void setEditable(boolean editable)
+	public void setReadOnly(boolean readOnly)
 	{
-		m_editable = editable;
+		// FIXME: Currently this only works if you set MetadataProperties to
+		// read-only.  If you try to set it back to not read-only the add/remove
+		// panel won't be re-added.  We don't need this functionality at the moment
+		// so I haven't implemented it.
+		if (readOnly)
+		{
+			m_addRemovePanel.removeFromParent();
+			float height = 175 + 29;
+			LayoutPanel p = (LayoutPanel)getWidget();
+			p.setWidgetTopHeight(m_elements, 126, Unit.PX, height, Unit.PX);
+		}
+		
+		m_name.setEnabled(!readOnly);
+		m_label.setEnabled(!readOnly);
+		m_description.setEnabled(!readOnly);
+
+		for (ElementPanel e : m_availablePanels)
+		{
+			e.setReadOnly(readOnly);
+		}
 	}
 
 	public void setMetadata(Metadata metadata)

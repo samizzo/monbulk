@@ -15,7 +15,7 @@
 			<m:MetadataList ui:field="m_metadataList" showRefresh="true" showNew="true" showRemove="true" />
 		</g:west>
 		<g:center>
-			<m:MetadataProperties ui:field="m_metadataProperties" editable="true" />
+			<m:MetadataProperties ui:field="m_metadataProperties" readOnly="false" />
 		</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder>

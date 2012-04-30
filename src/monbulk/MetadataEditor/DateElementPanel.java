@@ -35,4 +35,10 @@ public class DateElementPanel extends ElementPanel
 	{
 		return Metadata.ElementTypes.Date;
 	}
+	
+	public void setReadOnly(boolean readOnly)
+	{
+		super.setReadOnly(readOnly);
+		m_includeTime.setEnabled(!readOnly);
+	}
 }

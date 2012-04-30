@@ -45,4 +45,11 @@ public class NumberElementPanel extends ElementPanel
 	{
 		return Metadata.ElementTypes.Number;
 	}
+	
+	public void setReadOnly(boolean readOnly)
+	{
+		super.setReadOnly(readOnly);
+		m_minimum.setEnabled(!readOnly);
+		m_maximum.setEnabled(!readOnly);
+	}
 }

@@ -35,4 +35,10 @@ public class StringElementPanel extends ElementPanel
 	{
 		return Metadata.ElementTypes.String;
 	}
+	
+	public void setReadOnly(boolean readOnly)
+	{
+		super.setReadOnly(readOnly);
+		m_maxLength.setEnabled(!readOnly);
+	}
 }

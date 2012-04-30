@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -29,6 +30,7 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 	@UiField Button m_saveAsDictionary;
 	@UiField ListBox m_dictionaryCombo;
 	@UiField CheckBox m_fromDictionary;
+	@UiField HTMLPanel m_enumButtons;
 	
 	boolean m_dictionaryComboPopulated = false;
 	boolean m_pendingSetDictionary = false;
@@ -120,6 +122,22 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 			populateValues(e.getValues());
 			setButtonState();
 		}
+	}
+	
+	public void setReadOnly(boolean readOnly)
+	{
+		super.setReadOnly(readOnly);
+		
+		if (readOnly)
+		{
+			// FIXME: Currently this only works if you set this panel to
+			// read-only.  If you try to set it back to not read-only the enum
+			// buttons panel won't be re-added.  We don't need this
+			// functionality at the moment so I haven't implemented it.
+			m_enumButtons.removeFromParent();
+		}
+
+		m_fromDictionary.setEnabled(!readOnly);
 	}
 	
 	private void populateValues(ArrayList<String> values)
@@ -339,7 +357,7 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 		m_values.clear();
 
 		// Enable the dictionary if we are using it.
-		m_dictionaryCombo.setEnabled(event.getValue());
+		m_dictionaryCombo.setEnabled(event.getValue() && !m_readOnly);
 		
 		if (event.getValue())
 		{
@@ -364,7 +382,7 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 	private void setButtonState()
 	{
 		boolean useDictionary = m_fromDictionary.getValue();
-		m_dictionaryCombo.setEnabled(useDictionary);
+		m_dictionaryCombo.setEnabled(useDictionary && !m_readOnly);
 		m_add.setVisible(!useDictionary);
 		m_remove.setVisible(!useDictionary);
 		m_saveAsDictionary.setVisible(!useDictionary);
