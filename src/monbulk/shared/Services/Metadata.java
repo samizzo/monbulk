@@ -20,13 +20,15 @@ public class Metadata
 		Float("float", true, true),
 		Double("double", true, true),
 		Long("long", true, true),
-		CiteableId("citeable-id", false, false),
 		Boolean("boolean", true, false),
 		Keyword("keyword", true, false),
-		EmailAddress("email-address", false, false),
 		
-		// Special types that aren't visible or selectable byt he user.
+		// Special types that aren't visible or selectable by the user.
+		Asset("asset", false, false),
+		CiteableId("citeable-id", false, false),
+		EmailAddress("email-address", false, false),
 		Number("number", false, true),
+		Attribute("attribute", false, false),
 		All("all", false, false);
 		
 		private String m_typeName;
@@ -114,6 +116,10 @@ public class Metadata
 		protected HashMap<String, String> m_settings = new HashMap<String, String>();
 		protected HashMap<String, String> m_restrictions = new HashMap<String, String>();
 
+		// Attributes on an element are stored as a list of elements,
+		// since they are almost exactly the same.
+		protected ArrayList<Element> m_attributes = new ArrayList<Element>();
+
 		public Element(ElementTypes type, String name, String description)
 		{
 			setSetting("name", name);
@@ -171,9 +177,9 @@ public class Metadata
 		{
 			m_xmlElement = xmlElement;
 
-			if (m_xmlElement.hasAttributes())
+			if (xmlElement.hasAttributes())
 			{
-				List<XmlAttribute> attributes = m_xmlElement.attributes();
+				List<XmlAttribute> attributes = xmlElement.attributes();
 				for (XmlAttribute a : attributes)
 				{
 					m_settings.put(a.name(), a.value());
@@ -196,6 +202,18 @@ public class Metadata
 									m_restrictions.put(r.name(), r.value());
 								}
 							}
+						}
+					}
+					else if (canHaveAttributes() && e.name().equals("attribute"))
+					{
+						// Process mf attributes.
+						try
+						{
+							Element element = createElement(e);
+							m_attributes.add(element);
+						}
+						catch (Exception exception)
+						{
 						}
 					}
 				}
@@ -227,9 +245,14 @@ public class Metadata
 			return m_type;
 		}
 		
+		public ArrayList<Element> getAttributes()
+		{
+			return m_attributes;
+		}
+		
 		public boolean canHaveAttributes()
 		{
-			return true;
+			return m_type != ElementTypes.Date;
 		}
 	}
 	

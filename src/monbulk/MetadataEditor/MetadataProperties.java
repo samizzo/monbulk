@@ -54,6 +54,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_availablePanels.add(new StringElementPanel());
 		m_availablePanels.add(new DateElementPanel());
 		m_availablePanels.add(new NumberElementPanel());
+		m_availablePanels.add(new AttributesPanel());
 
 		initWidget(uiBinder.createAndBindUi(this));
 		
@@ -160,17 +161,20 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 		for (Metadata.Element e : elements)
 		{
-			TreeItem treeItem = createTreeItem(e.getSetting("name", ""), e, root);
-			result = e == searchElement ? treeItem : result;
-
-			if (e instanceof Metadata.DocumentElement)
+			if (e.getType().isVisible())
 			{
-				Metadata.DocumentElement doc = (Metadata.DocumentElement)e;
-				TreeItem r = populateElementTree(treeItem, doc.getElements(), searchElement);
-				result = r != null ? r : result;
+				TreeItem treeItem = createTreeItem(e.getSetting("name", ""), e, root);
+				result = e == searchElement ? treeItem : result;
+	
+				if (e instanceof Metadata.DocumentElement)
+				{
+					Metadata.DocumentElement doc = (Metadata.DocumentElement)e;
+					TreeItem r = populateElementTree(treeItem, doc.getElements(), searchElement);
+					result = r != null ? r : result;
+				}
+	
+				addElementTreeItem(root, treeItem);
 			}
-
-			addElementTreeItem(root, treeItem);
 		}
 		
 		return result;
@@ -412,12 +416,13 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			for (ElementPanel e : m_availablePanels)
 			{
 				if (e.getType() == Metadata.ElementTypes.All ||
-					e.getType().isSame(element.getType()))
+					e.getType().isSame(element.getType()) ||
+					(e.getType() == Metadata.ElementTypes.Attribute && element.canHaveAttributes()))
 				{
 					addElementPanel(e);
 				}
 			}
-
+			
 			// Update the panels with the element's data.
 			for (ElementPanel e : m_elementPanels)
 			{
