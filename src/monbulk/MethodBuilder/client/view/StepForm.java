@@ -38,7 +38,7 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 		super.LoadForm(someForm);
 		FormWidget tmpWidg = this.getFormWidgetForName(pojoStepDetails.HasStudyField);
 		
-		if(!tmpWidg.equals(null))
+		if(tmpWidg !=null)
 		{
 			tmpWidg.getFormWidget().addHandler(new ValueChangeHandler<Boolean>()
 			{

@@ -83,7 +83,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 		while(i.hasNext())
 		{
 			FormWidget tmpWidg = i.next();
-			if(tmpWidg.getWidgetName().equals(Name))
+			if(tmpWidg.getWidgetName().contains(Name))
 			{
 				return tmpWidg;
 			}
@@ -112,7 +112,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 		FormName.setHeight("50px");
 		FormName.setStyleName("FormTitle");
 		Label lblFormName = new Label();
-		lblFormName.setText(this.generalForm.getFormName());
+		lblFormName.setText("Test");
 		FormName.add(lblFormName);
 		tmpPanel.add(FormName);
 		HorizontalPanel errorPanel = new HorizontalPanel();

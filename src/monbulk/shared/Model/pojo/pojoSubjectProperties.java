@@ -21,7 +21,10 @@ public class pojoSubjectProperties implements IPojo {
 		// TODO Auto-generated method stub
 		
 	}
-
+	public pojoSubjectProperties()
+	{
+		this.attachedMetaData = new ArrayList<pojoMetaData>();
+	}
 	@Override
 	public FormBuilder getFormStructure() {
 		// TODO Auto-generated method stub
@@ -30,7 +33,7 @@ public class pojoSubjectProperties implements IPojo {
 		SubjectropertiesForm.SetFormName(FormName);
 
 		
-		if(this.SubjectName.equals(null))
+		if(this.SubjectName ==null)
 		{
 			SubjectropertiesForm.AddTitleItem(SubjectNameField,"String","");
 		}
@@ -38,7 +41,7 @@ public class pojoSubjectProperties implements IPojo {
 		{
 			SubjectropertiesForm.AddTitleItem(SubjectNameField,"String",this.SubjectName);
 		}
-		if(this.SubjectType.equals(null))
+		if(this.SubjectType == null)
 		{	
 			SubjectropertiesForm.AddSummaryItem(SubjectTypeField, "String");	
 		}
@@ -87,7 +90,7 @@ public class pojoSubjectProperties implements IPojo {
 	}
 
 	@Override
-	public void readInput(String Format, String Input) {
+	public void readInput(String Format, Object Input) {
 		// TODO Auto-generated method stub
 		
 	}

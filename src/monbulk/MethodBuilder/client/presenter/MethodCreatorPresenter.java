@@ -49,7 +49,8 @@ import monbulk.shared.util.MonbulkEnums;
 import monbulk.shared.widgets.Window.view.appletWindow;
 import monbulk.MethodBuilder.shared.IMethodsView;
 import monbulk.MethodBuilder.shared.iMBModel;
-import monbulk.MethodBuilder.shared.iModelAllowMetaData.iModelHasHelpExtendsMetaData;
+
+///I think we can change this just to a view state with a main model that can be queried on each state
 
 public class MethodCreatorPresenter implements FormPresenter{
 
@@ -142,63 +143,31 @@ public class MethodCreatorPresenter implements FormPresenter{
 	}
 	private void SetStates(String ID)
 	{
-		if(ID=="")
-		{
-			
-			MethodModel tmpModel = new MethodModel("SomUrl.xml");
-			tmpModel.setPresenter(this);
+	
+			GWT.log(mainModel.getFormData().toString());
 			MethodForm tmpForm = new MethodForm();
-			tmpForm.LoadForm(tmpModel.getFormData());
-			tmpForm.setPresenter(this);
-			PresenterState tmpState = new PresenterState(tmpForm,tmpModel,MethodCreatorStates.METHOD_DETAILS);
+			tmpForm.LoadForm(mainModel.getFormData());
+			tmpForm.setPresenter(this);			
+			PresenterState tmpState = new PresenterState(tmpForm,mainModel,MethodCreatorStates.METHOD_DETAILS);
 			
 			SubjectPropertiesForm tmpForm2 = new SubjectPropertiesForm();
 			tmpForm2.setPresenter(this);
-			SubjectPropertiesModel tmpModel2 = new SubjectPropertiesModel();
-			tmpModel2.setPresenter(this);
+			
+			tmpForm2.LoadForm(mainModel.getFormData());
+			//SubjectPropertiesModel tmpModel2 = new SubjectPropertiesModel();
+			//tmpModel.setPresenter(this);
 			//PresenterState tmpState2 = new PresenterState(tmpForm2,tmpModel2,MethodCreatorStates.SUBJECT_PROPERTIES);
-			PresenterState tmpState2 = new PresenterState(tmpForm2,tmpModel2,MethodCreatorStates.SUBJECT_PROPERTIES);
+			PresenterState tmpState2 = new PresenterState(tmpForm2,mainModel,MethodCreatorStates.SUBJECT_PROPERTIES);
 			
 			StepForm tmpForm3 = new StepForm();
 			tmpForm3.setPresenter(this);
-			StepModel tmpModel3 = new StepModel();
-			tmpModel3.setPresenter(this);
-			PresenterState tmpState3 = new PresenterState(tmpForm3,tmpModel3,MethodCreatorStates.STEP_DETAILS);
+			tmpForm3.LoadForm(mainModel.getFormData());
+			PresenterState tmpState3 = new PresenterState(tmpForm3,mainModel,MethodCreatorStates.STEP_DETAILS);
 			
 			AllStates.add(tmpState);
 			AllStates.add(tmpState2);
 			AllStates.add(tmpState3);
-	//	PresenterState tmpState2 = new PresenterState(tmpForm2,tmpModel2,MethodCreatorStates.SUBJECT_PROPERTIES);
-		}
-		else
-		{
-			
-			
-			MethodModel tmpModel = new MethodModel("SomUrl.xml");
-			tmpModel.setPresenter(this);
-			MethodForm tmpForm = new MethodForm();
-			tmpForm.LoadForm(tmpModel.getFormData());
-			tmpForm.setPresenter(this);
-			PresenterState tmpState = new PresenterState(tmpForm,tmpModel,MethodCreatorStates.METHOD_DETAILS);
-			
-			SubjectPropertiesForm tmpForm2 = new SubjectPropertiesForm();
-			tmpForm2.setPresenter(this);
-			SubjectPropertiesModel tmpModel2 = new SubjectPropertiesModel();
-			tmpModel2.setPresenter(this);
-			//PresenterState tmpState2 = new PresenterState(tmpForm2,tmpModel2,MethodCreatorStates.SUBJECT_PROPERTIES);
-			PresenterState tmpState2 = new PresenterState(tmpForm2,tmpModel2,MethodCreatorStates.SUBJECT_PROPERTIES);
-			
-			StepForm tmpForm3 = new StepForm();
-			tmpForm3.setPresenter(this);
-			StepModel tmpModel3 = new StepModel();
-			tmpModel3.setPresenter(this);
-			PresenterState tmpState3 = new PresenterState(tmpForm3,tmpModel3,MethodCreatorStates.STEP_DETAILS);
-			
-			AllStates.add(tmpState);
-			AllStates.add(tmpState2);
-			AllStates.add(tmpState3);
-		}
-		
+	//
 		
 		
 	}

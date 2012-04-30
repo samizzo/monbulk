@@ -201,7 +201,7 @@ public class pojoMetaData implements IPojo{
 		}
 	}
 	@Override
-	public void readInput(String Format, String Input) {
+	public void readInput(String Format, Object Input) {
 		// TODO Auto-generated method stub
 		
 	}

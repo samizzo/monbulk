@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.google.gwt.user.client.Window;
+import com.google.gwt.xml.client.XMLParser;
 
 
 import arc.mf.client.Output;
@@ -98,10 +99,13 @@ public class mfMethodService extends MethodService {
 					 *	</method>
 					 * </response>
 					*/
-					Window.alert(xe.toString());
+					//Window.alert(xe.toString());
 					//We need to create 
 					pojoMethodComplete pmc = new pojoMethodComplete(xe.elements().get(0).attributes().get(0).value());
+					pmc.readInput("XML", xe.toString());
 					
+					//pmc.getMethodDetails().readInput("XML", xe.stringValue("/method"));
+					//XMLParser.parse(contents)
 					//m_handler.onReadMethod(pmc);
 					break;
 				case Create:

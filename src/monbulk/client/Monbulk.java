@@ -9,6 +9,7 @@ import arc.mf.session.SessionHandler;
 import arc.gui.gwt.widget.ContainerWidget;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -82,6 +83,7 @@ public class Monbulk implements EntryPoint
 				}
 				catch (Exception e)
 				{
+					e.printStackTrace();
 					String msg = e.toString();
 					if (e.getCause() != null)
 					{
@@ -89,6 +91,8 @@ public class Monbulk implements EntryPoint
 					}
 					
 					Window.alert("Monbulk desktop: " + msg);
+					
+					
 				}
 			}
 

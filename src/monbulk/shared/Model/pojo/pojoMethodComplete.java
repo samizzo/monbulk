@@ -3,11 +3,17 @@ package monbulk.shared.Model.pojo;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.google.gwt.user.client.Window;
+import com.google.gwt.xml.client.NodeList;
+import com.google.gwt.xml.client.XMLParser;
+
 
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.Services.MethodService;
-
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.impl.DOMParseException;
 public class pojoMethodComplete implements IPojo{
 
 	private pojoMethod MethodDetails;
@@ -17,11 +23,17 @@ public class pojoMethodComplete implements IPojo{
 	private String _XML; //So we would hope to be bale to add a schema and hope they match
 	public pojoMethodComplete()
 	{
-		
+		this.MethodDetails = new pojoMethod();
+		this.SubjectProperties = new pojoSubjectProperties();
+		this.allSteps = new ArrayList<pojoStepDetails>();
 	}
 	public pojoMethodComplete(String ID)
 	{
 		this.MethodID = ID;
+		this.MethodDetails = new pojoMethod();
+		this.MethodDetails.setMethodID(ID);
+		this.SubjectProperties = new pojoSubjectProperties();
+		this.allSteps = new ArrayList<pojoStepDetails>();
 	}
 	
 	@Override
@@ -39,8 +51,22 @@ public class pojoMethodComplete implements IPojo{
 	@Override
 	public FormBuilder getFormStructure() {
 		
-		//Get the formStructure for each pojo but set to Static
-		return null;
+		FormBuilder returnForm = new FormBuilder();
+		returnForm.SetFormName("Method");
+		returnForm.MergeForm(this.MethodDetails.getFormStructure());
+		returnForm.MergeForm(this.SubjectProperties.getFormStructure());
+		if(this.allSteps.size() > 0)
+		{
+			Iterator<pojoStepDetails> i = this.allSteps.iterator();
+			while(i.hasNext())
+			{
+				pojoStepDetails step = i.next();
+				returnForm.MergeForm(step.getFormStructure());				
+			}
+		}
+
+		
+		return returnForm;
 	}
 
 	@Override
@@ -87,8 +113,42 @@ public class pojoMethodComplete implements IPojo{
 		return this.MethodID;
 	}
 	@Override
-	public void readInput(String Format, String Input) {
-		// TODO Auto-generated method stub
+	public void readInput(String Format, Object Input) {
+		
+		try
+		{
+			Document tmpXML = XMLParser.parse(Input.toString()); 
+			if(tmpXML!=null)
+			{
+				NodeList tmpList1 = tmpXML.getElementsByTagName("method");
+				
+				NodeList tmpList = tmpList1.item(0).getChildNodes();
+				int i=0;
+				String List ="";
+				while(i<tmpList.getLength())
+				{
+					Node tmpNode = tmpList.item(i);
+					//Have to get attributes
+					if(tmpNode.getNodeName()=="description")
+					{
+						this.MethodDetails.setFieldVale(pojoMethod.MethodDescriptionField, tmpNode.getNodeValue());
+					}
+					if(tmpNode.getNodeName()=="name")
+					{
+						this.MethodDetails.setFieldVale(pojoMethod.MethodNameField, tmpNode.getNodeValue());
+					}
+					List = List + " Node: " + tmpNode.getNodeName();
+					
+					i++;
+				}
+				Window.alert(List);
+			}
+			
+		}
+		catch(DOMParseException ex)
+		{
+			Window.alert(ex.getMessage());
+		}
 		
 	}
 	
