@@ -160,7 +160,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 		for (Metadata.Element e : elements)
 		{
-			TreeItem treeItem = createTreeItem(e.getAttribute("name", ""), e, root);
+			TreeItem treeItem = createTreeItem(e.getSetting("name", ""), e, root);
 			result = e == searchElement ? treeItem : result;
 
 			if (e instanceof Metadata.DocumentElement)
@@ -200,7 +200,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			TreeItem parentTreeItem = docElement != null ? m_selectedElement : null;
 
 			// Add a new tree item and select it.
-			TreeItem newTreeItem = createTreeItem(newElement.getAttribute("name", ""), newElement, parentTreeItem);
+			TreeItem newTreeItem = createTreeItem(newElement.getSetting("name", ""), newElement, parentTreeItem);
 			addElementTreeItem(parentTreeItem, newTreeItem);
 			m_elementsTree.setSelectedItem(newTreeItem);
 			m_elementsTree.ensureSelectedItemVisible();
@@ -326,7 +326,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		try
 		{
 			Metadata.ElementTypes t = Metadata.ElementTypes.valueOf(newType);
-			newElement = Metadata.createElement(t.getMetaName(), element.getAttribute("name", ""), element.getDescription());
+			newElement = Metadata.createElement(t.getMetaName(), element.getSetting("name", ""), element.getDescription());
 		}
 		catch (Exception e)
 		{
@@ -349,7 +349,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		
 		if (index >= 0)
 		{
-			TreeItem newItem = createTreeItem(newElement.getAttribute("name", ""), newElement, parent);
+			TreeItem newItem = createTreeItem(newElement.getSetting("name", ""), newElement, parent);
 
 			if (parent != null)
 			{

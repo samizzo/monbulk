@@ -111,12 +111,12 @@ public class Metadata
 		protected XmlElement m_xmlElement;
 		protected DocumentElement m_parent = null;
 		protected ElementTypes m_type;
-		protected HashMap<String, String> m_attributes = new HashMap<String, String>();
+		protected HashMap<String, String> m_settings = new HashMap<String, String>();
 		protected HashMap<String, String> m_restrictions = new HashMap<String, String>();
 
 		public Element(ElementTypes type, String name, String description)
 		{
-			setAttribute("name", name);
+			setSetting("name", name);
 			m_description = description;
 			m_type = type;
 		}
@@ -144,21 +144,21 @@ public class Metadata
 			return value;
 		}
 
-		public void setAttribute(String name, String value)
+		public void setSetting(String name, String value)
 		{
 			if (value.length() > 0)
 			{
-				m_attributes.put(name, value);
+				m_settings.put(name, value);
 			}
 			else
 			{
-				m_attributes.remove(name);
+				m_settings.remove(name);
 			}
 		}
 
-		public String getAttribute(String attribute, String defaultValue)
+		public String getSetting(String name, String defaultValue)
 		{
-			String value = m_attributes.get(attribute);
+			String value = m_settings.get(name);
 			if (value == null)
 			{
 				value = defaultValue;
@@ -176,7 +176,7 @@ public class Metadata
 				List<XmlAttribute> attributes = m_xmlElement.attributes();
 				for (XmlAttribute a : attributes)
 				{
-					m_attributes.put(a.name(), a.value());
+					m_settings.put(a.name(), a.value());
 				}
 			}
 
@@ -226,6 +226,11 @@ public class Metadata
 		{
 			return m_type;
 		}
+		
+		public boolean canHaveAttributes()
+		{
+			return true;
+		}
 	}
 	
 	// A document has a number of child elements.
@@ -241,6 +246,11 @@ public class Metadata
 		public ArrayList<Element> getElements()
 		{
 			return m_elements;
+		}
+		
+		public boolean canHaveAttributes()
+		{
+			return false;
 		}
 	}
 	
@@ -304,6 +314,11 @@ public class Metadata
 					m_values.addAll(values);
 				}
 			}
+		}
+		
+		public boolean canHaveAttributes()
+		{
+			return false;
 		}
 	}
 	

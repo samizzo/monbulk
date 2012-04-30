@@ -48,13 +48,13 @@ public class CommonElementPanel extends ElementPanel
 	
 	public void update(Metadata.Element element)
 	{
-		element.setAttribute("name", m_name.getText());
+		element.setSetting("name", m_name.getText());
 		element.setDescription(m_description.getText());
 		
 		String minOccurs = m_minOccurs.getValue();
-		element.setAttribute("min-occurs", minOccurs);
+		element.setSetting("min-occurs", minOccurs);
 		String maxOccurs = m_maxOccurs.getValue();
-		element.setAttribute("max-occurs", maxOccurs);
+		element.setSetting("max-occurs", maxOccurs);
 	}
 
 	public void set(Metadata.Element element)
@@ -62,7 +62,7 @@ public class CommonElementPanel extends ElementPanel
 		super.set(element);
 
 		// Set name and type for the element from the values we are editing.
-		m_name.setText(element.getAttribute("name", ""));
+		m_name.setText(element.getSetting("name", ""));
 		m_description.setText(element.getDescription());
 
 		String type = element.getType().toString();
@@ -76,8 +76,8 @@ public class CommonElementPanel extends ElementPanel
 			}
 		}
 		
-		String minOccurs = element.getAttribute("min-occurs", "1");
-		String maxOccurs = element.getAttribute("max-occurs", "");
+		String minOccurs = element.getSetting("min-occurs", "1");
+		String maxOccurs = element.getSetting("max-occurs", "");
 		m_minOccurs.setValue(minOccurs);
 		m_maxOccurs.setValue(maxOccurs);
 	}
