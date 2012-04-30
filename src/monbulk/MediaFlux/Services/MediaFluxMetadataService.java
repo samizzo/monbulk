@@ -10,7 +10,6 @@ import com.google.gwt.http.client.Response;
 
 import arc.mf.client.Output;
 import arc.mf.client.ServiceContext;
-import arc.mf.client.ServiceRequest;
 import arc.mf.client.xml.XmlDoc;
 import arc.mf.client.xml.XmlElement;
 import arc.mf.session.ServiceResponseHandler;
