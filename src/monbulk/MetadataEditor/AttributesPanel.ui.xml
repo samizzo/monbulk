@@ -6,70 +6,22 @@
 		{
 			width: 70px;
 		}
-		
-		.Buttons
-		{
-			padding-top: 4px;
-		}
-		
-		.Panel
-		{
-			padding-left: 8px;			
-		}
-		
-		.TypePadding
-		{
-			margin-left: 49px;
-		}
-		
-		.DescriptionPadding
-		{
-			margin-left: 4px;
-		}
 	</ui:style>
 
-	<g:VerticalPanel width="100%" height="100%">
-		<g:LayoutPanel width="100%" height="100%">
-			<g:layer top="0px" height="30px" left="0px" width="100px">
-				<g:Label text="Attributes:" />
-			</g:layer>
-			<g:layer top="20px" left="0px" width="300px" height="50px">
-				<g:ListBox visibleItemCount="4" ui:field="m_attributes" width="300px" height="100%" />
-			</g:layer>
+	<g:LayoutPanel width="100%" height="100%">
+		<g:layer top="0px" height="30px" left="0px" width="100px">
+			<g:Label text="Attributes:" />
+		</g:layer>
+		<g:layer top="20px" left="0px" width="300px" height="50px">
+			<g:ListBox visibleItemCount="4" ui:field="m_attributes" width="300px" height="100%" />
+		</g:layer>
 
-<!--			
-			<!- Description -
-			<g:layer left="306px" width="87px" top="25px" height="21px">
-				<g:Label text="Description:"/>
-			</g:layer>
-			<g:layer left="394px" right="10px" top="25px" height="30px">
-				<g:HTMLPanel>
-					<div class="textBoxPadding">
-						<g:TextBox readOnly="true" text="" width="100%" ui:field="m_description" />
-					</div>
-				</g:HTMLPanel>
-			</g:layer>
-			
-			<!- Type -
-			<g:layer left="306px" width="45px" top="56px" height="21px">
-				<g:Label text="Type:" />
-			</g:layer>
-			<g:layer left="394px" width="70px" top="56px" height="30px">
-				<g:HTMLPanel>
-					<div class="textBoxPadding">
-						<g:TextBox width="100%" ui:field="m_type" text="" readOnly="true" />
-					</div>
-				</g:HTMLPanel>
-			</g:layer>
--->
-
-			<g:layer top="74px" height="24px" left="0px" width="300px">
-				<g:HTMLPanel width="100%" height="100%" ui:field="m_buttonsPanel">
-					<g:Button ui:field="m_add" styleName="{style.Button}" text="Add" />
-					<g:Button ui:field="m_edit" styleName="{style.Button}" text="Edit" enabled="false" />
-					<g:Button ui:field="m_remove" styleName="{style.Button}" text="Remove" enabled="false" />
-				</g:HTMLPanel>
-			</g:layer>
-		</g:LayoutPanel>
-	</g:VerticalPanel>
+		<g:layer top="74px" height="24px" left="0px" width="300px">
+			<g:HTMLPanel width="100%" height="100%" ui:field="m_buttonsPanel">
+				<g:Button ui:field="m_add" styleName="{style.Button}" text="Add" />
+				<g:Button ui:field="m_edit" styleName="{style.Button}" text="Edit" enabled="false" />
+				<g:Button ui:field="m_remove" styleName="{style.Button}" text="Remove" enabled="false" />
+			</g:HTMLPanel>
+		</g:layer>
+	</g:LayoutPanel>
 </ui:UiBinder> 
