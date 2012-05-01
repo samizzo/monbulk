@@ -19,6 +19,7 @@ public class TextBoxEx extends TextBox implements KeyPressHandler, KeyUpHandler,
 	private String m_hintText = "";
 	private String m_hintTextStyle = "";
 	private boolean m_hasText = false;
+	private String m_defaultValue = "";
 	
 	public TextBoxEx()
 	{
@@ -26,6 +27,13 @@ public class TextBoxEx extends TextBox implements KeyPressHandler, KeyUpHandler,
 		addKeyUpHandler(this);
 		addFocusHandler(this);
 		addBlurHandler(this);
+	}
+	
+	// Sets the default value.  Used when there is no hint text and
+	// the text box loses focus.
+	public void setDefaultValue(String defaultValue)
+	{
+		m_defaultValue = defaultValue;
 	}
 	
 	public void setOnlyNumbers(boolean onlyNumbers)
@@ -203,6 +211,15 @@ public class TextBoxEx extends TextBox implements KeyPressHandler, KeyUpHandler,
 				{
 					removeStyleName(m_hintTextStyle);
 				}
+			}
+		}
+		else
+		{
+			//  No hint text so set default value if there is one
+			// and we are losing focus.
+			if (visible && !m_hasText && m_defaultValue.length() > 0)
+			{
+				super.setText(m_defaultValue);
 			}
 		}
 	}
