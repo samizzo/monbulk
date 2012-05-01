@@ -11,10 +11,10 @@
 		}
 	</ui:style>
 
-	<g:LayoutPanel width="100%" height="60px">
+	<g:LayoutPanel width="100%" height="30px">
 		<!-- Minimum value -->
-		<g:layer top="0px" height="24px" left="0px" width="90px">
-			<g:Label text="Minimum:" />
+		<g:layer top="2px" height="24px" left="0px" width="90px">
+			<g:Label text="Range:" />
 		</g:layer>
 		<g:layer top="0px" height="22px" left="100px" width="60px">
 			<g:HTMLPanel>
@@ -25,10 +25,10 @@
 		</g:layer>
 
 		<!-- Maximum value -->
-		<g:layer top="30px" height="24px" left="0px" width="90px">
-			<g:Label text="Maximum:" />
+		<g:layer top="2px" height="24px" left="166px" width="32px">
+			<g:Label text="to" />
 		</g:layer>
-		<g:layer top="30px" height="22px" left="100px" width="60px">
+		<g:layer top="0px" height="22px" left="186px" width="60px">
 			<g:HTMLPanel>
 				<div class="textBoxPadding">
 					<u:TextBoxEx width="100%" ui:field="m_maximum" hintText="infinity" hintTextStyle="{style.HintText}" onlyNumbers="true" allowNegative="true" />
