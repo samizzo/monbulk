@@ -24,11 +24,11 @@ public class MediaFluxMetadataAdapter
 	{
 		XmlElement type = element.element("type");
 		Metadata metadata = new Metadata(type.value("@name"), type.value("description"), type.value("label"));
-		parseMetadata(metadata.getElements(), type.elements("definition/element"));
+		parseMetadata(null, metadata.getElements(), type.elements("definition/element"));
 		return metadata;
 	}
 	
-	private static void parseMetadata(ArrayList<Metadata.Element> elements, List<XmlElement> xmlElements) throws Exception
+	private static void parseMetadata(Metadata.DocumentElement parent, ArrayList<Metadata.Element> elements, List<XmlElement> xmlElements) throws Exception
 	{
 		if (xmlElements == null)
 		{
@@ -38,11 +38,11 @@ public class MediaFluxMetadataAdapter
 		for (XmlElement e : xmlElements)
 		{
 			Metadata.Element element = Metadata.createElement(e);
+			element.setParent(parent);
 			if (element instanceof Metadata.DocumentElement)
 			{
 				Metadata.DocumentElement docElement = (Metadata.DocumentElement)element;
-				element.setParent(docElement);
-				parseMetadata(docElement.getElements(), e.elements("element"));
+				parseMetadata(docElement, docElement.getElements(), e.elements("element"));
 			}
 
 			elements.add(element);
