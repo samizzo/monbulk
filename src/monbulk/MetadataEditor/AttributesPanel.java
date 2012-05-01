@@ -1,7 +1,6 @@
 package monbulk.MetadataEditor;
 
 import monbulk.shared.Services.Metadata;
-import monbulk.shared.Services.Metadata.Element;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -10,7 +9,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.event.dom.client.ChangeEvent;
 
 public class AttributesPanel extends ElementPanel
