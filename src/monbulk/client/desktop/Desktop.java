@@ -3,6 +3,8 @@ package monbulk.client.desktop;
 import java.util.Date;
 import java.util.HashMap;
 
+import arc.mf.client.RemoteServer;
+
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
@@ -37,6 +39,7 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 
 	@UiField VerticalPanel m_buttons;
 	@UiField Label m_time;
+	@UiField Label m_username;
 
 	// TODO: Use a SimpleEventBus instead of HandlerManager.
 	private HandlerManager m_eventBus = new HandlerManager(null);
@@ -136,13 +139,17 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 			public boolean execute()
 			{
 				Date now = new Date();
-				DateTimeFormat format = DateTimeFormat.getFormat("h:mm a");
+				DateTimeFormat format = DateTimeFormat.getFormat("E h:mm a");
 				String time = format.format(now);
 				m_time.setText(time);
 				return true;
 			}
 		},
 		1000);
+		
+		String domain = RemoteServer.domain();
+		String user = RemoteServer.user() + ((domain != null && domain.length() > 0) ? (" / " + domain) : "");
+		m_username.setText(user);
 	}
 
 	// Returns the Desktop instance.

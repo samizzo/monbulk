@@ -64,24 +64,38 @@ html
 .AppTitle
 {
 	cursor: default;
-	font-family: Myriad Pro, Arial, sans-serif;
+
+	font-family: verdana,helvetica,arial,sans-serif;
+	font-variant: small-caps;
+
 	color: #333333;
-	font-weight: bold;
-	font-size: 18px;
+	font-size: 28px;
 	display: inline-block;
 	text-align: left;
-	vertical-align: sub;
 	padding-left: 10px;
+	padding-top: 0px;
 }
 
 .Time
 {
 	font-size: 14px;
 	display: inline-block;
-	width: 100px;
+	width: 120px;
 	float: right;
 	padding-top: 12px;
 }
+
+.Username
+{
+	font-size: 14px;
+	display: inline-block;
+	width: 140px;
+	float: right;
+	padding-top: 12px;
+	padding-right: 32px;
+	text-align: right;
+}
+
  
 /* ---- Begin button styling ---- */
 
