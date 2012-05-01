@@ -64,6 +64,10 @@ public class appletWindow extends DialogBox
     protected void beginDragging(MouseDownEvent event)
     {
     	super.beginDragging(event);
+		// FIXME: This causes an ActivateWindow event to be fired
+		// when we are closing the window, which means we do a
+		// bringToFront just before closing, which means m_zindex
+		// in Desktop is out of sync. 
     	m_eventBus.fireEvent(new WindowEvent(getId(), WindowEvent.EventType.ActivateWindow));
     }
     

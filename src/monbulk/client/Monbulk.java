@@ -75,15 +75,13 @@ public class Monbulk implements EntryPoint
 					Desktop d = new Desktop(RootPanel.get());
 
 					MetadataEditor me = new MetadataEditor();
-					me.setPixelSize(1000, 678);
-					d.registerWindow("MetadataEditor", "Metadata Editor", me);
+					d.registerWindow(me);
 					
 					AttributesEditor ae = new AttributesEditor();
-					d.registerWindow("AttributesEditor", "Attributes", ae, true, false);
+					d.registerWindow(ae);
 
 					MethodBuilder mb = new MethodBuilder(d.getEventBus());
-					d.registerWindow("MethodBuilder", "Method Builder", mb);
-					mb.setPixelSize(1200, 800);
+					d.registerWindow(mb);
 				}
 				catch (Exception e)
 				{

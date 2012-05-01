@@ -8,8 +8,9 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 
 import monbulk.shared.Services.*;
 import monbulk.shared.Services.MetadataService.*;
+import monbulk.shared.widgets.Window.*;
 
-public class MetadataEditor extends ResizeComposite
+public class MetadataEditor extends ResizeComposite implements IWindow
 {
 	interface MetadataEditorUiBinder extends UiBinder<Widget, MetadataEditor> { }
 	private static MetadataEditorUiBinder s_uiBinder = GWT.create(MetadataEditorUiBinder.class);
@@ -17,8 +18,18 @@ public class MetadataEditor extends ResizeComposite
 	@UiField MetadataList m_metadataList;
 	@UiField MetadataProperties m_metadataProperties;
 	
+	private WindowSettings m_windowSettings;
+	
 	public MetadataEditor()
 	{
+		m_windowSettings = new WindowSettings();
+		m_windowSettings.width = 1000;
+		m_windowSettings.height = 678;
+		m_windowSettings.minWidth = 1000;
+		m_windowSettings.minHeight = 678;
+		m_windowSettings.windowId = "MetadataEditor";
+		m_windowSettings.windowTitle = "Metadata Editor"; 
+
 		Widget widget = s_uiBinder.createAndBindUi(this);
 		initWidget(widget);
 
@@ -60,5 +71,10 @@ public class MetadataEditor extends ResizeComposite
 				m_metadataProperties.clear();
 			}
 		});
+	}
+
+	public WindowSettings getWindowSettings()
+	{
+		return m_windowSettings;
 	}
 }

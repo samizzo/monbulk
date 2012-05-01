@@ -119,6 +119,11 @@ public class appletWindowCaption extends Composite implements Caption
 	@UiHandler("m_maximise")
 	public void onMaximiseClick(ClickEvent event)
 	{
-		m_eventBus.fireEvent(new WindowEvent(m_parentWindow.getId(), WindowEvent.EventType.MaximiseWindow));
+		IWindow window = (IWindow)m_parentWindow.getWidget();
+		WindowSettings ws = window.getWindowSettings();
+		if (ws.resizable)
+		{
+			m_eventBus.fireEvent(new WindowEvent(m_parentWindow.getId(), WindowEvent.EventType.MaximiseWindow));
+		}
 	}
 }
