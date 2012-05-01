@@ -24,6 +24,7 @@ public class Metadata
 		Keyword("keyword", true, false),
 		
 		// Special types that aren't visible or selectable by the user.
+		AssetId("asset-id", false, false),
 		Asset("asset", false, false),
 		CiteableId("citeable-id", false, false),
 		EmailAddress("email-address", false, false),
