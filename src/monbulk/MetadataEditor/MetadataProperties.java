@@ -19,7 +19,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.CaptionPanel;
@@ -35,30 +34,20 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	@UiField TextBox m_label;
 	@UiField TextBox m_description;
 	@UiField Tree m_elementsTree;
-	@UiField VerticalPanel m_properties;
+	@UiField ElementProperties m_elementProperties;
 	@UiField Button m_addElement;
 	@UiField Button m_removeElement;
 	@UiField HTMLPanel m_addRemovePanel;
 	@UiField CaptionPanel m_elements;
 
-	private ArrayList<ElementPanel> m_availablePanels = new ArrayList<ElementPanel>();
-	private ArrayList<ElementPanel> m_elementPanels = new ArrayList<ElementPanel>();
 	private TreeItem m_selectedElement = null;
 	private Metadata m_metadata = null;
 
 	public MetadataProperties()
 	{
-		// Register all available element panels.
-		m_availablePanels.add(new CommonElementPanel(this));
-		m_availablePanels.add(new EnumerationElementPanel());
-		m_availablePanels.add(new StringElementPanel());
-		m_availablePanels.add(new DateElementPanel());
-		m_availablePanels.add(new NumberElementPanel());
-		m_availablePanels.add(new AttributesPanel());
-
 		initWidget(uiBinder.createAndBindUi(this));
-		
 		m_elementsTree.addSelectionHandler(this);
+		m_elementProperties.setChangeTypeHandler(this);
 	}
 
 	public void setReadOnly(boolean readOnly)
@@ -78,11 +67,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_name.setEnabled(!readOnly);
 		m_label.setEnabled(!readOnly);
 		m_description.setEnabled(!readOnly);
-
-		for (ElementPanel e : m_availablePanels)
-		{
-			e.setReadOnly(readOnly);
-		}
+		m_elementProperties.setReadOnly(readOnly);
 	}
 
 	public void setMetadata(String name)
@@ -103,7 +88,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 	public void setMetadata(Metadata metadata)
 	{
-		updateCurrentElement();
+		m_elementProperties.updateCurrentElement();
 		
 		clear();
 		m_metadata = metadata;
@@ -295,18 +280,11 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 	private void clearElements()
 	{
-		m_elementPanels.clear();
-		m_properties.clear();
+		m_elementProperties.setElement(null);
 		m_selectedElement = null;
 		m_removeElement.setEnabled(false);
 	}
 
-	private void addElementPanel(ElementPanel panel)
-	{
-		m_properties.add(panel);
-		m_elementPanels.add(panel);
-	}
-	
 	private int getTreeItemIndex(TreeItem item)
 	{
 		int count = m_elementsTree.getItemCount();
@@ -347,7 +325,6 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		elements.add(oldIndex, newElement);
 
 		// Refresh the tree.
-		m_properties.clear();
 		TreeItem parent = m_selectedElement.getParentItem();
 		int index = parent != null ? parent.getChildIndex(m_selectedElement) : getTreeItemIndex(m_selectedElement);
 		
@@ -370,24 +347,6 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		}
 	}
 	
-	// Updates the currently selected element from the user's settings
-	// on the panel.
-	private void updateCurrentElement()
-	{
-		if (m_selectedElement != null)
-		{
-			Object o = m_selectedElement.getUserObject();
-			if (o != null)
-			{
-				Metadata.Element element = (Metadata.Element)o;
-				for (ElementPanel e : m_elementPanels)
-				{
-					e.update(element);
-				}
-			}
-		}
-	}
-	
 	// Tree view selection handler.
 	public void onSelection(SelectionEvent<TreeItem> event)
 	{
@@ -395,7 +354,6 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		// previously selected item.
 		if (m_selectedElement != null)
 		{
-			updateCurrentElement();
 			m_selectedElement.removeStyleName("itemSelected");
 		}
 
@@ -410,24 +368,8 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		Object o = selectedItem.getUserObject();
 		if (o != null)
 		{
-			final Metadata.Element element = (Metadata.Element)o;
-
-			// Add the appropriate panels.
-			for (ElementPanel e : m_availablePanels)
-			{
-				if (e.getType() == Metadata.ElementTypes.All ||
-					e.getType().isSame(element.getType()) ||
-					(e.getType() == Metadata.ElementTypes.Attribute && element.canHaveAttributes()))
-				{
-					addElementPanel(e);
-				}
-			}
-			
-			// Update the panels with the element's data.
-			for (ElementPanel e : m_elementPanels)
-			{
-				e.set(element);
-			}
+			Metadata.Element element = (Metadata.Element)o;
+			m_elementProperties.setElement(element);
 		}
 	}
 }

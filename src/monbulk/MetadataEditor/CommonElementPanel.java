@@ -46,6 +46,11 @@ public class CommonElementPanel extends ElementPanel
 		}
 	}
 	
+	public void setChangeTypeHandler(ChangeTypeHandler handler)
+	{
+		m_changeTypeHandler = handler;
+	}
+	
 	public void update(Metadata.Element element)
 	{
 		element.setSetting("name", m_name.getText());

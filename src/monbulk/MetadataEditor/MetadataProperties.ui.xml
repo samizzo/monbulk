@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:monbulk.MetadataEditor">
 
 	<ui:style>
 		.Button
@@ -67,9 +68,7 @@
 		</g:layer>
 		<g:layer left="3px" right="3px" bottom="12px" top="336px">
 			<g:CaptionPanel captionText="Element properties">
-				<g:ScrollPanel width="100%" height="100%">
-					<g:VerticalPanel width="100%" height="100%" ui:field="m_properties" verticalAlignment="ALIGN_TOP" />
-				</g:ScrollPanel>
+				<m:ElementProperties width="100%" height="100%" ui:field="m_elementProperties" />
 			</g:CaptionPanel>
 		</g:layer>
 	</g:LayoutPanel>
