@@ -115,26 +115,8 @@ public class mfMethodService extends MethodService {
 			}
 		}
 	}
-	@Override
-	public void sendServiceRequest(ArrayList<iFormField> Parameters,
-			ServiceActions action, iModel responseModel) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void sendServiceActionRequest(ArrayList<iFormField> Parameters,
-			ServiceActions action, IPresenter responseModel) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void sendPojoRequest(IPojo Parameters, ServiceActions action,
-			IPresenter responseModel) {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	
 	private String generateXML(String ID)
 	{
 		

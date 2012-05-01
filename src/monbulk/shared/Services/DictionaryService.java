@@ -89,13 +89,4 @@ public abstract class DictionaryService implements iService
 	{
 		return MonbulkEnums.ServiceNames.Dictionary;
 	}
-
-	// -- Deprecated ------------
-	public void sendServiceRequest(ArrayList<iFormField> Parameters, ServiceActions action, iModel responseModel) { }
-	public void sendServiceActionRequest(ArrayList<iFormField> Parameters, ServiceActions action, IPresenter responseModel) { }
-	public void sendPojoRequest(IPojo Parameters, ServiceActions action, IPresenter responseModel) { }
-	public String getServiceName()
-	{
-		return getServiceType().toString();
-	}
 }

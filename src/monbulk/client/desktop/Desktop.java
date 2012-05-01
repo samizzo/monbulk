@@ -28,7 +28,7 @@ import com.google.gwt.user.client.Event.NativePreviewHandler;
 
 import monbulk.client.event.WindowEvent;
 import monbulk.client.event.WindowEventHandler;
-import monbulk.shared.widgets.Window.view.appletWindow;
+import monbulk.shared.widgets.Window.appletWindow;
 
 public class Desktop extends Composite implements WindowEventHandler, NativePreviewHandler
 {

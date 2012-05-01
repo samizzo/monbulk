@@ -48,23 +48,6 @@ public abstract class MethodService implements iService{
 		
 	}
 
-	@Override
-	public abstract void sendServiceRequest(ArrayList<iFormField> Parameters,
-			ServiceActions action, iModel responseModel);
-
-	@Override
-	public abstract void sendServiceActionRequest(ArrayList<iFormField> Parameters,
-			ServiceActions action, IPresenter responseModel);
-
-	@Override
-	public abstract void sendPojoRequest(IPojo Parameters, ServiceActions action,
-			IPresenter responseModel);
-
-	@Override
-	public String getServiceName() {
-		// TODO Auto-generated method stub
-		return "om.pssd.methods";
-	}
 	// Returns a list of all available Methods
 	public abstract void getMethodList(MethodServiceHandler handler);
 	{

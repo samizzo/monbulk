@@ -46,7 +46,7 @@ import monbulk.shared.Services.MethodService.MethodServiceHandler;
 import monbulk.shared.Services.ServiceRegistry;
 import monbulk.shared.util.HtmlFormatter;
 import monbulk.shared.util.MonbulkEnums;
-import monbulk.shared.widgets.Window.view.appletWindow;
+import monbulk.shared.widgets.Window.appletWindow;
 import monbulk.MethodBuilder.shared.IMethodsView;
 import monbulk.MethodBuilder.shared.iMBModel;
 

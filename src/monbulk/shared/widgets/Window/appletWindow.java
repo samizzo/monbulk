@@ -1,4 +1,4 @@
-package monbulk.shared.widgets.Window.view;
+package monbulk.shared.widgets.Window;
 
 import monbulk.client.event.WindowEvent;
 

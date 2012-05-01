@@ -72,13 +72,4 @@ public abstract class MetadataService implements iService
 	{
 		return ServiceNames.MetaData;
 	}
-
-	// -- Deprecated ------------
-	public void sendServiceRequest(ArrayList<iFormField> Parameters, ServiceActions action, iModel responseModel) { }
-	public void sendServiceActionRequest(ArrayList<iFormField> Parameters, ServiceActions action, IPresenter responseModel) { }
-	public void sendPojoRequest(IPojo Parameters, ServiceActions action, IPresenter responseModel) { }
-	public String getServiceName()
-	{
-		return getServiceType().toString();
-	}
 }
