@@ -30,6 +30,8 @@ import monbulk.shared.widgets.Window.view.appletWindow;
 
 public class Desktop extends Composite implements WindowEventHandler, NativePreviewHandler
 {
+	private static Desktop s_instance = null;
+
 	private static DesktopUiBinder uiBinder = GWT.create(DesktopUiBinder.class);
 	interface DesktopUiBinder extends UiBinder<Widget, Desktop> { }
 
@@ -38,33 +40,42 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 
 	// TODO: Use a SimpleEventBus instead of HandlerManager.
 	private HandlerManager m_eventBus = new HandlerManager(null);
-	private HashMap<String, Launcher> m_windows = new HashMap<String, Launcher>();
-	private Launcher m_resizingLauncher = null;
+	private HashMap<String, Window> m_windows = new HashMap<String, Window>();
+	private Window m_resizingWindow = null;
 	private boolean m_activatedResize = false;
 	private boolean m_resizeWidth = false;
 	private boolean m_resizeHeight = false;
 	private int m_lastMouseX;
 	private int m_lastMouseY;
+	private Window m_modalWindow;
 
-	private class Launcher implements ClickHandler
+	// FIXME: This should be rolled into appletWindow.
+	private class Window implements ClickHandler
 	{
 		public PushButton m_button;
 		public appletWindow m_applet;
 		public String m_windowId;
 		public String m_title;
 		private boolean m_firstShow = true;
+		public boolean m_modal;
 		
-		public Launcher(String windowId, String title, Widget widget)
+		public Window(String windowId, String title, Widget widget, boolean modal, boolean desktopButton)
 		{
+			m_modal = modal;
 			m_windowId = windowId;
 			m_title = title;
 			createAppletWindow(widget);
-			createButton();
+
+			if (desktopButton)
+			{
+				createButton();
+			}
 		}
 
 		private void createAppletWindow(Widget widget)
 		{
 			appletWindow newWindow = new appletWindow(m_title, m_windowId, m_eventBus, widget);
+			newWindow.setModal(m_modal);
 
 			// HACK: So we can identify our window when processing native events.
 			newWindow.getElement().setId("appletWindowId-" + m_windowId);
@@ -107,8 +118,15 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 		}
 	}
 
-	public Desktop(RootPanel rootPanel)
+	public Desktop(RootPanel rootPanel) throws Exception
 	{
+		if (s_instance != null)
+		{
+			throw new Exception("Desktop instance already found!  There should only be one Desktop instance!");
+		}
+		
+		s_instance = this;
+
 		initWidget(uiBinder.createAndBindUi(this));
 		rootPanel.add(this);
 		Event.addNativePreviewHandler(this);
@@ -126,18 +144,70 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 		},
 		1000);
 	}
+
+	// Returns the Desktop instance.
+	public static Desktop get()
+	{
+		return s_instance;
+	}
+	
+	// Shows the specified window.
+	public void show(String windowId, boolean centre)
+	{
+		Window w = findWindow(windowId);
+		if (w != null)
+		{
+			if (w.m_modal)
+			{
+				m_modalWindow = w;
+			}
+
+			w.m_applet.show();
+			bringToFront(w);
+			
+			if (centre)
+			{
+				w.m_applet.center();
+			}
+		}
+	}
+	
+	// Hides the specified window.
+	public void hide(String windowId)
+	{
+		Window w = findWindow(windowId);
+		if (w != null)
+		{
+			hide(w);
+		}
+	}
+	
+	private void hide(Window window)
+	{
+		window.m_applet.hide();
+
+		if (m_modalWindow == window)
+		{
+			m_modalWindow = null;
+		}
+	}
 	
 	// Registers a new window with the desktop environment.
 	// windowId should only use alphanumeric characters.
-	public void registerWindow(String windowId, String title, Composite window) throws Exception
+	public void registerWindow(String windowId, String title, Composite widget) throws Exception
+	{
+		registerWindow(windowId, title, widget, false, true);
+	}
+	
+	public void registerWindow(String windowId, String title, Composite widget, boolean modal, boolean desktopButton) throws Exception
 	{
 		if (m_windows.containsKey(windowId))
 		{
 			throw new Exception("Window '" + windowId + "' has already been registered!");
 		}
 
-		Launcher launcher = new Launcher(windowId, title, window);
-		m_windows.put(windowId, launcher);
+		Window window = new Window(windowId, title, widget, modal, desktopButton);
+		m_windows.put(windowId, window);
 	}
 	
 	public void onWindowEvent(WindowEvent event)
@@ -145,25 +215,25 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 		String windowId = event.getWindowId();
 		if (m_windows.containsKey(windowId))
 		{
-			Launcher launcher = m_windows.get(windowId);
+			Window window = m_windows.get(windowId);
 
 			switch (event.getEventType())
 			{
 				case ActivateWindow:
 				{
-					bringToFront(launcher);
+					bringToFront(window);
 					break; 
 				}
 				
 				case CloseWindow:
 				{
-					launcher.m_applet.hide();
+					hide(window);
 					break;
 				}
 				
 				case MaximiseWindow:
 				{
-					launcher.m_applet.maximise();
+					window.m_applet.maximise();
 					break;
 				}
 			}
@@ -188,12 +258,12 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 			{
 				Element element = Element.as(target);
 
-				Launcher launcher = m_resizingLauncher;
-				if (launcher == null)
+				Window window = m_resizingWindow;
+				if (window == null)
 				{
 					// If we aren't currently resizing a window, then find
 					// the window this event is for.
-					for (Launcher l : m_windows.values())
+					for (Window l : m_windows.values())
 					{
 						Element e = element;
 						String name = "appletWindowId-" + l.m_windowId;
@@ -201,14 +271,14 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 						{
 							if (e.getId().equals(name))
 							{
-								launcher = l;
+								window = l;
 								break;
 							}
 		
 							e = e.getParentElement();
 						}
 						
-						if (launcher != null)
+						if (window != null)
 						{
 							break;
 						}
@@ -216,7 +286,7 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 				}
 
 				boolean overResizeGrip = element.getClassName().equals("dialogBottomRight");
-				if (launcher != null && overResizeGrip)
+				if (window != null && overResizeGrip && (m_modalWindow == null || m_modalWindow == window))
 				{
 					// Mouse is over a window, we are currently not resizing a window,
 					// and the mouse is over the resize grip.
@@ -225,12 +295,12 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 					if (eventType == Event.ONMOUSEDOWN)
 					{ 
 						// Mouse is down so prepare for resizing.
-						m_resizingLauncher = launcher;
+						m_resizingWindow = window;
 						m_activatedResize = true;
 						m_resizeWidth = m_resizeHeight = true;
 						m_lastMouseX = event.getClientX();
 						m_lastMouseY = event.getClientY();
-						bringToFront(launcher);
+						bringToFront(window);
 						nativeEvent.cancel();
 					}
 				}
@@ -251,7 +321,7 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 					{
 						RootPanel.get().removeStyleName("globalMoveCursor");
 						m_activatedResize = false;
-						m_resizingLauncher = null;
+						m_resizingWindow = null;
 						nativeEvent.cancel();
 						break;
 					}
@@ -265,7 +335,7 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 						m_lastMouseX = x;
 						m_lastMouseY = y;
 	
-						appletWindow w = m_resizingLauncher.m_applet;
+						appletWindow w = m_resizingWindow.m_applet;
 						
 						// If we aren't resizing the width (because we previously tried to
 						// resize to less than the minimum), then we can resize again once
@@ -297,13 +367,26 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 		}
 	}
 	
-	private void bringToFront(Launcher launcher)
+	private void bringToFront(Window window)
 	{
-		for (Launcher l : m_windows.values())
+		for (Window w : m_windows.values())
 		{
-			l.m_applet.removeStyleName("foregroundWindow");
+			w.m_applet.removeStyleName("foregroundWindow");
 		}
 		
-		launcher.m_applet.addStyleName("foregroundWindow");
+		window.m_applet.addStyleName("foregroundWindow");
+	}
+	
+	private Window findWindow(String windowId)
+	{
+		for (Window w : m_windows.values())
+		{
+			if (w.m_windowId.equals(windowId))
+			{
+				return w;
+			}
+		}
+		
+		return null;
 	}
 }

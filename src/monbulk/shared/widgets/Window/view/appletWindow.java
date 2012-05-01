@@ -12,9 +12,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 
 public class appletWindow extends DialogBox
 {
-	private static appletWindowUiBinder uiBinder = GWT
-			.create(appletWindowUiBinder.class);
-
+	private static appletWindowUiBinder uiBinder = GWT.create(appletWindowUiBinder.class);
 	interface appletWindowUiBinder extends UiBinder<Widget, appletWindow> {	}
 
 	private boolean m_isMaximised = false;

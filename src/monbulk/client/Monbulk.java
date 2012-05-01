@@ -9,13 +9,13 @@ import arc.mf.session.SessionHandler;
 import arc.gui.gwt.widget.ContainerWidget;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import monbulk.MediaFlux.Services.MediaFluxServices;
 import monbulk.client.desktop.*;
 import monbulk.MetadataEditor.MetadataEditor;
+import monbulk.MetadataEditor.AttributesEditor;
 import monbulk.MethodBuilder.client.MethodBuilder;
 
 /**
@@ -52,7 +52,6 @@ public class Monbulk implements EntryPoint
 		// to medimage so we have a live system to get data from.
 		
 		RemoteServer.SVC_URL = "http://localhost:81" + RemoteServer.SVC_URL;
-		
 		//RemoteServer.SVC_URL = "http://medimage.versi.edu.au:443" + RemoteServer.SVC_URL;
 		Session.setAutoLogonCredentials("system", "manager", "change_me");
 		initialise();
@@ -70,13 +69,18 @@ public class Monbulk implements EntryPoint
 				// of our own panels.
 				ContainerWidget c = arc.gui.gwt.widget.panel.RootPanel.container();
 				RootPanel.get().remove(c);
-				Desktop d = new Desktop(RootPanel.get());
 				
 				try
 				{
+					Desktop d = new Desktop(RootPanel.get());
+
 					MetadataEditor me = new MetadataEditor();
 					me.setPixelSize(1000, 678);
 					d.registerWindow("MetadataEditor", "Metadata Editor", me);
+					
+					AttributesEditor ae = new AttributesEditor();
+					d.registerWindow("AttributesEditor", "Attributes", ae, true, false);
+
 					MethodBuilder mb = new MethodBuilder(d.getEventBus());
 					d.registerWindow("MethodBuilder", "Method Builder", mb);
 					mb.setPixelSize(1200, 800);
@@ -91,8 +95,6 @@ public class Monbulk implements EntryPoint
 					}
 					
 					Window.alert("Monbulk desktop: " + msg);
-					
-					
 				}
 			}
 

@@ -1,6 +1,7 @@
 package monbulk.MetadataEditor;
 
 import monbulk.shared.Services.Metadata;
+import monbulk.client.desktop.Desktop;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -10,6 +11,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
 
 public class AttributesPanel extends ElementPanel
 {
@@ -56,6 +58,12 @@ public class AttributesPanel extends ElementPanel
 	void onAttributeSelected(ChangeEvent event)
 	{
 		setButtonState(true);
+	}
+	
+	@UiHandler("m_edit")
+	void onEditClicked(ClickEvent event)
+	{
+		Desktop.get().show("AttributesEditor", true);
 	}
 	
 	private void setButtonState(boolean enabled)
