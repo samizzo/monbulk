@@ -38,6 +38,11 @@ public class appletWindowCaption extends Composite implements Caption
     public void setParentApplet(appletWindow parent)
     {
 		m_parentWindow = parent;
+		WindowSettings ws = m_parentWindow.getWindowSettings();
+		if (ws != null)
+		{
+			m_maximise.setVisible(ws.resizable);
+		}
     }
     
 	public appletWindowCaption(String title, HandlerManager eventBus)
@@ -119,9 +124,8 @@ public class appletWindowCaption extends Composite implements Caption
 	@UiHandler("m_maximise")
 	public void onMaximiseClick(ClickEvent event)
 	{
-		IWindow window = (IWindow)m_parentWindow.getWidget();
-		WindowSettings ws = window.getWindowSettings();
-		if (ws.resizable)
+		WindowSettings ws = m_parentWindow.getWindowSettings();
+		if (ws != null && ws.resizable)
 		{
 			m_eventBus.fireEvent(new WindowEvent(m_parentWindow.getId(), WindowEvent.EventType.MaximiseWindow));
 		}

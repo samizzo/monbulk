@@ -496,9 +496,9 @@ h1 {
 .WindowClose
 {
 	background-image: url("images/sprites.png");
-	background-position: -201px -37px;
-	width: 24px;
-	height: 24px;
+	background-position: -205px -42px;
+	width: 17px;
+	height: 12px;
 	color: #b4b4b4;
 	outline: 0;
 }
@@ -506,22 +506,21 @@ h1 {
 .WindowExpand
 {
 	background-image: url("images/sprites.png");
-	width: 24px;
-	height: 24px;
-	background-position: -167px -37px;
+	width: 14px;
+	height: 15px;
+	background-position: -172px -41px;
 	color: #b4b4b4;
 	outline: 0;
 }
 
 .WindowClose:Hover
 {
-	background-position: -201px -10px;
+	background-position: -205px -15px;
 }
 
 .WindowExpand:Hover
 {
-	background-position: -167px -10px;
-	color: #cccccc;
+	background-position: -172px -14px;
 }
 
 .appWindow-Dialog .dialogContent

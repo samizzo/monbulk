@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.DialogBox;
+import monbulk.client.desktop.Desktop;
 
 public class appletWindow extends DialogBox
 {
@@ -27,7 +28,6 @@ public class appletWindow extends DialogBox
 	{
 		super(false, false, new appletWindowCaption(title, eventBus));
 		appletWindowCaption c = (appletWindowCaption)getCaption();
-		c.setParentApplet(this);
 
 		m_id = id;
 		m_eventBus = eventBus;
@@ -38,6 +38,8 @@ public class appletWindow extends DialogBox
 		}
 
 		setWidget(widget);
+		
+		c.setParentApplet(this);
 	}
 
 	public void setMinSize(int minWidth, int minHeight)
@@ -93,21 +95,17 @@ public class appletWindow extends DialogBox
 			m_prevX = getPopupLeft();
 			m_prevY = getPopupTop();
 
+			int topNavHeight = Desktop.get().getTopNavHeight();
 			newWidth = Window.getClientWidth() - (getOffsetWidth() - w.getOffsetWidth());
-			newHeight = Window.getClientHeight() - (getOffsetHeight() - w.getOffsetHeight());
-			newX = newY = 0;
+			newHeight = Window.getClientHeight() - (getOffsetHeight() - w.getOffsetHeight()) - topNavHeight;
+			newX = 0;
+			newY = topNavHeight;
 		}
 
 		boolean wasMaximised = m_isMaximised;
 		w.setSize(newWidth + "px", newHeight + "px");
 		setPopupPosition(newX, newY);
 		m_isMaximised = !wasMaximised;
-
-		if (m_isMaximised)
-		{
-			// Ensure the window is centred.
-			center();
-		}
     }
     
     // Returns true if we actually resized the height.
@@ -146,5 +144,17 @@ public class appletWindow extends DialogBox
     	}
     	
     	return false;
+    }
+    
+    public WindowSettings getWindowSettings()
+    {
+    	Widget widget = getWidget();
+    	if (widget instanceof IWindow)
+    	{
+    		IWindow window = (IWindow)widget;
+    		return window.getWindowSettings();
+    	}
+    	
+    	return null;
     }
 }

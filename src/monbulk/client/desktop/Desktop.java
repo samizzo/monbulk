@@ -15,6 +15,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Label;
@@ -40,6 +41,7 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 	@UiField VerticalPanel m_buttons;
 	@UiField Label m_time;
 	@UiField Label m_username;
+	@UiField HTMLPanel m_topNav;
 
 	// TODO: Use a SimpleEventBus instead of HandlerManager.
 	private HandlerManager m_eventBus = new HandlerManager(null);
@@ -254,6 +256,11 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 	public HandlerManager getEventBus()
 	{
 		return m_eventBus;
+	}
+	
+	public int getTopNavHeight()
+	{
+		return m_topNav.getOffsetHeight();
 	}
 
 	// Handle native events so we can perform window resizing.	
