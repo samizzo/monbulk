@@ -30,28 +30,22 @@
 		}
 	</ui:style>
 
-	<g:LayoutPanel width="100%" height="273px">
+	<g:LayoutPanel width="100%" height="260px">
 		<g:layer top="0px" height="30px" left="0px" width="150px">
 			<g:CheckBox text="From dictionary" ui:field="m_fromDictionary" />
 		</g:layer>
 		<g:layer top="30px" height="30px" left="20px" width="300px">
 			<g:ListBox visibleItemCount="1" ui:field="m_dictionaryCombo" styleName="{style.DictionaryCombo}" />
 		</g:layer>
-		<g:layer top="64px" left="0px" right="0px" bottom="0px">
-			<g:DockLayoutPanel unit="EM" width="100%" height="100%">
-				<g:center>
-					<g:HorizontalPanel width="100%" height="100%" styleName="{style.Values}">
-						<g:ListBox visibleItemCount="12" ui:field="m_values" width="100%" height="100%" />
-					</g:HorizontalPanel>
-				</g:center>
-				<g:south size="2">
-					<g:HTMLPanel ui:field="m_enumButtons">
-						<g:Button ui:field="m_add" styleName="{style.Button}" text="Add" />
-						<g:Button ui:field="m_remove" styleName="{style.Button}" text="Remove" />
-						<g:Button ui:field="m_saveAsDictionary" styleName="{style.ButtonSaveAsDictionary}" text="Save as dictionary" />
-					</g:HTMLPanel>
-				</g:south>
-			</g:DockLayoutPanel>
+		<g:layer top="64px" left="4px" right="4px" bottom="30px">
+			<g:ListBox visibleItemCount="12" ui:field="m_values" width="100%" height="100%" />
+		</g:layer>
+		<g:layer bottom="0px" height="26px" left="4px" right="0px">
+			<g:HTMLPanel ui:field="m_enumButtons">
+				<g:Button ui:field="m_add" styleName="{style.Button}" text="Add" />
+				<g:Button ui:field="m_remove" styleName="{style.Button}" text="Remove" />
+				<g:Button ui:field="m_saveAsDictionary" styleName="{style.ButtonSaveAsDictionary}" text="Save as dictionary" />
+			</g:HTMLPanel>
 		</g:layer>
 	</g:LayoutPanel>
 </ui:UiBinder> 
