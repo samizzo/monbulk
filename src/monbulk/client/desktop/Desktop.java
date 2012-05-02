@@ -77,7 +77,16 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 		private void createAppletWindow(Widget widget)
 		{
 			WindowSettings ws = m_windowSettings;
-			widget.setPixelSize(ws.width, ws.height);
+			if (ws.width == -1 || ws.height == -1)
+			{
+				String width = ws.width == -1 ? "100%" : (ws.width + "px");
+				String height = ws.height == -1 ? "100%" : (ws.height + "px");
+				widget.setSize(width, height);
+			}
+			else
+			{
+				widget.setPixelSize(ws.width, ws.height);
+			}
 
 			appletWindow newWindow = new appletWindow(ws.windowTitle, ws.windowId, m_eventBus, widget);
 			newWindow.setModal(ws.modal);
@@ -156,7 +165,7 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 	}
 	
 	// Shows the specified window.
-	public void show(String windowId, boolean centre)
+	public IWindow show(String windowId, boolean centre)
 	{
 		Window w = findWindow(windowId);
 		if (w != null)
@@ -173,7 +182,22 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 			{
 				w.m_applet.center();
 			}
+			
+			return (IWindow)w.m_applet.getWidget();
 		}
+		
+		return null;
+	}
+	
+	public IWindow getWindow(String windowId)
+	{
+		Window w = findWindow(windowId);
+		if (w != null)
+		{
+			return (IWindow)w.m_applet.getWidget();
+		}
+		
+		return null;
 	}
 	
 	// Hides the specified window.
@@ -188,6 +212,13 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 	
 	private void hide(Window window)
 	{
+		IWindow w = (IWindow)window.m_applet.getWidget();
+		if (w instanceof IWindow.HideHandler)
+		{
+			IWindow.HideHandler handler = (IWindow.HideHandler)w;
+			handler.onHide();
+		}
+
 		window.m_applet.hide();
 
 		if (m_modalWindow == window)

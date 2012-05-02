@@ -9,6 +9,8 @@ public class WindowEvent extends GwtEvent<WindowEventHandler>
 		ActivateWindow,
 		CloseWindow,
 		MaximiseWindow,
+		Ok,
+		Cancel,
 	}
 	
 	public static Type<WindowEventHandler> TYPE = new Type<WindowEventHandler>();

@@ -10,6 +10,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 
 public class ElementProperties extends Composite
 {
@@ -25,7 +26,7 @@ public class ElementProperties extends Composite
 	public ElementProperties()
 	{
 		// Register all available element panels.
-		m_availablePanels.add(new CommonElementPanel(null));
+		m_availablePanels.add(new CommonElementPanel());
 		m_availablePanels.add(new EnumerationElementPanel());
 		m_availablePanels.add(new StringElementPanel());
 		m_availablePanels.add(new DateElementPanel());
@@ -35,22 +36,41 @@ public class ElementProperties extends Composite
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
-	public void setChangeTypeHandler(CommonElementPanel.ChangeTypeHandler handler)
+	private CommonElementPanel getCommonElementPanel()
 	{
 		for (ElementPanel p : m_availablePanels)
 		{
 			if (p instanceof CommonElementPanel)
 			{
 				CommonElementPanel panel = (CommonElementPanel)p;
-				panel.setChangeTypeHandler(handler);
-				break;
+				return panel;
 			}
+		}
+		
+		return null;
+	}
+
+	public void setIsForAttributes(boolean attributes)
+	{
+		CommonElementPanel p = getCommonElementPanel();
+		if (p != null)
+		{
+			p.setIsForAttributes(attributes);
+		}
+	}
+	
+	public void setChangeTypeHandler(CommonElementPanel.ChangeTypeHandler handler)
+	{
+		CommonElementPanel p = getCommonElementPanel();
+		if (p != null)
+		{
+			p.setChangeTypeHandler(handler);
 		}
 	}
 
-	public void setElement(Metadata.Element element)
+	public void setElement(Metadata.Element element, boolean updateCurrent)
 	{
-		clear();
+		clear(updateCurrent);
 
 		m_element = element;
 		
@@ -85,9 +105,13 @@ public class ElementProperties extends Composite
 	}
 	
 	// Removes all element panels.
-	public void clear()
+	public void clear(boolean updateCurrent)
 	{
-		updateCurrentElement();
+		if (updateCurrent)
+		{
+			updateCurrentElement();
+		}
+
 		m_element = null;
 		m_elementPanels.clear();
 		m_properties.clear();
@@ -105,7 +129,7 @@ public class ElementProperties extends Composite
 			}
 		}
 	}
-
+	
 	private void addElementPanel(ElementPanel panel)
 	{
 		m_properties.add(panel);

@@ -30,16 +30,23 @@ public class CommonElementPanel extends ElementPanel
 
 	interface ElementPanelUiBinder extends UiBinder<Widget, CommonElementPanel> { }
 
-	public CommonElementPanel(ChangeTypeHandler handler)
+	public CommonElementPanel()
 	{
-		m_changeTypeHandler = handler;
-
 		Widget w = uiBinder.createAndBindUi(this);
 		initWidget(w);
 		
+		setIsForAttributes(false);
+	}
+	
+	// If attributes is true, this panel is used to display
+	// properties of attributes, so don't allow selection of
+	// certain metadata element types.
+	public void setIsForAttributes(boolean attributes)
+	{
+		m_type.clear();
 		for (Metadata.ElementTypes e : Metadata.ElementTypes.values())
 		{
-			if (e.isVisible())
+			if (e.isVisible() && (!attributes || e.isUseInAttributes()))
 			{
 				m_type.addItem(e.toString());
 			}

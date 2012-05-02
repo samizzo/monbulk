@@ -174,7 +174,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	{
 		try
 		{
-			Metadata.Element newElement = Metadata.createElement("string", "New element", "New element description");
+			Metadata.Element newElement = Metadata.createElement("string", "New element", "New element description", false);
 			Metadata.Element selectedElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
 			
 			// If there is a selected element and it's a document element pull it out.
@@ -280,7 +280,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 	private void clearElements()
 	{
-		m_elementProperties.setElement(null);
+		m_elementProperties.setElement(null, true);
 		m_selectedElement = null;
 		m_removeElement.setEnabled(false);
 	}
@@ -308,7 +308,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		try
 		{
 			Metadata.ElementTypes t = Metadata.ElementTypes.valueOf(newType);
-			newElement = Metadata.createElement(t.getMetaName(), element.getSetting("name", ""), element.getDescription());
+			newElement = Metadata.createElement(t.getMetaName(), element.getSetting("name", ""), element.getDescription(), false);
 		}
 		catch (Exception e)
 		{
@@ -369,7 +369,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		if (o != null)
 		{
 			Metadata.Element element = (Metadata.Element)o;
-			m_elementProperties.setElement(element);
+			m_elementProperties.setElement(element, true);
 		}
 	}
 }

@@ -10,37 +10,41 @@ public class Metadata
 	public enum ElementTypes
 	{
 		// These types are unique classes.
-		Document("document", true, false),
-		Enumeration("enumeration", true, false),
+		Document("document", true, false, false),
+		Enumeration("enumeration", true, false, true),
 
 		// These types are generic.
-		String("string", true, false),
-		Integer("integer", true, true),
-		Date("date", true, false),
-		Float("float", true, true),
-		Double("double", true, true),
-		Long("long", true, true),
-		Boolean("boolean", true, false),
-		Keyword("keyword", true, false),
+		String("string", true, false, true),
+		Integer("integer", true, true, true),
+		Date("date", true, false, true),
+		Float("float", true, true, true),
+		Double("double", true, true, true),
+		Long("long", true, true, true),
+		Boolean("boolean", true, false, false),
+		Keyword("keyword", true, false, false),
 		
 		// Special types that aren't visible or selectable by the user.
-		AssetId("asset-id", false, false),
-		Asset("asset", false, false),
-		CiteableId("citeable-id", false, false),
-		EmailAddress("email-address", false, false),
-		Number("number", false, true),
-		Attribute("attribute", false, false),
-		All("all", false, false);
+		AssetId("asset-id", false, false, false),
+		Asset("asset", false, false, false),
+		CiteableId("citeable-id", false, false, false),
+		EmailAddress("email-address", false, false, false),
+
+		// Special types that aren't real MF types.
+		Number("number", false, true, true),
+		Attribute("attribute", false, false, false),
+		All("all", false, false, false);
 		
 		private String m_typeName;
 		private boolean m_isVisible;
 		private boolean m_isNumber;
+		private boolean m_useInAttributes;
 
-		ElementTypes(String typeName, boolean isVisible, boolean isNumber)
+		ElementTypes(String typeName, boolean isVisible, boolean isNumber, boolean useInAttributes)
 		{
 			m_typeName = typeName;
 			m_isVisible = isVisible;
 			m_isNumber = isNumber;
+			m_useInAttributes = useInAttributes;
 		}
 		
 		public String getMetaName()
@@ -56,6 +60,11 @@ public class Metadata
 		public boolean isNumber()
 		{
 			return m_isNumber;
+		}
+		
+		public boolean isUseInAttributes()
+		{
+			return m_useInAttributes;
 		}
 		
 		// Returns true if this type is the same as otherType, or if this type
@@ -85,12 +94,12 @@ public class Metadata
 		String typeName = e.value("@type");
 		String name = e.value("@name");
 		String description = e.value("description");
-		Metadata.Element element = createElement(typeName, name, description);
+		Metadata.Element element = createElement(typeName, name, description, false);
 		element.setXmlElement(e);
 		return element;
 	}
 	
-	public static Metadata.Element createElement(String typeName, String name, String description) throws Exception
+	public static Metadata.Element createElement(String typeName, String name, String description, boolean isAttribute) throws Exception
 	{
 		ElementTypes type = ElementTypes.fromMetaName(typeName);
 
@@ -100,11 +109,11 @@ public class Metadata
 		}
 		else if (type == ElementTypes.Enumeration)
 		{
-			return new EnumerationElement(name, description);
+			return new EnumerationElement(name, description, isAttribute);
 		}
 		else
 		{
-			return new Element(type, name, description);
+			return new Element(type, name, description, isAttribute);
 		}
 	}
 	
@@ -116,16 +125,18 @@ public class Metadata
 		protected ElementTypes m_type;
 		protected HashMap<String, String> m_settings = new HashMap<String, String>();
 		protected HashMap<String, String> m_restrictions = new HashMap<String, String>();
+		protected boolean m_isAttribute = false;
 
 		// Attributes on an element are stored as a list of elements,
 		// since they are almost exactly the same.
 		protected ArrayList<Element> m_attributes = new ArrayList<Element>();
 
-		public Element(ElementTypes type, String name, String description)
+		public Element(ElementTypes type, String name, String description, boolean isAttribute)
 		{
 			setSetting("name", name);
 			m_description = description;
 			m_type = type;
+			m_isAttribute = isAttribute;
 		}
 
 		public void setRestriction(String name, String value)
@@ -211,6 +222,7 @@ public class Metadata
 						try
 						{
 							Element element = createElement(e);
+							element.m_isAttribute = true;
 							m_attributes.add(element);
 						}
 						catch (Exception exception)
@@ -221,6 +233,7 @@ public class Metadata
 			}
 		}
 
+		// TODO: Should parent be the owner Element for attributes?
 		public DocumentElement getParent()
 		{
 			return m_parent;
@@ -253,7 +266,7 @@ public class Metadata
 		
 		public boolean canHaveAttributes()
 		{
-			return m_type != ElementTypes.Date;
+			return m_type != ElementTypes.Date && !m_isAttribute;
 		}
 	}
 	
@@ -264,7 +277,7 @@ public class Metadata
 
 		public DocumentElement(String name, String description)
 		{
-			super(ElementTypes.Document, name, description);
+			super(ElementTypes.Document, name, description, false);
 		}
 		
 		public ArrayList<Element> getElements()
@@ -283,9 +296,9 @@ public class Metadata
 		private ArrayList<String> m_values = new ArrayList<String>();
 		private String m_dictionaryName = "";
 		
-		public EnumerationElement(String name, String description)
+		public EnumerationElement(String name, String description, boolean isAttribute)
 		{
-			super(ElementTypes.Enumeration, name, description);
+			super(ElementTypes.Enumeration, name, description, isAttribute);
 		}
 		
 		// Returns the values of the enum.  Note that this could
