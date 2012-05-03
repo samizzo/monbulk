@@ -9,6 +9,8 @@
 	<g:HTMLPanel>
 		<g:VerticalPanel>
 		<g:ScrollPanel height="420px">
+		<!-- Have to be a list of widgets -->
+		<g:StackLayoutPanel unit="PX" height="100%" width="100%" styleName="menuStack" ui:field="_MenuStack" />
 			<g:MenuBar ui:field="_MethodList" vertical="true"></g:MenuBar>
 		</g:ScrollPanel>
 		<g:PushButton ui:field="_Newbutton" text="New Method"></g:PushButton>

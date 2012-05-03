@@ -3,13 +3,14 @@ package monbulk.MethodBuilder.client.view;
 import java.util.Iterator;
 import java.util.List;
 
+
+import monbulk.shared.Architecture.IPresenter;
+import monbulk.shared.view.iMenuWidget;
+
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
-
-import monbulk.MethodBuilder.shared.MenuCommand;
-import monbulk.shared.view.iMenuWidget;
 
 
 public class MethodBuilderMenu extends MenuBar implements iMenuWidget {
@@ -67,12 +68,19 @@ public class MethodBuilderMenu extends MenuBar implements iMenuWidget {
 		{
 			//What this should be is a 2d array with a string for the text and a string for the command to call
 			//this.addItem(new MenuItem());
-			String MenuText = it.next();
-			MenuCommand tmpCommand = new MenuCommand(MenuText, eventBus);
+			/*String MenuText = it.next();
+			MenuCommand tmpCommand = new MenuCommand(MenuText, eventBus); 
+			//MenuCommand tmpCommand = new MenuCommand(MenuText, eventBus);
 			MenuItem tmpItem = new MenuItem(MenuText,tmpCommand);
 			tmpItem.setStyleName(this.PassiveClassName);
-			this.addItem(tmpItem);
+			this.addItem(tmpItem);*/
 			
 		}
+	}
+
+	@Override
+	public void setPresenter(IPresenter tmpPresenter) {
+		// TODO Auto-generated method stub
+		
 	}
 }
