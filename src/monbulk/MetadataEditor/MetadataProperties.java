@@ -316,17 +316,18 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			return;
 		}
 
+		// Remove old element and insert new element at same position.
 		Metadata.DocumentElement docParent = element.getParent();
 		ArrayList<Metadata.Element> elements = docParent == null ? m_metadata.getElements() : docParent.getElements();
 		newElement.setParent(docParent);
 		
-		int oldIndex = elements.indexOf(element);
-		elements.remove(element);
-		elements.add(oldIndex, newElement);
+		int index = elements.indexOf(element);
+		elements.set(index, newElement);
 
-		// Refresh the tree.
+		// Refresh the tree of elements by removing the old
+		// element and inserting the new one.
 		TreeItem parent = m_selectedElement.getParentItem();
-		int index = parent != null ? parent.getChildIndex(m_selectedElement) : getTreeItemIndex(m_selectedElement);
+		index = parent != null ? parent.getChildIndex(m_selectedElement) : getTreeItemIndex(m_selectedElement);
 		
 		if (index >= 0)
 		{
