@@ -197,12 +197,20 @@ public class AttributesPanel extends ElementPanel implements WindowEventHandler
 							attributes.add(m_editAttribute);
 						}
 					}
-					else if (m_typeChanged)
+					else
 					{
-						// Editing an attribute and it changed type, so replace
-						// the old element with the new one.
-						int index = attributes.indexOf(m_editAttribute);
-						attributes.set(index, m_newAttribute);
+					 	if (m_typeChanged)
+					 	{
+							// Editing an attribute and it changed type, so replace
+							// the old element with the new one.
+							int index = attributes.indexOf(m_editAttribute);
+							attributes.set(index, m_newAttribute);
+							m_editAttribute = m_newAttribute;
+					 	}
+					 	
+					 	// Update the name in the list box.
+					 	int selected = m_attributes.getSelectedIndex();
+					 	m_attributes.setItemText(selected, m_editAttribute.getSetting("name", ""));
 					}
 					break;
 				}
@@ -213,7 +221,7 @@ public class AttributesPanel extends ElementPanel implements WindowEventHandler
 				}
 			}
 			
-			m_editAttribute = null;
+			m_newAttribute = m_editAttribute = null;
 		}
 	}
 }
