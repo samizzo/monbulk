@@ -579,6 +579,13 @@ h1 {
 	height: 34px;
 }
 
+.dialogBottomRightNoResize
+{
+	background: url(images/sprites.png) no-repeat -191px -221px;
+	width: 29px;
+	height: 34px;
+}
+
 .appWindow-Dialog  .dialogBottomCenter
 {
  	background: url(images/hori-bottom.png) repeat-x 0px 0px;

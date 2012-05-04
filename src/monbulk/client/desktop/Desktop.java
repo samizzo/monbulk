@@ -26,6 +26,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
+import com.google.gwt.dom.client.Node;
 
 import monbulk.client.event.WindowEvent;
 import monbulk.client.event.WindowEventHandler;
@@ -73,6 +74,33 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 				createButton();
 			}
 		}
+		
+		private boolean patchBottomRightElement(Element element)
+		{
+			String className = element.getClassName();
+			if (className != null && className.equals("dialogBottomRight"))
+			{
+				element.replaceClassName("dialogBottomRight", "dialogBottomRightNoResize");
+				return true;
+			}
+			else
+			{
+				int count = element.getChildCount();
+				for (int i = 0; i < count; i++)
+				{
+					Node n = element.getChild(i);
+					if (n instanceof Element)
+					{
+						if (patchBottomRightElement((Element)n))
+						{
+							return true;
+						}
+					}
+				}
+
+				return false;
+			}
+		}
 
 		private void createAppletWindow(Widget widget)
 		{
@@ -94,6 +122,10 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 			// HACK: So we can identify our window when processing native events.
 			newWindow.getElement().setId("appletWindowId-" + ws.windowId);
 			newWindow.setStyleName("appWindow-Dialog");
+			if (!ws.resizable)
+			{
+				patchBottomRightElement(newWindow.getElement());
+			}
 			newWindow.setHeight("100%");
 			newWindow.setWidth("100%");
 			newWindow.setMinSize(ws.minWidth, ws.minHeight);
