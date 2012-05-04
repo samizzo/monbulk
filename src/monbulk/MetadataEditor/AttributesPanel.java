@@ -67,8 +67,10 @@ public class AttributesPanel extends ElementPanel implements WindowEventHandler
 	
 	private void showEditor(Metadata.Element element)
 	{
-		AttributesEditor editor = (AttributesEditor)Desktop.get().show("AttributesEditor", true);
+		Desktop d = Desktop.get();
+		AttributesEditor editor = (AttributesEditor)d.getWindow("AttributesEditor");
 		editor.setElement(element);
+		d.show("AttributesEditor", true);
 	}
 
 	@UiHandler("m_edit")
