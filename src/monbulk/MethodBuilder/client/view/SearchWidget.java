@@ -2,24 +2,16 @@ package monbulk.MethodBuilder.client.view;
 
 import monbulk.shared.Architecture.ISearchController;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+// FIXME: Not sure why this extends Composite, because the SearchWidget instance itself isn't used anywhere.
 public class SearchWidget extends Composite {
 
 		private PushButton _btnSearch;
@@ -47,6 +39,7 @@ public class SearchWidget extends Composite {
 			}
 			
 		});
+		_HeaderWidget = new HorizontalPanel();
 		this._HeaderWidget.add(this._btnSearch);
 		this._HeaderWidget.add(this._tbSearchText);
 		
