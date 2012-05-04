@@ -2,6 +2,8 @@ package monbulk.MetadataEditor;
 
 import java.util.ArrayList;
 
+import org.w3c.dom.Element;
+
 import monbulk.shared.Services.Metadata;
 import monbulk.client.desktop.Desktop;
 import monbulk.client.event.*;
@@ -26,7 +28,10 @@ public class AttributesPanel extends ElementPanel implements WindowEventHandler
 	@UiField Button m_remove;
 	@UiField Button m_edit;
 	
-	private Metadata.Element m_newElement;
+	private Metadata.Element m_editAttribute;
+	private Metadata.Element m_newAttribute;
+	private boolean m_addNewElement = false;
+	private boolean m_typeChanged = false;
 
 	public AttributesPanel()
 	{
@@ -65,11 +70,52 @@ public class AttributesPanel extends ElementPanel implements WindowEventHandler
 		setButtonState(true);
 	}
 	
-	private void showEditor(Metadata.Element element)
+	private void showEditor(Metadata.Element element, boolean addNewElement)
 	{
 		Desktop d = Desktop.get();
-		AttributesEditor editor = (AttributesEditor)d.getWindow("AttributesEditor");
+
+		// Listen for window events so we can process ok/cancel buttons.
+		d.getEventBus().addHandler(WindowEvent.TYPE, this);
+
+		m_typeChanged = false;
+		m_editAttribute = element;
+		m_addNewElement = addNewElement;
+
+		final AttributesEditor editor = (AttributesEditor)d.getWindow("AttributesEditor");
 		editor.setElement(element);
+		editor.setChangeTypeHandler(new CommonElementPanel.ChangeTypeHandler()
+		{
+			public void onChangeType(Metadata.Element element, String newType)		
+			{
+				// Create new element from old and give it to the editor.
+				try
+				{
+					Metadata.ElementTypes t = Metadata.ElementTypes.valueOf(newType);
+					Metadata.Element newAttribute = Metadata.createElement(t.getMetaName(), element.getSetting("name", ""), element.getDescription(), true);
+					if (m_addNewElement)
+					{
+						// Adding a new attribute so just overwrite the
+						// previous m_editAttribute.
+						m_editAttribute = m_newAttribute = newAttribute;
+					}
+					else
+					{
+						// Changing the type of an existing attribute so
+						// we need to remember the previous attribute.
+						m_newAttribute = newAttribute;
+					}
+
+					editor.setElement(m_newAttribute);
+					m_typeChanged = true;
+				}
+				catch (Exception e)
+				{
+					GWT.log(e.toString());
+					return;
+				}
+
+			}
+		});
 		d.show("AttributesEditor", true);
 	}
 
@@ -82,7 +128,7 @@ public class AttributesPanel extends ElementPanel implements WindowEventHandler
 		{
 			// Show the editor and set the element to edit.
 			Metadata.Element element = attributes.get(index);
-			showEditor(element);
+			showEditor(element, false);
 		}
 	}
 	
@@ -113,12 +159,12 @@ public class AttributesPanel extends ElementPanel implements WindowEventHandler
 	{
 		try
 		{
-			m_newElement = Metadata.createElement("String", "attribute", "An attribute", true);
-			Desktop.get().getEventBus().addHandler(WindowEvent.TYPE, this);
-			showEditor(m_newElement);
+			Metadata.Element element = Metadata.createElement("String", "attribute", "An attribute", true);
+			showEditor(element, true);
 		}
 		catch (Exception e)
 		{
+			GWT.log(e.toString());
 		}
 	}
 	
@@ -138,12 +184,25 @@ public class AttributesPanel extends ElementPanel implements WindowEventHandler
 			{
 				case Ok:
 				{
-					// Add the new attribute to the list.
-					String name = m_newElement.getSetting("name", "");
-					if (name.length() > 0)
+					ArrayList<Metadata.Element> attributes = m_element.getAttributes();
+
+					if (m_addNewElement)
 					{
-						m_attributes.addItem(name);
-						m_element.getAttributes().add(m_newElement);
+						// Adding a new element, so add it to the list and the
+						// parent element.
+						String name = m_editAttribute.getSetting("name", "");
+						if (name.length() > 0)
+						{
+							m_attributes.addItem(name);
+							attributes.add(m_editAttribute);
+						}
+					}
+					else if (m_typeChanged)
+					{
+						// Editing an attribute and it changed type, so replace
+						// the old element with the new one.
+						int index = attributes.indexOf(m_editAttribute);
+						attributes.set(index, m_newAttribute);
 					}
 					break;
 				}
@@ -154,7 +213,7 @@ public class AttributesPanel extends ElementPanel implements WindowEventHandler
 				}
 			}
 			
-			m_newElement = null;
+			m_editAttribute = null;
 		}
 	}
 }

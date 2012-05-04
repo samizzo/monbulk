@@ -39,6 +39,11 @@ public class AttributesEditor extends Composite implements IWindow, IWindow.Hide
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
+	public void setChangeTypeHandler(CommonElementPanel.ChangeTypeHandler handler)
+	{
+		m_elementProperties.setChangeTypeHandler(handler);
+	}
+	
 	public void onHide()
 	{
 		m_elementProperties.setElement(null, false);
