@@ -202,6 +202,12 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	 */
 	@Override
 	public void onReadMethodList(ArrayList<pojoMethod> arrMethods) {
+		// HACK: Temporary, so it doens't throw a bunch of exceptions.
+		if (true)
+		{
+			return;
+		}
+
 		Iterator<pojoMethod> it = arrMethods.iterator();
 		SearchWidget _SearchWidget = new SearchWidget(this);
 		this._MenuStack.add(null,_SearchWidget.getHeaderWidget(),30);
