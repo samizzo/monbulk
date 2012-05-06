@@ -26,7 +26,7 @@ public class Monbulk implements EntryPoint
 	public void onModuleLoad()
 	{
 		String hostName = Window.Location.getHostName();
-		if (hostName.equals("127.0.0.1"))
+		if (hostName.equals("localhost"))
 		{
 			debugLogon();
 		}

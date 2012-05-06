@@ -2,6 +2,7 @@ package monbulk.MethodBuilder.client.view;
 
 import monbulk.shared.Architecture.ISearchController;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.ui.Composite;
@@ -20,13 +21,17 @@ public class SearchWidget extends Composite {
 		private HorizontalPanel _HeaderWidget;
 		private final ISearchController _Controller;
 		public SearchWidget(ISearchController tmpControl) {
-		
-			this._Controller = tmpControl;
+		this._Controller = tmpControl;
+		this._tbSearchText = new TextBox();
+		this._tbSearchText.setStyleName("tbSearchBox");
+		try
+		{
+		 this._HeaderWidget = new HorizontalPanel();
+		 this._Filters = new HTMLPanel("");
 		_btnSearch = new PushButton();
 		_btnSearch.setStyleName("btnSearch");
 		
-		this._tbSearchText = new TextBox();
-		this._tbSearchText.setStyleName("tbSearchBox");
+		
 		this._tbSearchText.addChangeHandler(new ChangeHandler()
 		{
 
@@ -42,7 +47,12 @@ public class SearchWidget extends Composite {
 		_HeaderWidget = new HorizontalPanel();
 		this._HeaderWidget.add(this._btnSearch);
 		this._HeaderWidget.add(this._tbSearchText);
-		
+		this._tbSearchText.setWidth("140px");
+		}
+		catch(Exception ex)
+		{
+			GWT.log("Error Occurs @ SearchWidget.Construct" + ex.getMessage() + ex.getCause());
+		}
 		
 	}
 	public Widget getHeaderWidget()

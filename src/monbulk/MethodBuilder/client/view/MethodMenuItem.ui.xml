@@ -5,11 +5,15 @@
 		.important {
 			font-weight: bold;
 		}
+		.menuMethodName
+		{
+			font-size:12px;
+		}
 	</ui:style>
 	<g:HorizontalPanel ui:field="_hlContainer">
-		<g:Label ui:field="lblMenuMethodName" styleName="menuMethodName"></g:Label>
+		<g:Label ui:field="lblMenuMethodName" addStyleNames='{style.menuMethodName}'>Test</g:Label>
 		<g:Image></g:Image>
-		<g:PushButton ui:field="btnMenuEditMethod" styleName="menuEditMethod" />
-		<g:PushButton ui:field="btnMenuCloneMethod" styleName="menuCloneMethod" />
+		<g:PushButton ui:field="btnMenuEditMethod" styleName="menuEditMethod" text="E" />
+		<g:PushButton ui:field="btnMenuCloneMethod" styleName="menuCloneMethod" text="C" />
 		</g:HorizontalPanel>
 </ui:UiBinder> 

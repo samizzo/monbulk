@@ -2,6 +2,9 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
+		.mbLayoutContainer
+		{
+		}
 		.menuStack
 		{
 			
@@ -34,44 +37,98 @@
 		{
 			
 		}
+		.mbColumn1
+		{
+		min-width:200px;
+			width:600px;
+		}
+		.mbColumn2
+		{
+			width:580px;
+
+		}
+		.mbColumn3
+		{
+			width:300px;
+		
+		}
+		.mbRow1
+		{
+		}
+		.mbRow2
+		{
+		}
+		.mbRow3
+		{
+		}
+		.mbLayoutContainer
+		{
+	
+
+		}
+		.mbHeader
+		{
+		}
+		.mdHeader
+		{
+		}
+		.menuPanel
+		{
+		}
+		.dockPanel
+		{
+		}
+		.formPanel
+		{
+		}
+		.navPanel
+		{
+		}
 	</ui:style>
 	<g:LayoutPanel>
 		<g:layer>
 			<g:HTMLPanel>
-				<table style="padding:0px 0px;margin:0px;" cellspacing="0" cellpadding="0"><!-- 
+				<table style="padding:0px 0px;margin:0px;border:Solid 2px #999" cellspacing="0" cellpadding="0" class="mbLayoutContainer">
+				<!-- 
 					 -->
 					 <tr>
-					 	<td>
+					 	<td class="mbColumn1 mbRow1" style="width:200px;height:62px;">
 					 		<!--MenuTitle -->
-					 		Select Method
+					 		<div style="" class="mbHeader">
+					 			Select Method
+					 		</div>
 					 	</td>
-					 	<td>
+					 	<td class="mbColumn2 mbRow1" style="width:815px;">
 					 		<!-- Text -->
-					 		Ipso factum toto
+					 		<g:HorizontalPanel>
+					 		<g:PushButton styleName="mbHeaderEnd"></g:PushButton>
+					 		<g:Label>Ipso factum toto</g:Label>
+					 		</g:HorizontalPanel>
 					 	</td>
-					 	<td>
+					 	<td class="mbColumn3 mbRow1" style="width:280px;">
 					 		<!--  MetaData Title -->
-					 		MetaData
+					 	    <g:PushButton styleName="mdHeader">MetaData</g:PushButton>
 					 	</td>
 					 </tr>
 					 <tr>
-						<td>
+						<td class="mbRow2 menuPanel" style="border:Solid 2px #999">
 							<!-- Menu -->
 							<g:HTMLPanel ui:field="MenuPanel"/>
 						</td>
-						<td> <g:HTMLPanel ui:field="BodyPanel"/>
-							
-						</td>
-						<td>
-							<div style="position:absolute;left:818px;top:0px;width:200px;z-index:10;background-color:#dadada;border-bottom:Solid 4px #666;Border-top:Solid 1px White;">
-					 	 			<g:HTMLPanel ui:field="DockPanel"/>	 	
+						<td class="mbRow2 mbColumn2 formPanel" style="height:570px;border:Solid 2px #999"> 
+							<div>
+								<g:HTMLPanel ui:field="BodyPanel"/>
 							</div>
+						</td>
+						<td class="mbRow2 dockPanel">
+							<!-- <div style="position:absolute;left:818px;top:0px;width:200px;z-index:10;background-color:#dadada;border-bottom:Solid 4px #666;Border-top:Solid 1px White;"> -->
+					 	 			<g:HTMLPanel ui:field="DockPanel"/>	 	
 						
 						</td>
 					</tr>
 					 
 							<tr>
-								<td colspan="3" style="text-align:right;padding-right:5px;border-top:Solid 2px #999;float:right;">
+								<td colspan="3" class="mbRow3 navPanel" style="text-align:right;padding-right:5px;border-top:Solid 2px #999;float:right;">
 									<g:HTMLPanel ui:field="NavigationsPanel"></g:HTMLPanel>
 								</td>
 					 	 	</tr>

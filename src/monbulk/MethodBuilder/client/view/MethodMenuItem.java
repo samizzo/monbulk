@@ -14,6 +14,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -51,11 +52,21 @@ public class MethodMenuItem extends Composite implements HasText, IView {
 	private final String PassiveStyleName = "hlPassiveMenuContainer";
 	public MethodMenuItem(pojoMethod tmpMethod, int Index) {
 		initWidget(uiBinder.createAndBindUi(this));
+		try
+		{
+		
 		this._Index = Index;
 		this._DataObject = tmpMethod;
 		this.setText(this._DataObject.getFieldVale(pojoMethod.MethodNameField));
+		
 		this.setID(this._DataObject.getMethodID());
-		this._hlContainer.setStyleName(PassiveStyleName);
+		//this._hlContainer.setStyleName(PassiveStyleName);
+		//Window.alert("Do we construct");
+		}
+		catch(Exception ex)
+		{
+			GWT.log("Error Occurs @ MethodMenuItem.Construct" + ex.getMessage());
+		}
 	}
 
 	@UiHandler("btnMenuEditMethod")
@@ -116,12 +127,12 @@ public class MethodMenuItem extends Composite implements HasText, IView {
 	{
 		if(this._MethodName == Name)
 		{
-			this._hlContainer.setStyleName(ActiveStyleName);
+		//	this._hlContainer.setStyleName(ActiveStyleName);
 			
 		}
 		else
 		{
-			this._hlContainer.setStyleName(PassiveStyleName);
+			//this._hlContainer.setStyleName(PassiveStyleName);
 		}
 	}
 }

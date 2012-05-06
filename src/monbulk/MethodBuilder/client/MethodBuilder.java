@@ -12,6 +12,9 @@ import monbulk.MethodBuilder.client.view.MethodBuilderMaster;
 import monbulk.MethodBuilder.client.view.MethodList;
 
 import monbulk.shared.Architecture.IPresenter.DockedPresenter;
+import monbulk.shared.Events.DragEvent;
+import monbulk.shared.Events.DragEventHandler;
+import monbulk.shared.Model.pojo.pojoMethod;
 import monbulk.shared.view.iMenuWidget;
 import monbulk.shared.widgets.Window.*;
 import com.google.gwt.user.client.ui.ResizeComposite;
@@ -23,7 +26,8 @@ public class MethodBuilder extends ResizeComposite implements IWindow
 	private String CurrentState;
 	private HandlerManager eventBus;
 	private WindowSettings m_windowSettings;
-	
+	private String loadedMethodID;
+	private String loadedMethodName;
 	public MethodBuilder(HandlerManager evtBus)
 	{
 		m_windowSettings = new WindowSettings();
@@ -44,7 +48,11 @@ public class MethodBuilder extends ResizeComposite implements IWindow
 		//Binds Events
 		bind();		
 	}
-
+	private void loadMethod(String ID, String Name)
+	{
+		this.loadedMethodID = ID;
+		this.loadedMethodName = Name;
+	}
 	//We should also be able to launch from a position in History...
 	//Which means knowing the presenter state and the model being used
 
@@ -53,7 +61,7 @@ public class MethodBuilder extends ResizeComposite implements IWindow
 		
 		if(!initState.equals(this.CurrentState))
 		{
-			doMenuTransition(initState);
+			//doMenuTransition(initState);
 			CleanPanels();
 			
 			if(initState.equals("InitialiseMethodBuilder"))
@@ -88,11 +96,9 @@ public class MethodBuilder extends ResizeComposite implements IWindow
 			{
 				this.CurrentState="Edit Method";
 				
-				String ID = initState.replace("Edit:", "");
-				MethodCreatorPresenter mcp = new MethodCreatorPresenter(this.eventBus, ID);
-				
+				//String ID = initState.replace("Edit:", "");
+				MethodCreatorPresenter mcp = new MethodCreatorPresenter(this.eventBus, this.loadedMethodID);
 				this.CurrentPresenter = mcp;
-				
 				this.CurrentPresenter.go(getBodyContainer(),getDockContainer(),getNavigationContainer());
 				
 				//this.CurrentPresenter.
@@ -119,19 +125,31 @@ public class MethodBuilder extends ResizeComposite implements IWindow
 	    				 ChangeAppletState(event.getId());
 	    			}
 	    		}
-	    );	       
+	    );	     
+	    eventBus.addHandler(DragEvent.TYPE,
+	    		new DragEventHandler(){
+	    			@Override
+					public void onDrag(DragEvent event) {
+						//this.loadedMethodID = event.getPojo().getFieldVale(pojoMethod.MethodIDField);
+						//this.loadedMethodID = event.getPojo().getFieldVale(pojoMethod.MethodIDField);
+	    				loadMethod(event.getPojo().getFieldVale(pojoMethod.MethodIDField),event.getName());
+	    				ChangeAppletState(event.getId());
+					}
+	    		}
+	    );
+	    
    }
 
 	private void doMenuTransition(String ID)
 	{
-		AppletMenu.setActiveMenu(ID);
+		//AppletMenu.setActiveMenu(ID);
 	}
 	
 	public void setMenu()
 	{
 		try
 		{
-			AppletMenu = (iMenuWidget) new MethodList(this.eventBus,"WindowMenu","ActiveTab","gwt-MenuItem");
+			AppletMenu = (iMenuWidget) new MethodList(this.eventBus);//,"WindowMenu","ActiveTab","gwt-MenuItem");
 			getMenuContainer().add((Widget) AppletMenu);
 		}
 		catch(Exception ex)

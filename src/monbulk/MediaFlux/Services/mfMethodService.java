@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.xml.client.XMLParser;
 
@@ -55,6 +56,9 @@ public class mfMethodService extends MethodService {
 					 * </response>
 					 */
 					//Window.alert(xe.elements().);
+					try
+					{
+					
 					List<XmlElement> elemMethods =  xe.elements("method");
 					Iterator<XmlElement> i = elemMethods.iterator();
 					while(i.hasNext())
@@ -73,6 +77,11 @@ public class mfMethodService extends MethodService {
 					//Window.alert(xe.values("method").toString());
 					m_handler.onReadMethodList(methods);
 					break;
+					}
+					catch(Exception ex)
+					{
+						GWT.log("Error occurs @ mfMethodService.processResponse-LIST" + ex.getMessage() + ex.getStackTrace().toString());
+					}
 				}
 				case Describe:
 					/*<response>
