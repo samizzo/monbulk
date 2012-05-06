@@ -3,6 +3,7 @@ package monbulk.shared.Model.pojo;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
@@ -141,13 +142,13 @@ public class pojoMethodComplete implements IPojo{
 					
 					i++;
 				}
-				Window.alert(List);
+				//Window.alert(List);
 			}
 			
 		}
 		catch(DOMParseException ex)
 		{
-			Window.alert(ex.getMessage());
+			GWT.log("DOMParse Error @ pojoMethodComplete.readInput" + ex.getMessage());
 		}
 		
 	}

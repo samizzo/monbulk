@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 
 import monbulk.MethodBuilder.shared.iMBModel;
 import monbulk.shared.Architecture.IPresenter.FormPresenter;
@@ -134,6 +135,9 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 	@Override
 	public void onReadMethod(pojoMethodComplete method) {
 		
+		try
+		{
+			Window.alert("onReadMethod starts");
 		this.CompleteModel = method;
 		this.formCompleteModel = this.CompleteModel.getFormStructure();
 		this.Presenter.ModelUpdate("GetMethod");
@@ -152,6 +156,12 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 				this.allSteps.Update(tmpItem.getFormStructure());
 			}
 			this.subjectModel.Update(this.CompleteModel.getSubjectProperties().getFormStructure());
+			
+		}
+		}
+		catch(Exception ex)
+		{
+			GWT.log("Error occurs @ MethodCompleteModel.onReadMethod" + ex.getMessage());
 		}
 		
 		

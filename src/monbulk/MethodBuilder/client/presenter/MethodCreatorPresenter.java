@@ -16,6 +16,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
 
+import monbulk.MetadataEditor.MetadataList;
 import monbulk.MethodBuilder.client.event.ChangeWindowEvent;
 import monbulk.MethodBuilder.client.event.ChangeWindowEventHandler;
 import monbulk.MethodBuilder.client.model.MethodCompleteModel;
@@ -28,6 +29,7 @@ import monbulk.MethodBuilder.client.view.MethodDetailsView;
 import monbulk.MethodBuilder.client.view.MethodForm;
 import monbulk.MethodBuilder.client.view.StepForm;
 import monbulk.MethodBuilder.client.view.SubjectPropertiesForm;
+import monbulk.MethodBuilder.client.view.metaDataListIntegrated;
 import monbulk.client.event.WindowEvent;
 import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Architecture.IView;
@@ -121,10 +123,11 @@ public class MethodCreatorPresenter implements FormPresenter{
 	{		
 		this.ImplementedMethodView = new MethodDetailsView();
 		
-		this.ImplementedDockView = new DockView();
+		this.ImplementedDockView = new metaDataListIntegrated();
+		
 		this.ImplementedDockView.setPresenter(this);
 		AllStates = new ArrayList<PresenterState>();
-		tclBox = new appletWindow("TCL Viewer", "TCLViewer", this.eventBus, null);
+		//tclBox = new appletWindow("TCL Viewer", "TCLViewer", this.eventBus, null);
 		SetStates(ID);
 		bind();
 	}
@@ -143,8 +146,9 @@ public class MethodCreatorPresenter implements FormPresenter{
 	}
 	private void SetStates(String ID)
 	{
-	
-			GWT.log(mainModel.getFormData().toString());
+			try
+			{
+			//GWT.log(mainModel.getFormData().toString());
 			MethodForm tmpForm = new MethodForm();
 			tmpForm.LoadForm(mainModel.getFormData());
 			tmpForm.setPresenter(this);			
@@ -167,6 +171,11 @@ public class MethodCreatorPresenter implements FormPresenter{
 			AllStates.add(tmpState);
 			AllStates.add(tmpState2);
 			AllStates.add(tmpState3);
+			}
+			catch(Exception ex)
+			{
+				GWT.log("Error Occurs @ MethodCreatorPresentor.SetStates" + ex.getMessage());
+			}
 	//
 		
 		
@@ -177,26 +186,37 @@ public class MethodCreatorPresenter implements FormPresenter{
 		if(this.CurrentState != null)
 		{
 			
+			
 			if(!this.CurrentState.equals(newState))
 			{
-				
-				this.CurrentState = newState;
-				Iterator<PresenterState> i = AllStates.iterator();
-				
-				while(i.hasNext())
+				try
 				{
-					PresenterState tmpState = (PresenterState)i.next();
-					if(tmpState.presenterState.equals(newState))
-					{
-						this.ImplementedMethodView.clearChild();
-						this.ImplementedMethodView.setChild(tmpState.getView().asWidget());
-						this.ImplementedMethodView.setPresenter(this);
-						//this.ImplementedDockView.setTabData(tmpState.getModel().getMetaDataCategories(), "MetaData");
-						GWT.log(tmpState.presenterState.toString());
-						return;
-					}
-					GWT.log(newState.name());
+					this.CurrentState = newState;
+					Iterator<PresenterState> i = AllStates.iterator();
 					
+					while(i.hasNext())
+					{
+						
+						PresenterState tmpState = (PresenterState)i.next();
+						
+						if(tmpState.presenterState.equals(newState))
+						{
+							
+							this.ImplementedMethodView.clearChild();
+							
+							//this.ImplementedMethodView.setChild(tmpState.getView().asWidget());
+							this.ImplementedMethodView.setPresenter(this);
+							//this.ImplementedDockView.setTabData(tmpState.getModel().getMetaDataCategories(), "MetaData");
+							//GWT.log(tmpState.presenterState.toString());
+							return;
+						}
+						
+						
+					}
+				}
+				catch(Exception ex)
+				{
+					GWT.log("Error Occurs @ MethodCreatorPresenter.ChangeState" + ex.getMessage());
 				}
 			}
 			
@@ -237,6 +257,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 		//dockContainer.add(this.vwDockPanel.asWidget());
 		//this.DockedContainer = Dock;
 		//this.BodyContainer= Body;
+		
 		dockContainer.add(this.ImplementedDockView.asWidget());
 		bodyContainer.add(this.ImplementedMethodView.asWidget());
 		//bodyContainer.add(w) Add the stack Panel Navigation

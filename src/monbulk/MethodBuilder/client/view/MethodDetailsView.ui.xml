@@ -2,12 +2,46 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
+		.MethodComponents
+		{
+			width:287px;
+			background-color:Orange;
+			height:40px;
+		}
 		
+		.FormTitle
+		{
+			width:528px;
+			text-align:left;
+			background-color:Blue;
+			height:40px;
+		}
+		.Scroll
+		{
+			
+			border-right:Solid 2px #999;
+		}
 	</ui:style>
 	<g:HTMLPanel>
-	<g:DockLayoutPanel styleName="BodyPanel" height="430px" ui:field="LayoutPanel">
-			 	 			<g:west size="218" unit="pct">
-				 	 			<g:StackLayoutPanel height="426px" unit="PX" styleName="StandardStack" ui:field="MethodNavigationStack">
+	<g:DockLayoutPanel unit="PX" styleName="BodyPanel" height="570px" ui:field="LayoutPanel">
+							<g:north size="40" unit="PX">
+								<g:Grid width="815px" height="40px;">
+									<g:row>
+										<g:customCell styleName="{style.MethodComponents}" >
+											<g:Label>Method Components</g:Label>	
+										</g:customCell>
+										<g:customCell styleName="{style.FormTitle}" >
+											<g:Label>Form</g:Label>	
+										</g:customCell>
+									</g:row>
+									
+								</g:Grid>
+							</g:north>	
+			 	 			<g:west size="287" unit="px" styleName="{style.Scroll}">
+			 	 			<g:ScrollPanel width="287px" height="530px" styleName="{style.Scroll}" >
+			 	 				
+			 	 			
+				 	 			<g:StackLayoutPanel width="274px" height="531px" unit="PX" styleName="StandardStack" ui:field="MethodNavigationStack">
 									<g:stack>
 										<g:header size="41" ui:field="MethodTitle">Method Details</g:header>
 										<g:HTML ui:field="MethodDetailsSummary" />
@@ -16,7 +50,9 @@
 										<g:header size="41">Subject Properties</g:header>
 										<g:HTML ui:field="SubjectPropertiesSummary" />
 									</g:stack>
+									
 								</g:StackLayoutPanel>
+								</g:ScrollPanel>
 							</g:west>
 							
 						</g:DockLayoutPanel>

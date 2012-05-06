@@ -8,6 +8,7 @@ import java.util.List;
 /*GWT Miscellaneous Imports */
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 
 /*GWT Binder Imports */
@@ -77,8 +78,6 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	private String ActiveClassName;
 	private String PassiveClassName;
 	
-	@UiField
-	MenuBar _MethodList;
 	
 	@UiField
 	FlexTable _MenuStack;
@@ -121,7 +120,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	{
 		initWidget(uiBinder.createAndBindUi(this));
 		this.eventBus = tmpEvent;
-		this._MethodList.setStyleName(menuClassName);
+		//this._MethodList.setStyleName(menuClassName);
 		this.ActiveClassName = activeClassName;
 		this.PassiveClassName = pClassName;
 		try
@@ -133,7 +132,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 		{
 			GWT.log("Couldn't find metadata service");
 		}
-		this._MethodList.setSize("137px", "400px");
+		//this._MethodList.setSize("137px", "400px");
 		
 		
 	}
@@ -221,7 +220,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 				//What this should be is a 2d array with a string for the text and a string for the command to call
 				//this.addItem(new MenuItem());
 				
-				pojoMethod tmpMethod = it.next();
+				final pojoMethod tmpMethod = it.next();
 				//MenuCommand tmpCommand = new MenuCommand("Edit:" + tmpMethod.getMethodID(), eventBus);
 				//MenuItem tmpItem= new MenuItem(tmpMethod.getFieldVale(pojoMethod.MethodNameField),tmpCommand);
 				//
@@ -231,24 +230,42 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 				//this._MethodList.addItem(tmpItem);
 //				this._MenuStack.add(new HTML("Test"));
 				
-				Label titleLabel = new Label();
+				final Label titleLabel = new Label();
 				titleLabel.setText(tmpMethod.getMethodName());
 				titleLabel.addStyleName("menuMethodName");
+				
 				titleLabel.setWidth("150px");
 				PushButton _clone = new PushButton();
 				_clone.setText("C");
 				
 				PushButton _edit = new PushButton();
 				_edit.setText("E");
+				final int index = i;
+				_edit.addClickHandler(new ClickHandler()
+				{
+
+					@Override
+					public void onClick(ClickEvent event) {
+						
+						eventBus.fireEvent(new DragEvent(titleLabel.getText(),"EditMethod",index,(IPojo)tmpMethod));
+						
+					}
+					
+				});
 				this._MenuStack.setWidget(i,0,tmpItem.asWidget());
 				this._MenuStack.setWidget(i,0,titleLabel);
 				this._MenuStack.setWidget(i,1,_edit);
 				this._MenuStack.setWidget(i,2,_clone);
+				_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "padding-left:5px;");
 			}
 			//GWT.log("We added widgets: " + this._MenuStack.getWidgetCount());
-			_MenuStack.getColumnFormatter().setWidth(0, "150px");
-			_MenuStack.getColumnFormatter().setWidth(1, "25px");
-			_MenuStack.getColumnFormatter().setWidth(2, "25px");
+			_MenuStack.getColumnFormatter().setWidth(0, "152px");
+			_MenuStack.getColumnFormatter().setWidth(1, "21px");
+			_MenuStack.getColumnFormatter().setWidth(2, "21px");
+			_MenuStack.getFlexCellFormatter().setColSpan(0, 0, 3);
+			_MenuStack.getFlexCellFormatter().getElement(0, 0).setAttribute("style", "padding-left:5px;");
+			_MenuStack.setCellPadding(0);
+			_MenuStack.setCellSpacing(0);
 		}
 		catch(Exception ex)
 		{

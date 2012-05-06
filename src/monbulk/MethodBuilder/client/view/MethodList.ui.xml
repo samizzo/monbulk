@@ -12,20 +12,34 @@
 		}
 		.menuStack
 		{
+			padding:0px;
+			margin:0px;
 	
+		}
+		.menuStack tr
+		{
+			
 
 		}
 		.menuStack td
 		{
 			font-size:12px;
-	
+			height:34px;
+			background-color:#CCC;
+			border-top:Solid 1px #999;
+			
 		}
+		.MenuScrolling
+		{
+			border-bottom:Solid 2px #999;
+		}
+		
 	</ui:style>
 	<g:HTMLPanel>
-		<g:VerticalPanel height="570px" width="210px">
-		<g:ScrollPanel height="515px" width="210px">
+		<g:VerticalPanel height="570px" width="233px">
+		<g:ScrollPanel height="530px" width="233px" styleName="{style.MenuScrolling}">
 		<!-- Have to be a list of widgets -->
-			<g:FlexTable height="495px" width="210px" addStyleNames="{style.menuStack}" ui:field="_MenuStack" />
+			<g:FlexTable height="530px" width="217px" addStyleNames="{style.menuStack}" ui:field="_MenuStack" />
 			
 		</g:ScrollPanel>
 		<g:PushButton ui:field="_Newbutton" text="New Method"></g:PushButton>

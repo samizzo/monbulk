@@ -40,7 +40,7 @@
 		.mbColumn1
 		{
 		min-width:200px;
-			width:600px;
+			width:200px;
 		}
 		.mbColumn2
 		{
@@ -71,6 +71,8 @@
 		}
 		.mdHeader
 		{
+			height:62px;
+
 		}
 		.menuPanel
 		{
@@ -92,7 +94,7 @@
 				<!-- 
 					 -->
 					 <tr>
-					 	<td class="mbColumn1 mbRow1" style="width:200px;height:62px;">
+					 	<td class="mbColumn1 mbRow1" style="width:210px;height:62px;">
 					 		<!--MenuTitle -->
 					 		<div style="" class="mbHeader">
 					 			Select Method
@@ -105,23 +107,23 @@
 					 		<g:Label>Ipso factum toto</g:Label>
 					 		</g:HorizontalPanel>
 					 	</td>
-					 	<td class="mbColumn3 mbRow1" style="width:280px;">
+					 	<td class="mbColumn3 mbRow1" style="width:280px;height:62px;">
 					 		<!--  MetaData Title -->
-					 	    <g:PushButton styleName="mdHeader">MetaData</g:PushButton>
+					 	    <g:PushButton styleName="{style.mdHeader}">MetaData</g:PushButton>
 					 	</td>
 					 </tr>
 					 <tr>
-						<td class="mbRow2 menuPanel" style="border:Solid 2px #999">
+						<td class="mbRow2" style="border-right:Solid 2px #999;border-bottom:Solid 1px #999;width:210px">
 							<!-- Menu -->
 							<g:HTMLPanel ui:field="MenuPanel"/>
 						</td>
-						<td class="mbRow2 mbColumn2 formPanel" style="height:570px;border:Solid 2px #999"> 
+						<td class="mbRow2 mbColumn2 formPanel" style="height:570px;border-bottom:Solid 2px #999"> 
 							<div>
 								<g:HTMLPanel ui:field="BodyPanel"/>
 							</div>
 						</td>
-						<td class="mbRow2 dockPanel">
-							<!-- <div style="position:absolute;left:818px;top:0px;width:200px;z-index:10;background-color:#dadada;border-bottom:Solid 4px #666;Border-top:Solid 1px White;"> -->
+						<td class="mbRow2" style="vertical-align:top;padding-top:0px;height:570px;background-color:#dadada;">
+							
 					 	 			<g:HTMLPanel ui:field="DockPanel"/>	 	
 						
 						</td>

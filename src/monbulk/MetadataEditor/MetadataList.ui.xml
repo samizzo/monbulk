@@ -20,7 +20,7 @@
 		}
 	</ui:style>
 
-	<g:LayoutPanel width="100%" height="100%">
+	<g:LayoutPanel width="100%" height="100%" ui:field="m_LayoutPanel">
 		<g:layer top="0px" height="30px" left="0px" right="0px">
 			<g:HTMLPanel>
 				<div class="textBoxPadding">
@@ -31,7 +31,7 @@
 		<g:layer top="30px" bottom="40px">
 			<g:ListBox visibleItemCount="15" width="100%" ui:field="m_metadataListBox" styleName="{style.ListBox}" height="100%" />
 		</g:layer>
-		<g:layer bottom="9px" height="24px" left="0px" right="0px">
+		<g:layer bottom="7px" height="24px" left="0px" right="0px">
 			<g:HTMLPanel width="100%" height="100%" ui:field="m_buttonsPanel">
 				<g:Button height="" text="Refresh" styleName="{style.Button}" ui:field="m_refreshList"/>
 				<g:Button height="" text="Remove" styleName="{style.Button}" ui:field="m_removeMetadata"/>

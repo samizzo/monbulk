@@ -1,7 +1,13 @@
 package monbulk.MetadataEditor;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import monbulk.shared.Architecture.IPresenter;
+import monbulk.shared.Architecture.IPresenter.DockedPresenter;
+import monbulk.shared.Architecture.IView.IDockView;
+import monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.StackedCategories;
 import monbulk.shared.Services.Metadata;
 import monbulk.shared.Services.MetadataService;
 import monbulk.shared.Services.MetadataService.CreateMetadataHandler;
@@ -10,6 +16,7 @@ import monbulk.shared.Services.MetadataService.GetMetadataTypesHandler;
 import monbulk.shared.Services.MetadataService.MetadataExistsHandler;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
@@ -22,11 +29,14 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.layout.client.Layout;
+import com.google.gwt.layout.client.Layout.Alignment;
 
 public class MetadataList extends Composite implements KeyUpHandler, KeyDownHandler
 {
@@ -40,7 +50,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	private static MetadataListUiBinder uiBinder = GWT.create(MetadataListUiBinder.class);
 	interface MetadataListUiBinder extends UiBinder<Widget, MetadataList> { }
 
-	private List<String> m_metadataTypes = null;
+	protected List<String> m_metadataTypes = null;
 	private Handler m_handler = null;
 	private String m_newMetadataName = null;
 	private Boolean m_newMetadataExists = false;
@@ -52,6 +62,9 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	@UiField ListBox m_metadataListBox;
 	@UiField TextBox m_filterTextBox;
 
+	//Extended aglenn 6/5/12
+	@UiField LayoutPanel m_LayoutPanel;
+	
 	// Item to select after metadata list is populated.
 	private String m_itemToSelect = "";
 
@@ -183,7 +196,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 		}
 	}
 
-	private void populateListBox()
+	public void populateListBox()
 	{
 		m_metadataListBox.clear();
 
@@ -201,6 +214,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 					{
 						// Add all items.
 						int selectionIndex = -1;
+						
 						for (int i = 0; i < types.size(); i++)
 						{
 							String name = types.get(i);
@@ -329,5 +343,46 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 				refresh(metadata.getName());
 			}
 		});
+	}
+	/**
+	 * Added by aglenn
+	 * @param shouldHide
+	 * @since 196
+	 */
+	protected void hideListBox(Boolean shouldHide)
+	{
+		this.m_metadataListBox.setVisible(shouldHide);
+	}
+	/**
+	 * Added by aglenn
+	 * @return LayoutPanel the baseLayout for this widget
+	 * @since 196
+	 */
+	protected LayoutPanel getLayout()
+	{
+		
+		return m_LayoutPanel;
+	}
+	/**
+	 * Added by aglenn
+	 * @return String Value of the filter TextBox
+	 * 196
+	 */
+	protected String getTextBoxValue()
+	{
+		return this.m_filterTextBox.getValue();
+	}
+	/**
+	 * HACK - Need to shuffle widgets down after add as LayoutPanel.insert doesn't seem to be working with UIBinder 
+	 * @param w	A widget to add into a layer
+	 */
+	protected void addWidget(Widget w)
+	{
+		this.m_LayoutPanel.add(w);
+		//this.m_LayoutPanel.setWidgetVerticalPosition(w, Layout.Alignment.BEGIN);
+		this.m_LayoutPanel.setWidgetTopHeight(w, 30, Style.Unit.PX, 510, Style.Unit.PX);
+		//this.m_LayoutPanel.setWidgetTopHeight(this.m_filterTextBox, 0, Style.Unit.PX, 30, Style.Unit.PX);
+		this.m_LayoutPanel.setWidgetTopHeight(this.m_buttonsPanel, 545, Style.Unit.PX, 24, Style.Unit.PX);
+		
 	}
 }

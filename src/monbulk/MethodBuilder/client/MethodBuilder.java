@@ -95,12 +95,19 @@ public class MethodBuilder extends ResizeComposite implements IWindow
 			else if(initState.contains("Edit"))
 			{
 				this.CurrentState="Edit Method";
+				try
+				{
+				
 				
 				//String ID = initState.replace("Edit:", "");
-				MethodCreatorPresenter mcp = new MethodCreatorPresenter(this.eventBus, this.loadedMethodID);
-				this.CurrentPresenter = mcp;
-				this.CurrentPresenter.go(getBodyContainer(),getDockContainer(),getNavigationContainer());
-				
+					MethodCreatorPresenter mcp = new MethodCreatorPresenter(this.eventBus, this.loadedMethodID);
+					this.CurrentPresenter = mcp;
+					this.CurrentPresenter.go(getBodyContainer(),getDockContainer(),getNavigationContainer());
+				}
+				catch(Exception ex)
+				{
+					GWT.log("Error occurs @ MethodBuilder.ChangeAppletState:" + ex.getMessage());
+				}
 				//this.CurrentPresenter.
 			}
 		}
