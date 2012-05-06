@@ -16,9 +16,14 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 
 /*GWT User Imports */
+import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLTable.ColumnFormatter;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
@@ -76,7 +81,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	MenuBar _MethodList;
 	
 	@UiField
-	StackLayoutPanel _MenuStack;
+	FlexTable _MenuStack;
 	
 	@UiField
 	PushButton _Newbutton;
@@ -153,11 +158,11 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	@Override
 	public void Filter(String Name)
 	{
-		int count = this._MenuStack.getWidgetCount();
-		int i=0;
+		int count = this._MenuStack.getRowCount();
+		int i=1;
 		while(i<count)
 		{
-			MethodMenuItem tmpItem = (MethodMenuItem)this._MenuStack.getHeaderWidget(i);
+			MethodMenuItem tmpItem = (MethodMenuItem)this._MenuStack.getWidget(i, 0);
 			if(!tmpItem.getText().contains(Name))
 			{
 				tmpItem.setVisible(false);
@@ -184,11 +189,11 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	 */
 	@Override
 	public void setActiveMenu(String activeItem) {
-		int count = this._MenuStack.getWidgetCount();
+		int count = this._MenuStack.getRowCount();
 		int i=1;
 		while(i<count)
 		{
-			MethodMenuItem tmpItem = (MethodMenuItem)this._MenuStack.getHeaderWidget(i);
+			MethodMenuItem tmpItem = (MethodMenuItem)this._MenuStack.getWidget(i, 0);
 			tmpItem.setActive(activeItem);
 			i++;
 		}
@@ -202,30 +207,52 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	 */
 	@Override
 	public void onReadMethodList(ArrayList<pojoMethod> arrMethods) {
-		// HACK: Temporary, so it doens't throw a bunch of exceptions.
-		if (true)
+		try
 		{
-			return;
+			Iterator<pojoMethod> it = arrMethods.iterator();
+			
+			SearchWidget _SearchWidget = new SearchWidget(this);
+			
+			this._MenuStack.setWidget(0,0,_SearchWidget.getHeaderWidget());
+			
+			int i=0;
+			while(it.hasNext())
+			{
+				//What this should be is a 2d array with a string for the text and a string for the command to call
+				//this.addItem(new MenuItem());
+				
+				pojoMethod tmpMethod = it.next();
+				//MenuCommand tmpCommand = new MenuCommand("Edit:" + tmpMethod.getMethodID(), eventBus);
+				//MenuItem tmpItem= new MenuItem(tmpMethod.getFieldVale(pojoMethod.MethodNameField),tmpCommand);
+				//
+				//tmpItem.setStyleName(this.PassiveClassName);
+				MethodMenuItem tmpItem = new MethodMenuItem(tmpMethod, i);
+				i++;
+				//this._MethodList.addItem(tmpItem);
+//				this._MenuStack.add(new HTML("Test"));
+				
+				Label titleLabel = new Label();
+				titleLabel.setText(tmpMethod.getMethodName());
+				titleLabel.addStyleName("menuMethodName");
+				titleLabel.setWidth("150px");
+				PushButton _clone = new PushButton();
+				_clone.setText("C");
+				
+				PushButton _edit = new PushButton();
+				_edit.setText("E");
+				this._MenuStack.setWidget(i,0,tmpItem.asWidget());
+				this._MenuStack.setWidget(i,0,titleLabel);
+				this._MenuStack.setWidget(i,1,_edit);
+				this._MenuStack.setWidget(i,2,_clone);
+			}
+			//GWT.log("We added widgets: " + this._MenuStack.getWidgetCount());
+			_MenuStack.getColumnFormatter().setWidth(0, "150px");
+			_MenuStack.getColumnFormatter().setWidth(1, "25px");
+			_MenuStack.getColumnFormatter().setWidth(2, "25px");
 		}
-
-		Iterator<pojoMethod> it = arrMethods.iterator();
-		SearchWidget _SearchWidget = new SearchWidget(this);
-		this._MenuStack.add(null,_SearchWidget.getHeaderWidget(),30);
-		int i=1;
-		while(it.hasNext())
+		catch(Exception ex)
 		{
-			//What this should be is a 2d array with a string for the text and a string for the command to call
-			//this.addItem(new MenuItem());
-			pojoMethod tmpMethod = it.next();
-			//MenuCommand tmpCommand = new MenuCommand("Edit:" + tmpMethod.getMethodID(), eventBus);
-			//MenuItem tmpItem= new MenuItem(tmpMethod.getFieldVale(pojoMethod.MethodNameField),tmpCommand);
-			
-			//tmpItem.setStyleName(this.PassiveClassName);
-			MethodMenuItem tmpItem = new MethodMenuItem(tmpMethod, i);
-			i++;
-			//this._MethodList.addItem(tmpItem);
-			this._MenuStack.add(null, tmpItem, 30);
-			
+			GWT.log("Error occurs @ MethodList.onReadMethodList" + ex.getMessage() + ex.getStackTrace().toString());
 		}
 		
 	}
