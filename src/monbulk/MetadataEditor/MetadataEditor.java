@@ -57,13 +57,13 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 							if (metadata.getName().equals(selected))
 							{
 								m_metadataProperties.setMetadata(metadata);
+
+								// Now make sure the metadata list box has focus.
+								m_metadataList.setFocus(true);
 							}
 						}
 					});
 				}
-
-				// Now make sure the metadata list box has focus.
-				m_metadataList.setFocus(true);
 			}
 			
 			public void onRemoveMetadata(String metadataName)
