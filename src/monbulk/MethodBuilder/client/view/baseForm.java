@@ -201,7 +201,8 @@ public class baseForm extends VerticalPanel implements IFormView {
 	public void LoadForm(FormBuilder someForm) {
 		if(someForm==null)
 		{
-			GWT.log("No form provided");
+			GWT.log("Form Expected @ baseForm.LoadForm(someForm):No form provided");
+			Window.alert("No Form");
 			renderForm();
 			return;
 		}

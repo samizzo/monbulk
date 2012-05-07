@@ -150,14 +150,14 @@ public class MethodCreatorPresenter implements FormPresenter{
 			{
 			//GWT.log(mainModel.getFormData().toString());
 			MethodForm tmpForm = new MethodForm();
-			tmpForm.LoadForm(mainModel.getFormData());
+			tmpForm.LoadForm(mainModel.getFormData("methodDetails"));
 			tmpForm.setPresenter(this);			
 			PresenterState tmpState = new PresenterState(tmpForm,mainModel,MethodCreatorStates.METHOD_DETAILS);
 			
 			SubjectPropertiesForm tmpForm2 = new SubjectPropertiesForm();
 			tmpForm2.setPresenter(this);
 			
-			tmpForm2.LoadForm(mainModel.getFormData());
+			tmpForm2.LoadForm(mainModel.getFormData("subjectProperties"));
 			//SubjectPropertiesModel tmpModel2 = new SubjectPropertiesModel();
 			//tmpModel.setPresenter(this);
 			//PresenterState tmpState2 = new PresenterState(tmpForm2,tmpModel2,MethodCreatorStates.SUBJECT_PROPERTIES);
@@ -165,7 +165,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 			
 			StepForm tmpForm3 = new StepForm();
 			tmpForm3.setPresenter(this);
-			tmpForm3.LoadForm(mainModel.getFormData());
+			tmpForm3.LoadForm(mainModel.getFormData("methodDetails"));
 			PresenterState tmpState3 = new PresenterState(tmpForm3,mainModel,MethodCreatorStates.STEP_DETAILS);
 			
 			AllStates.add(tmpState);
