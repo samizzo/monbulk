@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import arc.mf.client.xml.*;
+import com.google.gwt.core.client.GWT;
 
 public class Metadata
 {
@@ -273,7 +274,33 @@ public class Metadata
 	// A document has a number of child elements.
 	public static class DocumentElement extends Element
 	{
+		public enum ReferenceType
+		{
+			Document,
+			Element;
+			
+			public static ReferenceType parse(String value) throws Exception
+			{
+				if (value != null)
+				{
+					for (ReferenceType r : ReferenceType.values())
+					{
+						if (r.toString().equalsIgnoreCase(value))
+						{
+							return r;
+						}
+					}
+				}
+				
+				throw new Exception("Unknown reference type '" + value + "'");
+			}
+		};
+
 		private ArrayList<Element> m_elements = new ArrayList<Element>();
+		private boolean m_isReference = false;
+		private ReferenceType m_referenceType;
+		private String m_referenceName;
+		private String m_referenceValue;
 
 		public DocumentElement(String name, String description)
 		{
@@ -288,6 +315,67 @@ public class Metadata
 		public boolean canHaveAttributes()
 		{
 			return false;
+		}
+
+		public void setXmlElement(XmlElement xmlElement)
+		{
+			super.setXmlElement(xmlElement);
+			
+			XmlElement reference = xmlElement.element("reference");
+			if (reference != null)
+			{
+				try
+				{
+					m_referenceType = ReferenceType.parse(reference.value("@type"));
+					m_referenceName = reference.value("@name");
+					m_referenceValue = reference.value("value");
+					m_isReference = true;
+				}
+				catch (Exception e)
+				{
+					GWT.log("Bad reference: " + e.toString());
+				}
+			}
+		}
+		
+		public boolean getIsReference()
+		{
+			return m_isReference;
+		}
+		
+		public void setIsReference(boolean isReference)
+		{
+			m_isReference = isReference;
+		}
+		
+		public String getReferenceName()
+		{
+			return m_referenceName;
+		}
+		
+		public void setReferenceName(String referenceName)
+		{
+			m_referenceName = referenceName;
+		}
+		
+		public ReferenceType getReferenceType()
+		{
+			return m_referenceType;
+		}
+		
+		public void setReferenceType(ReferenceType referenceType)
+		{
+			m_referenceType = referenceType;
+		}
+		
+		public String getReferenceValue()
+		{
+			return m_referenceValue;
+		}
+		
+		public void setReferenceValue(String referenceValue)
+		{
+			m_referenceValue = referenceValue;
 		}
 	}
 	

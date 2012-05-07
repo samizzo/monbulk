@@ -31,6 +31,7 @@ public class ElementProperties extends Composite
 		m_availablePanels.add(new DateElementPanel());
 		m_availablePanels.add(new NumberElementPanel());
 		m_availablePanels.add(new AttributesPanel());
+		m_availablePanels.add(new DocumentElementPanel());
 
 		initWidget(uiBinder.createAndBindUi(this));
 	}

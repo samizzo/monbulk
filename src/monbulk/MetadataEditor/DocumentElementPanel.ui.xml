@@ -1,0 +1,47 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:u="urn:import:monbulk.shared.widgets">
+
+	<ui:style>
+		.Button
+		{
+			width: 70px;
+			vertical-align: middle;
+		}
+	</ui:style>
+
+	<g:LayoutPanel width="100%" height="100%">
+		<!-- Reference check box -->
+		<g:layer top="0px" height="30px" left="0px" width="150px">
+			<g:CheckBox text="Reference" ui:field="m_isReference" />
+		</g:layer>
+
+		<!-- Reference name -->
+		<g:layer top="24px" height="26px" left="20px" width="60px">
+			<g:Label text="Name:" />
+		</g:layer> 
+		<g:layer top="22px" height="26px" left="119px" right="10px">
+			<g:HTMLPanel>
+				<div class="textBoxPadding">
+					<g:TextBox width="100%" ui:field="m_referenceName" />
+				</div>
+			</g:HTMLPanel>
+		</g:layer>
+
+		<!-- Reference value -->
+		<g:layer top="55px" height="26px" left="20px" width="107px">
+			<g:Label text="Metadata name:" />
+		</g:layer>
+		<g:layer top="52px" height="26px" left="119px" width="260px">
+			<g:HTMLPanel>
+				<div class="textBoxPadding">
+					<g:TextBox width="250px" ui:field="m_reference" readOnly="true" />
+				</div>
+			</g:HTMLPanel>
+		</g:layer>
+		<g:layer top="52px" height="26px" left="385px" width="100px">
+			<g:Button text="Select" ui:field="m_select" styleName="{style.Button}" />
+		</g:layer>
+	</g:LayoutPanel>
+</ui:UiBinder>
