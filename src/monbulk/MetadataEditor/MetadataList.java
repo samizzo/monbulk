@@ -1,13 +1,7 @@
 package monbulk.MetadataEditor;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import monbulk.shared.Architecture.IPresenter;
-import monbulk.shared.Architecture.IPresenter.DockedPresenter;
-import monbulk.shared.Architecture.IView.IDockView;
-import monbulk.shared.Model.IPojo;
-import monbulk.shared.Model.StackedCategories;
 import monbulk.shared.Services.Metadata;
 import monbulk.shared.Services.MetadataService;
 import monbulk.shared.Services.MetadataService.CreateMetadataHandler;
@@ -35,8 +29,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.layout.client.Layout;
-import com.google.gwt.layout.client.Layout.Alignment;
 
 public class MetadataList extends Composite implements KeyUpHandler, KeyDownHandler
 {
@@ -360,7 +352,6 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	 */
 	protected LayoutPanel getLayout()
 	{
-		
 		return m_LayoutPanel;
 	}
 	/**
