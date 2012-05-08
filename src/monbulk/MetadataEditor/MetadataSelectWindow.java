@@ -41,7 +41,7 @@ public class MetadataSelectWindow extends Composite implements IWindow
 		m_ok.setEnabled(false);
 		m_metadataList.setHandler(new MetadataList.Handler()
 		{
-			public void onMetadataSelectWindowed(String metadataName)
+			public void onMetadataSelected(String metadataName)
 			{
 				m_ok.setEnabled(true);
 			}
