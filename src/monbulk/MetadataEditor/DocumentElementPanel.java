@@ -13,9 +13,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 
 import monbulk.client.desktop.Desktop;
-import monbulk.client.event.WindowEvent;
 import monbulk.shared.Services.Metadata;
-import monbulk.client.event.*;
 import monbulk.shared.widgets.Window.OkCancelWindow.*;
 
 public class DocumentElementPanel extends ElementPanel implements ValueChangeHandler<Boolean>
@@ -88,13 +86,13 @@ public class DocumentElementPanel extends ElementPanel implements ValueChangeHan
 	@UiHandler("m_select")
 	void onSelectClicked(ClickEvent event)
 	{
+		// Select was clicked, so show the metadata selection window.
+
 		Desktop d = Desktop.get();
 
-		// Listen for window events so we can process ok/cancel buttons.
-		//d.getEventBus().addHandler(WindowEvent.TYPE, this);
 		final MetadataSelectWindow m = (MetadataSelectWindow)d.getWindow("MetadataSelectWindow");
 		m.setSelectedMetadata(m_reference.getValue());
-		m.setHandler(new OkCancelHandler()
+		m.setOkCancelHandler(new OkCancelHandler()
 		{
 			public void onOkCancelClicked(OkCancelHandler.Event eventType)
 			{

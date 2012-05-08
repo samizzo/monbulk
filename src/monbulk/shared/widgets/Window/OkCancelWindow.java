@@ -41,7 +41,7 @@ public class OkCancelWindow extends Composite implements IWindow, IWindow.HideHa
 	protected @UiField Button m_cancel;
 	protected @UiField HTMLPanel m_contentPanel;
 	
-	private OkCancelHandler m_handler;
+	private OkCancelHandler m_okCancelHandler;
 
 	protected WindowSettings m_windowSettings;
 	
@@ -95,21 +95,31 @@ public class OkCancelWindow extends Composite implements IWindow, IWindow.HideHa
 	 * when the window is hidden.
 	 * @param handler
 	 */
-	public void setHandler(OkCancelHandler handler)
+	public void setOkCancelHandler(OkCancelHandler handler)
 	{
-		m_handler = handler;
+		m_okCancelHandler = handler;
 	}
 	
 	@UiHandler("m_ok")
 	protected void onOkClicked(ClickEvent event)
 	{
+		onOk();
 		hide(OkCancelHandler.Event.Ok);
 	}
 
 	@UiHandler("m_cancel")
 	protected void onCancelClicked(ClickEvent event)
 	{
+		onCancel();
 		hide(OkCancelHandler.Event.Cancel);
+	}
+	
+	protected void onOk()
+	{
+	}
+	
+	protected void onCancel()
+	{
 	}
 	
 	/**
@@ -117,10 +127,10 @@ public class OkCancelWindow extends Composite implements IWindow, IWindow.HideHa
 	 */
 	private void hide(OkCancelHandler.Event event)
 	{
-		if (m_handler != null)
+		if (m_okCancelHandler != null)
 		{
-			m_handler.onOkCancelClicked(event);
-			m_handler = null;
+			m_okCancelHandler.onOkCancelClicked(event);
+			m_okCancelHandler = null;
 		}
 
 		Desktop d = Desktop.get();

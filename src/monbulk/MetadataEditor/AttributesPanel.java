@@ -2,10 +2,6 @@ package monbulk.MetadataEditor;
 
 import java.util.ArrayList;
 
-import monbulk.shared.Services.Metadata;
-import monbulk.client.desktop.Desktop;
-import monbulk.client.event.*;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -16,7 +12,11 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 
-public class AttributesPanel extends ElementPanel implements WindowEventHandler
+import monbulk.shared.Services.Metadata;
+import monbulk.shared.widgets.Window.OkCancelWindow.OkCancelHandler;
+import monbulk.client.desktop.Desktop;
+
+public class AttributesPanel extends ElementPanel implements OkCancelHandler
 {
 	private static AttributesPanelUiBinder uiBinder = GWT.create(AttributesPanelUiBinder.class);
 	interface AttributesPanelUiBinder extends UiBinder<Widget, AttributesPanel> { }
@@ -70,17 +70,21 @@ public class AttributesPanel extends ElementPanel implements WindowEventHandler
 	
 	private void showEditor(Metadata.Element element, boolean addNewElement)
 	{
+		// Show the attributes editor.
+		
 		Desktop d = Desktop.get();
-
-		// Listen for window events so we can process ok/cancel buttons.
-		d.getEventBus().addHandler(WindowEvent.TYPE, this);
 
 		m_typeChanged = false;
 		m_editAttribute = element;
 		m_addNewElement = addNewElement;
 
 		final AttributesEditor editor = (AttributesEditor)d.getWindow("AttributesEditor");
+		editor.setOkCancelHandler(this);
 		editor.setElement(element);
+		
+		// We need to process a change of type event by creating a new element
+		// and giving it to the owning metadata.
+		// FIXME: This should be in the attributes panel not here.
 		editor.setChangeTypeHandler(new CommonElementPanel.ChangeTypeHandler()
 		{
 			public void onChangeType(Metadata.Element element, String newType)		
@@ -114,7 +118,8 @@ public class AttributesPanel extends ElementPanel implements WindowEventHandler
 
 			}
 		});
-		d.show("AttributesEditor", true);
+
+		d.show(editor, true);
 	}
 
 	@UiHandler("m_edit")
@@ -172,54 +177,49 @@ public class AttributesPanel extends ElementPanel implements WindowEventHandler
 		m_remove.setEnabled(enabled);
 	}
 	
-	public void onWindowEvent(WindowEvent event)
+	public void onOkCancelClicked(OkCancelHandler.Event event)
 	{
-		if (event.getWindowId().equals("AttributesEditor"))
+		switch (event)
 		{
-			Desktop.get().getEventBus().removeHandler(WindowEvent.TYPE, this);
-
-			switch (event.getEventType())
+			case Ok:
 			{
-				case Ok:
-				{
-					ArrayList<Metadata.Element> attributes = m_element.getAttributes();
+				ArrayList<Metadata.Element> attributes = m_element.getAttributes();
 
-					if (m_addNewElement)
-					{
-						// Adding a new element, so add it to the list and the
-						// parent element.
-						String name = m_editAttribute.getSetting("name", "");
-						if (name.length() > 0)
-						{
-							m_attributes.addItem(name);
-							attributes.add(m_editAttribute);
-						}
-					}
-					else
-					{
-					 	if (m_typeChanged)
-					 	{
-							// Editing an attribute and it changed type, so replace
-							// the old element with the new one.
-							int index = attributes.indexOf(m_editAttribute);
-							attributes.set(index, m_newAttribute);
-							m_editAttribute = m_newAttribute;
-					 	}
-					 	
-					 	// Update the name in the list box.
-					 	int selected = m_attributes.getSelectedIndex();
-					 	m_attributes.setItemText(selected, m_editAttribute.getSetting("name", ""));
-					}
-					break;
-				}
-				
-				case Cancel:
+				if (m_addNewElement)
 				{
-					break;
+					// Adding a new element, so add it to the list and the
+					// parent element.
+					String name = m_editAttribute.getSetting("name", "");
+					if (name.length() > 0)
+					{
+						m_attributes.addItem(name);
+						attributes.add(m_editAttribute);
+					}
 				}
+				else
+				{
+				 	if (m_typeChanged)
+				 	{
+						// Editing an attribute and it changed type, so replace
+						// the old element with the new one.
+						int index = attributes.indexOf(m_editAttribute);
+						attributes.set(index, m_newAttribute);
+						m_editAttribute = m_newAttribute;
+				 	}
+				 	
+				 	// Update the name in the list box.
+				 	int selected = m_attributes.getSelectedIndex();
+				 	m_attributes.setItemText(selected, m_editAttribute.getSetting("name", ""));
+				}
+				break;
 			}
 			
-			m_newAttribute = m_editAttribute = null;
+			case Cancel:
+			{
+				break;
+			}
 		}
+		
+		m_newAttribute = m_editAttribute = null;
 	}
 }
