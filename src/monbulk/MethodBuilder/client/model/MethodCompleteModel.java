@@ -37,6 +37,7 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 	private Boolean isLoaded;
 	public MethodCompleteModel()
 	{
+		isLoaded = false;
 		this.allSteps = new StepModel();
 		this.allSteps.RemoveStep(0);
 		this.subjectModel = new SubjectPropertiesModel();
@@ -56,11 +57,16 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 	}
 	public MethodCompleteModel(String ID, FormPresenter presenter)
 	{
+		isLoaded = true;
 		this.Presenter = presenter;
 		this.loadData(ID);
 		this.allSteps = new StepModel();
 		this.subjectModel = new SubjectPropertiesModel();
 		this.methodModel = new MethodModel(ID);
+	}
+	public Boolean isLoaded()
+	{
+		return this.isLoaded;
 	}
 	@Override
 	public ArrayList<IResult> Search(ArrayList<ISearchFilter> searchFilters) {
@@ -108,14 +114,16 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 		//Window.alert(FormName);
 		if(FormName=="METHOD_DETAILS")
 		{
-			return this.methodModel.getFormData();
+			return this.CompleteModel.getMethodDetails().getFormStructure();
 		}
 		else if(FormName=="SUBJECT_PROPERTIES")
 		{
-			return this.subjectModel.getFormData();
+			return this.CompleteModel.getSubjectProperties().getFormStructure();
+			
 		}
 		else
 		{
+			//return this.CompleteModel.`.getFormStructure();
 			return this.allSteps.getFormData();
 		}
 	}
@@ -148,9 +156,13 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 		//this.Presenter.ModelUpdate("GetMethod");
 		isLoaded = true;
 		GWT.log(this.CompleteModel.getMethodDetails().getMethodID());
-		this.methodModel.Update(this.CompleteModel.getMethodDetails().getFormStructure());
-		Iterator<iFormField> ind =this.CompleteModel.getMethodDetails().getFormStructure().getFormDetails().iterator();
-		while(ind.hasNext())
+		//this.methodModel.Update(this.CompleteModel.getMethodDetails().getFormStructure());
+		
+		
+		/*Test Code
+		//Iterator<iFormField> ind =this.CompleteModel.getMethodDetails().getFormStructure().getFormDetails().iterator();
+		//int x =0;
+		/*while(ind.hasNext())
 		{
 			iFormField item = ind.next();
 			
@@ -158,14 +170,14 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 			{
 				FormWidget tmpWidg = item.getWidgetReference();
 				
-				GWT.log("Name = " + tmpWidg.getWidgetName() + "Value=" + item.GetFieldValue());
+				GWT.log(x  + ":Name = " + tmpWidg.getWidgetName() + "Value=" + item.GetFieldValue());
 							//tmpWidg.addHandler(handler, type)
-				
+				x++;
 				//allFormItems.add(tmpWidg);
 			}
 		}
-		
-		this.subjectModel.Update(this.CompleteModel.getSubjectProperties().getFormStructure());
+		*/
+		//this.subjectModel.Update(this.CompleteModel.getSubjectProperties().getFormStructure());
 		
 		if(this.CompleteModel.getStepCount() > 0)
 		{
