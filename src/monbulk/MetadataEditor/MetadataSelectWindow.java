@@ -14,10 +14,10 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import monbulk.shared.widgets.Window.WindowSettings;
 
-public class MetadataSelect extends Composite implements IWindow
+public class MetadataSelectWindow extends Composite implements IWindow
 {
-	private static MetadataSelectUiBinder uiBinder = GWT.create(MetadataSelectUiBinder.class);
-	interface MetadataSelectUiBinder extends UiBinder<Widget, MetadataSelect> {	}
+	private static MetadataSelectWindowUiBinder uiBinder = GWT.create(MetadataSelectWindowUiBinder.class);
+	interface MetadataSelectWindowUiBinder extends UiBinder<Widget, MetadataSelectWindow> {	}
 
 	private WindowSettings m_windowSettings;
 
@@ -25,7 +25,7 @@ public class MetadataSelect extends Composite implements IWindow
 	@UiField Button m_cancel;
 	@UiField MetadataList m_metadataList;
 
-	public MetadataSelect()
+	public MetadataSelectWindow()
 	{
 		m_windowSettings = new WindowSettings();
 		m_windowSettings.width = 400;
@@ -33,7 +33,7 @@ public class MetadataSelect extends Composite implements IWindow
 		m_windowSettings.modal = true;
 		m_windowSettings.createDesktopButton = false;
 		m_windowSettings.resizable = false;
-		m_windowSettings.windowId = "MetadataSelect";
+		m_windowSettings.windowId = "MetadataSelectWindow";
 		m_windowSettings.windowTitle = "Metadata";
 
 		initWidget(uiBinder.createAndBindUi(this));
@@ -41,7 +41,7 @@ public class MetadataSelect extends Composite implements IWindow
 		m_ok.setEnabled(false);
 		m_metadataList.setHandler(new MetadataList.Handler()
 		{
-			public void onMetadataSelected(String metadataName)
+			public void onMetadataSelectWindowed(String metadataName)
 			{
 				m_ok.setEnabled(true);
 			}
