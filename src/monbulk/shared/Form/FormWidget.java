@@ -74,4 +74,9 @@ public class FormWidget extends HorizontalPanel{
 		
 		return this.WidgetList.get(FORM_WIDGET);
 	}	
+	public void setFormValue(Object Value)
+	{
+		HasValue<Object> item = (HasValue<Object>)WidgetList.get(FORM_WIDGET);
+		item.setValue(Value);
+	}
 }

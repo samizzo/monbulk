@@ -40,11 +40,16 @@ public class baseForm extends VerticalPanel implements IFormView {
 	protected PushButton _completeForm;
 	protected PushButton _recedeForm;
 	protected ArrayList<HorizontalPanel> widgetStructure;
+	protected VerticalPanel tmpPanel = new VerticalPanel();
+	private Boolean isLoaded;
 	public baseForm()
 	{
 		super();
 		this.allFormItems = new ArrayList<FormWidget>();
 		this.widgetStructure = new ArrayList<HorizontalPanel>();
+		
+		VerticalPanel tmpPanel = new VerticalPanel();
+		isLoaded = false;
 	}
 	
 	@Override
@@ -105,93 +110,133 @@ public class baseForm extends VerticalPanel implements IFormView {
 		}
 		return null;
 	}
+	private void emptyForm()
+	{
+		try
+		{
+			this.tmpPanel.clear();
+		}
+		catch(Exception ex)
+		{
+			Window.alert("error @ baseForm.emptyForm()" + ex.getMessage());
+		}
+		
+	}
 	private void renderForm()
 	{
-		VerticalPanel tmpPanel = new VerticalPanel();
-		HorizontalPanel FormName = new HorizontalPanel();
-		FormName.setHeight("50px");
-		FormName.setStyleName("FormTitle");
-		Label lblFormName = new Label();
-		lblFormName.setText("Test");
-		FormName.add(lblFormName);
-		tmpPanel.add(FormName);
-		HorizontalPanel errorPanel = new HorizontalPanel();
-		errorPanel.setStyleName("FormErrors");
-		this._errors = new Label();
-		errorPanel.add(_errors);
-		tmpPanel.add(errorPanel);
-		Iterator<FormWidget> i = this.allFormItems.iterator();
-		widgetStructure = new ArrayList<HorizontalPanel>();
-		widgetStructure.add(errorPanel);
-		while(i.hasNext())
-		{
-			final FormWidget tmpWidg = i.next();
-			HasValue<Object> tmpWidget = (HasValue<Object>) tmpWidg.getFormWidget(); 
-			tmpWidget.addValueChangeHandler(new ValueChangeHandler<Object>()
+		try
+		{	
+			emptyForm();
+			HorizontalPanel FormName = new HorizontalPanel();
+			FormName.setHeight("50px");
+			FormName.setStyleName("FormTitle");
+			Label lblFormName = new Label();
+			lblFormName.setText(this.generalForm.getFormName() + "");
+			FormName.add(lblFormName);
+			tmpPanel.add(FormName);
+			HorizontalPanel errorPanel = new HorizontalPanel();
+			errorPanel.setStyleName("FormErrors");
+			this._errors = new Label();
+			errorPanel.add(_errors);
+			tmpPanel.add(errorPanel);
+			
+			widgetStructure = new ArrayList<HorizontalPanel>();
+			widgetStructure.add(errorPanel);
+			GWT.log("We start to render the form items");
+			
+			Iterator<iFormField> i = generalForm.getFormDetails().iterator();
+			
+			while(i.hasNext())
 			{
-		
-						@Override
-						public void onValueChange(ValueChangeEvent<Object> event) {
-							// TODO Auto-generated method stub
-							Widget source = (Widget)event.getSource();
-							String FieldName = tmpWidg.getWidgetName();
-							//String FieldName = source.getTitle();
-							UpdateValue(FieldName, event.getValue());
-							//event.getValue();
+				iFormField item = i.next();
+				
+				if(item.getWidgetReference()!=null)
+				{
+					final FormWidget tmpWidg = item.getWidgetReference();
+					HasValue<Object> tmpWidget = (HasValue<Object>)tmpWidg.getFormWidget(); 
+					tmpWidg.setFormValue(item.GetFieldValue());
+					tmpWidget.addValueChangeHandler(new ValueChangeHandler<Object>()
+					{
+				
+								@Override
+								public void onValueChange(ValueChangeEvent<Object> event) {
+									// TODO Auto-generated method stub
+									Widget source = (Widget)event.getSource();
+									String FieldName = tmpWidg.getWidgetName();
+									//String FieldName = source.getTitle();
+									UpdateValue(FieldName, event.getValue());
+									//event.getValue();
+					}
+								
+					});
+					//if(tmpWidget.getValue()!=null){
+					//	tmpWidget.setValue(value, fireEvents)
+					//}
+					HorizontalPanel hzPanel = new HorizontalPanel();
+					hzPanel.add(tmpWidg);
+					hzPanel.setHeight("50px");
+					hzPanel.setWidth("100%");
+					hzPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
+					widgetStructure.add(hzPanel);
+					tmpPanel.add(hzPanel);
+				}
+				
 			}
-						
+			GWT.log("We end the while loop");
+			tmpPanel.setStyleName("Form");
+			
+			
+			HorizontalPanel navigation = new HorizontalPanel();
+			navigation.setStyleName("FormNavigation");
+			_completeForm = new PushButton();
+			
+			_completeForm.addClickHandler(new ClickHandler(){
+	
+				@Override
+				public void onClick(ClickEvent event) {
+					
+					completeForm("Next");
+				}
+				
 			});
-		
-			HorizontalPanel hzPanel = new HorizontalPanel();
-			hzPanel.add(tmpWidg);
-			hzPanel.setHeight("50px");
-			hzPanel.setWidth("100%");
-			hzPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
-			widgetStructure.add(hzPanel);
-			tmpPanel.add(hzPanel);
 			
+			GWT.log("First OnClick");
+			_completeForm.setText("Next");
+			
+			_completeForm.setStyleName("btnNext");
+			
+			_recedeForm = new PushButton();
+			_recedeForm.setText("Previous");
+			
+			GWT.log("Second OnClick");
+			_recedeForm.addClickHandler(new ClickHandler(){
+	
+				@Override
+				public void onClick(ClickEvent event) {
+					
+					completeForm("Prev");
+				}
+				
+			});
+			GWT.log("We add navigation");
+			navigation.add(_recedeForm);
+			navigation.add(_completeForm);
+			navigation.setHeight("75px");
+			navigation.setVerticalAlignment(ALIGN_BOTTOM);
+			widgetStructure.add(navigation);
+			GWT.log("We complete render");
+			tmpPanel.add(navigation);
+			if(!isLoaded)
+			{
+				this.add(tmpPanel);
+			}
+			isLoaded = true;
+			GWT.log("Widget COunt" + tmpPanel.getWidgetCount());
 		}
-		tmpPanel.setStyleName("Form");
-		
-		
-		HorizontalPanel navigation = new HorizontalPanel();
-		navigation.setStyleName("FormNavigation");
-		_completeForm = new PushButton();
-		
-		_completeForm.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				
-				completeForm("Next");
-			}
-			
-		});
-		
-		_completeForm.setText("Next");
-		
-		_completeForm.setStyleName("btnNext");
-		
-		_recedeForm = new PushButton();
-		_recedeForm.setText("Previous");
-		
-		_recedeForm.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				
-				completeForm("Prev");
-			}
-			
-		});
-		navigation.add(_recedeForm);
-		navigation.add(_completeForm);
-		navigation.setHeight("75px");
-		navigation.setVerticalAlignment(ALIGN_BOTTOM);
-		widgetStructure.add(navigation);
-		tmpPanel.add(navigation);
-		this.add(tmpPanel);
-		
+		catch(Exception ex)
+		{
+			Window.alert("Error in Render" + ex.getMessage());
+		}
 	}
 	private final void completeForm(String State)
 	{
@@ -199,6 +244,8 @@ public class baseForm extends VerticalPanel implements IFormView {
 	}
 	@Override
 	public void LoadForm(FormBuilder someForm) {
+		try
+		{
 		if(someForm==null)
 		{
 			GWT.log("Form Expected @ baseForm.LoadForm(someForm):No form provided");
@@ -207,7 +254,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 			return;
 		}
 		generalForm = someForm;
-		
+		allFormItems.clear();
 		Iterator<iFormField> i = generalForm.getFormDetails().iterator();
 		while(i.hasNext())
 		{
@@ -216,13 +263,20 @@ public class baseForm extends VerticalPanel implements IFormView {
 			if(item.getWidgetReference()!=null)
 			{
 				FormWidget tmpWidg = item.getWidgetReference();
-				//GWT.log(item.GetFieldName());
+				
+				//GWT.log("Value" + item.GetFieldValue());
 							//tmpWidg.addHandler(handler, type)
 				
 				allFormItems.add(tmpWidg);
 			}
 		}
+		GWT.log("We load the Form");
 		renderForm();
+		}
+		catch(Exception ex)
+		{
+			GWT.log("Exception caught @ baseForm.LoadForm: Message -" + ex.getMessage());
+		}
 	}
 	private final void UpdateValue(String FieldName, Object FieldValue)
 	{

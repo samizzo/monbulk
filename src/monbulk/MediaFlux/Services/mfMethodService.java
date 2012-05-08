@@ -69,9 +69,13 @@ public class mfMethodService extends MethodService {
 						String Description = tmpItem.value("@description");
 						
 						pojoMethod tmpMethod = new pojoMethod();
+						
 						tmpMethod.setMethodID(ID);
+						
+						
 						tmpMethod.setFieldVale(pojoMethod.MethodDescriptionField, Description);
-						tmpMethod.setFieldVale(pojoMethod.MethodNameField, Name);
+						
+						tmpMethod.setMethodName(Name);
 						methods.add(tmpMethod);
 					}
 					//Window.alert(xe.values("method").toString());
@@ -84,35 +88,42 @@ public class mfMethodService extends MethodService {
 					}
 				}
 				case Describe:
-					/*<response>
-					 * <method id="727.1.1" asset="92" version="1">
-					 *	<name>Animal-MRI-Simple</name>
-					 *	<description>Animal MRI acquisition with simple method.</description>
-					 *	<version>1.1</version>
-					 *		<step id="1">
-					 *			<name>MRI acquisition</name>
-					 *			<description>MRI acquisition of subject</description>
-					 *			<study><type>Magnetic Resonance Imaging</type><dicom><modality>MR</modality></dicom></study>
-					 *		</step>
-					 *		<subject>
-					 *			<project>
-					 *				<public>
-					 *					<metadata><definition requirement="mandatory">hfi.pssd.animal.disease</definition></metadata>
-					 *					<metadata><definition requirement="mandatory">hfi.pssd.identity</definition></metadata>
-					 *					<metadata><definition requirement="mandatory">hfi.pssd.subject</definition><value><type>constant(animal)</type></value></metadata>
-					 *					<metadata><definition requirement="mandatory">hfi.pssd.animal.subject</definition></metadata>
-					 *
-					 *				</public>
-					 *			</project>
-					 *		</subject>
-					 *	</method>
-					 * </response>
-					*/
-					//Window.alert(xe.toString());
-					//We need to create 
-					pojoMethodComplete pmc = new pojoMethodComplete(xe.elements().get(0).attributes().get(0).value());
-					pmc.readInput("XML", xe.toString());
-					
+					try
+						{
+						/*<response>
+						 * <method id="727.1.1" asset="92" version="1">
+						 *	<name>Animal-MRI-Simple</name>
+						 *	<description>Animal MRI acquisition with simple method.</description>
+						 *	<version>1.1</version>
+						 *		<step id="1">
+						 *			<name>MRI acquisition</name>
+						 *			<description>MRI acquisition of subject</description>
+						 *			<study><type>Magnetic Resonance Imaging</type><dicom><modality>MR</modality></dicom></study>
+						 *		</step>
+						 *		<subject>
+						 *			<project>
+						 *				<public>
+						 *					<metadata><definition requirement="mandatory">hfi.pssd.animal.disease</definition></metadata>
+						 *					<metadata><definition requirement="mandatory">hfi.pssd.identity</definition></metadata>
+						 *					<metadata><definition requirement="mandatory">hfi.pssd.subject</definition><value><type>constant(animal)</type></value></metadata>
+						 *					<metadata><definition requirement="mandatory">hfi.pssd.animal.subject</definition></metadata>
+						 *
+						 *				</public>
+						 *			</project>
+						 *		</subject>
+						 *	</method>
+						 * </response>
+						*/
+						//Window.alert(xe.toString());
+						//We need to create 
+						pojoMethodComplete pmc = new pojoMethodComplete(xe.elements().get(0).attributes().get(0).value());
+						pmc.readInput("XML", xe.toString());
+						m_handler.onReadMethod(pmc);
+					}
+					catch(Exception ex)
+					{
+						GWT.log("Exception caught at mfMethodService.onReadMethod" + ex.getMessage());
+					}
 					//pmc.getMethodDetails().readInput("XML", xe.stringValue("/method"));
 					//XMLParser.parse(contents)
 					//m_handler.onReadMethod(pmc);

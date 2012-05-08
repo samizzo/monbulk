@@ -129,14 +129,19 @@ public class pojoMethodComplete implements IPojo{
 				while(i<tmpList.getLength())
 				{
 					Node tmpNode = tmpList.item(i);
+					//Window.alert("Node is added" + tmpNode.getNodeName());
 					//Have to get attributes
-					if(tmpNode.getNodeName()=="description")
+					//Window.alert("Node Value" + tmpNode.getChildNodes());
+					if(tmpNode.getNodeName().contains("description"))
 					{
-						this.MethodDetails.setFieldVale(pojoMethod.MethodDescriptionField, tmpNode.getNodeValue());
+						//Window.alert("Node is added" + tmpNode.getNodeName());
+						this.MethodDetails.setFieldVale(pojoMethod.MethodDescriptionField, tmpNode.getChildNodes().toString());
+						//Window.alert("Exception?");
 					}
-					if(tmpNode.getNodeName()=="name")
+					if(tmpNode.getNodeName().contains("name"))
 					{
-						this.MethodDetails.setFieldVale(pojoMethod.MethodNameField, tmpNode.getNodeValue());
+						
+						this.MethodDetails.setFieldVale(pojoMethod.MethodNameField, tmpNode.getChildNodes().toString());
 					}
 					List = List + " Node: " + tmpNode.getNodeName();
 					

@@ -116,6 +116,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 		
 		this.eventBus = evtBus;
 		mainModel = new MethodCompleteModel();
+		mainModel.setPresenter(this);
 		Construct("");
 	
 	}
@@ -128,6 +129,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 		this.ImplementedDockView.setPresenter(this);
 		AllStates = new ArrayList<PresenterState>();
 		//tclBox = new appletWindow("TCL Viewer", "TCLViewer", this.eventBus, null);
+		
 		SetStates(ID);
 		bind();
 	}
@@ -136,7 +138,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 		//Load Method From ID;
 		
 		this.eventBus = evtBus;
-		mainModel = new MethodCompleteModel(ID);
+		mainModel = new MethodCompleteModel(ID,this);
 		Construct(ID);
 	}
 	@Override
@@ -150,22 +152,23 @@ public class MethodCreatorPresenter implements FormPresenter{
 			{
 			//GWT.log(mainModel.getFormData().toString());
 			MethodForm tmpForm = new MethodForm();
-			tmpForm.LoadForm(mainModel.getFormData("methodDetails"));
+		
+			//tmpForm.LoadForm(mainModel.getFormData(MethodCreatorStates.METHOD_DETAILS.toString()));
 			tmpForm.setPresenter(this);			
 			PresenterState tmpState = new PresenterState(tmpForm,mainModel,MethodCreatorStates.METHOD_DETAILS);
 			
 			SubjectPropertiesForm tmpForm2 = new SubjectPropertiesForm();
 			tmpForm2.setPresenter(this);
 			
-			tmpForm2.LoadForm(mainModel.getFormData("subjectProperties"));
+			//tmpForm2.LoadForm(mainModel.getFormData(MethodCreatorStates.SUBJECT_PROPERTIES.toString()));
 			//SubjectPropertiesModel tmpModel2 = new SubjectPropertiesModel();
 			//tmpModel.setPresenter(this);
 			//PresenterState tmpState2 = new PresenterState(tmpForm2,tmpModel2,MethodCreatorStates.SUBJECT_PROPERTIES);
 			PresenterState tmpState2 = new PresenterState(tmpForm2,mainModel,MethodCreatorStates.SUBJECT_PROPERTIES);
-			
+				
 			StepForm tmpForm3 = new StepForm();
 			tmpForm3.setPresenter(this);
-			tmpForm3.LoadForm(mainModel.getFormData("methodDetails"));
+			//tmpForm3.LoadForm(mainModel.getFormData(MethodCreatorStates.SUBJECT_PROPERTIES.toString()));
 			PresenterState tmpState3 = new PresenterState(tmpForm3,mainModel,MethodCreatorStates.STEP_DETAILS);
 			
 			AllStates.add(tmpState);
@@ -203,9 +206,13 @@ public class MethodCreatorPresenter implements FormPresenter{
 						{
 							
 							this.ImplementedMethodView.clearChild();
-							
-							//this.ImplementedMethodView.setChild(tmpState.getView().asWidget());
+				//			GWT.log("1");
+							tmpState.getView().LoadForm(this.mainModel.getFormData(tmpState.presenterState.toString()));
+					//		GWT.log("2");
+							this.ImplementedMethodView.setChild(tmpState.getView().asWidget());
+						//	GWT.log("3");
 							this.ImplementedMethodView.setPresenter(this);
+							//GWT.log("4");
 							//this.ImplementedDockView.setTabData(tmpState.getModel().getMetaDataCategories(), "MetaData");
 							//GWT.log(tmpState.presenterState.toString());
 							return;
@@ -529,9 +536,27 @@ public class MethodCreatorPresenter implements FormPresenter{
 	@Override
 	public void ModelUpdate(String ServiceName) {
 		
+	//	Window.alert("Help");//
 		if(ServiceName=="GetMethod")
 		{
-			FormBuilder tmpForm = this.mainModel.getFormData();
+			GWT.log("A");
+			PresenterState tmpState = this.getCurrentPresenterState();
+			GWT.log("B");
+			if(tmpState!=null)
+			{
+				GWT.log("C");
+				IFormView tmpView = tmpState.getView();
+				GWT.log("D");
+				if(tmpView!=null)
+				{
+					GWT.log("E");
+					FormBuilder tmpBuilder = this.mainModel.getFormData(tmpState.presenterState.toString());
+					tmpView.LoadForm(tmpBuilder);
+					GWT.log("F");
+				}
+			}
+			//this.getCurrentPresenterState().getView().LoadForm(this.mainModel.getFormData(this.getCurrentPresenterState().presenterState.toString()));
+			GWT.log("We get here...MU");
 		}
 	}
 	@Override

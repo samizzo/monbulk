@@ -127,8 +127,8 @@ public class SubjectPropertiesModel implements iMBModel,IDraggable{
 	
 	@Override
 	public FormBuilder getFormData() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return SubjectPropertiesForm;
 	}
 
 	@Override

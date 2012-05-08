@@ -10,6 +10,7 @@ import monbulk.MethodBuilder.shared.iMBModel;
 import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Architecture.iModel.iFormModel;
 import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Form.FormWidget;
 import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.pojo.pojoMethod;
@@ -53,8 +54,9 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 	{
 		//this.
 	}
-	public MethodCompleteModel(String ID)
+	public MethodCompleteModel(String ID, FormPresenter presenter)
 	{
+		this.Presenter = presenter;
 		this.loadData(ID);
 		this.allSteps = new StepModel();
 		this.subjectModel = new SubjectPropertiesModel();
@@ -74,13 +76,14 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 	
 	@Override
 	public void loadData(String ID) {
+		
 		try
 		{
 			MethodService tmpSvc = MethodService.get();
 			if(tmpSvc != null)
 			{
 				tmpSvc.getMethod(ID, this);
-				
+					
 			}
 			else
 			{
@@ -102,11 +105,12 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 	}
 	public FormBuilder getFormData(String FormName)
 	{
-		if(FormName=="methodDetails")
+		//Window.alert(FormName);
+		if(FormName=="METHOD_DETAILS")
 		{
 			return this.methodModel.getFormData();
 		}
-		else if(FormName=="subjectProperties")
+		else if(FormName=="SUBJECT_PROPERTIES")
 		{
 			return this.subjectModel.getFormData();
 		}
@@ -135,14 +139,34 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 	@Override
 	public void onReadMethod(pojoMethodComplete method) {
 		
+		GWT.log("onReadMethod starts");
 		try
 		{
-			Window.alert("onReadMethod starts");
+			
 		this.CompleteModel = method;
 		this.formCompleteModel = this.CompleteModel.getFormStructure();
-		this.Presenter.ModelUpdate("GetMethod");
+		//this.Presenter.ModelUpdate("GetMethod");
 		isLoaded = true;
+		GWT.log(this.CompleteModel.getMethodDetails().getMethodID());
+		this.methodModel.Update(this.CompleteModel.getMethodDetails().getFormStructure());
+		Iterator<iFormField> ind =this.CompleteModel.getMethodDetails().getFormStructure().getFormDetails().iterator();
+		while(ind.hasNext())
+		{
+			iFormField item = ind.next();
+			
+			if(item.getWidgetReference()!=null)
+			{
+				FormWidget tmpWidg = item.getWidgetReference();
+				
+				GWT.log("Name = " + tmpWidg.getWidgetName() + "Value=" + item.GetFieldValue());
+							//tmpWidg.addHandler(handler, type)
+				
+				//allFormItems.add(tmpWidg);
+			}
+		}
+		
 		this.subjectModel.Update(this.CompleteModel.getSubjectProperties().getFormStructure());
+		
 		if(this.CompleteModel.getStepCount() > 0)
 		{
 			
@@ -155,9 +179,12 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 				this.allSteps.AddNewStep();
 				this.allSteps.Update(tmpItem.getFormStructure());
 			}
-			this.subjectModel.Update(this.CompleteModel.getSubjectProperties().getFormStructure());
+			//this.subjectModel.Update(this.CompleteModel.getSubjectProperties().getFormStructure());
 			
 		}
+		
+		this.Presenter.ModelUpdate("GetMethod");
+		GWT.log("thus far");
 		}
 		catch(Exception ex)
 		{

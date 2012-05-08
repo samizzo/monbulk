@@ -3,6 +3,9 @@ package monbulk.shared.Model.pojo;
 import java.util.Date;
 import java.util.Iterator;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
+
 
 
 import monbulk.shared.Form.FormBuilder;
@@ -30,10 +33,12 @@ public class pojoMethod implements IPojo {
 	public static final String MethodAuthorField = "Author";
 	public static final String MethodIDField = "ID";
 	
+	private FormBuilder MethodForm = new FormBuilder();
 	public pojoMethod()
 	{
 		this.MethodNameSpace ="pssd/methods";
-		
+		MethodForm = new FormBuilder();
+		this.buildForm();
 	}
 	
 	public String writeTCL() {
@@ -66,18 +71,18 @@ public class pojoMethod implements IPojo {
 					return Output;
 	}
 
-	@Override
-	public FormBuilder getFormStructure() {
-		// if we haven't loaded a form - set defaults
+	private void buildForm()
+	{
 
-		FormBuilder MethodForm = new FormBuilder();
 		MethodForm.SetFormName(FormName);
 		if(this.MethodID==null)
 		{
-			MethodForm.AddItem(MethodIDField,"String","");
+			
+			MethodForm.AddItem(MethodIDField,"String","Test Value");
 		}
 		else
 		{
+			
 			MethodForm.AddItem(MethodIDField,"String",MethodID);
 		}
 		if(this.MethodAuthor==null)
@@ -102,6 +107,7 @@ public class pojoMethod implements IPojo {
 		}
 		else
 		{
+			
 			MethodForm.AddTitleItem(MethodNameField, "String",this.MethodName);
 		}
 		if(this.DateCreated==null)
@@ -122,7 +128,12 @@ public class pojoMethod implements IPojo {
 		{
 			MethodForm.AddTitleItem(MethodKeywordsField, "String",this.KeyWords);
 		}
-		
+
+	}
+	@Override
+	public FormBuilder getFormStructure() {
+		// if we haven't loaded a form - set defaults
+				
 		//MethodForm.AddItem("DataUsage", "String");
 		return MethodForm;
 	}
@@ -143,6 +154,7 @@ public class pojoMethod implements IPojo {
 	}
 	public void setMethodAuthor(String methodAuthor) {
 		MethodAuthor = methodAuthor;
+		this.MethodForm.getFieldItemForName(this.MethodAuthorField).SetFieldValue(methodAuthor);
 	}
 	public String getDateCreated() {
 		return DateCreated;
@@ -161,12 +173,24 @@ public class pojoMethod implements IPojo {
 	}
 	public void setMethodID(String methodID) {
 		MethodID = methodID;
+		try
+		{
+			if(this.MethodForm.getFieldItemForName(this.MethodIDField)!=null)
+			{
+				this.MethodForm.getFieldItemForName(this.MethodIDField).SetFieldValue(methodID);
+			}
+		}
+		catch(Exception ex)
+		{
+			GWT.log("Exception caught @ pojoMetod.setMethodId" + ex.getMessage() +ex.getCause());
+		}
 	}
 	public String getMethodName() {
 		return MethodName;
 	}
 	public void setMethodName(String methodName) {
 		MethodName = methodName;
+		this.MethodForm.getFieldItemForName(this.MethodNameField).SetFieldValue(methodName);
 	}
 	@Override
 	public void saveForm(FormBuilder input) {
@@ -214,6 +238,7 @@ public class pojoMethod implements IPojo {
 			else if(FieldName == MethodDescriptionField)
 			{
 				this.MethodDescription = FieldValue.toString();
+				this.MethodForm.getFieldItemForName(this.MethodDescriptionField).SetFieldValue(FieldValue.toString());
 			}
 			else if(FieldName == MethodDateCreatedField)
 			{

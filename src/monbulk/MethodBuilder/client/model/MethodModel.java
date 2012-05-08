@@ -52,7 +52,7 @@ public class MethodModel extends baseModel implements iMBModel{
 
 		@Override
 		public void Update(FormBuilder formData) {
-			// TODO Auto-generated method stub
+			this.DOMethod.saveForm(formData);
 			
 		}
 
