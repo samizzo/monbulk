@@ -207,7 +207,10 @@ public class MethodCreatorPresenter implements FormPresenter{
 							
 							this.ImplementedMethodView.clearChild();
 				//			GWT.log("1");
-							tmpState.getView().LoadForm(this.mainModel.getFormData(tmpState.presenterState.toString()));
+							if(!this.mainModel.isLoaded())
+							{
+								tmpState.getView().LoadForm(this.mainModel.getFormData(tmpState.presenterState.toString()));
+							}
 					//		GWT.log("2");
 							this.ImplementedMethodView.setChild(tmpState.getView().asWidget());
 						//	GWT.log("3");
