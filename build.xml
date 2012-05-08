@@ -22,6 +22,7 @@
 		<pathelement location="${lib}/mfclientgwt.jar" />
 		<pathelement location="${lib}/mfclientguigwt.jar" />
 		<pathelement location="${lib}/adesktopplugingwt.jar" />
+		<pathelement location="${lib}/totoe-0.4.jar" />
 		<pathelement location="${lib}/validation-api-1.0.0.GA.jar" />
 		<pathelement location="${build}" />
 	</path>
