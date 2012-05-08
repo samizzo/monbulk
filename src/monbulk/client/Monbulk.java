@@ -16,7 +16,7 @@ import monbulk.MediaFlux.Services.MediaFluxServices;
 import monbulk.client.desktop.*;
 import monbulk.MetadataEditor.MetadataEditor;
 import monbulk.MetadataEditor.AttributesEditor;
-import monbulk.MetadataEditor.MetadataSelect;
+import monbulk.MetadataEditor.MetadataSelectWindow;
 import monbulk.MethodBuilder.client.MethodBuilder;
 
 /**
@@ -81,7 +81,7 @@ public class Monbulk implements EntryPoint
 					AttributesEditor ae = new AttributesEditor();
 					d.registerWindow(ae);
 					
-					MetadataSelect ms = new MetadataSelect();
+					MetadataSelectWindow ms = new MetadataSelectWindow();
 					d.registerWindow(ms);
 
 					MethodBuilder mb = new MethodBuilder(d.getEventBus());
