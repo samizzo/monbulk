@@ -6,8 +6,7 @@
 	<ui:style>
 		.Button
 		{
-			width: 70px;
-			vertical-align: middle;
+			width: 65px;
 		}
 	</ui:style>
 
@@ -21,7 +20,7 @@
 		<g:layer top="24px" height="26px" left="20px" width="60px">
 			<g:Label text="Name:" />
 		</g:layer> 
-		<g:layer top="22px" height="26px" left="119px" right="10px">
+		<g:layer top="22px" height="26px" left="150px" right="10px">
 			<g:HTMLPanel>
 				<div class="textBoxPadding">
 					<g:TextBox width="100%" ui:field="m_referenceName" />
@@ -30,18 +29,20 @@
 		</g:layer>
 
 		<!-- Reference value -->
-		<g:layer top="55px" height="26px" left="20px" width="107px">
+		<g:layer top="55px" height="26px" left="20px" width="150px">
 			<g:Label text="Metadata name:" />
 		</g:layer>
-		<g:layer top="52px" height="26px" left="119px" width="260px">
+		<g:layer top="52px" height="26px" left="150px" width="265px">
 			<g:HTMLPanel>
 				<div class="textBoxPadding">
 					<g:TextBox width="250px" ui:field="m_reference" readOnly="true" />
 				</div>
 			</g:HTMLPanel>
 		</g:layer>
-		<g:layer top="52px" height="26px" left="385px" width="100px">
-			<g:Button text="Select" ui:field="m_select" styleName="{style.Button}" />
+		<g:layer top="54px" height="24px" left="420px" width="100px">
+			<g:HTMLPanel>
+				<g:Button text="Select" ui:field="m_select" styleName="{style.Button}" />
+			</g:HTMLPanel>
 		</g:layer>
 	</g:LayoutPanel>
 </ui:UiBinder>
