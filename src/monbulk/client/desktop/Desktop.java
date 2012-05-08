@@ -207,6 +207,13 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 				m_modalWindow = w;
 			}
 
+			IWindow win = (IWindow)w.m_applet.getWidget();
+			if (win instanceof IWindow.ShowHandler)
+			{
+				IWindow.ShowHandler showHandler = (IWindow.ShowHandler)win;
+				showHandler.onShow();
+			}
+
 			w.m_applet.show();
 			bringToFront(w);
 			
@@ -215,10 +222,16 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 				w.m_applet.center();
 			}
 			
-			return (IWindow)w.m_applet.getWidget();
+			return win;
 		}
 		
 		return null;
+	}
+	
+	public void show(IWindow window, boolean centre)
+	{
+		WindowSettings ws = window.getWindowSettings();
+		show(ws.windowId, centre);
 	}
 	
 	public IWindow getWindow(String windowId)

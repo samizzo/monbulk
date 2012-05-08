@@ -7,5 +7,10 @@ public interface IWindow
 		public abstract void onHide();
 	};
 	
+	public interface ShowHandler
+	{
+		public abstract void onShow();
+	}
+	
 	public abstract WindowSettings getWindowSettings();
 }

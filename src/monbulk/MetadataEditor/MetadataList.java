@@ -107,7 +107,10 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 		return index >= 0 ? m_metadataListBox.getItemText(index) : "";
 	}
 	
-	// Sets the listbox focus state to 'focus'.
+	/**
+	 * Sets the listbox focus state to 'focus'.
+	 * @param focus
+	 */
 	public void setFocus(boolean focus)
 	{
 		m_metadataListBox.setFocus(focus);
@@ -136,9 +139,12 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 		selectMetadata(newIndex);
 	}
 
-	// Refreshes the metadata list.  If 'selection' is not an empty
-	// string, the metadata named 'selection' will be selected when
-	// the list has finished populating.	
+	/**
+	 * Refreshes the metadata list.  If 'selection' is not an empty
+	 * string, the metadata named 'selection' will be selected when
+	 * the list has finished populating.
+	 * @param selection
+	 */
 	public void refresh(String selection)
 	{
 		m_itemToSelect = selection;
@@ -204,9 +210,10 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 					
 					if (types != null)
 					{
-						// Add all items.
-						int selectionIndex = -1;
-						
+						// Select the first item by default.
+						int selectionIndex = types.size() > 0 ? 0 : -1;
+
+						// Add all items.						
 						for (int i = 0; i < types.size(); i++)
 						{
 							String name = types.get(i);
@@ -221,6 +228,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 						if (selectionIndex != -1)
 						{
 							selectMetadata(selectionIndex);
+							setFocus(true);
 						}
 					}
 				}

@@ -1,43 +1,24 @@
 package monbulk.MetadataEditor;
 
-import monbulk.client.desktop.Desktop;
-import monbulk.client.event.WindowEvent;
-import monbulk.shared.widgets.Window.IWindow;
+import monbulk.shared.widgets.Window.*;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
-import monbulk.shared.widgets.Window.WindowSettings;
-
-public class MetadataSelectWindow extends Composite implements IWindow
+public class MetadataSelectWindow extends OkCancelWindow
 {
-	private static MetadataSelectWindowUiBinder uiBinder = GWT.create(MetadataSelectWindowUiBinder.class);
-	interface MetadataSelectWindowUiBinder extends UiBinder<Widget, MetadataSelectWindow> {	}
-
-	private WindowSettings m_windowSettings;
-
-	@UiField Button m_ok;
-	@UiField Button m_cancel;
-	@UiField MetadataList m_metadataList;
+	private MetadataList m_metadataList;
+	private String m_selectedMetadata;
 
 	public MetadataSelectWindow()
 	{
-		m_windowSettings = new WindowSettings();
-		m_windowSettings.width = 400;
-		m_windowSettings.height = 400;
-		m_windowSettings.modal = true;
-		m_windowSettings.createDesktopButton = false;
-		m_windowSettings.resizable = false;
-		m_windowSettings.windowId = "MetadataSelectWindow";
-		m_windowSettings.windowTitle = "Metadata";
+		super("MetadataSelectWindow", "Metadata");
 
-		initWidget(uiBinder.createAndBindUi(this));
-		
+		m_metadataList = new MetadataList();
+		m_metadataList.setWidth("400px");
+		m_metadataList.setHeight("400px");
+		m_metadataList.setShowNew(false);
+		m_metadataList.setShowRefresh(true);
+		m_metadataList.setShowRemove(false);
+		m_contentPanel.add(m_metadataList);
+	
 		m_ok.setEnabled(false);
 		m_metadataList.setHandler(new MetadataList.Handler()
 		{
@@ -58,32 +39,24 @@ public class MetadataSelectWindow extends Composite implements IWindow
 		});
 	}
 
-	public WindowSettings getWindowSettings()
-	{
-		return m_windowSettings;
-	}
-	
 	public String getSelectedMetadataName()
 	{
 		return m_metadataList.getSelectedMetadataName();
 	}
 	
-	@UiHandler("m_ok")
-	void onOkClicked(ClickEvent event)
+	public void setSelectedMetadata(String name)
 	{
-		hide(WindowEvent.EventType.Ok);
-	}
-
-	@UiHandler("m_cancel")
-	void onCancelClicked(ClickEvent event)
-	{
-		hide(WindowEvent.EventType.Cancel);
+		m_selectedMetadata = name;
 	}
 	
-	private void hide(WindowEvent.EventType eventType)
+	public void onShow()
 	{
-		Desktop d = Desktop.get();
-		d.getEventBus().fireEvent(new WindowEvent(m_windowSettings.windowId, eventType));
-		d.hide(m_windowSettings.windowId);
+		// Refresh the metadata list.
+		m_metadataList.refresh(m_selectedMetadata);
+	}
+	
+	public void onHide()
+	{
+		m_selectedMetadata = "";
 	}
 }

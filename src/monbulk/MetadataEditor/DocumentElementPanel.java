@@ -16,8 +16,9 @@ import monbulk.client.desktop.Desktop;
 import monbulk.client.event.WindowEvent;
 import monbulk.shared.Services.Metadata;
 import monbulk.client.event.*;
+import monbulk.shared.widgets.Window.OkCancelWindow.*;
 
-public class DocumentElementPanel extends ElementPanel implements ValueChangeHandler<Boolean>, WindowEventHandler
+public class DocumentElementPanel extends ElementPanel implements ValueChangeHandler<Boolean>
 {
 	private static DocumentElementPanelUiBinder uiBinder = GWT.create(DocumentElementPanelUiBinder.class);
 	interface DocumentElementPanelUiBinder extends UiBinder<Widget, DocumentElementPanel> { }
@@ -90,30 +91,23 @@ public class DocumentElementPanel extends ElementPanel implements ValueChangeHan
 		Desktop d = Desktop.get();
 
 		// Listen for window events so we can process ok/cancel buttons.
-		d.getEventBus().addHandler(WindowEvent.TYPE, this);
-
-		d.show("MetadataSelectWindow", true);
-	}
-	
-	public void onWindowEvent(WindowEvent event)
-	{
-		if (event.getWindowId().equals("MetadataSelectWindow"))
+		//d.getEventBus().addHandler(WindowEvent.TYPE, this);
+		final MetadataSelectWindow m = (MetadataSelectWindow)d.getWindow("MetadataSelectWindow");
+		m.setSelectedMetadata(m_reference.getValue());
+		m.setHandler(new OkCancelHandler()
 		{
-			Desktop d = Desktop.get();
-			d.getEventBus().removeHandler(WindowEvent.TYPE, this);
-
-			switch (event.getEventType())
+			public void onOkCancelClicked(OkCancelHandler.Event eventType)
 			{
-				case Ok:
+				if (eventType == OkCancelHandler.Event.Ok)
 				{
 					// Ok was pressed so update the text box with the
 					// user's selection.
-					MetadataSelectWindow ms = (MetadataSelectWindow)d.getWindow("MetadataSelectWindow");
-					String metadata = ms.getSelectedMetadataName();
+					String metadata = m.getSelectedMetadataName();
 					m_reference.setValue(metadata);
-					break;
-				}				
+				}
 			}
-		}
+		});
+
+		d.show(m, true);
 	}
 }
