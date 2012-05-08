@@ -29,6 +29,13 @@ import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Form.FormWidget;
 import monbulk.shared.Form.iFormField;
 
+/**
+ * This is the baseForm widget which takes a FormBuilder data structure and renders it in order
+ * NB: There is not currently Support for merged forms.
+ * 
+ * @author Andrew Glenn
+ *
+ */
 
 public class baseForm extends VerticalPanel implements IFormView {
 
@@ -155,6 +162,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 					final FormWidget tmpWidg = item.getWidgetReference();
 					HasValue<Object> tmpWidget = (HasValue<Object>)tmpWidg.getFormWidget(); 
 					tmpWidg.setFormValue(item.GetFieldValue());
+					GWT.log("Value rendered should be:" + item.GetFieldValue());
 					tmpWidget.addValueChangeHandler(new ValueChangeHandler<Object>()
 					{
 				
