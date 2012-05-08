@@ -5,9 +5,8 @@
 	<ui:style>
 		.Properties
 		{
-			margin: 20px;
-			margin-right: 4px;
-			margin-left: 4px;
+			margin-top: 16px;
+			margin-bottom: 8px;
 			border: 1px solid black;
 			padding: 8px;
 		}
