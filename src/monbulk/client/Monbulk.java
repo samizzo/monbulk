@@ -16,6 +16,7 @@ import monbulk.MediaFlux.Services.MediaFluxServices;
 import monbulk.client.desktop.*;
 import monbulk.MetadataEditor.MetadataEditor;
 import monbulk.MetadataEditor.AttributesEditor;
+import monbulk.MetadataEditor.MetadataSelect;
 import monbulk.MethodBuilder.client.MethodBuilder;
 
 /**
@@ -50,7 +51,6 @@ public class Monbulk implements EntryPoint
 	{
 		// HACK: If we're running from the localhost, connect automatically
 		// to medimage so we have a live system to get data from.
-		
 		RemoteServer.SVC_URL = "http://localhost:81" + RemoteServer.SVC_URL;
 		//RemoteServer.SVC_URL = "http://medimage.versi.edu.au:443" + RemoteServer.SVC_URL;
 		Session.setAutoLogonCredentials("system", "manager", "change_me");
@@ -74,11 +74,15 @@ public class Monbulk implements EntryPoint
 				{
 					Desktop d = new Desktop(RootPanel.get());
 
+					// Register our window instances.
 					MetadataEditor me = new MetadataEditor();
 					d.registerWindow(me);
 					
 					AttributesEditor ae = new AttributesEditor();
 					d.registerWindow(ae);
+					
+					MetadataSelect ms = new MetadataSelect();
+					d.registerWindow(ms);
 
 					MethodBuilder mb = new MethodBuilder(d.getEventBus());
 					d.registerWindow(mb);

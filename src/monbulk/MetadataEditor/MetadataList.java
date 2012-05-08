@@ -101,7 +101,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	
 	// Returns the selected metadata name, or empty string if none
 	// is selected.
-	public String getSelectedMetadata()
+	public String getSelectedMetadataName()
 	{
 		int index = m_metadataListBox.getSelectedIndex();
 		return index >= 0 ? m_metadataListBox.getItemText(index) : "";
@@ -260,7 +260,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	@UiHandler("m_removeMetadata")
 	protected void onRemoveMetadata(ClickEvent event)
 	{
-		String selected = getSelectedMetadata();
+		String selected = getSelectedMetadataName();
 
 		if (selected.length() > 0)
 		{

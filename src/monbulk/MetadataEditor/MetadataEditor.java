@@ -53,7 +53,7 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 							// If the currently selected metadata doesn't match
 							// the one we kicked off this service call for, then
 							// just ignore the result.												
-							String selected = m_metadataList.getSelectedMetadata();
+							String selected = m_metadataList.getSelectedMetadataName();
 							if (metadata.getName().equals(selected))
 							{
 								m_metadataProperties.setMetadata(metadata);
