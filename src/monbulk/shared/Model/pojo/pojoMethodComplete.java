@@ -22,14 +22,19 @@ public class pojoMethodComplete implements IPojo{
 	private ArrayList<pojoStepDetails> allSteps;
 	private String MethodID;
 	private String _XML; //So we would hope to be bale to add a schema and hope they match
+	
+	
 	public pojoMethodComplete()
 	{
+		
 		this.MethodDetails = new pojoMethod();
 		this.SubjectProperties = new pojoSubjectProperties();
 		this.allSteps = new ArrayList<pojoStepDetails>();
+		
 	}
 	public pojoMethodComplete(String ID)
 	{
+		
 		this.MethodID = ID;
 		this.MethodDetails = new pojoMethod();
 		this.MethodDetails.setMethodID(ID);
@@ -113,6 +118,7 @@ public class pojoMethodComplete implements IPojo{
 	{
 		return this.MethodID;
 	}
+	
 	@Override
 	public void readInput(String Format, Object Input) {
 		
@@ -141,12 +147,13 @@ public class pojoMethodComplete implements IPojo{
 					if(tmpNode.getNodeName().contains("name"))
 					{
 						
-						this.MethodDetails.setFieldVale(pojoMethod.MethodNameField, tmpNode.getChildNodes().toString());
+						this.MethodDetails.setMethodName(tmpNode.getChildNodes().toString());
 					}
 					List = List + " Node: " + tmpNode.getNodeName();
 					
 					i++;
 				}
+		
 				//Window.alert(List);
 			}
 			
