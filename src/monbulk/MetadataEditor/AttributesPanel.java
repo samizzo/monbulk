@@ -2,8 +2,6 @@ package monbulk.MetadataEditor;
 
 import java.util.ArrayList;
 
-import org.w3c.dom.Element;
-
 import monbulk.shared.Services.Metadata;
 import monbulk.client.desktop.Desktop;
 import monbulk.client.event.*;
