@@ -92,12 +92,12 @@ public class DocumentElementPanel extends ElementPanel implements ValueChangeHan
 		// Listen for window events so we can process ok/cancel buttons.
 		d.getEventBus().addHandler(WindowEvent.TYPE, this);
 
-		d.show("MetadataSelect", true);
+		d.show("MetadataSelectWindow", true);
 	}
 	
 	public void onWindowEvent(WindowEvent event)
 	{
-		if (event.getWindowId().equals("MetadataSelect"))
+		if (event.getWindowId().equals("MetadataSelectWindow"))
 		{
 			Desktop d = Desktop.get();
 			d.getEventBus().removeHandler(WindowEvent.TYPE, this);
@@ -108,7 +108,7 @@ public class DocumentElementPanel extends ElementPanel implements ValueChangeHan
 				{
 					// Ok was pressed so update the text box with the
 					// user's selection.
-					MetadataSelect ms = (MetadataSelect)d.getWindow("MetadataSelect");
+					MetadataSelectWindow ms = (MetadataSelectWindow)d.getWindow("MetadataSelectWindow");
 					String metadata = ms.getSelectedMetadataName();
 					m_reference.setValue(metadata);
 					break;
