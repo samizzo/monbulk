@@ -14,6 +14,7 @@
 	<!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 	<inherits name="arc.mf.MediafluxObjectModel" />
 	<inherits name="arc.mf.MediafluxClientGUI" />
+	<inherits name="name.pehl.totoe.xml.XML" />
 	<!-- Other module inherits                        	              -->
 
 	<!-- Specify the app entry point class.                         -->
