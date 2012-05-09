@@ -178,7 +178,7 @@ public class pojoMethod implements IPojo {
 		{
 			if(this.MethodForm.getFieldItemForName(this.MethodIDField)!=null)
 			{
-				this.MethodForm.getFieldItemForName(this.MethodIDField).SetFieldValue(methodID);
+			//	this.MethodForm.getFieldItemForName(this.MethodIDField).SetFieldValue(methodID);
 			}
 		}
 		catch(Exception ex)

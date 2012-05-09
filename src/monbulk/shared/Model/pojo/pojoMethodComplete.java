@@ -125,6 +125,10 @@ public class pojoMethodComplete implements IPojo{
 		try
 		{
 			Document tmpXML = XMLParser.parse(Input.toString()); 
+			name.pehl.totoe.xml.client.XmlParser tmpParser = new name.pehl.totoe.xml.client.XmlParser(); 
+			name.pehl.totoe.xml.client.Document document = new name.pehl.totoe.xml.client.XmlParser().parse(Input.toString());
+
+			
 			if(tmpXML!=null)
 			{
 				NodeList tmpList1 = tmpXML.getElementsByTagName("method");
@@ -148,6 +152,13 @@ public class pojoMethodComplete implements IPojo{
 					{
 						
 						this.MethodDetails.setMethodName(tmpNode.getChildNodes().toString());
+					}
+					if(tmpNode.getNodeName().contains("subject"))
+					{
+						this.SubjectProperties.setSubjectName("Deprecated");
+						this.SubjectProperties.setSubjectType("Deprecated");
+						document.selectNodes("//method/subject/public/");
+						Window.alert(tmpNode.getChildNodes().toString());
 					}
 					List = List + " Node: " + tmpNode.getNodeName();
 					

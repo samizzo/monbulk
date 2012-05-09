@@ -16,6 +16,7 @@ public class pojoSubjectProperties implements IPojo {
 	public  static final String FormName = "SubjectProperties";
 	public static final String SubjectNameField = "SubjectName";
 	public static final String SubjectTypeField = "SubjectType";
+	private FormBuilder SubjectPropertiesForm;
 	@Override
 	public void saveForm(FormBuilder input) {
 		// TODO Auto-generated method stub
@@ -24,38 +25,44 @@ public class pojoSubjectProperties implements IPojo {
 	public pojoSubjectProperties()
 	{
 		this.attachedMetaData = new ArrayList<pojoMetaData>();
+		SubjectPropertiesForm = new FormBuilder();
+		BuildForm();
 	}
-	@Override
-	public FormBuilder getFormStructure() {
-		// TODO Auto-generated method stub
-		FormBuilder SubjectropertiesForm = new FormBuilder();
+	private void BuildForm()
+	{
+		SubjectPropertiesForm = new FormBuilder();
 		//String FormName = FormName + FormIndex;
-		SubjectropertiesForm.SetFormName(FormName);
+		SubjectPropertiesForm.SetFormName(FormName);
 
 		
 		if(this.SubjectName ==null)
 		{
-			SubjectropertiesForm.AddTitleItem(SubjectNameField,"String","");
+			SubjectPropertiesForm.AddTitleItem(SubjectNameField,"String");
 		}
 		else
 		{
-			SubjectropertiesForm.AddTitleItem(SubjectNameField,"String",this.SubjectName);
+			SubjectPropertiesForm.AddTitleItem(SubjectNameField,"String",SubjectName);
 		}
 		if(this.SubjectType == null)
 		{	
-			SubjectropertiesForm.AddSummaryItem(SubjectTypeField, "String");	
+			SubjectPropertiesForm.AddSummaryItem(SubjectTypeField, "String");	
 		}
 		else
 		{
-			SubjectropertiesForm.AddSummaryItem(SubjectTypeField, "String",SubjectType);
+			SubjectPropertiesForm.AddSummaryItem(SubjectTypeField, "String",SubjectType);
 		}
 		Iterator<pojoMetaData> i = this.attachedMetaData.iterator();
 		while(i.hasNext())
 		{
 			pojoMetaData tmpItem = i.next();
-			SubjectropertiesForm.MergeForm(tmpItem.getFormStructure());
+			SubjectPropertiesForm.MergeForm(tmpItem.getFormStructure());
 		}
-		return SubjectropertiesForm;
+
+	}
+	@Override
+	public FormBuilder getFormStructure() {
+		// TODO Auto-generated method stub
+				return SubjectPropertiesForm;
 
 	}
 
@@ -76,7 +83,16 @@ public class pojoSubjectProperties implements IPojo {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	public void setSubjectName(String SubjectName)
+	{
+		this.SubjectName = SubjectName;
+		this.SubjectPropertiesForm.getFieldItemForName(SubjectNameField).SetFieldValue(SubjectName);
+	}
+	public void setSubjectType(String SubjectType)
+	{
+		this.SubjectType = SubjectType;
+		this.SubjectPropertiesForm.getFieldItemForName(SubjectTypeField).SetFieldValue(SubjectType);
+	}
 	@Override
 	public void setFieldVale(String FieldName, Object FieldValue) {
 		// TODO Auto-generated method stub
