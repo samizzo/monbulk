@@ -156,12 +156,13 @@ public class baseForm extends VerticalPanel implements IFormView {
 			while(i.hasNext())
 			{
 				iFormField item = i.next();
-				
+				//GWT.log("item to add" + item.GetFieldName() +item.getWidgetReference().toString());
 				if(item.getWidgetReference()!=null)
 				{
 					final FormWidget tmpWidg = item.getWidgetReference();
 					HasValue<Object> tmpWidget = (HasValue<Object>)tmpWidg.getFormWidget(); 
 					tmpWidg.setFormValue(item.GetFieldValue());
+					
 					GWT.log("Value rendered should be:" + item.GetFieldValue());
 					tmpWidget.addValueChangeHandler(new ValueChangeHandler<Object>()
 					{
