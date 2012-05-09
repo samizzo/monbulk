@@ -542,20 +542,24 @@ public class MethodCreatorPresenter implements FormPresenter{
 	//	Window.alert("Help");//
 		if(ServiceName=="GetMethod")
 		{
-			GWT.log("A");
-			PresenterState tmpState = this.getCurrentPresenterState();
-			GWT.log("B");
-			if(tmpState!=null)
+			
+			Iterator<PresenterState> i = this.AllStates.iterator();
+			while(i.hasNext())
 			{
-				GWT.log("C");
-				IFormView tmpView = tmpState.getView();
-				GWT.log("D");
-				if(tmpView!=null)
+				PresenterState tmpState = i.next();
+			
+				if(tmpState!=null)
 				{
-					GWT.log("E");
-					FormBuilder tmpBuilder = this.mainModel.getFormData(tmpState.presenterState.toString());
-					tmpView.LoadForm(tmpBuilder);
-					GWT.log("F");
+				
+					IFormView tmpView = tmpState.getView();
+					
+					if(tmpView!=null)
+					{
+						
+						FormBuilder tmpBuilder = this.mainModel.getFormData(tmpState.presenterState.toString());
+						tmpView.LoadForm(tmpBuilder);
+						
+					}
 				}
 			}
 			//this.getCurrentPresenterState().getView().LoadForm(this.mainModel.getFormData(this.getCurrentPresenterState().presenterState.toString()));
