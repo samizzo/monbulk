@@ -2,6 +2,7 @@ package monbulk.shared.Model.pojo;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
@@ -155,10 +156,18 @@ public class pojoMethodComplete implements IPojo{
 					}
 					if(tmpNode.getNodeName().contains("subject"))
 					{
-						this.SubjectProperties.setSubjectName("Deprecated");
-						this.SubjectProperties.setSubjectType("Deprecated");
-						document.selectNodes("//method/subject/public/");
-						Window.alert(tmpNode.getChildNodes().toString());
+						this.SubjectProperties.readInput("XML", Input);						
+						//Window.alert(document.selectNodes("/response/method/subject/project").toString());
+					}
+					if(tmpNode.getNodeName().contains("step"))
+					{
+						pojoStepDetails tmpStep = new pojoStepDetails(allSteps.size());
+						tmpStep.readInput("XML", tmpNode.toString());
+						if(this.allSteps!=null)
+						{
+							this.allSteps.add(tmpStep);
+						}
+						
 					}
 					List = List + " Node: " + tmpNode.getNodeName();
 					
@@ -169,7 +178,7 @@ public class pojoMethodComplete implements IPojo{
 			}
 			
 		}
-		catch(DOMParseException ex)
+		catch(Exception ex)
 		{
 			GWT.log("DOMParse Error @ pojoMethodComplete.readInput" + ex.getMessage());
 		}

@@ -3,6 +3,9 @@ package monbulk.shared.Model.pojo;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
+
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Form.FormField;
 import monbulk.shared.Model.IPojo;
@@ -12,7 +15,7 @@ public class pojoStepDetails implements IPojo{
 
 	private String StepName;
 	private String StepDescription;
-	
+	private String StepID;
 	private ArrayList<pojoMetaData> attachedMetaData;
 	
 	private pojoStudy relatedStudy;
@@ -164,8 +167,26 @@ public class pojoStepDetails implements IPojo{
 
 	@Override
 	public void readInput(String Format, Object Input) {
-		// TODO Auto-generated method stub
-		
+	if(Format=="XML")
+		{
+			try
+			{
+				name.pehl.totoe.xml.client.XmlParser tmpParser = new name.pehl.totoe.xml.client.XmlParser(); 
+				name.pehl.totoe.xml.client.Document document = new name.pehl.totoe.xml.client.XmlParser().parse(Input.toString());
+				
+				//Window.alert(document.selectValue("/step/@id"));
+				StepID = document.selectValue("/step/@id");
+				this.StepName = document.selectValue("/step/name");
+				this.StepDescription = document.selectValue("/step/description");
+				//document.selectValue("/step") Gives Description?
+				Window.alert(document.selectNode("/step/study").toString());
+			}
+			catch(Exception ex)
+			{
+				GWT.log("Exception caught @ pojoStepDetails.readInput(XML): " + ex.getMessage());
+			}
+			//java.util.List<name.pehl.totoe.xml.client.Node> subjectList = document.selectNodes("/study");
+		}
 	}
 
 }

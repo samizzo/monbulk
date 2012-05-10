@@ -107,8 +107,72 @@ public class pojoSubjectProperties implements IPojo {
 
 	@Override
 	public void readInput(String Format, Object Input) {
-		// TODO Auto-generated method stub
 		
+		if(Format=="XML")
+		{
+			name.pehl.totoe.xml.client.XmlParser tmpParser = new name.pehl.totoe.xml.client.XmlParser(); 
+			name.pehl.totoe.xml.client.Document document = new name.pehl.totoe.xml.client.XmlParser().parse(Input.toString());
+			
+			this.setSubjectName("Deprecated");
+			this.setSubjectType("Deprecated");
+		//	document.selectNodes("/response/method/subject/");
+			
+			java.util.List<name.pehl.totoe.xml.client.Node> subjectList = document.selectNodes("/response/method/subject/project/public/metadata");
+			java.util.List<name.pehl.totoe.xml.client.Node> privateList = document.selectNodes("/response/method/subject/project/private/metadata");
+			
+			if(subjectList!=null)
+			{
+				if(subjectList.size() > 0)
+				{
+				//	String firstNodeName = subjectList.get(0).getName();
+					Iterator<name.pehl.totoe.xml.client.Node> NodeIndex = subjectList.iterator();
+					while(NodeIndex.hasNext())
+					{
+						name.pehl.totoe.xml.client.Node tmpItem = NodeIndex.next();
+						String isMandatory = tmpItem.selectNode("definition/@requirement").toString();
+						String mdName = tmpItem.selectValue("definition").toString();
+						pojoMetaData tmpMD = new pojoMetaData(mdName);
+						tmpMD.setFieldVale(pojoMetaData.IsPublicField, true);
+						if(isMandatory =="mandatory")
+						{
+							tmpMD.setFieldVale(pojoMetaData.IsMandatoryField, true);
+						}
+						else
+						{
+							tmpMD.setFieldVale(pojoMetaData.IsMandatoryField, false);
+						}
+						this.attachedMetaData.add(tmpMD);
+						//
+					}
+				}
+			}
+			if(privateList!=null)
+			{
+				if(privateList.size() > 0)
+				{
+				//	String firstNodeName = subjectList.get(0).getName();
+					Iterator<name.pehl.totoe.xml.client.Node> NodeIndex = privateList.iterator();
+					while(NodeIndex.hasNext())
+					{
+						name.pehl.totoe.xml.client.Node tmpItem = NodeIndex.next();
+						String isMandatory = tmpItem.selectNode("definition/@requirement").toString();
+						String mdName = tmpItem.selectValue("definition").toString();
+						pojoMetaData tmpMD = new pojoMetaData(mdName);
+						tmpMD.setFieldVale(pojoMetaData.IsPublicField, true);
+						if(isMandatory =="mandatory")
+						{
+							tmpMD.setFieldVale(pojoMetaData.IsMandatoryField, true);
+						}
+						else
+						{
+							tmpMD.setFieldVale(pojoMetaData.IsMandatoryField, false);
+						}
+						this.attachedMetaData.add(tmpMD);
+						//
+					}
+				}
+			}
+		}
 	}
 
 	
