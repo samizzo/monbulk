@@ -152,10 +152,12 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 		{
 			
 		this.CompleteModel = method;
-		this.formCompleteModel = this.CompleteModel.getFormStructure();
+		
+		//this.formCompleteModel = this.CompleteModel.getFormStructure();
 		//this.Presenter.ModelUpdate("GetMethod");
+		GWT.log("thus far A");
 		isLoaded = true;
-		GWT.log(this.CompleteModel.getMethodDetails().getMethodID());
+		//GWT.log(this.CompleteModel.getMethodDetails().getMethodID());
 		//this.methodModel.Update(this.CompleteModel.getMethodDetails().getFormStructure());
 		
 		
@@ -178,7 +180,7 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 		}
 		*/
 		//this.subjectModel.Update(this.CompleteModel.getSubjectProperties().getFormStructure());
-		
+		/*
 		if(this.CompleteModel.getStepCount() > 0)
 		{
 			
@@ -191,9 +193,11 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 				this.allSteps.AddNewStep();
 				this.allSteps.Update(tmpItem.getFormStructure());
 			}
-			//this.subjectModel.Update(this.CompleteModel.getSubjectProperties().getFormStructure());
+			
+			//this.subjectModel.Update(this.CompleteModel.getSubjectProperties().getFormStructure());/
 			
 		}
+		*/
 		
 		this.Presenter.ModelUpdate("GetMethod");
 		GWT.log("thus far");
