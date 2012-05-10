@@ -66,9 +66,16 @@
 	
 
 		}
+		/*
 		.mbHeader
 		{
-		}
+			height:62px;
+			background-image:url("images/SpriteSheetStatic.png");
+			background-position:-400px 0px;
+			width:193px;
+			
+
+		}*/
 		.mdHeader
 		{
 			height:62px;
@@ -96,7 +103,7 @@
 					 <tr>
 					 	<td class="mbColumn1 mbRow1" style="width:210px;height:62px;">
 					 		<!--MenuTitle -->
-					 		<div style="" class="mbHeader">
+					 		<div class="mbHeader">
 					 			Select Method
 					 		</div>
 					 	</td>
