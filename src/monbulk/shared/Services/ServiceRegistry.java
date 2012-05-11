@@ -23,7 +23,7 @@ public class ServiceRegistry
 	
 	private static ArrayList<iService> s_services = new ArrayList<iService>();
 
-	/*
+	/**
 	 * Registers a service.
 	 * 
 	 * NOTE: There is currently no real support for
@@ -36,12 +36,14 @@ public class ServiceRegistry
 	 * name.  A client would then request e.g. a MetadataService (which
 	 * would return any (all?) metadata service) or a specific service, e.g.
 	 * MediaFluxMetadataService.
+	 *  
+	 * @param service
 	 */
 	public static void registerService(iService service)
 	{
 		s_services.add(service);
 	}
-	
+
 	public static iService getService(MonbulkEnums.ServiceNames serviceType) throws ServiceNotFoundException
 	{
 		for (iService service : s_services)
