@@ -195,7 +195,7 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 	{
 		return s_instance;
 	}
-	
+
 	// Shows the specified window.
 	public IWindow show(String windowId, boolean centre)
 	{
@@ -226,6 +226,21 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 		}
 		
 		return null;
+	}
+
+	/**
+	 * Sets the title for the specified window.
+	 * @param window
+	 * @param title
+	 */
+	public void setWindowTitle(IWindow window, String title)	
+	{
+		WindowSettings ws = window.getWindowSettings();
+		Window w = findWindow(ws.windowId);
+		if (w != null)
+		{
+			w.m_applet.setTitle(title);
+		}
 	}
 	
 	public void show(IWindow window, boolean centre)
@@ -278,7 +293,7 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 			m_zindex--;
 		}
 	}
-	
+
 	// Registers a new window with the desktop environment.
 	// The specified IWindow instance should also be a widget.
 	public void registerWindow(IWindow widget) throws Exception
