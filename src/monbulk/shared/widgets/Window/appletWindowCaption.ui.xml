@@ -7,7 +7,7 @@
 	<g:HTMLPanel styleName="WindowCaption">
 		<table style="width:100%; padding: 0px;"> 
 		 	<tr>
-		 		<td style="min-width: 40%"><g:InlineLabel ui:field="m_title" styleName="AppletTitle"/></td>
+		 		<td style="min-width: 90%"><g:InlineLabel ui:field="m_title" styleName="AppletTitle"/></td>
 		 		<td style="padding-left: 4px; padding-top: 10px; float: right;"><g:PushButton ui:field="m_close" text="" styleName="WindowClose" /></td>
 		 		<td style="padding-top: 9px; float: right;"><g:PushButton text="" styleName="WindowExpand" ui:field="m_maximise"/></td>
 		 	</tr>

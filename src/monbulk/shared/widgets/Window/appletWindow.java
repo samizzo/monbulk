@@ -41,6 +41,12 @@ public class appletWindow extends DialogBox
 		
 		c.setParentApplet(this);
 	}
+	
+	public void setTitle(String title)
+	{
+		appletWindowCaption c = (appletWindowCaption)getCaption();
+		c.setText(title);
+	}
 
 	public void setMinSize(int minWidth, int minHeight)
 	{

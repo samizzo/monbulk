@@ -102,12 +102,13 @@ public class appletWindowCaption extends Composite implements Caption
 	@Override
 	public String getText()
 	{
-		return null;
+		return m_title.getText();
 	}
 
 	@Override
 	public void setText(String text)
 	{
+		m_title.setText(text);
 	}
 
 	@Override
