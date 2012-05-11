@@ -193,7 +193,7 @@ public class Metadata
 
 		public void setSetting(String name, String value)
 		{
-			if (value.length() > 0)
+			if (value != null && value.length() > 0)
 			{
 				m_settings.put(name, value);
 			}
