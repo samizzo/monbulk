@@ -961,7 +961,7 @@ MethodEditorDynamicFieldsPanel
 .gwt-Tree .itemHighlight:hover
 {
 	padding-left: 0px;
-	background-color: #90a6cc;
+	background-color: #c3d9ff;
 	cursor: default;
 }
 
@@ -973,7 +973,7 @@ MethodEditorDynamicFieldsPanel
 .gwt-Tree .itemSelected
 {
 	padding-left: 0px;
-	background-color: #c3d9ff;
+	background-color: #90a6cc;
 	cursor: default;
 }
 
