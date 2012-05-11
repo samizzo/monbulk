@@ -27,7 +27,7 @@ public class Monbulk implements EntryPoint
 	public void onModuleLoad()
 	{
 		String hostName = Window.Location.getHostName();
-		if (hostName.equals("localhost"))
+		if (hostName.equals("127.0.0.1") || hostName.equals("localhost"))
 		{
 			debugLogon();
 		}
@@ -49,10 +49,18 @@ public class Monbulk implements EntryPoint
 	
 	private void debugLogon()
 	{
-		// HACK: If we're running from the localhost, connect automatically
-		// to medimage so we have a live system to get data from.
-		RemoteServer.SVC_URL = "http://localhost:81" + RemoteServer.SVC_URL;
-		//RemoteServer.SVC_URL = "http://medimage.versi.edu.au:443" + RemoteServer.SVC_URL;
+		// HACK: I (sam) want to use medimage's MF instance because
+		// I don't have MF installed locally.
+		String user = Window.Location.getParameter("user");
+		if (user != null && user.equals("izzo"))
+		{
+			RemoteServer.SVC_URL = "http://medimage.versi.edu.au:443" + RemoteServer.SVC_URL;
+		}
+		else
+		{
+			RemoteServer.SVC_URL = "http://localhost:81" + RemoteServer.SVC_URL;
+		}
+		
 		Session.setAutoLogonCredentials("system", "manager", "change_me");
 		initialise();
 	}
