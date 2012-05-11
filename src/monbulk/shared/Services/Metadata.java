@@ -35,14 +35,14 @@ public class Metadata
 		Attribute("attribute", false, false, false),
 		All("all", false, false, false);
 		
-		private String m_typeName;
+		private String m_metaName;
 		private boolean m_isVisible;
 		private boolean m_isNumber;
 		private boolean m_useInAttributes;
 
 		ElementTypes(String typeName, boolean isVisible, boolean isNumber, boolean useInAttributes)
 		{
-			m_typeName = typeName;
+			m_metaName = typeName;
 			m_isVisible = isVisible;
 			m_isNumber = isNumber;
 			m_useInAttributes = useInAttributes;
@@ -50,7 +50,7 @@ public class Metadata
 		
 		public String getMetaName()
 		{
-			return m_typeName;
+			return m_metaName;
 		}
 		
 		public boolean isVisible()
