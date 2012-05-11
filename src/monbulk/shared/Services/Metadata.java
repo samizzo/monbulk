@@ -22,9 +22,9 @@ public class Metadata
 		Double("double", true, true, true),
 		Long("long", true, true, true),
 		Boolean("boolean", true, false, false),
-		Keyword("keyword", true, false, false),
 		
 		// Special types that aren't visible or selectable by the user.
+		Keyword("keyword", false, false, false),
 		AssetId("asset-id", false, false, false),
 		Asset("asset", false, false, false),
 		CiteableId("citeable-id", false, false, false),
@@ -96,7 +96,7 @@ public class Metadata
 		String name = e.value("@name");
 		String description = e.value("description");
 		Metadata.Element element = createElement(typeName, name, description, false);
-		element.setXmlElement(e);
+		element.setFromXmlElement(e);
 		return element;
 	}
 	
@@ -120,24 +120,52 @@ public class Metadata
 	
 	public static class Element
 	{
-		protected String m_description = "";
-		protected XmlElement m_xmlElement;
 		protected DocumentElement m_parent = null;
 		protected ElementTypes m_type;
+		protected boolean m_isAttribute = false;
 		protected HashMap<String, String> m_settings = new HashMap<String, String>();
 		protected HashMap<String, String> m_restrictions = new HashMap<String, String>();
-		protected boolean m_isAttribute = false;
 
 		// Attributes on an element are stored as a list of elements,
 		// since they are almost exactly the same.
 		protected ArrayList<Element> m_attributes = new ArrayList<Element>();
 
+		/**
+		 * Copy constructor.  Creates a new element from an existing element.
+		 * @param element
+		 */
+		public Element(Element element)
+		{
+			m_parent = element.m_parent;
+			m_type = element.m_type;
+
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> settings = (HashMap<String, String>)element.m_settings.clone();
+			m_settings = settings;
+			
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> restrictions = (HashMap<String, String>)element.m_restrictions.clone();
+			m_restrictions = restrictions;
+			
+			m_isAttribute = element.m_isAttribute;
+			
+			for (Element e : element.m_attributes)
+			{
+				m_attributes.add(new Element(e));
+			}
+		}
+
 		public Element(ElementTypes type, String name, String description, boolean isAttribute)
 		{
 			setSetting("name", name);
-			m_description = description;
+			setSetting("description", description);
 			m_type = type;
 			m_isAttribute = isAttribute;
+		}
+		
+		public Element clone()
+		{
+			return new Element(this);
 		}
 
 		public void setRestriction(String name, String value)
@@ -186,10 +214,8 @@ public class Metadata
 			return value;
 		}
 
-		public void setXmlElement(XmlElement xmlElement)
+		public void setFromXmlElement(XmlElement xmlElement)
 		{
-			m_xmlElement = xmlElement;
-
 			if (xmlElement.hasAttributes())
 			{
 				List<XmlAttribute> attributes = xmlElement.attributes();
@@ -247,12 +273,17 @@ public class Metadata
 		
 		public void setDescription(String description)
 		{
-			m_description = description;
+			setSetting("description", description);
 		}
 		
 		public String getDescription()
 		{
-			return m_description;
+			return getSetting("description", "");
+		}
+		
+		public String getName()
+		{
+			return getSetting("name", "");
 		}
 
 		public ElementTypes getType()
@@ -268,6 +299,18 @@ public class Metadata
 		public boolean canHaveAttributes()
 		{
 			return m_type != ElementTypes.Date && !m_isAttribute;
+		}
+		
+		public boolean getIsAttribute()
+		{
+			return m_isAttribute;
+		}
+		
+		public String toString()
+		{
+			String name = getSetting("name", "");
+			String desc = getSetting("description", "");
+			return m_type.toString() + ", " + name + ", " + desc;
 		}
 	}
 	
@@ -302,6 +345,25 @@ public class Metadata
 		private String m_referenceName;
 		private String m_referenceValue;
 
+		/**
+		 * Copy constructor.  Creates a new DocumentElement from an existing element.
+		 * @param element
+		 */
+		public DocumentElement(DocumentElement element)
+		{
+			super(element);
+			
+			for (Element e : element.m_elements)
+			{
+				m_elements.add(new Element(e));
+			}
+
+			m_isReference = element.m_isReference;
+			m_referenceType = element.m_referenceType;
+			m_referenceName = element.m_referenceName;
+			m_referenceValue = element.m_referenceValue;
+		}
+		
 		public DocumentElement(String name, String description)
 		{
 			super(ElementTypes.Document, name, description, false);
@@ -317,9 +379,9 @@ public class Metadata
 			return false;
 		}
 
-		public void setXmlElement(XmlElement xmlElement)
+		public void setFromXmlElement(XmlElement xmlElement)
 		{
-			super.setXmlElement(xmlElement);
+			super.setFromXmlElement(xmlElement);
 			
 			XmlElement reference = xmlElement.element("reference");
 			if (reference != null)
@@ -377,6 +439,11 @@ public class Metadata
 		{
 			m_referenceValue = referenceValue;
 		}
+		
+		public Element clone()
+		{
+			return new DocumentElement(this);
+		}
 	}
 	
 	public static class EnumerationElement extends Element
@@ -384,6 +451,21 @@ public class Metadata
 		private ArrayList<String> m_values = new ArrayList<String>();
 		private String m_dictionaryName = "";
 		
+		/**
+		 * Copy constructor.  Creates a new EnumerationElement from an existing element.
+		 * @param element
+		 */
+		public EnumerationElement(EnumerationElement element)
+		{
+			super(element);
+			
+			@SuppressWarnings("unchecked")
+			ArrayList<String> values = (ArrayList<String>)element.m_values.clone();
+			m_values = values;
+			
+			m_dictionaryName = element.m_dictionaryName;
+		}
+
 		public EnumerationElement(String name, String description, boolean isAttribute)
 		{
 			super(ElementTypes.Enumeration, name, description, isAttribute);
@@ -421,9 +503,9 @@ public class Metadata
 			return m_dictionaryName != null && m_dictionaryName.length() > 0;
 		}
 		
-		public void setXmlElement(XmlElement element)
+		public void setFromXmlElement(XmlElement element)
 		{
-			super.setXmlElement(element);
+			super.setFromXmlElement(element);
 			
 			XmlElement restriction = element.element("restriction");
 			if (restriction != null)
@@ -444,6 +526,11 @@ public class Metadata
 		public boolean canHaveAttributes()
 		{
 			return false;
+		}
+		
+		public Element clone()
+		{
+			return new EnumerationElement(this);
 		}
 	}
 	

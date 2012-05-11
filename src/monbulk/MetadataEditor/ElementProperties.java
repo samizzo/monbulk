@@ -50,15 +50,6 @@ public class ElementProperties extends Composite
 		return null;
 	}
 
-	public void setIsForAttributes(boolean attributes)
-	{
-		CommonElementPanel p = getCommonElementPanel();
-		if (p != null)
-		{
-			p.setIsForAttributes(attributes);
-		}
-	}
-	
 	public void setChangeTypeHandler(CommonElementPanel.ChangeTypeHandler handler)
 	{
 		CommonElementPanel p = getCommonElementPanel();
@@ -68,7 +59,12 @@ public class ElementProperties extends Composite
 		}
 	}
 
-	public void setElement(Metadata.Element element, boolean updateCurrent)
+	public Metadata.Element getMetadataElement()
+	{
+		return m_element;
+	}
+	
+	public void setMetadataElement(Metadata.Element element, boolean updateCurrent)
 	{
 		clear(updateCurrent);
 

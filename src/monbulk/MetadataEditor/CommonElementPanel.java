@@ -34,23 +34,6 @@ public class CommonElementPanel extends ElementPanel
 	{
 		Widget w = uiBinder.createAndBindUi(this);
 		initWidget(w);
-		
-		setIsForAttributes(false);
-	}
-	
-	// If attributes is true, this panel is used to display
-	// properties of attributes, so don't allow selection of
-	// certain metadata element types.
-	public void setIsForAttributes(boolean attributes)
-	{
-		m_type.clear();
-		for (Metadata.ElementTypes e : Metadata.ElementTypes.values())
-		{
-			if (e.isVisible() && (!attributes || e.isUseInAttributes()))
-			{
-				m_type.addItem(e.toString());
-			}
-		}
 	}
 	
 	public void setChangeTypeHandler(ChangeTypeHandler handler)
@@ -73,8 +56,22 @@ public class CommonElementPanel extends ElementPanel
 	{
 		super.set(element);
 
+		// If element is an attribute is true, don't allow selection of
+		// certain metadata element types that shouldn't be used in
+		// attributes.
+		boolean isAttribute = element.getIsAttribute();
+		m_type.clear();
+		for (Metadata.ElementTypes e : Metadata.ElementTypes.values())
+		{
+			if (e.isVisible() && (!isAttribute || e.isUseInAttributes()))
+			{
+				// Element type is valid, so add it to the combo.
+				m_type.addItem(e.toString());
+			}
+		}
+
 		// Set name and type for the element from the values we are editing.
-		m_name.setText(element.getSetting("name", ""));
+		m_name.setText(element.getName());
 		m_description.setText(element.getDescription());
 
 		String type = element.getType().toString();

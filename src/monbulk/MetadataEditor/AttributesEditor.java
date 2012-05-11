@@ -14,24 +14,33 @@ public class AttributesEditor extends OkCancelWindow
 		m_windowSettings.height = -1;
 
 		m_elementProperties = new ElementProperties();
-		m_elementProperties.setWidth("400px");
-		m_elementProperties.setIsForAttributes(true);
+		m_elementProperties.setWidth("500px");
 		m_contentPanel.add(m_elementProperties);
 	}
 	
+	public void setReadOnly(boolean readOnly)
+	{
+		m_elementProperties.setReadOnly(readOnly);
+	}
+
 	public void setChangeTypeHandler(CommonElementPanel.ChangeTypeHandler handler)
 	{
 		m_elementProperties.setChangeTypeHandler(handler);
 	}
-	
+
 	public void onHide()
 	{
-		m_elementProperties.setElement(null, false);
+		m_elementProperties.setMetadataElement(null, false);
 	}
 
-	public void setElement(Metadata.Element element)
+	public void setMetadataElement(Metadata.Element element)
 	{
-		m_elementProperties.setElement(element, false);
+		m_elementProperties.setMetadataElement(element, false);
+	}
+	
+	public Metadata.Element getMetadataElement()
+	{
+		return m_elementProperties.getMetadataElement();
 	}
 
 	protected void onOk()

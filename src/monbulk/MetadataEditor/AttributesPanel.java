@@ -43,7 +43,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 		
 		for (Metadata.Element e : element.getAttributes())
 		{
-			String name = e.getSetting("name", "");
+			String name = e.getName();
 			if (name.length() > 0)
 			{
 				m_attributes.addItem(name);
@@ -80,11 +80,11 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 
 		final AttributesEditor editor = (AttributesEditor)d.getWindow("AttributesEditor");
 		editor.setOkCancelHandler(this);
-		editor.setElement(element);
+		editor.setMetadataElement(element);
 		
 		// We need to process a change of type event by creating a new element
 		// and giving it to the owning metadata.
-		// FIXME: This should be in the attributes panel not here.
+		// FIXME: This should be in the attributes editor not here.
 		editor.setChangeTypeHandler(new CommonElementPanel.ChangeTypeHandler()
 		{
 			public void onChangeType(Metadata.Element element, String newType)		
@@ -93,7 +93,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 				try
 				{
 					Metadata.ElementTypes t = Metadata.ElementTypes.valueOf(newType);
-					Metadata.Element newAttribute = Metadata.createElement(t.getMetaName(), element.getSetting("name", ""), element.getDescription(), true);
+					Metadata.Element newAttribute = Metadata.createElement(t.getMetaName(), element.getName(), element.getDescription(), true);
 					if (m_addNewElement)
 					{
 						// Adding a new attribute so just overwrite the
@@ -107,7 +107,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 						m_newAttribute = newAttribute;
 					}
 
-					editor.setElement(m_newAttribute);
+					editor.setMetadataElement(m_newAttribute);
 					m_typeChanged = true;
 				}
 				catch (Exception e)
@@ -189,7 +189,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 				{
 					// Adding a new element, so add it to the list and the
 					// parent element.
-					String name = m_editAttribute.getSetting("name", "");
+					String name = m_editAttribute.getName();
 					if (name.length() > 0)
 					{
 						m_attributes.addItem(name);
@@ -209,7 +209,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 				 	
 				 	// Update the name in the list box.
 				 	int selected = m_attributes.getSelectedIndex();
-				 	m_attributes.setItemText(selected, m_editAttribute.getSetting("name", ""));
+				 	m_attributes.setItemText(selected, m_editAttribute.getName());
 				}
 				break;
 			}
