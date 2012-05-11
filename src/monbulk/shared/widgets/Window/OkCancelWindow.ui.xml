@@ -9,7 +9,7 @@
 			margin-top: 16px;
 			margin-bottom: 8px;
 			border: 1px solid black;
-			padding: 8px;
+			padding: 16px;
 		}
 		
 		.Button
