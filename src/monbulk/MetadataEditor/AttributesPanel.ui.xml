@@ -8,7 +8,7 @@
 		}
 	</ui:style>
 
-	<g:LayoutPanel width="100%" height="100%">
+	<g:LayoutPanel width="100%" height="100px">
 		<g:layer top="0px" height="30px" left="0px" width="100px">
 			<g:Label text="Attributes:" />
 		</g:layer>
@@ -16,7 +16,7 @@
 			<g:ListBox visibleItemCount="4" ui:field="m_attributes" width="300px" height="100%" />
 		</g:layer>
 
-		<g:layer top="78px" height="24px" left="0px" width="300px">
+		<g:layer top="78px" height="20px" left="0px" width="300px">
 			<g:HTMLPanel width="100%" height="100%" ui:field="m_buttonsPanel">
 				<g:Button ui:field="m_add" styleName="{style.Button}" text="Add" />
 				<g:Button ui:field="m_edit" styleName="{style.Button}" text="Edit" enabled="false" />
