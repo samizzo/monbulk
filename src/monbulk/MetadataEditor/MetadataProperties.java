@@ -42,6 +42,8 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	@UiField Button m_editElement;
 	@UiField HTMLPanel m_addRemovePanel;
 	@UiField CaptionPanel m_elements;
+	@UiField TextBox m_elementType;
+	@UiField TextBox m_elementDescription;
 
 	private TreeItem m_selectedElement = null;
 	private Metadata m_metadata = null;
@@ -309,6 +311,8 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	private void clearElements()
 	{
 		m_selectedElement = null;
+		m_elementType.setText("");
+		m_elementDescription.setText("");
 		setButtonState();
 	}
 
@@ -359,8 +363,13 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		TreeItem selectedItem = event.getSelectedItem();
 		selectedItem.addStyleName("itemSelected");
 
-		clearElements();
 		m_selectedElement = selectedItem;
+		
+		// Update the element summary.
+		Metadata.Element element = (Metadata.Element)m_selectedElement.getUserObject();
+		m_elementType.setText(element.getType().toString());
+		m_elementDescription.setText(element.getSetting("description", ""));
+		
 		setButtonState();
 	}
 	

@@ -53,11 +53,38 @@
 				</g:FlowPanel>
 			</g:CaptionPanel>
 		</g:layer>
-		<g:layer top="126px" left="3px" right="3px" bottom="39px">
+		<g:layer top="126px" left="3px" right="3px" bottom="132px">
 			<g:CaptionPanel captionText="Elements" ui:field="m_elements">
 				<g:ScrollPanel width="100%" height="100%">
 					<g:Tree width="100%" height="100%" animationEnabled="true" ui:field="m_elementsTree"/>
 				</g:ScrollPanel>
+			</g:CaptionPanel>
+		</g:layer>
+		<g:layer bottom="36px" height="90px" left="3px" right="3px">
+			<g:CaptionPanel captionText="Element summary">
+				<g:LayoutPanel>
+					<g:layer left="0px" top="2px" width="90px" height="24px">
+						<g:Label text="Type:" />
+					</g:layer>
+					<g:layer left="90px" top="0px" right="10px" height="24px">
+						<g:HTMLPanel>
+							<div class="textBoxPadding">
+								<g:TextBox readOnly="true" ui:field="m_elementType" width="100%" />
+							</div>
+						</g:HTMLPanel>
+					</g:layer>
+
+					<g:layer left="0px" top="32px" width="90px" height="24px">
+						<g:Label text="Description:" />
+					</g:layer>
+					<g:layer left="90px" top="30px" right="10px" height="24px">
+						<g:HTMLPanel>
+							<div class="textBoxPadding">
+								<g:TextBox readOnly="true" ui:field="m_elementDescription" width="100%" />
+							</div>
+						</g:HTMLPanel>
+					</g:layer>
+				</g:LayoutPanel>
 			</g:CaptionPanel>
 		</g:layer>
 		<g:layer bottom="0px" left="5px" right="0px" height="30px">
@@ -67,10 +94,5 @@
 				<g:Button text="Remove" styleName="{style.Button}" ui:field="m_removeElement" enabled="false" />
 			</g:HTMLPanel>
 		</g:layer>
-		<!--<g:layer left="3px" right="3px" bottom="12px" top="336px">
-			<g:CaptionPanel captionText="Element properties">
-				<m:ElementProperties width="100%" height="100%" ui:field="m_elementProperties" />
-			</g:CaptionPanel>
-		</g:layer>-->
 	</g:LayoutPanel>
 </ui:UiBinder> 
