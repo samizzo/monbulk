@@ -45,17 +45,17 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 	private TreeItem m_selectedElement = null;
 	private Metadata m_metadata = null;
-	private AttributesEditor m_elementEditor;
+	private ElementEditor m_elementEditor;
 
 	public MetadataProperties() throws Exception
 	{
 		initWidget(uiBinder.createAndBindUi(this));
 		m_elementsTree.addSelectionHandler(this);
 
-		m_elementEditor = new AttributesEditor();
+		m_elementEditor = new ElementEditor();
 		m_elementEditor.setChangeTypeHandler(this);
 		WindowSettings w = m_elementEditor.getWindowSettings();
-		w.windowId = "ElementEditor";
+		w.windowId = "ElementEditor-Main";
 		w.windowTitle = "Element";
 		Desktop.get().registerWindow(m_elementEditor);
 	}

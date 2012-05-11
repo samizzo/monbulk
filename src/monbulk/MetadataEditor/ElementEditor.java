@@ -3,13 +3,13 @@ package monbulk.MetadataEditor;
 import monbulk.shared.widgets.Window.*;
 import monbulk.shared.Services.Metadata;
 
-public class AttributesEditor extends OkCancelWindow
+public class ElementEditor extends OkCancelWindow
 {
 	private ElementProperties m_elementProperties;
 
-	public AttributesEditor()
+	public ElementEditor()
 	{
-		super("AttributesEditor", "Attributes");
+		super("ElementEditor", "Attributes");
 		m_windowSettings.width = -1;
 		m_windowSettings.height = -1;
 

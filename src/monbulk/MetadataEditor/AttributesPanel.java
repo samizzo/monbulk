@@ -78,7 +78,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 		m_editAttribute = element;
 		m_addNewElement = addNewElement;
 
-		final AttributesEditor editor = (AttributesEditor)d.getWindow("AttributesEditor");
+		final ElementEditor editor = (ElementEditor)d.getWindow("ElementEditor");
 		editor.setOkCancelHandler(this);
 		editor.setMetadataElement(element);
 		

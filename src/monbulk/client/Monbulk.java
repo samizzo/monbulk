@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import monbulk.MediaFlux.Services.MediaFluxServices;
 import monbulk.client.desktop.*;
 import monbulk.MetadataEditor.MetadataEditor;
-import monbulk.MetadataEditor.AttributesEditor;
+import monbulk.MetadataEditor.ElementEditor;
 import monbulk.MetadataEditor.MetadataSelectWindow;
 import monbulk.MethodBuilder.client.MethodBuilder;
 
@@ -78,7 +78,7 @@ public class Monbulk implements EntryPoint
 					MetadataEditor me = new MetadataEditor();
 					d.registerWindow(me);
 					
-					AttributesEditor ae = new AttributesEditor();
+					ElementEditor ae = new ElementEditor();
 					d.registerWindow(ae);
 					
 					MetadataSelectWindow ms = new MetadataSelectWindow();
