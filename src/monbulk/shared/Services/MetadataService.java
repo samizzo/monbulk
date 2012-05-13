@@ -53,20 +53,51 @@ public abstract class MetadataService implements iService
 		public void onDestroyMetadata(String name, boolean success);
 	}
 	
-	// Returns a list of all available metadata types.
+	public interface UpdateMetadataHandler
+	{
+		public void onUpdateMetadata(Metadata metadata, boolean success);
+	}
+	
+	/**
+	 * Returns a list of all available metadata types.
+	 * @param handler
+	 */
 	public abstract void getMetadataTypes(GetMetadataTypesHandler handler);
 	
-	// Returns a specific metadata type.
+	/**
+	 * Returns a specific metadata type.
+	 * @param name
+	 * @param handler
+	 */
 	public abstract void getMetadata(String name, GetMetadataHandler handler);
 	
-	// Returns whether the named metadata exists.
+	/**
+	 * Returns whether the named metadata exists.
+	 * @param name
+	 * @param handler
+	 */
 	public abstract void metadataExists(String name, MetadataExistsHandler handler);
 
-	// Creates new metadata from the specified object.
+	/**
+	 * Creates new metadata from the specified object.
+	 * @param name
+	 * @param handler
+	 */
 	public abstract void createMetadata(String name, CreateMetadataHandler handler);
 	
-	// Destroys the specified metadata.
+	/**
+	 * Destroys the specified metadata.
+	 * @param name
+	 * @param handler
+	 */
 	public abstract void destroyMetadata(String name, DestroyMetadataHandler handler);
+	
+	/**
+	 * Updates the specified metadata on the server.
+	 * @param metadata
+	 * @param handler
+	 */
+	public abstract void updateMetadata(Metadata metadata, UpdateMetadataHandler handler);
 
 	public final ServiceNames getServiceType()
 	{

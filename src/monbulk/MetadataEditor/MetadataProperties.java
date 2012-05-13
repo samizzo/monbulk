@@ -196,7 +196,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 				if (e instanceof Metadata.DocumentElement)
 				{
 					Metadata.DocumentElement doc = (Metadata.DocumentElement)e;
-					TreeItem r = populateElementTree(treeItem, doc.getElements(), searchElement);
+					TreeItem r = populateElementTree(treeItem, doc.getChildren(), searchElement);
 					result = r != null ? r : result;
 				}
 	
@@ -225,7 +225,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 			// If there is a doc element, add the new element to it, otherwise add
 			// it to the metadata.
-			ArrayList<Metadata.Element> elements = docElement != null ? docElement.getElements() : m_metadata.getElements();
+			ArrayList<Metadata.Element> elements = docElement != null ? docElement.getChildren() : m_metadata.getElements();
 			elements.add(newElement);
 
 			// If the selected item is a doc element then use it as the parent. 
@@ -255,7 +255,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		Metadata.DocumentElement parent = element.getParent();
 
 		// Remove from the metadata object itself, or the parent.
-		ArrayList<Metadata.Element> elements = parent == null ? m_metadata.getElements() : parent.getElements();
+		ArrayList<Metadata.Element> elements = parent == null ? m_metadata.getElements() : parent.getChildren();
 		elements.remove(element);
 
 		// Find the index of the item we are removing.
@@ -431,7 +431,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 		// Remove old element and insert new element at same position.
 		Metadata.DocumentElement docParent = oldElement.getParent();
-		ArrayList<Metadata.Element> elements = docParent == null ? m_metadata.getElements() : docParent.getElements();
+		ArrayList<Metadata.Element> elements = docParent == null ? m_metadata.getElements() : docParent.getChildren();
 		
 		int index = elements.indexOf(oldElement);
 		elements.set(index, newElement);

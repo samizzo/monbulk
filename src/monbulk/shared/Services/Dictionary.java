@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Collection;
 
-import monbulk.MediaFlux.Services.MediaFluxMetadataAdapter;
+import monbulk.shared.util.XmlHelper;
 
 public class Dictionary
 {
@@ -80,16 +80,16 @@ public class Dictionary
 		StringBuilder sb = new StringBuilder();
 		
 		// Dictionary name.
-		MediaFluxMetadataAdapter.getXml(sb, "dictionary", m_name);
+		XmlHelper.addTagWithValue(sb, "dictionary", m_name);
 
 		// Definitions.
 		for (String d : entry.getDefinitions())
 		{
-			MediaFluxMetadataAdapter.getXml(sb, "definition", d);
+			XmlHelper.addTagWithValue(sb, "definition", d);
 		}
 		
 		// Term.
-		MediaFluxMetadataAdapter.getXml(sb, "term", entry.getTerm());
+		XmlHelper.addTagWithValue(sb, "term", entry.getTerm());
 		
 		return sb.toString();
 	}

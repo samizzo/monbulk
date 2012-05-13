@@ -29,6 +29,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 
 public class MetadataList extends Composite implements KeyUpHandler, KeyDownHandler
 {
@@ -38,7 +39,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 		public void onRefreshList();
 		public void onRemoveMetadata(String metadataName);
 	};
-	
+
 	private static MetadataListUiBinder uiBinder = GWT.create(MetadataListUiBinder.class);
 	interface MetadataListUiBinder extends UiBinder<Widget, MetadataList> { }
 
@@ -51,6 +52,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	@UiField Button m_refreshList;
 	@UiField Button m_removeMetadata;
 	@UiField Button m_newMetadata;
+	@UiField Button m_saveMetadata;
 	@UiField ListBox m_metadataListBox;
 	@UiField TextBox m_filterTextBox;
 
@@ -70,37 +72,67 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 		
 		populateListBox();
 	}
-
+	
+	/**
+	 * If 'showRefresh' is true the refresh button will be visible.
+	 * @param showRefresh
+	 */
 	public void setShowRefresh(boolean showRefresh)
 	{
 		m_refreshList.setVisible(showRefresh);
 	}
 	
+	/**
+	 * if 'showRemove' is true the remove button will be visible.
+	 * @param showRemove
+	 */
 	public void setShowRemove(boolean showRemove)
 	{
 		m_removeMetadata.setVisible(showRemove);
 	}
 	
+	/**
+	 * If 'showNew' is true the new button will be visible.
+	 * @param showNew
+	 */
 	public void setShowNew(boolean showNew)
 	{
 		m_newMetadata.setVisible(showNew);
 	}
+
+	/**
+	 * If 'showSave' is true the save button will be visible.
+	 * @param showSave
+	 */
+	public void setShowSave(boolean showSave)
+	{
+		m_saveMetadata.setVisible(showSave);
+	}
 	
-	// Sets the handler.
+	/**
+	 * Sets the metadata list handler.
+	 * @param handler
+	 */
 	public void setHandler(Handler handler)
 	{
 		m_handler = handler;
 	}
 	
-	// Gets the panel that contains the buttons (can be used to add
-	// custom buttons to the control).
+	/**
+	 * Returns the panel that contains the buttons (can be used to add
+	 * custom buttons to the control).
+	 * @return
+	 */
 	public HTMLPanel getButtonsPanel()
 	{
 		return m_buttonsPanel;
 	}
-	
-	// Returns the selected metadata name, or empty string if none
-	// is selected.
+
+	/**
+	 * Returns the selected metadata name, or empty string if none
+	 * is selected.
+	 * @return
+	 */
 	public String getSelectedMetadataName()
 	{
 		int index = m_metadataListBox.getSelectedIndex();
@@ -116,7 +148,10 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 		m_metadataListBox.setFocus(focus);
 	}
 
-	// Removes the specified metadata from the list.
+	/**
+	 * Removes the specified metadata from the list.
+	 * @param metadata
+	 */
 	public void remove(String metadata)
 	{
 		int newIndex = 0;
@@ -150,6 +185,15 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 		m_itemToSelect = selection;
 		populateListBox();
 		m_filterTextBox.setText("");
+	}
+	
+	/**
+	 * Adds a handler to the save button.
+	 * @param event
+	 */
+	public void addSaveHandler(ClickHandler handler)
+	{
+		m_saveMetadata.addClickHandler(handler);
 	}
 
 	public void onKeyDown(KeyDownEvent event)

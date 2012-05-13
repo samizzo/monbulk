@@ -11,8 +11,8 @@
 	</ui:style>
 
 	<g:DockLayoutPanel unit="EM" width="100%" height="100%" styleName="{style.OuterContainer}">
-		<g:west size="17">
-			<m:MetadataList ui:field="m_metadataList" showRefresh="true" showNew="true" showRemove="true" />
+		<g:west size="19">
+			<m:MetadataList ui:field="m_metadataList" showRefresh="true" showNew="true" showRemove="true" showSave="true" />
 		</g:west>
 		<g:center>
 			<m:MetadataProperties ui:field="m_metadataProperties" readOnly="false" />

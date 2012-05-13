@@ -25,6 +25,7 @@ public class MediaFluxMetadataService extends MetadataService
 	{
 		private Object m_handler = null;
 		private String m_metadataName = "";
+		private Metadata m_metadata = null;
 
 		public MetadataResponseHandler(Object handler, String name)
 		{
@@ -34,7 +35,13 @@ public class MediaFluxMetadataService extends MetadataService
 
 		public MetadataResponseHandler(Object handler)
 		{
-			this(handler, null);
+			this(handler, (String)null);
+		}
+
+		public MetadataResponseHandler(Object handler, Metadata metadata)
+		{
+			this(handler, (String)null);
+			m_metadata = metadata;
 		}
 
 		public void processResponse(XmlElement xe, List<Output> outputs) throws Throwable
@@ -102,6 +109,11 @@ public class MediaFluxMetadataService extends MetadataService
 			{
 				DestroyMetadataHandler handler = (DestroyMetadataHandler)m_handler;
 				handler.onDestroyMetadata(m_metadataName, true);
+			}
+			else if (m_handler instanceof UpdateMetadataHandler)
+			{
+				UpdateMetadataHandler handler = (UpdateMetadataHandler)m_handler;
+				handler.onUpdateMetadata(m_metadata, true);
 			}
 			else
 			{
@@ -201,6 +213,19 @@ public class MediaFluxMetadataService extends MetadataService
 					new ServiceContext("MediaFluxMetadataService.createMetadata"),
 					"asset.doc.type.create",
 					"<type>" + name + "</type><definition/>",
+					null,
+					0,
+					h,
+					true);
+	}
+
+	public void updateMetadata(Metadata metadata, UpdateMetadataHandler handler)
+	{
+		MetadataResponseHandler h = new MetadataResponseHandler(handler, metadata);
+		Session.execute(
+					new ServiceContext("MediaFluxMetadataService.updateMetadata"),
+					"asset.doc.type.update",
+					metadata.getXml(),
 					null,
 					0,
 					h,

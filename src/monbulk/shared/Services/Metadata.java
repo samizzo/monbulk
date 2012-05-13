@@ -3,6 +3,10 @@ package monbulk.shared.Services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Map.Entry;
+
+import monbulk.shared.util.XmlHelper;
 import arc.mf.client.xml.*;
 import com.google.gwt.core.client.GWT;
 
@@ -146,12 +150,12 @@ public class Metadata
 			@SuppressWarnings("unchecked")
 			HashMap<String, String> restrictions = (HashMap<String, String>)element.m_restrictions.clone();
 			m_restrictions = restrictions;
-			
+
 			m_isAttribute = element.m_isAttribute;
 			
 			for (Element e : element.m_attributes)
 			{
-				m_attributes.add(new Element(e));
+				m_attributes.add(e.clone());
 			}
 		}
 
@@ -312,6 +316,70 @@ public class Metadata
 			String desc = getSetting("description", "");
 			return m_type.toString() + ", " + name + ", " + desc;
 		}
+
+		/**
+		 * Used by enum element type so it can add its own restriction elements.
+		 * @param w
+		 */
+		protected void addRestrictionsXml(XmlStringWriter w)
+		{
+		}
+
+		public void addXml(XmlStringWriter w)
+		{
+			// Make a copy of the settings.
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> attributes = (HashMap<String, String>)m_settings.clone();
+			
+			// Remove the "description" entry.  All settings except the
+			// description are saved as attributes on the xml element.
+			String description = attributes.remove("description");
+
+			// Add the type.
+			attributes.put("type", m_type.getMetaName());
+
+			// Add the root element.
+			String root = getIsAttribute() ? "attribute" : "element";
+			w.push(root, XmlHelper.getAttributesArray(attributes));
+			
+			if (m_restrictions != null && m_restrictions.size() > 0)
+			{
+				// Add all restrictions.
+				w.push("restriction", new String[] { "base", m_type.getMetaName() });
+				{
+					Set<Entry<String, String>> r = m_restrictions.entrySet();
+					for (Entry<String, String> e : r) 
+					{
+						String key = e.getKey();
+						String value = e.getValue();
+
+						// Ignore the dummy value.
+						if (!key.equals("dummy") && !value.equals("dummy"))
+						{
+							w.add(key, value);
+						}
+					}
+					addRestrictionsXml(w);
+				}
+				w.pop();
+			}
+			
+			if (description != null && description.length() > 0)
+			{
+				// Add the description.
+				w.add("description", description);
+			}
+			
+			if (m_attributes != null && m_attributes.size() > 0)
+			{
+				// Add any mf attributes.
+				for (Element e : m_attributes)
+				{
+					e.addXml(w);
+					w.pop();
+				}
+			}
+		}
 	}
 	
 	// A document has a number of child elements.
@@ -339,7 +407,7 @@ public class Metadata
 			}
 		};
 
-		private ArrayList<Element> m_elements = new ArrayList<Element>();
+		private ArrayList<Element> m_children = new ArrayList<Element>();
 		private boolean m_isReference = false;
 		private ReferenceType m_referenceType;
 		private String m_referenceName;
@@ -353,9 +421,9 @@ public class Metadata
 		{
 			super(element);
 			
-			for (Element e : element.m_elements)
+			for (Element e : element.m_children)
 			{
-				m_elements.add(new Element(e));
+				m_children.add(e.clone());
 			}
 
 			m_isReference = element.m_isReference;
@@ -369,9 +437,9 @@ public class Metadata
 			super(ElementTypes.Document, name, description, false);
 		}
 		
-		public ArrayList<Element> getElements()
+		public ArrayList<Element> getChildren()
 		{
-			return m_elements;
+			return m_children;
 		}
 		
 		public boolean canHaveAttributes()
@@ -444,12 +512,36 @@ public class Metadata
 		{
 			return new DocumentElement(this);
 		}
+		
+		public void addXml(XmlStringWriter w)
+		{
+			if (getIsReference())
+			{
+				// Add reference info.
+				String[] attributes = new String[4];
+				int index = 0;
+				attributes[index++] = "name";
+				attributes[index++] = getReferenceName();
+				attributes[index++] = "type";
+				attributes[index++] = getReferenceType().toString().toLowerCase();
+				w.add("reference", attributes, getReferenceValue());
+			}
+			
+			if (m_children != null && m_children.size() > 0)
+			{
+				// Add children.
+				for (Element e : m_children)
+				{
+					e.addXml(w);
+					w.pop();
+				}
+			}
+		}
 	}
 	
 	public static class EnumerationElement extends Element
 	{
 		private ArrayList<String> m_values = new ArrayList<String>();
-		private String m_dictionaryName = "";
 		
 		/**
 		 * Copy constructor.  Creates a new EnumerationElement from an existing element.
@@ -462,13 +554,14 @@ public class Metadata
 			@SuppressWarnings("unchecked")
 			ArrayList<String> values = (ArrayList<String>)element.m_values.clone();
 			m_values = values;
-			
-			m_dictionaryName = element.m_dictionaryName;
 		}
 
 		public EnumerationElement(String name, String description, boolean isAttribute)
 		{
 			super(ElementTypes.Enumeration, name, description, isAttribute);
+
+			// Dummy entry so there is always a restriction for enumerations.
+			setRestriction("dummy", "dummy");
 		}
 		
 		// Returns the values of the enum.  Note that this could
@@ -490,17 +583,18 @@ public class Metadata
 
 		public void setDictionaryName(String name)
 		{
-			m_dictionaryName = name;
+			setRestriction("dictionary", name);
 		}
 		
 		public String getDictionaryName()
 		{
-			return m_dictionaryName;
+			return getRestriction("dictionary", "");
 		}
 		
 		public boolean isUsingDictionary()
 		{
-			return m_dictionaryName != null && m_dictionaryName.length() > 0;
+			String dictionaryName = getDictionaryName();
+			return dictionaryName != null && dictionaryName.length() > 0;
 		}
 		
 		public void setFromXmlElement(XmlElement element)
@@ -513,6 +607,8 @@ public class Metadata
 				String dictionary = restriction.value("dictionary");
 				if (dictionary != null && dictionary.length() > 0)
 				{
+					// TODO: Not needed.  This should be parsed by the parent
+					// class when it parses all restrictions.
 					setDictionaryName(dictionary);
 				}
 				else
@@ -531,6 +627,17 @@ public class Metadata
 		public Element clone()
 		{
 			return new EnumerationElement(this);
+		}
+		
+		public void addRestrictionsXml(XmlStringWriter w)
+		{
+			if (!isUsingDictionary() && m_values != null && m_values.size() > 0)
+			{
+				for (String v : m_values)
+				{
+					w.add("value", v);
+				}
+			}
 		}
 	}
 	
@@ -564,5 +671,35 @@ public class Metadata
 	public ArrayList<Element> getElements()
 	{
 		return m_elements;
+	}
+	
+	public String getXml()
+	{
+		XmlStringWriter x = new XmlStringWriter();
+		x.add("type", m_name);
+
+		if (m_label != null && m_label.length() > 0)
+		{
+			x.add("label", m_label);
+		}
+		
+		if (m_description != null && m_description.length() > 0)
+		{
+			x.add("description", m_description);
+		}
+		
+		x.push("definition");
+		for (Element e : m_elements)
+		{
+			e.addXml(x);
+
+			// This feels a bit messy.  Pop should probably be in addXml()
+			// but derived metadata elements need to call up to the parent
+			// class to add common xml/attributes, so the parent can't pop.
+			x.pop(); 
+		}
+		x.pop();
+
+		return x.document();
 	}
 }

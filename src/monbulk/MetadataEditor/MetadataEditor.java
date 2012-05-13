@@ -5,6 +5,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.ResizeComposite;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 
 import monbulk.shared.Services.*;
 import monbulk.shared.Services.MetadataService.*;
@@ -71,8 +73,27 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 				m_metadataProperties.clear();
 			}
 		});
+		
+		m_metadataList.addSaveHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				Metadata metadata = m_metadataProperties.getMetadata();
+				MetadataService service = MetadataService.get();
+				if (service != null)
+				{
+					service.updateMetadata(metadata, new UpdateMetadataHandler()
+					{
+						public void onUpdateMetadata(Metadata metadata, boolean success)
+						{
+							GWT.log("updated metadata: " + success);
+						}
+					});
+				}
+			}
+		});
 	}
-
+	
 	public WindowSettings getWindowSettings()
 	{
 		return m_windowSettings;

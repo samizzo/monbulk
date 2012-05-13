@@ -5,9 +5,13 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.dom.client.Style;
 
 import monbulk.shared.Services.*;
 
@@ -25,6 +29,11 @@ public class CommonElementPanel extends ElementPanel
 	@UiField TextBox m_description;
 	@UiField TextBox m_minOccurs;
 	@UiField TextBox m_maxOccurs;
+	@UiField Label m_maxOccursLabel;
+	@UiField LayoutPanel m_layout;
+	@UiField HTMLPanel m_maxOccursPanel;
+	@UiField Label m_typeLabel;
+	@UiField HTMLPanel m_typePanel;
 	
 	ChangeTypeHandler m_changeTypeHandler = null;
 
@@ -48,8 +57,13 @@ public class CommonElementPanel extends ElementPanel
 		
 		String minOccurs = m_minOccurs.getValue();
 		element.setSetting("min-occurs", minOccurs);
-		String maxOccurs = m_maxOccurs.getValue();
-		element.setSetting("max-occurs", maxOccurs);
+		
+		if (!element.getIsAttribute())
+		{
+			// max-occurs doesn't exist on attributes.
+			String maxOccurs = m_maxOccurs.getValue();
+			element.setSetting("max-occurs", maxOccurs);
+		}
 	}
 
 	public void set(Metadata.Element element)
@@ -86,9 +100,28 @@ public class CommonElementPanel extends ElementPanel
 		}
 		
 		String minOccurs = element.getSetting("min-occurs", "1");
-		String maxOccurs = element.getSetting("max-occurs", "");
 		m_minOccurs.setValue(minOccurs);
-		m_maxOccurs.setValue(maxOccurs);
+
+		if (element.getIsAttribute())
+		{
+			// HACK: Remove the max occurs panel and label, and move
+			// everything else up.  This is a bit messy but this is
+			// the quickest and simplest way to do it.  max-occurs
+			// doesn't exist for attributes.
+			// NOTE: If this same panel is re-used for an element
+			// that is not an attribute, these will not be re-added!
+			m_maxOccursPanel.removeFromParent();
+			m_maxOccursLabel.removeFromParent();
+			m_layout.setWidgetTopHeight(m_typeLabel, 92, Style.Unit.PX, 24, Style.Unit.PX);
+			m_layout.setWidgetTopHeight(m_typePanel, 90, Style.Unit.PX, 22, Style.Unit.PX);
+			m_layout.setHeight("126px");
+		}
+		else
+		{
+			// max-occurs doesn't exist on attributes.
+			String maxOccurs = element.getSetting("max-occurs", "");
+			m_maxOccurs.setValue(maxOccurs);
+		}
 	}
 	
 	public void setReadOnly(boolean readOnly)
