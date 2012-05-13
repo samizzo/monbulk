@@ -62,6 +62,16 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		Desktop.get().registerWindow(m_elementEditor);
 	}
 
+	/**
+	 * Sets this properties widget to read-only.  All ui fields will be
+	 * set to read-only.
+	 * 
+	 * Currently this only works if you set the MetadataProperties to
+	 * read-only.  If you try to set it back to not read-only the add/remove
+	 * panel won't be re-added.  We don't need this functionality at the moment
+	 * so I haven't implemented it.
+	 * @param readOnly
+	 */
 	public void setReadOnly(boolean readOnly)
 	{
 		// FIXME: Currently this only works if you set MetadataProperties to
@@ -81,6 +91,21 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_elementEditor.setReadOnly(readOnly);
 	}
 
+	
+	/**
+	 * Returns the current metadata object.
+	 * @return
+	 */
+	public Metadata getMetadata()
+	{
+		return m_metadata;
+	}
+
+	/**
+	 * Sets the metadata object to be edited from a metadata name.
+	 * This is a convenience method to look up the metadata object.
+	 * @param name
+	 */
 	public void setMetadata(String name)
 	{
 		MetadataService service = MetadataService.get();
@@ -97,6 +122,11 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		}
 	}
 
+	/**
+	 * Sets the metadata object to be edited.  Sets up all ui fields
+	 * and populates the elements tree.
+	 * @param metadata
+	 */
 	public void setMetadata(Metadata metadata)
 	{
 		clear();
@@ -114,6 +144,9 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		}
 	}
 
+	/**
+	 * Resets all ui properties and empties the elements tree.
+	 */
 	public void clear()
 	{
 		m_metadata = null;
