@@ -151,10 +151,10 @@ import monbulk.shared.Form.TextFieldValidation;
 				this.fieldValidator = new IntegerValidation(this.FieldName);
 				this._FieldVaLueWidget = new TextBox();
 			}
-			FieldNameLabel.setHorizontalAlignment(HorizontalAlignmentConstant.endOf(Direction.LTR));
-			FieldNameLabel.setWidth("80px");
-			_FieldVaLueWidget.setPixelSize(200, 30);
-			this._ValidationWidget.setSize("30px", "30px");
+			//FieldNameLabel.setHorizontalAlignment(HorizontalAlignmentConstant.endOf(Direction.LTR));
+			//FieldNameLabel.setWidth("80px");
+			//_FieldVaLueWidget.setPixelSize(200, 30);
+			//this._ValidationWidget.setSize("30px", "30px");
 			this.returnWidget.setLabelWidget(FieldNameLabel);
 			
 			this.returnWidget.setFormWidget(_FieldVaLueWidget);
