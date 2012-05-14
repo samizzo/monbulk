@@ -339,7 +339,7 @@ h1 {
 }
 .BodyPanel
 {
-	border-bottom:Solid 3px #666;
+	/*border-bottom:Solid 3px #666;*/
 
 }
 .WindowMenu .ActiveTab, .WindowMenu .gwt-MenuItem:hover {
@@ -989,7 +989,13 @@ MethodEditorDynamicFieldsPanel
 }
 
 
+
 /*AG additions 2/5/12 below */
+{
+	border-spacing:0px;
+	margin:0px;
+}
+.BodyPanel
 .menuStack
 {
 	
@@ -1021,4 +1027,171 @@ MethodEditorDynamicFieldsPanel
 .tbSearchBox
 {
 	
+}
+.mbHeader
+{
+	height:61px;
+	background-image:url("images/SpriteSheetStatic.png");
+	background-position:-561px 0px;
+	width:212px;
+	color:white;
+	font-family:Verdana;
+	font-size:24px;
+	line-height:55px;
+	text-indent:5px;
+}
+.mdHeader
+{
+	height:61px;
+	background-image:url("images/SpriteSheetStatic.png");
+	background-position:-754px -193px;
+	width:282px;
+	color:White;
+	font-family:Verdana;
+	font-size:24px;
+	line-height:55px;
+	text-indent:5px;
+
+}
+.MethodComponents
+{
+	background-image:url("images/SpriteSheetButtons.png");
+	height:35px;
+	color:White;
+	min-width:278px;
+	background-position:0px -102px;
+	background-color:red;
+	border:Solid 2px #666;
+	text-transform:uppercase;				
+	font-size: 16px;
+	font-family: Myriad Pro, Tahoma,Verdana;
+	text-indent:10px;
+}
+		
+.FormTitleDefault
+{
+	width:528px;
+	text-align:left;
+	/*background-color:Blue;*/
+	background-image:url("images/SpriteSheetButtons.png");
+	height:35px;
+	min-width:400px;
+	border:Solid 2px #666;
+	color:White;
+	background-position:0px -145px;
+	text-transform:uppercase;
+	font-size: 16px;
+	font-family: Myriad Pro, Tahoma,Verdana;
+	text-indent:10px;
+}
+
+.methodHelpSummary
+{
+	font-size: 12px;
+	font-family: Myriad Pro, Tahoma,Verdana;
+	color: #333;
+	padding-left:20px;
+}
+.mbRow1
+{
+	border-bottom:Solid 1px #999;
+	background-color:dadada;
+}
+.navPanel
+{
+	border-top:Solid 3px #333;
+	text-align:right;
+
+	
+}
+.btnDefault-NewMethod
+{
+	background-image:url("images/SpriteSheetButtons.png");
+	border:Solid 2px #CCC;
+	color:White;
+	background-position:0px -25px;
+	font-size: 12px;
+	font-family: Myriad Pro, Tahoma,Verdana;
+	text-transform:uppercase;
+	width:170px;
+	height:25px;
+	text-align:center;
+	font-weight:bold;
+	line-height:22px;
+}
+.LeftMenuPanel
+{
+	text-align:center;
+}
+
+.validWidget
+{
+	width:20px;
+}
+
+.formWidget
+{
+	width:320px;
+	background-color:#CCC;
+	height:30px;
+	border:Solid 2px #333;
+}
+.labelWidget
+{
+
+	width:100px;
+	padding-right:5px;
+	padding-left:10px;
+	font-weight:bold;
+	padding-top:8px;
+	font-size:12px;
+
+}
+.Form
+{
+
+	min-width:480px;
+	padding-left:10px;
+	padding:top:10px;
+	
+}
+.formSpacing
+{
+	border-top:Solid 1px #CCC;
+	background:Solid 1px Navy;
+	width:450px;
+	height:10px;
+
+}
+.FormNavigation
+{
+/*	padding-top:100px;*/
+	text-align:right;
+	width:100%;
+}
+.btnDefault
+{
+background-image:url("images/SpriteSheetButtons.png");
+	border:Solid 2px #CCC;
+	color:White;
+	background-position:0px -25px;
+	font-size: 12px;
+	font-family: Myriad Pro, Tahoma,Verdana;
+	text-transform:uppercase;
+	width:120px;
+	height:25px;
+	text-align:center;
+	font-weight:bold;
+	line-height:22px;
+}
+.btnDefault:Hover
+{
+	background-position:0px -60px;
+}
+.AppletStateButtons
+{
+	width:400px;
+	text-align:right;
+	left:800px;
+	float:right;
 }
