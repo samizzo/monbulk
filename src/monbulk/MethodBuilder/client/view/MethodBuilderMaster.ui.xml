@@ -101,30 +101,31 @@
 				<!-- 
 					 -->
 					 <tr>
-					 	<td class="mbColumn1 mbRow1" style="width:210px;height:62px;">
+					 	<td class="mbColumn1 mbRow1" style="min-width:200px;height:62px;">
 					 		<!--MenuTitle -->
 					 		<div class="mbHeader">
 					 			Select Method
 					 		</div>
 					 	</td>
-					 	<td class="mbColumn2 mbRow1" style="width:815px;">
+					 	<td class="methodHelpSummary" style="min-width:730px;">
 					 		<!-- Text -->
 					 		<g:HorizontalPanel>
-					 		<g:PushButton styleName="mbHeaderEnd"></g:PushButton>
-					 		<g:Label>Ipso factum toto</g:Label>
+					 		<g:Label>To create a new method, you need to provide general details for the method, some generic details for a subject and any number of steps. 
+					 				You can attach any metadata to the subject generally or via a step which supports attachments to the subject or the study (MRI, PET, CT, etc...). 
+					 		 </g:Label>
 					 		</g:HorizontalPanel>
 					 	</td>
-					 	<td class="mbColumn3 mbRow1" style="width:280px;height:62px;">
+					 	<td class="mbColumn3 mbRow1" style="min-width:280px;height:62px;">
 					 		<!--  MetaData Title -->
-					 	    <g:PushButton styleName="{style.mdHeader}">MetaData</g:PushButton>
+					 	    <g:PushButton styleName="mdHeader"></g:PushButton>
 					 	</td>
 					 </tr>
 					 <tr>
-						<td class="mbRow2" style="border-right:Solid 2px #999;border-bottom:Solid 1px #999;width:210px">
+						<td class="mbRow2" style="border-right:Solid 2px #999;">
 							<!-- Menu -->
 							<g:HTMLPanel ui:field="MenuPanel"/>
 						</td>
-						<td class="mbRow2 mbColumn2 formPanel" style="height:570px;border-bottom:Solid 2px #999"> 
+						<td class="mbRow2 mbColumn2 formPanel" style="height:570px;border-right:Solid 2px #999;padding:0px;vertical-align:top;"> 
 							<div>
 								<g:HTMLPanel ui:field="BodyPanel"/>
 							</div>
@@ -137,7 +138,7 @@
 					</tr>
 					 
 							<tr>
-								<td colspan="3" class="mbRow3 navPanel" style="text-align:right;padding-right:5px;border-top:Solid 2px #999;float:right;">
+								<td colspan="3" class="mbRow3 navPanel" style="width:100%">
 									<g:HTMLPanel ui:field="NavigationsPanel"></g:HTMLPanel>
 								</td>
 					 	 	</tr>

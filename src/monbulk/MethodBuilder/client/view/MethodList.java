@@ -24,10 +24,12 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLTable.ColumnFormatter;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /*Monbulk Imports */
@@ -85,6 +87,8 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	@UiField
 	PushButton _Newbutton;
 	
+	@UiField
+	HorizontalPanel _searchPanel;
 	 
 	private IPresenter _presenter;
 	/**
@@ -158,7 +162,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	public void Filter(String Name)
 	{
 		int count = this._MenuStack.getRowCount();
-		int i=1;
+		int i=0;
 		while(i<count)
 		{
 			MethodMenuItem tmpItem = (MethodMenuItem)this._MenuStack.getWidget(i, 0);
@@ -189,7 +193,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	@Override
 	public void setActiveMenu(String activeItem) {
 		int count = this._MenuStack.getRowCount();
-		int i=1;
+		int i=0;
 		while(i<count)
 		{
 			MethodMenuItem tmpItem = (MethodMenuItem)this._MenuStack.getWidget(i, 0);
@@ -212,7 +216,8 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 			
 			SearchWidget _SearchWidget = new SearchWidget(this);
 			
-			this._MenuStack.setWidget(0,0,_SearchWidget.getHeaderWidget());
+			this._searchPanel.add(_SearchWidget.getHeaderWidget());
+			//this._MenuStack.setWidget(0,0,_SearchWidget.getHeaderWidget());
 			
 			int i=0;
 			while(it.hasNext())
@@ -262,8 +267,8 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 			_MenuStack.getColumnFormatter().setWidth(0, "152px");
 			_MenuStack.getColumnFormatter().setWidth(1, "21px");
 			_MenuStack.getColumnFormatter().setWidth(2, "21px");
-			_MenuStack.getFlexCellFormatter().setColSpan(0, 0, 3);
-			_MenuStack.getFlexCellFormatter().getElement(0, 0).setAttribute("style", "padding-left:5px;");
+			//_MenuStack.getFlexCellFormatter().setColSpan(0, 0, 3);
+			//_MenuStack.getFlexCellFormatter().getElement(0, 0).setAttribute("style", "padding-left:5px;");
 			_MenuStack.setCellPadding(0);
 			_MenuStack.setCellSpacing(0);
 		}

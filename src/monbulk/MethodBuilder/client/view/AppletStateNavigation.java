@@ -11,6 +11,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 
 import monbulk.shared.Architecture.IPresenter;
@@ -29,13 +30,13 @@ public class AppletStateNavigation extends Composite implements IView {
 	FormPresenter Presenter;
 	
 	@UiField
-	Button btnSave;
+	PushButton btnSave;
 	
 	@UiField
-	Button btnPublish;
+	PushButton btnPublish;
 	
 	@UiField
-	Button btnCancel;
+	PushButton btnCancel;
 	
 	public AppletStateNavigation() {
 		initWidget(uiBinder.createAndBindUi(this));

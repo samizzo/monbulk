@@ -36,14 +36,15 @@
 		
 	</ui:style>
 	<g:HTMLPanel>
-		<g:VerticalPanel height="570px" width="233px">
-		<g:ScrollPanel height="530px" width="233px" styleName="{style.MenuScrolling}">
+		<g:VerticalPanel height="570px" width="212px" styleName="LeftMenuPanel" >
+		<g:HorizontalPanel width="212px" styleName="searchPanel" ui:field="_searchPanel"/>
+		<g:ScrollPanel height="510px" width="212px" styleName="{style.MenuScrolling}">
 		<!-- Have to be a list of widgets -->
-			<g:FlexTable height="530px" width="217px" addStyleNames="{style.menuStack}" ui:field="_MenuStack" />
+			<g:FlexTable height="510px" width="198px" addStyleNames="{style.menuStack}" ui:field="_MenuStack" />
 			
 		</g:ScrollPanel>
-		<g:PushButton ui:field="_Newbutton" text="New Method"></g:PushButton>
+		<g:PushButton ui:field="_Newbutton" styleName="btnDefault-NewMethod" text="Create Method">Create Method</g:PushButton>
 		</g:VerticalPanel>
-		<g:MenuBar ui:field="_MethodList" vertical="true"></g:MenuBar>
+		
 	</g:HTMLPanel>
 </ui:UiBinder> 

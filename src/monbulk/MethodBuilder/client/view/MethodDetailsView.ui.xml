@@ -2,20 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
-		.MethodComponents
-		{
-			width:287px;
-			background-color:Orange;
-			height:40px;
-		}
-		
-		.FormTitle
-		{
-			width:528px;
-			text-align:left;
-			background-color:Blue;
-			height:40px;
-		}
+	
 		.Scroll
 		{
 			
@@ -25,12 +12,12 @@
 	<g:HTMLPanel>
 	<g:DockLayoutPanel unit="PX" styleName="BodyPanel" height="570px" ui:field="LayoutPanel">
 							<g:north size="40" unit="PX">
-								<g:Grid width="815px" height="40px;">
+								<g:Grid width="750px" height="40px;">
 									<g:row>
-										<g:customCell styleName="{style.MethodComponents}" >
+										<g:customCell styleName="MethodComponents" >
 											<g:Label>Method Components</g:Label>	
 										</g:customCell>
-										<g:customCell styleName="{style.FormTitle}" >
+										<g:customCell styleName="FormTitleDefault" >
 											<g:Label>Form</g:Label>	
 										</g:customCell>
 									</g:row>

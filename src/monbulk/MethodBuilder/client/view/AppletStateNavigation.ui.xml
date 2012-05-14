@@ -8,13 +8,13 @@
 		<g:Grid styleName="AppletStateButtons">
 			<g:row >
 				<g:customCell>
-					<g:Button ui:field="btnSave" styleName="btnSave" text="Save"/>
+					<g:PushButton ui:field="btnSave" styleName="btnDefault" text="Save"/>
 				</g:customCell>
 				<g:customCell>
-					<g:Button ui:field="btnPublish" styleName="btnPublish" text="PUBLISH"/>
+					<g:PushButton ui:field="btnPublish" styleName="btnDefault" text="PUBLISH"/>
 				</g:customCell>
 				<g:customCell>
-					<g:Button ui:field="btnCancel" styleName="btnCancel" text="CANCEL"/>
+					<g:PushButton ui:field="btnCancel" styleName="btnDefault" text="CANCEL"/>
 				</g:customCell>
 			</g:row>
 		</g:Grid>

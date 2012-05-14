@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -48,6 +49,9 @@ public class baseForm extends VerticalPanel implements IFormView {
 	protected PushButton _recedeForm;
 	protected ArrayList<HorizontalPanel> widgetStructure;
 	protected VerticalPanel tmpPanel = new VerticalPanel();
+	protected ScrollPanel _scrollSection = new ScrollPanel();
+	protected VerticalPanel _formItems = new VerticalPanel();
+	
 	private Boolean isLoaded;
 	public baseForm()
 	{
@@ -134,21 +138,21 @@ public class baseForm extends VerticalPanel implements IFormView {
 		try
 		{	
 			emptyForm();
-			HorizontalPanel FormName = new HorizontalPanel();
-			FormName.setHeight("50px");
-			FormName.setStyleName("FormTitle");
-			Label lblFormName = new Label();
-			lblFormName.setText(this.generalForm.getFormName() + "");
-			FormName.add(lblFormName);
-			tmpPanel.add(FormName);
-			HorizontalPanel errorPanel = new HorizontalPanel();
+			//HorizontalPanel FormName = new HorizontalPanel();
+			//FormName.setHeight("50px");
+			//FormName.setStyleName("FormTitle");
+			//Label lblFormName = new Label();
+			//lblFormName.setText(this.generalForm.getFormName() + "");
+			//FormName.add(lblFormName);
+			//tmpPanel.add(FormName);
+			/*HorizontalPanel errorPanel = new HorizontalPanel();
 			errorPanel.setStyleName("FormErrors");
 			this._errors = new Label();
 			errorPanel.add(_errors);
 			tmpPanel.add(errorPanel);
-			
+			*/
 			widgetStructure = new ArrayList<HorizontalPanel>();
-			widgetStructure.add(errorPanel);
+			//widgetStructure.add(errorPanel);
 			GWT.log("We start to render the form items");
 			
 			Iterator<iFormField> i = generalForm.getFormDetails().iterator();
@@ -182,18 +186,33 @@ public class baseForm extends VerticalPanel implements IFormView {
 					//	tmpWidget.setValue(value, fireEvents)
 					//}
 					HorizontalPanel hzPanel = new HorizontalPanel();
+					HorizontalPanel spacePanel = new HorizontalPanel();
 					hzPanel.add(tmpWidg);
+					//hzPanel.setCellWidth(tmpWidg, "500px");
 					hzPanel.setHeight("50px");
-					hzPanel.setWidth("100%");
-					hzPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
+					//hzPanel.setWidth("100%");
+					spacePanel.setStyleName("formSpacing");
+					spacePanel.setHeight("10px");
+					//hzPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
 					widgetStructure.add(hzPanel);
-					tmpPanel.add(hzPanel);
+					
+					//this._formItems.
+					this._formItems.add(hzPanel);
+					this._formItems.add(spacePanel);
 				}
 				
 			}
 			GWT.log("We end the while loop");
-			tmpPanel.setStyleName("Form");
+			_formItems.setWidth("420px");
+			//_formItems.setHeight("400px");
+			_formItems.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
+			this._scrollSection.add(_formItems);
 			
+			this._scrollSection.setHeight("480px");
+			//this._scrollSection.setWidth("400px");
+			tmpPanel.add(_scrollSection);
+			tmpPanel.setStyleName("Form");
+			tmpPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
 			
 			HorizontalPanel navigation = new HorizontalPanel();
 			navigation.setStyleName("FormNavigation");
@@ -212,11 +231,11 @@ public class baseForm extends VerticalPanel implements IFormView {
 			GWT.log("First OnClick");
 			_completeForm.setText("Next");
 			
-			_completeForm.setStyleName("btnNext");
+			_completeForm.setStyleName("btnDefault");
 			
 			_recedeForm = new PushButton();
 			_recedeForm.setText("Previous");
-			
+			_recedeForm.setStyleName("btnDefault");
 			GWT.log("Second OnClick");
 			_recedeForm.addClickHandler(new ClickHandler(){
 	

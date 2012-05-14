@@ -23,6 +23,9 @@ import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Form.FormField;
 import monbulk.shared.Form.iFormField;
+import monbulk.shared.Model.pojo.pojoMethod;
+import monbulk.shared.Model.pojo.pojoStepDetails;
+import monbulk.shared.Model.pojo.pojoSubjectProperties;
 
 public class MethodDetailsView extends Composite implements IMethodsView {
 
@@ -148,7 +151,7 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 		CustomStackHeader tmpHeader = null;
 		HTML tmpBody = null;
 		Boolean isNewStep = false;
-		if(anyBuilder.getFormName().contains("StepDetails"))
+		if(anyBuilder.getFormName().contains(pojoStepDetails.FormName))
 		{
 			if(StepExists(anyBuilder.getFormName())!=null)
 			{
@@ -194,13 +197,13 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 					}
 					
 				}
-				else if(tmpField.isTitle() && tmpField.hasValue() && anyBuilder.getFormName().equals("MethodDetails"))
+				else if(tmpField.isTitle() && tmpField.hasValue() && anyBuilder.getFormName().equals(pojoMethod.FormName))
 				{
 					//this.MethodTitle.setText((String) tmpField.GetFieldValue());
 					
 					this.MethodNavigationStack.setHeaderHTML(0,(String) tmpField.GetFieldValue());
 				}
-				else if(tmpField.isTitle() && tmpField.hasValue() && anyBuilder.getFormName().contains("StepDetails"))
+				else if(tmpField.isTitle() && tmpField.hasValue() && anyBuilder.getFormName().contains(pojoStepDetails.FormName))
 				{
 					//Window.alert(tmpField.GetFieldValue().toString());
 					//this.MethodTitle.setText((String) tmpField.GetFieldValue());
@@ -212,18 +215,18 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 			}
 		}
 		html = html +"</<table>";
-		if(anyBuilder.getFormName().equals("MethodDetails"))
+		if(anyBuilder.getFormName().equals(pojoMethod.FormName))
 		{
 			this.MethodNavigationStack.showWidget(0);
 			MethodDetailsSummary.setHTML(html);
 			
 		}
-		else if(anyBuilder.getFormName().equals("SubjectProperties"))
+		else if(anyBuilder.getFormName().equals(pojoSubjectProperties.FormName))
 		{
 			this.MethodNavigationStack.showWidget(1);
 			SubjectPropertiesSummary.setHTML(html);
 		}
-		else if(anyBuilder.getFormName().contains("StepDetails"))
+		else if(anyBuilder.getFormName().contains(pojoStepDetails.FormName))
 		{
 			
 			//We need to check if this is a new or old stack - FormName is unique
@@ -243,7 +246,7 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 	}
 	@Override
 	public void setChild(Widget someContainer) {
-		this.LayoutPanel.addWest(someContainer,480);
+		this.LayoutPanel.addWest(someContainer,500);
 		this.ChildContainerIndex = this.LayoutPanel.getWidgetIndex(someContainer);
 	}
 	@Override
