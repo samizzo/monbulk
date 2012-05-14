@@ -550,13 +550,13 @@ public class MethodCreatorPresenter implements FormPresenter{
 			
 				if(tmpState!=null)
 				{
-				
+					FormBuilder tmpBuilder = this.mainModel.getFormData(tmpState.presenterState.toString());
 					IFormView tmpView = tmpState.getView();
 					
 					if(tmpView!=null)
 					{
 						
-						FormBuilder tmpBuilder = this.mainModel.getFormData(tmpState.presenterState.toString());
+						this.ImplementedMethodView.setData(tmpBuilder);
 						tmpView.LoadForm(tmpBuilder);
 						
 					}

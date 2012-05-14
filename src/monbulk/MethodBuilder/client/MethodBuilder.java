@@ -31,10 +31,10 @@ public class MethodBuilder extends ResizeComposite implements IWindow
 	public MethodBuilder(HandlerManager evtBus)
 	{
 		m_windowSettings = new WindowSettings();
-		m_windowSettings.width = 1200;
-		m_windowSettings.height = 800;
-		m_windowSettings.minWidth = 1200;
-		m_windowSettings.minHeight = 800;
+		m_windowSettings.width = 1250;
+		m_windowSettings.height = 680;
+		m_windowSettings.minWidth = 1250;
+		m_windowSettings.minHeight = 680;
 		m_windowSettings.windowId = "MethodBuilder";
 		m_windowSettings.windowTitle = "Method Builder";
 
