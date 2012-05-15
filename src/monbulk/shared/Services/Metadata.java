@@ -653,14 +653,29 @@ public class Metadata
 		m_label = label;
 	}
 	
+	public void setName(String name)
+	{
+		m_name = name;
+	}
+	
 	public String getName()
 	{
 		return m_name;
 	}
 	
+	public void setDescription(String description)
+	{
+		m_description = description;
+	}
+	
 	public String getDescription()
 	{
 		return m_description;
+	}
+	
+	public void setLabel(String label)
+	{
+		m_label = label;
 	}
 	
 	public String getLabel()

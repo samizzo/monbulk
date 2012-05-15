@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -458,6 +459,17 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			}
 
 			m_elementsTree.setSelectedItem(newItem, true);
+		}
+	}
+	
+	@UiHandler({"m_name", "m_label", "m_description"})
+	void onKeyUp(KeyUpEvent event)
+	{
+		if (m_metadata != null)
+		{
+			m_metadata.setName(m_name.getText());
+			m_metadata.setLabel(m_label.getText());
+			m_metadata.setDescription(m_description.getText());
 		}
 	}
 }
