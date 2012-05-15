@@ -78,10 +78,39 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 		{
 			public void onClick(ClickEvent event)
 			{
-				Metadata metadata = m_metadataProperties.getMetadata();
-				MetadataService service = MetadataService.get();
+				final Metadata metadata = m_metadataProperties.getMetadata();
+				final MetadataService service = MetadataService.get();
 				if (service != null)
 				{
+					String oldName = m_metadataList.getSelectedMetadataName();
+					final String newName = metadata.getName();
+					if (!oldName.equals(newName))
+					{
+						// Metadata name has changed so rename it first before updating.
+						service.renameMetadata(oldName, newName, new RenameMetadataHandler()
+						{
+							public void onRenameMetadata(boolean success)
+							{
+								GWT.log("renamed metadata: " + success);
+
+								if (success)
+								{
+									// We can now update the metadata.
+									service.updateMetadata(metadata, new UpdateMetadataHandler()
+									{
+										public void onUpdateMetadata(Metadata metadata, boolean success)
+										{
+											GWT.log("updated metadata: " + success);
+
+											// Refresh the list so it has the new name.
+											m_metadataList.refresh(newName);
+										}
+									});
+								}
+							}
+						});
+					}
+
 					service.updateMetadata(metadata, new UpdateMetadataHandler()
 					{
 						public void onUpdateMetadata(Metadata metadata, boolean success)

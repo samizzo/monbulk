@@ -16,6 +16,7 @@ import arc.mf.session.ServiceResponseHandler;
 import arc.mf.session.Session;
 
 import monbulk.shared.Services.*;
+import monbulk.shared.util.XmlHelper;
 
 public class MediaFluxMetadataService extends MetadataService
 {
@@ -114,6 +115,11 @@ public class MediaFluxMetadataService extends MetadataService
 			{
 				UpdateMetadataHandler handler = (UpdateMetadataHandler)m_handler;
 				handler.onUpdateMetadata(m_metadata, true);
+			}
+			else if (m_handler instanceof RenameMetadataHandler)
+			{
+				RenameMetadataHandler handler = (RenameMetadataHandler)m_handler;
+				handler.onRenameMetadata(true);
 			}
 			else
 			{
@@ -219,6 +225,7 @@ public class MediaFluxMetadataService extends MetadataService
 					true);
 	}
 
+	// Updates the specified metadata.
 	public void updateMetadata(Metadata metadata, UpdateMetadataHandler handler)
 	{
 		MetadataResponseHandler h = new MetadataResponseHandler(handler, metadata);
@@ -231,7 +238,24 @@ public class MediaFluxMetadataService extends MetadataService
 					h,
 					true);
 	}
-	
+
+	// Renames the specified metadata.
+	public void renameMetadata(String oldName, String newName, RenameMetadataHandler handler)
+	{
+		StringBuilder sb = new StringBuilder();
+		XmlHelper.addTagWithValue(sb, "new-type", newName);
+		XmlHelper.addTagWithValue(sb, "old-type", oldName);
+		MetadataResponseHandler h = new MetadataResponseHandler(handler);
+		Session.execute(
+					new ServiceContext("MediaFluxMetadataService.renameMetadata"),
+					"asset.doc.type.rename",
+					sb.toString(),
+					null,
+					0,
+					h,
+					true);
+	}
+
 	// Destroys the specified metadata.
 	public void destroyMetadata(String name, DestroyMetadataHandler handler)
 	{
