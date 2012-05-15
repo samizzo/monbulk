@@ -8,6 +8,13 @@
 		{
 			width: 65px;
 		}
+		
+		.Ellipsis
+		{
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
 	</ui:style>
 
 	<g:LayoutPanel width="100%" height="100%">
@@ -66,23 +73,15 @@
 					<g:layer left="0px" top="2px" width="90px" height="24px">
 						<g:Label text="Type:" />
 					</g:layer>
-					<g:layer left="90px" top="0px" right="10px" height="24px">
-						<g:HTMLPanel>
-							<div class="textBoxPadding">
-								<g:TextBox readOnly="true" ui:field="m_elementType" width="100%" />
-							</div>
-						</g:HTMLPanel>
+					<g:layer left="90px" top="2px" right="10px" height="24px">
+						<g:Label text="" ui:field="m_elementType" />
 					</g:layer>
 
 					<g:layer left="0px" top="32px" width="90px" height="24px">
 						<g:Label text="Description:" />
 					</g:layer>
-					<g:layer left="90px" top="30px" right="10px" height="24px">
-						<g:HTMLPanel>
-							<div class="textBoxPadding">
-								<g:TextBox readOnly="true" ui:field="m_elementDescription" width="100%" />
-							</div>
-						</g:HTMLPanel>
+					<g:layer left="90px" top="32px" right="10px" height="24px">
+						<g:Label text="" ui:field="m_elementDescription" height="24px" styleName="{style.Ellipsis}" />
 					</g:layer>
 				</g:LayoutPanel>
 			</g:CaptionPanel>

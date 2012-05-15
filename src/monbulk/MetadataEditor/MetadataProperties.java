@@ -12,6 +12,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -42,8 +43,8 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	@UiField Button m_editElement;
 	@UiField HTMLPanel m_addRemovePanel;
 	@UiField CaptionPanel m_elements;
-	@UiField TextBox m_elementType;
-	@UiField TextBox m_elementDescription;
+	@UiField Label m_elementType;
+	@UiField Label m_elementDescription;
 
 	private TreeItem m_selectedElement = null;
 	private Metadata m_metadata = null;
