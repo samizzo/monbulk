@@ -1004,30 +1004,11 @@ MethodEditorDynamicFieldsPanel
 {
 	
 }
-.menuMethodName
-{
-	
-}
-.menuEditMethod
-{
-	
-}
-.menuCloneMethod
-{
-	
-}
 .hlPassiveMenuContainer
 {
 	
 }
-.btnSearch
-{
-	
-}
-.tbSearchBox
-{
-	
-}
+
 .mbHeader
 {
 	height:61px;
@@ -1095,7 +1076,7 @@ MethodEditorDynamicFieldsPanel
 .mbRow1
 {
 	border-bottom:Solid 1px #999;
-	background-color:dadada;
+	background-color:#dadada;
 }
 .navPanel
 {
@@ -1124,6 +1105,7 @@ MethodEditorDynamicFieldsPanel
 	text-align:center;
 }
 
+/*Form Styles*/
 .validWidget
 {
 	width:20px;
@@ -1131,7 +1113,7 @@ MethodEditorDynamicFieldsPanel
 
 .formWidget
 {
-	width:320px;
+	width:300px;
 	background-color:#CCC;
 	height:30px;
 	border:Solid 2px #333;
@@ -1150,15 +1132,14 @@ MethodEditorDynamicFieldsPanel
 .Form
 {
 
-	min-width:480px;
+	min-width:497px;
 	padding-left:10px;
-	padding:top:10px;
+	padding-top:10px;
 	
 }
 .formSpacing
 {
 	border-top:Solid 1px #CCC;
-	background:Solid 1px Navy;
 	width:450px;
 	height:10px;
 
@@ -1169,6 +1150,16 @@ MethodEditorDynamicFieldsPanel
 	text-align:right;
 	width:100%;
 }
+.FormNav
+{
+	text-align:right;
+	width:100%;
+	border-top:Solid 2px #999;
+	height:100%;
+	float:right;
+}
+
+/*Some Buttons */
 .btnDefault
 {
 background-image:url("images/SpriteSheetButtons.png");
@@ -1194,4 +1185,59 @@ background-image:url("images/SpriteSheetButtons.png");
 	text-align:right;
 	left:800px;
 	float:right;
+}
+
+/*Method Menu*/
+.btnCloneMethod
+{
+background-image:url("images/ICONS.png");
+background-position:-362px -918px;
+	width:22px;
+	height:22px;
+	padding-right:2px;
+
+}
+.btnEditMethod
+{
+background-image:url("images/ICONS.png");
+background-position:-333px -918px;
+	width:22px;
+	height:22px;
+	padding-right:2px;
+
+
+}
+.menuMethodName
+{
+	width:140px;	
+	padding-right:5px;
+	padding-left:5px;
+
+}
+
+/*Search Widget*/
+.btnSearch
+{
+	background-image:url("images/ICONS.png");
+	background-position:-299px -916px;
+	width:26px;
+	height:26px;
+
+}
+.tbSearchBox
+{
+	height:20px;
+	border:Solid 2px #345484;
+	
+}
+.searchWidget
+{
+	vertical-align:middle;
+	padding-top:5px;
+	padding-left:2px;
+
+}
+.searchPanel
+{
+	border:Solid 2px #345484;
 }
