@@ -43,6 +43,7 @@ public abstract class baseModel implements iFormModel{
 	}
 	@Override
 	public String ValidateForm() {
+		
 		Iterator<iFormField> i = this.formData.getFormDetails().iterator();
 		//Assumedly we should validate as well
 		
@@ -55,6 +56,10 @@ public abstract class baseModel implements iFormModel{
 			}
 		}
 		return "";
+	}
+	@Override
+	public String ValidateForm(String FormName) {
+		return this.ValidateForm();
 	}
 	@Override
 	public FormBuilder getFormData() {	

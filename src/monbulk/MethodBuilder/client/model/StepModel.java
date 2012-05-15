@@ -267,5 +267,10 @@ public class StepModel implements iMBModel,IDraggable {
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public String ValidateForm(String FormName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

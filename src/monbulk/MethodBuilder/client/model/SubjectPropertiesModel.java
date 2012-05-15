@@ -153,4 +153,10 @@ public class SubjectPropertiesModel implements iMBModel,IDraggable{
 		
 	}
 
+	@Override
+	public String ValidateForm(String FormName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

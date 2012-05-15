@@ -101,13 +101,13 @@
 				<!-- 
 					 -->
 					 <tr>
-					 	<td class="mbColumn1 mbRow1" style="min-width:200px;height:62px;">
+					 	<td class="mbColumn1 mbRow1" style="min-width:210px;height:62px;">
 					 		<!--MenuTitle -->
 					 		<div class="mbHeader">
 					 			Select Method
 					 		</div>
 					 	</td>
-					 	<td class="methodHelpSummary" style="min-width:730px;">
+					 	<td class="methodHelpSummary mbRow1" style="min-width:782px;">
 					 		<!-- Text -->
 					 		<g:HorizontalPanel>
 					 		<g:Label>To create a new method, you need to provide general details for the method, some generic details for a subject and any number of steps. 

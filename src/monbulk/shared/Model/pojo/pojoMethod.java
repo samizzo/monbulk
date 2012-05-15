@@ -24,7 +24,7 @@ public class pojoMethod implements IPojo {
 	private String KeyWords;
 	private String MethodID;
 	
-	public  static final String FormName = "MethodDetails";
+	public  static final String FormName = "METHOD_DETAILS";
 	public static final String MethodNameField = "Title";
 	public static final String MethodDescriptionField = "Description";
 	public static final String MethodKeywordsField = "Keywords";

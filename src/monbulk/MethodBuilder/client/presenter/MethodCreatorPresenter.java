@@ -1,7 +1,9 @@
 package monbulk.MethodBuilder.client.presenter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 
 import arc.gui.gwt.widget.panel.AbsolutePanel;
@@ -43,6 +45,8 @@ import monbulk.shared.Form.iFormField.iFormFieldValidation;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.pojo.pojoMethod;
 import monbulk.shared.Model.pojo.pojoMethodComplete;
+import monbulk.shared.Model.pojo.pojoStepDetails;
+import monbulk.shared.Model.pojo.pojoSubjectProperties;
 import monbulk.shared.Services.MethodService;
 import monbulk.shared.Services.MethodService.MethodServiceHandler;
 import monbulk.shared.Services.ServiceRegistry;
@@ -56,47 +60,10 @@ import monbulk.MethodBuilder.shared.iMBModel;
 
 public class MethodCreatorPresenter implements FormPresenter{
 
-	public class PresenterState
-	{
-		private IFormView ImplementedView;
-		
-		private iMBModel RelatedModel;
-		private MethodCreatorStates presenterState;
-		private IPojo loadedModel;
-		
-		public PresenterState(IFormView tmpBodyView, iMBModel tmpRelatedModel,MethodCreatorStates tmpState)
-		{
-			this.ImplementedView = tmpBodyView;
-			this.RelatedModel = tmpRelatedModel;
-			this.presenterState = tmpState;
-			//TODO Implement Form for FormBuilder
-			//this.ImplementedView.setData(this.RelatedModel.getFormData()) 
-		}
-		public PresenterState(IFormView tmpBodyView, iMBModel tmpRelatedModel,MethodCreatorStates tmpState, IPojo inModel)
-		{
-			this.ImplementedView = tmpBodyView;
-			this.RelatedModel = tmpRelatedModel;
-			this.presenterState = tmpState;
-			this.loadedModel = inModel;
-			//TODO Implement Form for FormBuilder
-			//this.ImplementedView.setData(this.RelatedModel.getFormData()) 
-		}
-		public MethodCreatorStates getState()
-		{
-			return this.presenterState;
-		}
-		public IFormView getView()
-		{
-			return this.ImplementedView;
-		}
-		public iMBModel getModel()
-		{
-			return this.RelatedModel;
-		}
-	}
+	private int countLoads;
 	//private IView vwMethodCreator;
 	//private IDockView vwDockPanel;
-	private ArrayList<PresenterState> AllStates;
+	//private ArrayList<PresenterState> AllStates;
 	private MethodCreatorStates CurrentState;
 	private IDockView ImplementedDockView;
 	private IMethodsView ImplementedMethodView;
@@ -105,6 +72,8 @@ public class MethodCreatorPresenter implements FormPresenter{
 		METHOD_DETAILS,SUBJECT_PROPERTIES,STEP_DETAILS,COMPLETE, INIT
 	};
 	
+	public final HashMap<String,MethodCreatorStates> stateSelector;
+	public final HashMap<MethodCreatorStates,IFormView> _AllStates;
 	private final MethodCompleteModel mainModel; 
 	//private MethodForm methodForm;
 	//private MethodModel MethodModel;
@@ -113,7 +82,8 @@ public class MethodCreatorPresenter implements FormPresenter{
 	private appletWindow tclBox;
 	public MethodCreatorPresenter(HandlerManager evtBus)
 	{
-		
+		stateSelector = new HashMap<String,MethodCreatorStates>();
+		_AllStates = new HashMap<MethodCreatorStates,IFormView>();
 		this.eventBus = evtBus;
 		mainModel = new MethodCompleteModel();
 		mainModel.setPresenter(this);
@@ -121,13 +91,18 @@ public class MethodCreatorPresenter implements FormPresenter{
 	
 	}
 	public void Construct(String ID)
-	{		
-		this.ImplementedMethodView = new MethodDetailsView();
-		
-		this.ImplementedDockView = new metaDataListIntegrated();
-		
+	{	
+		//METHOD_DETAILS,SUBJECT_PROPERTIES,STEP_DETAILS,COMPLETE, INIT
+		stateSelector.put("METHOD_DETAILS", MethodCreatorStates.METHOD_DETAILS);
+		stateSelector.put("SUBJECT_PROPERTIES", MethodCreatorStates.SUBJECT_PROPERTIES);
+		stateSelector.put("STEP_DETAILS", MethodCreatorStates.STEP_DETAILS);
+		stateSelector.put("COMPLETE", MethodCreatorStates.COMPLETE);
+		stateSelector.put("INIT", MethodCreatorStates.INIT);
+		this.ImplementedMethodView = new MethodDetailsView();		
+		this.ImplementedDockView = new metaDataListIntegrated();		
 		this.ImplementedDockView.setPresenter(this);
-		AllStates = new ArrayList<PresenterState>();
+		countLoads = 0;
+		//AllStates = new ArrayList<PresenterState>();
 		//tclBox = new appletWindow("TCL Viewer", "TCLViewer", this.eventBus, null);
 		
 		SetStates(ID);
@@ -136,7 +111,8 @@ public class MethodCreatorPresenter implements FormPresenter{
 	public MethodCreatorPresenter(HandlerManager evtBus, String ID)
 	{
 		//Load Method From ID;
-		
+		stateSelector = new HashMap<String,MethodCreatorStates>();
+		_AllStates = new HashMap<MethodCreatorStates,IFormView>();
 		this.eventBus = evtBus;
 		mainModel = new MethodCompleteModel(ID,this);
 		Construct(ID);
@@ -152,28 +128,16 @@ public class MethodCreatorPresenter implements FormPresenter{
 			{
 			//GWT.log(mainModel.getFormData().toString());
 			MethodForm tmpForm = new MethodForm();
-		
-			//tmpForm.LoadForm(mainModel.getFormData(MethodCreatorStates.METHOD_DETAILS.toString()));
 			tmpForm.setPresenter(this);			
-			PresenterState tmpState = new PresenterState(tmpForm,mainModel,MethodCreatorStates.METHOD_DETAILS);
-			
 			SubjectPropertiesForm tmpForm2 = new SubjectPropertiesForm();
 			tmpForm2.setPresenter(this);
-			
-			//tmpForm2.LoadForm(mainModel.getFormData(MethodCreatorStates.SUBJECT_PROPERTIES.toString()));
-			//SubjectPropertiesModel tmpModel2 = new SubjectPropertiesModel();
-			//tmpModel.setPresenter(this);
-			//PresenterState tmpState2 = new PresenterState(tmpForm2,tmpModel2,MethodCreatorStates.SUBJECT_PROPERTIES);
-			PresenterState tmpState2 = new PresenterState(tmpForm2,mainModel,MethodCreatorStates.SUBJECT_PROPERTIES);
-				
 			StepForm tmpForm3 = new StepForm();
 			tmpForm3.setPresenter(this);
-			//tmpForm3.LoadForm(mainModel.getFormData(MethodCreatorStates.SUBJECT_PROPERTIES.toString()));
-			PresenterState tmpState3 = new PresenterState(tmpForm3,mainModel,MethodCreatorStates.STEP_DETAILS);
+			this._AllStates.put(MethodCreatorStates.METHOD_DETAILS, tmpForm);
+			this._AllStates.put(MethodCreatorStates.SUBJECT_PROPERTIES, tmpForm2);
+			this._AllStates.put(MethodCreatorStates.STEP_DETAILS, tmpForm3);
 			
-			AllStates.add(tmpState);
-			AllStates.add(tmpState2);
-			AllStates.add(tmpState3);
+			
 			}
 			catch(Exception ex)
 			{
@@ -186,49 +150,42 @@ public class MethodCreatorPresenter implements FormPresenter{
 	//TODO May be redundant code here - CLEAN UP!
 	private void ChangeState(MethodCreatorStates newState)
 	{
-		if(this.CurrentState != null)
-		{
-			
-			
-			if(!this.CurrentState.equals(newState))
+			if(this.CurrentState != null)
 			{
 				try
-				{
-					this.CurrentState = newState;
-					Iterator<PresenterState> i = AllStates.iterator();
+				{			
+					IFormView tmpView = this._AllStates.get(newState);
 					
-					while(i.hasNext())
-					{
-						
-						PresenterState tmpState = (PresenterState)i.next();
-						
-						if(tmpState.presenterState.equals(newState))
+					if(tmpView!=null)
+					{	
+						this.ImplementedMethodView.clearChild();
+					//			GWT.log("1");
+						if(!this.mainModel.isLoaded())
 						{
-							
-							this.ImplementedMethodView.clearChild();
-				//			GWT.log("1");
-							if(!this.mainModel.isLoaded())
-							{
-								tmpState.getView().LoadForm(this.mainModel.getFormData(tmpState.presenterState.toString()));
-							}
-					//		GWT.log("2");
-							this.ImplementedMethodView.setChild(tmpState.getView().asWidget());
-						//	GWT.log("3");
-							this.ImplementedMethodView.setPresenter(this);
-							//GWT.log("4");
-							//this.ImplementedDockView.setTabData(tmpState.getModel().getMetaDataCategories(), "MetaData");
-							//GWT.log(tmpState.presenterState.toString());
-							return;
+							tmpView.LoadForm(this.mainModel.getFormData(newState.toString()));
+							countLoads++;
+							GWT.log("Loaded:" + countLoads);
 						}
 						
+						GWT.log("Pre-SetChild" + this.CurrentState);
+						this.ImplementedMethodView.setChild(tmpView.asWidget());
+						GWT.log("Post-SetChild" + newState);
+						this.ImplementedMethodView.setPresenter(this);
+						this.CurrentState=newState;
+								//GWT.log("4");
+								//this.ImplementedDockView.setTabData(tmpState.getModel().getMetaDataCategories(), "MetaData");
+								//GWT.log(tmpState.presenterState.toString());
+						GWT.log("cHILD wIDGET:" + tmpView.getClass());
+						return;
+					}
+							
+							
 						
 					}
-				}
-				catch(Exception ex)
-				{
-					GWT.log("Error Occurs @ MethodCreatorPresenter.ChangeState" + ex.getMessage());
-				}
-			}
+					catch(Exception ex)
+					{
+						GWT.log("Error Occurs @ MethodCreatorPresenter.ChangeState" + ex.getMessage());
+					}
 			
 		}
 		else
@@ -278,55 +235,37 @@ public class MethodCreatorPresenter implements FormPresenter{
 		
 	}
 	
-	public PresenterState getCurrentPresenterState()
-	{
-		Iterator<PresenterState> i = AllStates.iterator();
-		
-		while(i.hasNext())
-		{
-			PresenterState tmpState = (PresenterState)i.next();
-			if(tmpState.presenterState.equals(this.CurrentState))
-			{
-				return tmpState;
-			}
-		}
-		return null;
-	}
-	
-	public String UpdateValue(String FieldName, String FieldValue) {
-		// Effectively we need to know which model to update
-		// So we may need one Model per Presenter?
-		//Or we need to know the Form Name???
-		PresenterState currentState =this.getCurrentPresenterState(); 
-		
-		return "Exceution Completed";
 
-	}
 	@Override
 	public void FormComplete(String FormName,String Command) {
-		PresenterState currentState =this.getCurrentPresenterState();
-		iMBModel tmpModel = currentState.getModel();
+		IFormView currentView =this._AllStates.get(CurrentState);
+		iMBModel tmpModel = this.mainModel;
 		if(Command=="Next")
 		{
-			
-			String Validation = tmpModel.ValidateForm();
+		//	com.google.gwt.user.client.Window.alert("Unable to Save Form.");
+			GWT.log("Next and CurrentState is:" + CurrentState + "New State is: " + FormName);
+			String Validation = tmpModel.ValidateForm(FormName);
 			if(!Validation.equals(""))
 			{
-				//Window.alert("Unable to Save Form." + Validation);
+				com.google.gwt.user.client.Window.alert("Unable to Save Form." + Validation);
 				return;
 			}
-				
-			if(FormName=="MethodDetails")
+			
+			if(FormName==pojoMethod.FormName)
 			{
 				//TODO Must ensure next, prev and complete states are submitted to any view/form
 				
 				this.ChangeState(MethodCreatorStates.SUBJECT_PROPERTIES);
-				this.ImplementedMethodView.SetMenuIndex("SubjectProperties");
+		
+				this.ImplementedMethodView.SetMenuIndex(MethodCreatorStates.SUBJECT_PROPERTIES.toString());
+				GWT.log("complete Load");
 			}
-			if(FormName=="SubjectProperties")
+			else if(FormName==pojoSubjectProperties.FormName)
 			{
 				//TODO Must ensure next, prev and complete states are submitted to any view/form
+				this.mainModel.addStep(pojoStepDetails.FormName);
 				this.ChangeState(MethodCreatorStates.STEP_DETAILS);
+				
 			}
 		}
 		else if(Command=="Prev")
@@ -335,13 +274,13 @@ public class MethodCreatorPresenter implements FormPresenter{
 			{
 				//DONE Must ensure next, prev and complete states are submitted to any view/form
 				this.ChangeState(MethodCreatorStates.METHOD_DETAILS);
-				this.ImplementedMethodView.SetMenuIndex("MethodDetails");
+				this.ImplementedMethodView.SetMenuIndex(MethodCreatorStates.METHOD_DETAILS.toString());
 			}	
 			if(FormName=="StepDetails")
 			{
 				//DONE Must ensure next, prev and complete states are submitted to any view/form
 				this.ChangeState(MethodCreatorStates.SUBJECT_PROPERTIES);
-				this.ImplementedMethodView.SetMenuIndex("SubjectProperties");
+				this.ImplementedMethodView.SetMenuIndex(MethodCreatorStates.SUBJECT_PROPERTIES.toString());
 			}	
 		}
 		else if(Command=="AddAnother")
@@ -350,34 +289,27 @@ public class MethodCreatorPresenter implements FormPresenter{
 			StepModel revisedModel =(StepModel)tmpModel;
 			
 			revisedModel.AddNewStep();
-			currentState.getView().ClearForm();
+			currentView.ClearForm();
 			//Current Model - Set New Step
 		}
 		else if(Command=="Edit")
 		{
-			if(FormName=="MethodDetails")
-			{
-				this.ChangeState(MethodCreatorStates.METHOD_DETAILS);
-				this.ImplementedMethodView.SetMenuIndex("MethodDetails");
-			}
-			if(FormName=="SubjectProperties")
-			{
-				this.ChangeState(MethodCreatorStates.SUBJECT_PROPERTIES);
-				this.ImplementedMethodView.SetMenuIndex("SubjectProperties");
-				
-			}	
+				GWT.log("Editing" + this.stateSelector.get(FormName));
+				this.ChangeState(this.stateSelector.get(FormName));
+				//this.ImplementedMethodView.SetMenuIndex("MethodDetails");
+			
+			
 			if(FormName.contains("StepDetails"))
 			{
-				//TODO Must ensure next, prev and complete states are submitted to any view/form
+				/*
 				this.ChangeState(MethodCreatorStates.STEP_DETAILS);
-				
 				PresenterState newState =this.getCurrentPresenterState();
 				StepModel newStateModel =(StepModel)newState.getModel();
 				
 				newStateModel.setCurrentStep(FormName, true);
 				newState.getView().LoadForm(newStateModel.getFormData());
 				//This works
-				this.ImplementedMethodView.SetMenuIndex(FormName);
+				this.ImplementedMethodView.SetMenuIndex(FormName);/*/
 			}	
 		}
 		else if(Command=="Delete")
@@ -397,18 +329,11 @@ public class MethodCreatorPresenter implements FormPresenter{
 			tclBox.clear();
 			
 			HTML tclText = new HTML();
-			Iterator<PresenterState> i = this.AllStates.iterator();
 			String strTCL = "";
 			strTCL = strTCL + HtmlFormatter.GetHTMLUtilityScript("TCL");
-			while(i.hasNext())
-			{
-				PresenterState tmpState = i.next();
-				iMBModel currModel = tmpState.getModel();
-				
-				strTCL = strTCL + currModel.getStringRpresentation("tcl");
-				
-			}
-			//TODO This should be in Model
+			
+			strTCL = strTCL + tmpModel.getStringRpresentation("tcl");
+			/*This is in Model
 			strTCL = strTCL + HtmlFormatter.GetHTMLTab() + "\"" + HtmlFormatter.GetHTMLNewline();
 			strTCL = strTCL + HtmlFormatter.GetHTMLTab() + "set id2 [xvalue id [om.pssd.method.for.subject.update $args]]" + HtmlFormatter.GetHTMLNewline();
 			strTCL = strTCL + HtmlFormatter.GetHTMLTab() + "if { $id2 == \"\" } {" + HtmlFormatter.GetHTMLNewline();
@@ -417,8 +342,8 @@ public class MethodCreatorPresenter implements FormPresenter{
 			strTCL = strTCL + HtmlFormatter.GetHTMLTabs(2) + "return $id2" + HtmlFormatter.GetHTMLNewline();
 			strTCL = strTCL + HtmlFormatter.GetHTMLTab() + "}" + HtmlFormatter.GetHTMLNewline();
 			strTCL = strTCL + "}" + HtmlFormatter.GetHTMLNewline();
-		
-			//TODO Breaking the rules here - this should be a view
+			*/
+			
 			tclText.setHTML(strTCL);
 			//tmpPanel2.add(tclText);
 			
@@ -460,24 +385,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 				//tmpManager.setDefaultParentWidget(defaultPar)
 				_win.show();
 				
-		      /*VerticalPanel tmpPanel = new VerticalPanel();
-		      
-		      tclBox.setModal(true);
-		      
-		      
-		      tclBox.show();
-		      tclBox.setStyleName("appWindow-Dialog");
-			 tmpPanel2.setAlwaysShowScrollBars(true);
-			 tmpPanel2.setWidth("680px");
-			 tmpPanel2.setHeight("680px");
-		      tmpPanel.add(tmpPanel2);
-		      tmpPanel.add(ok);
-		      tclBox.add(tmpPanel);
-		      tclBox.setHeight("700px");
-		      tclBox.setWidth("700px");
-		      tclBox.setGlassEnabled(true);
-		      
-		      tclBox.show();*/
+	
 		}
 		else if(Command=="Cancel")
 		{
@@ -493,12 +401,12 @@ public class MethodCreatorPresenter implements FormPresenter{
 	public void FireDragEvent(DragEvent e) {
 		
 		
-		PresenterState currentState =this.getCurrentPresenterState();
-		iMBModel RelatedModel = currentState.getModel();
-		IFormView RelatedView = currentState.getView();
+		
+		iMBModel RelatedModel = this.mainModel;
+		IFormView RelatedView = this._AllStates.get(CurrentState);
 		//RelatedModel.
 		
-		if(currentState!=null)
+		if(RelatedView!=null)
 		{
 			if(e.getId().equals("true"))
 			{
@@ -543,21 +451,22 @@ public class MethodCreatorPresenter implements FormPresenter{
 		if(ServiceName=="GetMethod")
 		{
 			
-			Iterator<PresenterState> i = this.AllStates.iterator();
+			Iterator<Entry<MethodCreatorStates,IFormView>> i = this._AllStates.entrySet().iterator();
 			while(i.hasNext())
 			{
-				PresenterState tmpState = i.next();
-			
-				if(tmpState!=null)
+				Entry<MethodCreatorStates, IFormView> tmpView = i.next();
+				
+				if(tmpView!=null)
 				{
-					FormBuilder tmpBuilder = this.mainModel.getFormData(tmpState.presenterState.toString());
-					IFormView tmpView = tmpState.getView();
+					
+					FormBuilder tmpBuilder = this.mainModel.getFormData(tmpView.getKey().toString());
+					
 					
 					if(tmpView!=null)
 					{
 						
 						this.ImplementedMethodView.setData(tmpBuilder);
-						tmpView.LoadForm(tmpBuilder);
+						tmpView.getValue().LoadForm(tmpBuilder);
 						
 					}
 				}
@@ -568,8 +477,23 @@ public class MethodCreatorPresenter implements FormPresenter{
 	}
 	@Override
 	public String UpdateValue(FormBuilder someFormData) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		FormBuilder tmpBuilder = this.mainModel.getFormData(this.CurrentState.toString());
+		IFormView tmpView = this._AllStates.get(this.CurrentState);
+		
+		if(tmpView!=null)
+		{
+			GWT.log("Not null");
+			this.ImplementedMethodView.setData(tmpBuilder);
+			//tmpView.LoadForm(tmpBuilder);
+			
+		}
+		else
+		{
+			return "Form not found";
+		}
+		return "";
+		
 	}
 	
 

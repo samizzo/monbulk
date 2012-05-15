@@ -34,7 +34,7 @@ public interface iModel {
 		//public void setFieldValue(Object Value, String FieldName);
 		//public iFormField getFormItem(String FormName);
 		public String ValidateForm();
-		
+		public String ValidateForm(String FormName);
 		
 		
 		public void setPresenter(FormPresenter presenter);

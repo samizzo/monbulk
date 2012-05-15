@@ -24,7 +24,7 @@ import monbulk.shared.util.MonbulkEnums.ServiceNames;
 import monbulk.shared.view.IResult;
 import monbulk.shared.view.ISearchFilter;
 
-public class MethodCompleteModel implements iMBModel, MethodService.MethodServiceHandler{
+public class MethodCompleteModel extends baseModel implements iMBModel, MethodService.MethodServiceHandler{
 
 	private pojoMethodComplete CompleteModel;
 	private FormBuilder formCompleteModel;
@@ -35,11 +35,12 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 	private MethodModel methodModel;
 	
 	private Boolean isLoaded;
+	private int StepCount;
 	public MethodCompleteModel()
 	{
 		isLoaded = false;
 		this.allSteps = new StepModel();
-		this.allSteps.RemoveStep(0);
+		//this.allSteps.RemoveStep(0);
 		this.subjectModel = new SubjectPropertiesModel();
 		this.methodModel = new MethodModel(null);
 		this.CompleteModel = new pojoMethodComplete();
@@ -53,7 +54,7 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 	}
 	public void addStep(String StepFormName)
 	{
-		//this.
+		this.allSteps.AddNewStep();
 	}
 	public MethodCompleteModel(String ID, FormPresenter presenter)
 	{
@@ -111,7 +112,7 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 	}
 	public FormBuilder getFormData(String FormName)
 	{
-		//Window.alert(FormName);
+		//Window.alert("Loading form" + FormName);
 		if(FormName=="METHOD_DETAILS")
 		{
 			return this.CompleteModel.getMethodDetails().getFormStructure();
@@ -127,11 +128,6 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 			return this.allSteps.getFormData();
 		}
 	}
-	@Override
-	public String ValidateForm() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void setPresenter(FormPresenter presenter) {
@@ -143,6 +139,16 @@ public class MethodCompleteModel implements iMBModel, MethodService.MethodServic
 	public void onReadMethodList(ArrayList<pojoMethod> arrMethods) {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public String ValidateForm() {
+		super.formData = this.formCompleteModel;
+		return super.ValidateForm();
+	}
+	@Override
+	public String ValidateForm(String FormName) {
+		super.formData = this.getFormData(FormName);
+		return super.ValidateForm();
 	}
 	@Override
 	public void onReadMethod(pojoMethodComplete method) {

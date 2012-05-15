@@ -12,7 +12,7 @@
 	<g:HTMLPanel>
 	<g:DockLayoutPanel unit="PX" styleName="BodyPanel" height="570px" ui:field="LayoutPanel">
 							<g:north size="40" unit="PX">
-								<g:Grid width="750px" height="40px;">
+								<g:Grid width="800px" height="40px;">
 									<g:row>
 										<g:customCell styleName="MethodComponents" >
 											<g:Label>Method Components</g:Label>	
@@ -24,24 +24,42 @@
 									
 								</g:Grid>
 							</g:north>	
-			 	 			<g:west size="287" unit="px" styleName="{style.Scroll}">
-			 	 			<g:ScrollPanel width="287px" height="530px" styleName="{style.Scroll}" >
-			 	 				
-			 	 			
-				 	 			<g:StackLayoutPanel width="274px" height="531px" unit="PX" styleName="StandardStack" ui:field="MethodNavigationStack">
-									<g:stack>
-										<g:header size="41" ui:field="MethodTitle">Method Details</g:header>
-										<g:HTML ui:field="MethodDetailsSummary" />
-									</g:stack>
-									<g:stack>
-										<g:header size="41">Subject Properties</g:header>
-										<g:HTML ui:field="SubjectPropertiesSummary" />
-									</g:stack>
+			 	 			<g:south size="530" unit="px" styleName="{style.Scroll}">
+			 	 			<g:DockLayoutPanel unit="PX"  height="530px">
+			 	 				<g:west size="287" unit="px" >
+				 	 			<g:ScrollPanel width="287px" height="530px" styleName="{style.Scroll}" >
+					 	 			<g:StackLayoutPanel width="274px" height="531px" unit="PX" styleName="StandardStack" ui:field="MethodNavigationStack">
+										<g:stack>
+											<g:header size="41" ui:field="MethodTitle">Method Details</g:header>
+											<g:HTML ui:field="MethodDetailsSummary" />
+										</g:stack>
+										<g:stack>
+											<g:header size="41">Subject Properties</g:header>
+											<g:HTML ui:field="SubjectPropertiesSummary" />
+										</g:stack>
 									
 								</g:StackLayoutPanel>
 								</g:ScrollPanel>
-							</g:west>
 							
+								</g:west>
+								
+								<g:west unit="px" size="510">							
+									<g:VerticalPanel>
+										<g:ScrollPanel width="510px" height="480px" styleName="{style.Scroll}" >
+										<g:StackLayoutPanel width="497px" height="481px" unit="PX" styleName="StandardStack" ui:field="MethodFormStack">
+											<g:stack>
+												<g:header size="41" ui:field="FormTitle">Method Details</g:header>
+												<g:HTMLPanel ui:field="FormDetails" />
+											</g:stack>
+											</g:StackLayoutPanel>
+										</g:ScrollPanel>
+										<g:HorizontalPanel width="513px" styleName="FormNav">
+											<g:PushButton ui:field="btnPrev" styleName="btnDefault" text="Prev"/><g:PushButton ui:field="btnNext" styleName="btnDefault" text="Next"/>
+										</g:HorizontalPanel>
+									</g:VerticalPanel>
+									</g:west>
+								</g:DockLayoutPanel>
+							</g:south>
 						</g:DockLayoutPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

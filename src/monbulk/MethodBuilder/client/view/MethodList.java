@@ -239,12 +239,14 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 				titleLabel.setText(tmpMethod.getMethodName());
 				titleLabel.addStyleName("menuMethodName");
 				
-				titleLabel.setWidth("150px");
+				//titleLabel.setWidth("150px");
 				PushButton _clone = new PushButton();
-				_clone.setText("C");
+				
+				_clone.setStyleName("btnCloneMethod");
 				
 				PushButton _edit = new PushButton();
-				_edit.setText("E");
+				
+				_edit.setStyleName("btnEditMethod");
 				final int index = i;
 				_edit.addClickHandler(new ClickHandler()
 				{
@@ -261,12 +263,13 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 				this._MenuStack.setWidget(i,0,titleLabel);
 				this._MenuStack.setWidget(i,1,_edit);
 				this._MenuStack.setWidget(i,2,_clone);
-				_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "padding-left:5px;");
+				_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 1px #ccc;");
+				_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
 			}
 			//GWT.log("We added widgets: " + this._MenuStack.getWidgetCount());
-			_MenuStack.getColumnFormatter().setWidth(0, "152px");
-			_MenuStack.getColumnFormatter().setWidth(1, "21px");
-			_MenuStack.getColumnFormatter().setWidth(2, "21px");
+			//_MenuStack.getColumnFormatter().setWidth(0, "145px");
+			//_MenuStack.getColumnFormatter().setWidth(1, "22px");
+			//_MenuStack.getColumnFormatter().setWidth(2, "22px");
 			//_MenuStack.getFlexCellFormatter().setColSpan(0, 0, 3);
 			//_MenuStack.getFlexCellFormatter().getElement(0, 0).setAttribute("style", "padding-left:5px;");
 			_MenuStack.setCellPadding(0);

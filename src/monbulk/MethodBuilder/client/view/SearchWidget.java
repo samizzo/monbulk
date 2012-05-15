@@ -47,7 +47,10 @@ public class SearchWidget extends Composite {
 		_HeaderWidget = new HorizontalPanel();
 		this._HeaderWidget.add(this._btnSearch);
 		this._HeaderWidget.add(this._tbSearchText);
+		
 		this._tbSearchText.setWidth("140px");
+		_HeaderWidget.setHeight("35px");
+		_HeaderWidget.setStyleName("searchWidget");
 		}
 		catch(Exception ex)
 		{

@@ -6,14 +6,18 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -41,6 +45,17 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 	@UiField
 	StackLayoutPanel MethodNavigationStack;
 	
+	@UiField
+	StackLayoutPanel MethodFormStack;
+	
+	@UiField
+	PushButton btnNext;
+	
+	@UiField
+	PushButton btnPrev;
+	
+	@UiField
+	HTMLPanel FormDetails;
 	//@UiField
 	public class CustomTab
 	{
@@ -69,6 +84,7 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 	private FormPresenter thisPresenter;
 	private int ChildContainerIndex;
 	private int StepIndex;
+	private String currentForm;
 	private static MethodDetailsViewUiBinder uiBinder = GWT
 			.create(MethodDetailsViewUiBinder.class);
 
@@ -93,16 +109,19 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 	@Override
 	public void SetMenuIndex(String IndexName)
 	{
-		if(IndexName == "MethodDetails")
+		currentForm = IndexName;
+		if(IndexName == pojoMethod.FormName)
 		{
-			this.MethodNavigationStack.showWidget(0);
+			this.MethodNavigationStack.showWidget(0,false);
+			
 			
 		}
-		else if(IndexName == "SubjectProperties")
+		else if(IndexName == pojoSubjectProperties.FormName)
 		{
-			this.MethodNavigationStack.showWidget(1);
+			this.MethodNavigationStack.showWidget(1,false);
+			
 		}
-		else if(IndexName.contains("StepDetails"))
+		else if(IndexName.contains(pojoStepDetails.FormName))
 		{
 			//We need to check if this is a new or old stack - FormName is unique
 			//Window.alert("Widget Count:" + this.MethodNavigationStack.getWidgetCount() + "Step COunt" + this.StepIndex );
@@ -144,7 +163,9 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 	}
 	@Override
 	public void setData(FormBuilder anyBuilder) {
-		// TODO Auto-generated method stub
+		try
+		{
+			this.currentForm = anyBuilder.getFormName();
 		String html ="<table>";
 		//while(anyBuilder.)
 		//How do we know which step we are on? - form Name
@@ -192,7 +213,13 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 				{
 					if(tmpField.hasValue())
 					{
-						html = html + "<tr><td class='fieldName'>" + tmpField.GetFieldName() + ":</td>";
+						String FieldName = tmpField.GetFieldName();
+						if(tmpField.GetFieldName().contains(anyBuilder.getFormName()))
+						{
+							FieldName = tmpField.GetFieldName().replace(anyBuilder.getFormName()+".", "");
+						}
+						//Window.alert(FieldName);
+						html = html + "<tr><td class='fieldName'>" + FieldName + ":</td>";
 						html = html + "<td class='fieldValue'>" + (String)tmpField.GetFieldValue() + "</td></tr>";
 					}
 					
@@ -215,13 +242,13 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 			}
 		}
 		html = html +"</<table>";
-		if(anyBuilder.getFormName().equals(pojoMethod.FormName))
+		if(anyBuilder.getFormName().contains(pojoMethod.FormName))
 		{
 			this.MethodNavigationStack.showWidget(0);
 			MethodDetailsSummary.setHTML(html);
 			
 		}
-		else if(anyBuilder.getFormName().equals(pojoSubjectProperties.FormName))
+		else if(anyBuilder.getFormName().contains(pojoSubjectProperties.FormName))
 		{
 			this.MethodNavigationStack.showWidget(1);
 			SubjectPropertiesSummary.setHTML(html);
@@ -242,21 +269,25 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 			}
 			this.MethodNavigationStack.showWidget(this.CurrentSteps.get(anyBuilder.getFormName()).getIndex()+1);
 		}
+		}
+		catch(Exception ex)
+		{
+			GWT.log("Error occurs at MethodDetailsView.setData:" + ex.getMessage());
+		}
 		
 	}
 	@Override
 	public void setChild(Widget someContainer) {
-		this.LayoutPanel.addWest(someContainer,500);
-		this.ChildContainerIndex = this.LayoutPanel.getWidgetIndex(someContainer);
+		
+		//this.MethodFormStack.add(someContainer, "Form Section", 42);
+		FormDetails.clear();
+		FormDetails.add(someContainer);
 	}
 	@Override
 	public void clearChild() {
 		//this.LayoutPanel. .addWest(someContainer,480);
-		if(this.ChildContainerIndex != 0)
-		{
-			this.LayoutPanel.remove(this.ChildContainerIndex);
-			this.ChildContainerIndex = 0;
-		}
+		FormDetails.clear();
+		
 	}
 	@Override
 	public void setMethodData(ArrayList<iFormField> StaticFieldList) {
@@ -289,11 +320,11 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 		
 		if(this.MethodNavigationStack.getVisibleIndex() == 0)
 		{
-			this.thisPresenter.FormComplete("MethodDetails", "Edit");
+			this.thisPresenter.FormComplete(pojoMethod.FormName, "Edit");
 		}
 		else if(this.MethodNavigationStack.getVisibleIndex() == 1)
 		{
-			this.thisPresenter.FormComplete("SubjectProperties", "Edit");
+			this.thisPresenter.FormComplete(pojoSubjectProperties.FormName, "Edit");
 		}
 		else
 		{
@@ -339,7 +370,11 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 			}
 		}
 	}
-	
+	@UiHandler("btnNext")
+	public void onClick(ClickEvent e)
+	{
+		this.thisPresenter.FormComplete(this.currentForm, "Next");
+	}
 	/*TODO Implement the handler for navigating from this view
 	 * @UiHandler("btnMethodApp")
 	public void onClick(ClickEvent e) {

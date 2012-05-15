@@ -13,7 +13,7 @@ public class pojoSubjectProperties implements IPojo {
 	
 	private ArrayList<pojoMetaData> attachedMetaData;
 	
-	public  static final String FormName = "SubjectProperties";
+	public  static final String FormName = "SUBJECT_PROPERTIES";
 	public static final String SubjectNameField = "SubjectName";
 	public static final String SubjectTypeField = "SubjectType";
 	private FormBuilder SubjectPropertiesForm;

@@ -153,7 +153,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 			*/
 			widgetStructure = new ArrayList<HorizontalPanel>();
 			//widgetStructure.add(errorPanel);
-			GWT.log("We start to render the form items");
+			GWT.log("We start to render the form items - form Items:" + generalForm.getFormDetails().size());
 			
 			Iterator<iFormField> i = generalForm.getFormDetails().iterator();
 			
@@ -206,54 +206,15 @@ public class baseForm extends VerticalPanel implements IFormView {
 			_formItems.setWidth("420px");
 			//_formItems.setHeight("400px");
 			_formItems.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
-			this._scrollSection.add(_formItems);
+			//this._scrollSection.add(_formItems);
 			
-			this._scrollSection.setHeight("480px");
+			//this._scrollSection.setHeight("480px");
 			//this._scrollSection.setWidth("400px");
-			tmpPanel.add(_scrollSection);
+			tmpPanel.add(_formItems);
 			tmpPanel.setStyleName("Form");
 			tmpPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
 			
-			HorizontalPanel navigation = new HorizontalPanel();
-			navigation.setStyleName("FormNavigation");
-			_completeForm = new PushButton();
 			
-			_completeForm.addClickHandler(new ClickHandler(){
-	
-				@Override
-				public void onClick(ClickEvent event) {
-					
-					completeForm("Next");
-				}
-				
-			});
-			
-			GWT.log("First OnClick");
-			_completeForm.setText("Next");
-			
-			_completeForm.setStyleName("btnDefault");
-			
-			_recedeForm = new PushButton();
-			_recedeForm.setText("Previous");
-			_recedeForm.setStyleName("btnDefault");
-			GWT.log("Second OnClick");
-			_recedeForm.addClickHandler(new ClickHandler(){
-	
-				@Override
-				public void onClick(ClickEvent event) {
-					
-					completeForm("Prev");
-				}
-				
-			});
-			GWT.log("We add navigation");
-			navigation.add(_recedeForm);
-			navigation.add(_completeForm);
-			navigation.setHeight("75px");
-			navigation.setVerticalAlignment(ALIGN_BOTTOM);
-			widgetStructure.add(navigation);
-			GWT.log("We complete render");
-			tmpPanel.add(navigation);
 			if(!isLoaded)
 			{
 				this.add(tmpPanel);
@@ -268,38 +229,42 @@ public class baseForm extends VerticalPanel implements IFormView {
 	}
 	private final void completeForm(String State)
 	{
-		this.Presenter.FormComplete(this.generalForm.getFormName(), State);
+		if(this.Presenter!=null)
+		{
+			this.Presenter.FormComplete(this.generalForm.getFormName(), State);
+		}
 	}
 	@Override
 	public void LoadForm(FormBuilder someForm) {
 		try
 		{
-		if(someForm==null)
-		{
-			GWT.log("Form Expected @ baseForm.LoadForm(someForm):No form provided");
-			//Window.alert("No Form");
-			renderForm();
-			return;
-		}
-		generalForm = someForm;
-		allFormItems.clear();
-		Iterator<iFormField> i = generalForm.getFormDetails().iterator();
-		while(i.hasNext())
-		{
-			iFormField item = i.next();
-			
-			if(item.getWidgetReference()!=null)
+			GWT.log("Which form is loading" + someForm.getFormName());
+			if(someForm==null)
 			{
-				FormWidget tmpWidg = item.getWidgetReference();
-				
-				//GWT.log("Value" + item.GetFieldValue());
-							//tmpWidg.addHandler(handler, type)
-				
-				allFormItems.add(tmpWidg);
+				GWT.log("Form Expected @ baseForm.LoadForm(someForm):No form provided");
+				//Window.alert("No Form");
+				renderForm();
+				return;
 			}
-		}
-		GWT.log("We load the Form");
-		renderForm();
+			generalForm = someForm;
+			allFormItems.clear();
+			Iterator<iFormField> i = generalForm.getFormDetails().iterator();
+			while(i.hasNext())
+			{
+				iFormField item = i.next();
+				
+				if(item.getWidgetReference()!=null)
+				{
+					FormWidget tmpWidg = item.getWidgetReference();
+					
+					//GWT.log("Value" + item.GetFieldValue());
+								//tmpWidg.addHandler(handler, type)
+					
+					allFormItems.add(tmpWidg);
+				}
+			}
+			GWT.log("We load the Form");
+			renderForm();
 		}
 		catch(Exception ex)
 		{
@@ -308,22 +273,29 @@ public class baseForm extends VerticalPanel implements IFormView {
 	}
 	private final void UpdateValue(String FieldName, Object FieldValue)
 	{
-		Window.alert(FieldName + ":" + FieldValue);
-		iFormField tmpField = this.generalForm.getFieldItemForName(FieldName);
-		String response = tmpField.Validate(FieldValue.toString());
-		if(response == "")
+		//Window.alert(FieldName + ":" + FieldValue);
+		iFormField tmpField = this.generalForm.getFieldItemForName(generalForm.getFormName()+ "." + FieldName);
+		if(tmpField!=null)
 		{
-			tmpField.SetFieldValue(FieldValue.toString());
-			
+			String response = tmpField.Validate(FieldValue.toString());
+			if(response == "")
+			{
+				tmpField.SetFieldValue(FieldValue.toString());
+				
+			}
+			else
+			{
+				this.ErrorSummary.add(response);
+				this._errors.setText(this._errors.getText() + response);
+			}
+			if(this.Presenter!=null){
+				String finalOut = this.Presenter.UpdateValue(this.generalForm);
+				
+			}
 		}
 		else
 		{
-			this.ErrorSummary.add(response);
-			this._errors.setText(this._errors.getText() + response);
-		}
-		if(!this.Presenter.equals(null)){
-			String finalOut = this.Presenter.UpdateValue(this.generalForm);
-			
+			//Window.alert(FieldName + ":" + FieldValue + generalForm.getFormDetails().get(0).GetFieldName());
 		}
 	}
 	@Override
