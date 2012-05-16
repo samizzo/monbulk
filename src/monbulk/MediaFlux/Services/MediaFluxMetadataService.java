@@ -83,7 +83,6 @@ public class MediaFluxMetadataService extends MetadataService
 				GetMetadataHandler handler = (GetMetadataHandler)m_handler;
 
 				Metadata metadata = Metadata.create(xe);
-				metadata.clearModified();
 				handler.onGetMetadata(metadata);
 			}
 			else if (m_handler instanceof MetadataExistsHandler)

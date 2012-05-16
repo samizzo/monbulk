@@ -1076,6 +1076,7 @@ public class Metadata
 		XmlElement type = element.element("type");
 		Metadata metadata = new Metadata(type.value("@name"), type.value("description"), type.value("label"));
 		parseMetadata(metadata.getRootElement(), type.elements("definition/element"));
+		metadata.clearModified();	// Some things during creation set the modified flag.
 		return metadata;
 	}
 	
