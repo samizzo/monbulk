@@ -316,7 +316,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 
 		if (selected.length() > 0)
 		{
-			String msg = "Are you sure you wish to remove '" + selected + "'?";
+			String msg = "Are you sure you wish to remove the metadata '" + selected + "'?";
 			if (Window.confirm(msg))
 			{
 				if (m_handler != null)
