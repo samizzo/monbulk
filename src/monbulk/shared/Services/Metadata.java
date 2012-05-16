@@ -691,6 +691,7 @@ public class Metadata
 	public String getXml()
 	{
 		XmlStringWriter x = new XmlStringWriter();
+		x.setAddCarriageReturnAfterElement(true);
 		x.add("type", m_name);
 
 		if (m_label != null && m_label.length() > 0)
