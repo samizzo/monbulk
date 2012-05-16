@@ -94,6 +94,8 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 			public void onUpdateMetadata(Metadata m)
 			{
 				m.clearModified();
+				
+				Window.alert("The metadata '" + m.getName() + "' was saved.");
 
 				// Refresh the list so it has the new name.
 				if (refresh)
