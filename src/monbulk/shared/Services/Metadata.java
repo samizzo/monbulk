@@ -40,52 +40,79 @@ public class Metadata
 		Attribute("attribute", false, false, false),
 		All("all", false, false, false);
 		
-		private String m_metaName;
+		private String m_typeName;
 		private boolean m_isVisible;
 		private boolean m_isNumber;
 		private boolean m_useInAttributes;
 
 		ElementTypes(String typeName, boolean isVisible, boolean isNumber, boolean useInAttributes)
 		{
-			m_metaName = typeName;
+			m_typeName = typeName;
 			m_isVisible = isVisible;
 			m_isNumber = isNumber;
 			m_useInAttributes = useInAttributes;
 		}
 		
-		public String getMetaName()
+		/**
+		 * Returns the type name of this ElementType.  This is the name that
+		 * MediaFlux uses to identify types.
+		 * @return
+		 */
+		public String getTypeName()
 		{
-			return m_metaName;
+			return m_typeName;
 		}
 		
+		/**
+		 * Returns true if this ElementType is visible to a user.
+		 * @return
+		 */
 		public boolean isVisible()
 		{
 			return m_isVisible;
 		}
 		
+		/**
+		 * Returns true if this ElementType represents a number.
+		 * @return
+		 */
 		public boolean isNumber()
 		{
 			return m_isNumber;
 		}
 		
+		/**
+		 * Returns true if this ElementType can be used in attributes.
+		 * @return
+		 */
 		public boolean isUseInAttributes()
 		{
 			return m_useInAttributes;
 		}
 		
-		// Returns true if this type is the same as otherType, or if this type
-		// is a number type and the other type is also a number type, and vice
-		// versa.
+		/**
+		 * Returns true if this type is the same as otherType, or if this type
+		 * is a number type and the other type is also a number type, and vice
+		 * versa.
+		 * @param otherType
+		 * @return
+		 */
 		public boolean isSame(ElementTypes otherType)
 		{
 			return (this == otherType) || (isNumber() && otherType.isNumber());
 		}
 		
-		static ElementTypes fromMetaName(String typeName) throws Exception
+		/**
+		 * Returns an ElementType given a MediaFlux type name.
+		 * @param typeName
+		 * @return
+		 * @throws Exception
+		 */
+		public static ElementTypes fromTypeName(String typeName) throws Exception
 		{
 			for (ElementTypes t : ElementTypes.values())
 			{
-				if (t.getMetaName().equalsIgnoreCase(typeName))
+				if (t.getTypeName().equalsIgnoreCase(typeName))
 				{
 					return t;
 				}
@@ -95,6 +122,12 @@ public class Metadata
 		}
 	}
 	
+	/**
+	 * Creates a new Metadata Element given a MediaFlux xml definition.
+	 * @param e
+	 * @return
+	 * @throws Exception
+	 */
 	public static Metadata.Element createElement(XmlElement e) throws Exception
 	{
 		String typeName = e.value("@type");
@@ -105,9 +138,18 @@ public class Metadata
 		return element;
 	}
 	
+	/**
+	 * Creates a new Metadata Element.
+	 * @param typeName
+	 * @param name
+	 * @param description
+	 * @param isAttribute
+	 * @return
+	 * @throws Exception
+	 */
 	public static Metadata.Element createElement(String typeName, String name, String description, boolean isAttribute) throws Exception
 	{
-		ElementTypes type = ElementTypes.fromMetaName(typeName);
+		ElementTypes type = ElementTypes.fromTypeName(typeName);
 
 		if (type == ElementTypes.Document)
 		{
@@ -123,6 +165,9 @@ public class Metadata
 		}
 	}
 	
+	/**
+	 * Base element class for types that don't require anything special.
+	 */
 	public static class Element
 	{
 		protected DocumentElement m_parent = null;
@@ -327,6 +372,10 @@ public class Metadata
 		{
 		}
 
+		/**
+		 * Append an xml description of this element to the XmlStringWriter.
+		 * @param w
+		 */
 		public void addXml(XmlStringWriter w)
 		{
 			// Make a copy of the settings.
@@ -338,7 +387,7 @@ public class Metadata
 			String description = attributes.remove("description");
 
 			// Add the type.
-			attributes.put("type", m_type.getMetaName());
+			attributes.put("type", m_type.getTypeName());
 
 			// Add the root element.
 			String root = getIsAttribute() ? "attribute" : "element";
@@ -347,7 +396,7 @@ public class Metadata
 			if (m_restrictions != null && m_restrictions.size() > 0)
 			{
 				// Add all restrictions.
-				w.push("restriction", new String[] { "base", m_type.getMetaName() });
+				w.push("restriction", new String[] { "base", m_type.getTypeName() });
 				{
 					Set<Entry<String, String>> r = m_restrictions.entrySet();
 					for (Entry<String, String> e : r) 
@@ -384,7 +433,9 @@ public class Metadata
 		}
 	}
 	
-	// A document has a number of child elements.
+	/**
+	 * A document element has a number of child elements.
+	 */
 	public static class DocumentElement extends Element
 	{
 		public enum ReferenceType
@@ -441,6 +492,11 @@ public class Metadata
 			super(ElementTypes.Document, name, description, false);
 		}
 		
+		/**
+		 * Replaces an element in this DocumentElement.
+		 * @param oldElement
+		 * @param newElement
+		 */
 		public void replaceChild(Element oldElement, Element newElement)
 		{
 			int index = m_children.indexOf(oldElement);
@@ -451,21 +507,37 @@ public class Metadata
 			}
 		}
 		
+		/**
+		 * Returns the number of children in this DocumentElement.
+		 * @return
+		 */
 		public int getNumChildren()
 		{
 			return m_children.size();
 		}
 		
+		/**
+		 * Returns a specific child of this DocumentElement.
+		 * @param index
+		 * @return
+		 */
 		public Element getChild(int index)
 		{
 			return m_children.get(index);
 		}
 		
+		/**
+		 * Removes a specified child from this DocumentElement.
+		 * @param element
+		 */
 		public void removeChild(Element element)
 		{
 			m_children.remove(element);
 		}
 		
+		/**
+		 * Returns false.  DocumentElement type cannot have attributes.
+		 */
 		public boolean canHaveAttributes()
 		{
 			return false;
@@ -537,6 +609,10 @@ public class Metadata
 			return new DocumentElement(this);
 		}
 		
+		/**
+		 * Append an xml description of this element to the XmlStringWriter.
+		 * @param w
+		 */
 		public void addXml(XmlStringWriter w)
 		{
 			super.addXml(w);
@@ -565,6 +641,11 @@ public class Metadata
 		}
 	}
 	
+	/**
+	 * An enumeration element is an element that can be one of a set of
+	 * values.  The values can come from a dictionary or from a specific
+	 * list of values stored in the element. 
+	 */
 	public static class EnumerationElement extends Element
 	{
 		private ArrayList<String> m_values = new ArrayList<String>();
@@ -589,34 +670,77 @@ public class Metadata
 			// Dummy entry so there is always a restriction for enumerations.
 			setRestriction("dummy", "dummy");
 		}
-		
-		// Returns the values of the enum.  Note that this could
-		// be empty if the values come from a dictionary.
-		public ArrayList<String> getValues()
-		{
-			return m_values;
-		}
-		
+
+		/**
+		 * Adds a new value to this enumeration.
+		 * @param value
+		 */
 		public void addValue(String value)
 		{
 			m_values.add(value);
 		}
 		
+		/**
+		 * Removes a specific value from this enumeration.
+		 * @param value
+		 */
 		public void removeValue(String value)
 		{
 			m_values.remove(value);
 		}
+		
+		/**
+		 * Removes all values from this enumeration.
+		 */
+		public void clearValues()
+		{
+			m_values.clear();
+		}
+		
+		/**
+		 * Returns the number of values in this enumeration.
+		 * @return
+		 */
+		public int getNumValues()
+		{
+			return m_values.size();
+		}
+		
+		/**
+		 * Returns a specific value from this enumeration.
+		 * @param index
+		 * @return
+		 */
+		public String getValue(int index)
+		{
+			return m_values.get(index);
+		}
 
+		/**
+		 * Sets the name of a dictionary that this enumeration should
+		 * pull its values from.  Note: this doesn't actually access
+		 * the dictionary; it merely stores the name.
+		 */
 		public void setDictionaryName(String name)
 		{
 			setRestriction("dictionary", name);
 		}
 		
+		/**
+		 * Returns the name of the dictionary that this enumeration
+		 * references, if set, or empty string if it does not reference
+		 * a dictionary.
+		 * @return
+		 */
 		public String getDictionaryName()
 		{
 			return getRestriction("dictionary", "");
 		}
 		
+		/**
+		 * Returns true if this enumeration is referencing a dictionary.
+		 * @return
+		 */
 		public boolean isUsingDictionary()
 		{
 			String dictionaryName = getDictionaryName();
@@ -645,6 +769,9 @@ public class Metadata
 			}
 		}
 		
+		/**
+		 * Returns false.  Enumerations cannot have attributes.
+		 */
 		public boolean canHaveAttributes()
 		{
 			return false;
@@ -679,36 +806,66 @@ public class Metadata
 		m_label = label;
 	}
 	
+	/**
+	 * Sets the name of this metadata.
+	 * @param name
+	 */
 	public void setName(String name)
 	{
 		m_name = name;
 	}
 	
+	/**
+	 * Returns the name of this metadata.
+	 * @return
+	 */
 	public String getName()
 	{
 		return m_name;
 	}
 	
+	/**
+	 * Sets the description of this metadata.
+	 * @param description
+	 */
 	public void setDescription(String description)
 	{
 		m_description = description;
 	}
 	
+	/**
+	 * Returns the description of this metadata.
+	 * @return
+	 */
 	public String getDescription()
 	{
 		return m_description;
 	}
 	
+	/**
+	 * Sets the label for this metadata.
+	 * @param label
+	 */
 	public void setLabel(String label)
 	{
 		m_label = label;
 	}
 	
+	/**
+	 * Returns the label for this metadata.
+	 * @return
+	 */
 	public String getLabel()
 	{
 		return m_label;
 	}
 	
+	/**
+	 * Returns the root element for this metadata.  The root element is a
+	 * DocumentElement but is not itself saved; it acts as a container
+	 * for the root-level elements.
+	 * @return
+	 */
 	public DocumentElement getRootElement()
 	{
 		return m_rootElement;
@@ -747,6 +904,10 @@ public class Metadata
 		}
 	}
 	
+	/**
+	 * Returns an xml representation of this metadata.
+	 * @return
+	 */
 	public String getXml()
 	{
 		XmlStringWriter x = new XmlStringWriter();

@@ -91,12 +91,11 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 			{
 				// Clear the dictionary name and sync the enum values.
 				e.setDictionaryName("");
-				ArrayList<String> values = e.getValues();
-				values.clear();
+				e.clearValues();
 				for (int i = 0; i < m_values.getItemCount(); i++)
 				{
 					String value = m_values.getItemText(i);
-					values.add(value);
+					e.addValue(value);
 				}
 			}
 		}
@@ -119,7 +118,7 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 		{
 			// Entries have been explicitly specified, so add them.
 			m_fromDictionary.setValue(false, false);
-			populateValues(e.getValues());
+			populateValues(e);
 			setButtonState();
 		}
 	}
@@ -140,12 +139,14 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 		m_fromDictionary.setEnabled(!readOnly);
 	}
 	
-	private void populateValues(ArrayList<String> values)
+	private void populateValues(Metadata.EnumerationElement element)
 	{
 		m_values.clear();
 		m_remove.setEnabled(false);
-		for (String v : values)
+		int numValues = element.getNumValues();
+		for (int i = 0; i < numValues; i++)
 		{
+			String v = element.getValue(i);
 			m_values.addItem(v);
 		}
 	}
@@ -344,7 +345,7 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 					// Doesn't exist so set the checkbox to false.
 					m_fromDictionary.setValue(false, false);
 					Metadata.EnumerationElement e = (Metadata.EnumerationElement)m_element;
-					populateValues(e.getValues());
+					populateValues(e);
 					setButtonState();
 				}
 			}
@@ -371,7 +372,7 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 			// User has unchecked the dictionary box, so restore
 			// the enum values from the element itself.
 			Metadata.EnumerationElement e = (Metadata.EnumerationElement)m_element;
-			populateValues(e.getValues());
+			populateValues(e);
 		}
 
 		// Disable add/remove if we are using a dictionary as the

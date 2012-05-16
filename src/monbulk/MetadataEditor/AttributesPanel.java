@@ -93,7 +93,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 				try
 				{
 					Metadata.ElementTypes t = Metadata.ElementTypes.valueOf(newType);
-					Metadata.Element newAttribute = Metadata.createElement(t.getMetaName(), element.getName(), element.getDescription(), true);
+					Metadata.Element newAttribute = Metadata.createElement(t.getTypeName(), element.getName(), element.getDescription(), true);
 					if (m_addNewElement)
 					{
 						// Adding a new attribute so just overwrite the

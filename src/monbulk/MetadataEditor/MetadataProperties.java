@@ -374,7 +374,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		{
 			// Create new element from old.
 			Metadata.ElementTypes t = Metadata.ElementTypes.valueOf(newType);
-			Metadata.Element newElement = Metadata.createElement(t.getMetaName(), element.getName(), element.getDescription(), false);
+			Metadata.Element newElement = Metadata.createElement(t.getTypeName(), element.getName(), element.getDescription(), false);
 			m_elementEditor.setMetadataElement(newElement);
 		}
 		catch (Exception e)
