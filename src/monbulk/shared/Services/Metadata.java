@@ -179,6 +179,8 @@ public class Metadata
 		// Attributes on an element are stored as a list of elements,
 		// since they are almost exactly the same.
 		protected ArrayList<Element> m_attributes = new ArrayList<Element>();
+		
+		protected boolean m_modified = false;
 
 		/**
 		 * Copy constructor.  Creates a new element from an existing element.
@@ -207,8 +209,8 @@ public class Metadata
 
 		public Element(ElementTypes type, String name, String description, boolean isAttribute)
 		{
-			setSetting("name", name);
-			setSetting("description", description);
+			m_settings.put("name", name);
+			m_settings.put("description", description);
 			m_type = type;
 			m_isAttribute = isAttribute;
 		}
@@ -218,6 +220,45 @@ public class Metadata
 			return new Element(this);
 		}
 
+		/**
+		 * Returns true if this metadata has been modified.
+		 * @return
+		 */
+		public boolean getIsModified()
+		{
+			boolean modified = m_modified;
+
+			// Check all attributes on this element.
+			for (Element e : m_attributes)
+			{
+				if (e.getIsModified())
+				{
+					return true;
+				}
+			}
+			
+			return modified;
+		}
+		
+		/**
+		 * Clears the modified flag to false.
+		 */
+		public void clearModified()
+		{
+			m_modified = false;
+			
+			// Clear modified flag for all attributes on this element.
+			for (Element e : m_attributes)
+			{
+				e.clearModified();
+			}
+		}
+
+		/**
+		 * Sets the restriction 'name' to 'value'.
+		 * @param name
+		 * @param value
+		 */
 		public void setRestriction(String name, String value)
 		{
 			if (value.length() > 0)
@@ -228,8 +269,17 @@ public class Metadata
 			{
 				m_restrictions.remove(name);
 			}
+			
+			m_modified = true;
 		}
 		
+		/**
+		 * Returns the specified restriction or the default value
+		 * if it doesn't exist.
+		 * @param name
+		 * @param defaultValue
+		 * @return
+		 */
 		public String getRestriction(String name, String defaultValue)
 		{
 			String value = m_restrictions.get(name);
@@ -241,6 +291,14 @@ public class Metadata
 			return value;
 		}
 
+		/**
+		 * Sets the setting 'name' to 'value'.  Settings end up as xml attributes
+		 * so they store various attributes of an element.  Note that the
+		 * description of an element is also stored as a setting, however, the
+		 * description is actually not saved as an xml attribute but a separate node.
+		 * @param name
+		 * @param value
+		 */
 		public void setSetting(String name, String value)
 		{
 			if (value != null && value.length() > 0)
@@ -251,8 +309,17 @@ public class Metadata
 			{
 				m_settings.remove(name);
 			}
+			
+			m_modified = true;
 		}
 
+		/**
+		 * Returns the specified setting or the default value
+		 * if it doesn't exist.
+		 * @param name
+		 * @param defaultValue
+		 * @return
+		 */
 		public String getSetting(String name, String defaultValue)
 		{
 			String value = m_settings.get(name);
@@ -281,12 +348,14 @@ public class Metadata
 				{
 					if (e.name().equals("restriction"))
 					{
-						if (m_type != ElementTypes.Enumeration)
+						if (e.hasElements())
 						{
-							// Enumerations handle themselves.
-							if (e.hasElements())
+							for (XmlElement r : e.elements())
 							{
-								for (XmlElement r : e.elements())
+								// HACK: For enumeration types don't add any
+								// value restrictions.  The EnumerationElement
+								// will add them.
+								if (m_type != ElementTypes.Enumeration || !r.name().equals("value"))
 								{
 									m_restrictions.put(r.name(), r.value());
 								}
@@ -324,6 +393,7 @@ public class Metadata
 		{
 			m_parent = parent;
 			parent.m_children.add(this);
+			m_modified = true;
 		}
 		
 		/**
@@ -390,6 +460,7 @@ public class Metadata
 		public void removeAttribute(int index)
 		{
 			m_attributes.remove(index);
+			m_modified = true;
 		}
 		
 		/**
@@ -399,6 +470,7 @@ public class Metadata
 		public void addAttribute(Element attribute)
 		{
 			m_attributes.add(attribute);
+			m_modified = true;
 		}
 		
 		/**
@@ -412,6 +484,7 @@ public class Metadata
 			if (index >= 0)
 			{
 				m_attributes.set(index, newAttribute);
+				m_modified = true;
 			}
 		}
 		
@@ -559,6 +632,36 @@ public class Metadata
 		{
 			super(ElementTypes.Document, name, description, false);
 		}
+
+		/**
+		 * Returns true if this element or any of its children have been modified.
+		 * @return
+		 */
+		public boolean getIsModified()
+		{
+			for (Element e : m_children)
+			{
+				if (e.getIsModified())
+				{
+					return true;
+				}
+			}
+			
+			return super.getIsModified();
+		}
+		
+		/**
+		 * Clears the modified flag for any child elements.
+		 */
+		public void clearModified()
+		{
+			super.clearModified();
+			
+			for (Element e : m_children)
+			{
+				e.clearModified();
+			}
+		}
 		
 		/**
 		 * Replaces an element in this DocumentElement.
@@ -572,9 +675,10 @@ public class Metadata
 			{
 				m_children.set(index, newElement);
 				newElement.m_parent = this;
+				m_modified = true;
 			}
 		}
-		
+
 		/**
 		 * Returns the number of children in this DocumentElement.
 		 * @return
@@ -601,6 +705,7 @@ public class Metadata
 		public void removeChild(Element element)
 		{
 			m_children.remove(element);
+			m_modified = true;
 		}
 		
 		/**
@@ -640,6 +745,7 @@ public class Metadata
 		public void setIsReference(boolean isReference)
 		{
 			m_isReference = isReference;
+			m_modified = true;
 		}
 		
 		public String getReferenceName()
@@ -650,6 +756,7 @@ public class Metadata
 		public void setReferenceName(String referenceName)
 		{
 			m_referenceName = referenceName;
+			m_modified = true;
 		}
 		
 		public ReferenceType getReferenceType()
@@ -660,6 +767,7 @@ public class Metadata
 		public void setReferenceType(ReferenceType referenceType)
 		{
 			m_referenceType = referenceType;
+			m_modified = true;
 		}
 		
 		public String getReferenceValue()
@@ -670,6 +778,7 @@ public class Metadata
 		public void setReferenceValue(String referenceValue)
 		{
 			m_referenceValue = referenceValue;
+			m_modified = true;
 		}
 		
 		public Element clone()
@@ -736,7 +845,7 @@ public class Metadata
 			super(ElementTypes.Enumeration, name, description, isAttribute);
 
 			// Dummy entry so there is always a restriction for enumerations.
-			setRestriction("dummy", "dummy");
+			m_restrictions.put("dummy", "dummy");
 		}
 
 		/**
@@ -746,6 +855,7 @@ public class Metadata
 		public void addValue(String value)
 		{
 			m_values.add(value);
+			m_modified = true;
 		}
 		
 		/**
@@ -755,6 +865,7 @@ public class Metadata
 		public void removeValue(String value)
 		{
 			m_values.remove(value);
+			m_modified = true;
 		}
 		
 		/**
@@ -763,6 +874,7 @@ public class Metadata
 		public void clearValues()
 		{
 			m_values.clear();
+			m_modified = true;
 		}
 		
 		/**
@@ -863,24 +975,30 @@ public class Metadata
 	}
 	
 	private DocumentElement m_rootElement = new DocumentElement("root", "root");
-	private String m_name;
-	private String m_description;
-	private String m_label;
 	
 	public Metadata(String name, String description, String label)
 	{
-		m_name = name;
-		m_description = description;
-		m_label = label;
+		setName(name);
+		setDescription(description);
+		setLabel(label);
 	}
-	
+
+	/**
+	 * Returns true if the metadata has been modified.
+	 * @return
+	 */
+	public boolean getIsModified()
+	{
+		return m_rootElement.getIsModified();
+	}
+
 	/**
 	 * Sets the name of this metadata.
 	 * @param name
 	 */
 	public void setName(String name)
 	{
-		m_name = name;
+		m_rootElement.setSetting("name", name);
 	}
 	
 	/**
@@ -889,7 +1007,7 @@ public class Metadata
 	 */
 	public String getName()
 	{
-		return m_name;
+		return m_rootElement.getName();
 	}
 	
 	/**
@@ -898,7 +1016,7 @@ public class Metadata
 	 */
 	public void setDescription(String description)
 	{
-		m_description = description;
+		m_rootElement.setDescription(description);
 	}
 	
 	/**
@@ -907,7 +1025,7 @@ public class Metadata
 	 */
 	public String getDescription()
 	{
-		return m_description;
+		return m_rootElement.getDescription();
 	}
 	
 	/**
@@ -916,7 +1034,7 @@ public class Metadata
 	 */
 	public void setLabel(String label)
 	{
-		m_label = label;
+		m_rootElement.setSetting("label", label);
 	}
 	
 	/**
@@ -925,7 +1043,7 @@ public class Metadata
 	 */
 	public String getLabel()
 	{
-		return m_label;
+		return m_rootElement.getSetting("label", "");
 	}
 	
 	/**
@@ -937,6 +1055,14 @@ public class Metadata
 	public DocumentElement getRootElement()
 	{
 		return m_rootElement;
+	}
+	
+	/**
+	 * Clears the modified flag for this metadata and all its elements.
+	 */
+	public void clearModified()
+	{
+		m_rootElement.clearModified();
 	}
 	
 	/**
@@ -979,16 +1105,18 @@ public class Metadata
 	public String getXml()
 	{
 		XmlStringWriter x = new XmlStringWriter();
-		x.add("type", m_name);
+		x.add("type", getName());
 
-		if (m_label != null && m_label.length() > 0)
+		String label = getLabel();
+		if (label != null && label.length() > 0)
 		{
-			x.add("label", m_label);
+			x.add("label", label);
 		}
 		
-		if (m_description != null && m_description.length() > 0)
+		String description = getDescription();
+		if (description != null && description.length() > 0)
 		{
-			x.add("description", m_description);
+			x.add("description", description);
 		}
 		
 		x.push("definition");

@@ -35,7 +35,14 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 {
 	public interface Handler
 	{
-		public void onMetadataSelected(String metadataName);
+		/**
+		 * Callback for a selection on the list.  This is the new selection.
+		 * Note that calling getSelectedMetadataName will return the previous
+		 * selection.  Returning false will cancel the selection.
+		 * @param metadataName
+		 * @return
+		 */
+		public boolean onMetadataSelected(String metadataName);
 		public void onRefreshList();
 		public void onRemoveMetadata(String metadataName);
 		public void onNewMetadata();
@@ -48,6 +55,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	private Handler m_handler = null;
 	private String m_newMetadataName = null;
 	private Boolean m_newMetadataExists = false;
+	private String m_selected;
 
 	@UiField HTMLPanel m_buttonsPanel;
 	@UiField Button m_refreshList;
@@ -136,8 +144,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	 */
 	public String getSelectedMetadataName()
 	{
-		int index = m_metadataListBox.getSelectedIndex();
-		return index >= 0 ? m_metadataListBox.getItemText(index) : "";
+		return m_selected;
 	}
 	
 	/**
@@ -194,6 +201,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	public void clearSelection()
 	{
 		m_metadataListBox.setSelectedIndex(-1);
+		m_selected = "";
 	}
 	
 	/**
@@ -299,14 +307,45 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 		m_itemToSelect = "";
 	}
 	
+	/**
+	 * Sets the selected metadata in the list box without firing any events.
+	 * @param metadata
+	 */
+	public void setSelectedMetadata(String metadata)
+	{
+		int index = -1;
+		for (int i = 0; i < m_metadataListBox.getItemCount(); i++)
+		{
+			if (m_metadataListBox.getItemText(i).equals(metadata))
+			{
+				index = i;
+				break;
+			}
+		}
+
+		m_metadataListBox.setSelectedIndex(index);
+		m_selected = metadata;
+	}
+	
 	@UiHandler("m_metadataListBox")
 	protected void onMetadataSelected(ChangeEvent event)
 	{
+		int index = m_metadataListBox.getSelectedIndex();
+		String selected = m_metadataListBox.getValue(index);
+		boolean allowSelect = true;
+
 		if (m_handler != null)
 		{
-			int index = m_metadataListBox.getSelectedIndex();
-			String selected = m_metadataListBox.getValue(index);
-			m_handler.onMetadataSelected(selected);
+			allowSelect = m_handler.onMetadataSelected(selected);
+		}
+		
+		if (allowSelect)
+		{
+			m_selected = selected;
+		}
+		else
+		{
+			setSelectedMetadata(m_selected);
 		}
 	}
 	

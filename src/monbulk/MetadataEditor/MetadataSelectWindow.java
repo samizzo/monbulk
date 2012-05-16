@@ -23,9 +23,10 @@ public class MetadataSelectWindow extends OkCancelWindow
 		m_ok.setEnabled(false);
 		m_metadataList.setHandler(new MetadataList.Handler()
 		{
-			public void onMetadataSelected(String metadataName)
+			public boolean onMetadataSelected(String metadataName)
 			{
 				m_ok.setEnabled(true);
+				return true;
 			}
 			
 			public void onRefreshList()
