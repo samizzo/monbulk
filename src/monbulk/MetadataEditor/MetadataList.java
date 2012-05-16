@@ -38,6 +38,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 		public void onMetadataSelected(String metadataName);
 		public void onRefreshList();
 		public void onRemoveMetadata(String metadataName);
+		public void onNewMetadata();
 	};
 
 	private static MetadataListUiBinder uiBinder = GWT.create(MetadataListUiBinder.class);
@@ -188,6 +189,14 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	}
 	
 	/**
+	 * Clears the selection on the list box.
+	 */
+	public void clearSelection()
+	{
+		m_metadataListBox.setSelectedIndex(-1);
+	}
+	
+	/**
 	 * Adds a handler to the save button.
 	 * @param event
 	 */
@@ -238,6 +247,9 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 		}
 	}
 
+	/**
+	 * Populates the list of available metadata from the server.
+	 */
 	public void populateListBox()
 	{
 		m_metadataListBox.clear();
@@ -344,34 +356,41 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	@UiHandler("m_newMetadata")
 	protected void onNewMetadata(ClickEvent event)
 	{
-		String msg = m_newMetadataExists ? "Metadata already exists!  Please enter a new name" : "Please enter a name";
-		m_newMetadataName = Window.prompt(msg, "new metadata");
-
-		if (m_newMetadataName != null && m_newMetadataName.length() > 0)
+		if (m_handler != null)
 		{
-			// Check if this metadata name exists.
-			final MetadataService service = MetadataService.get();
-			if (service != null)
+			m_handler.onNewMetadata();
+		}
+		else
+		{
+			String msg = m_newMetadataExists ? "Metadata already exists!  Please enter a new name" : "Please enter a name";
+			m_newMetadataName = Window.prompt(msg, "new metadata");
+	
+			if (m_newMetadataName != null && m_newMetadataName.length() > 0)
 			{
-				service.metadataExists(m_newMetadataName, new MetadataExistsHandler()
+				// Check if this metadata name exists.
+				final MetadataService service = MetadataService.get();
+				if (service != null)
 				{
-					// Callback for reading a specific metadata object.
-					public void onMetadataExists(String metadataName, boolean exists)
+					service.metadataExists(m_newMetadataName, new MetadataExistsHandler()
 					{
-						if (exists)
+						// Callback for reading a specific metadata object.
+						public void onMetadataExists(String metadataName, boolean exists)
 						{
-							// New metadata name already exists.  Ask the user to try again.
-							m_newMetadataExists = true;
-							onNewMetadata(null);
+							if (exists)
+							{
+								// New metadata name already exists.  Ask the user to try again.
+								m_newMetadataExists = true;
+								onNewMetadata(null);
+							}
+							else
+							{
+								// New metadata name doesn't already exist.
+								m_newMetadataExists = false;
+								createNewMetadata(metadataName);
+							}
 						}
-						else
-						{
-							// New metadata name doesn't already exist.
-							m_newMetadataExists = false;
-							createNewMetadata(metadataName);
-						}
-					}
-				});
+					});
+				}
 			}
 		}
 	}

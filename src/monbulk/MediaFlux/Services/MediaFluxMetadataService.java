@@ -232,7 +232,7 @@ public class MediaFluxMetadataService extends MetadataService
 		Session.execute(
 					new ServiceContext("MediaFluxMetadataService.updateMetadata"),
 					"asset.doc.type.update",
-					metadata.getXml(),
+					"<create>true</create>" + metadata.getXml(),
 					null,
 					0,
 					h,

@@ -73,6 +73,15 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 			{
 				m_metadataProperties.clear();
 			}
+			
+			public void onNewMetadata()
+			{
+				// Create a new, empty metadata object.
+				m_metadataProperties.clear();
+				m_metadataProperties.setMetadata(new Metadata("", "", ""));
+				m_metadataProperties.setNameFocus();
+				m_metadataList.clearSelection();
+			}
 		});
 		
 		m_metadataList.addSaveHandler(new ClickHandler()
@@ -86,10 +95,10 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 					final String oldName = m_metadataList.getSelectedMetadataName();
 					final String newName = metadata.getName();
 					
-					// If the metadata name hasn't changed we can update immediately.
-					if (oldName.equals(newName))
+					// If the metadata name hasn't changed or it's a new metadta we can update immediately.
+					if (oldName == null || oldName.length() == 0 || oldName.equals(newName))
 					{
-						service.updateMetadata(metadata, null);
+						updateMetadata(metadata);
 					}
 					else
 					{
@@ -112,15 +121,7 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 									{
 										public void onRenameMetadata()
 										{
-											// We can now update the metadata.
-											service.updateMetadata(metadata, new UpdateMetadataHandler()
-											{
-												public void onUpdateMetadata(Metadata metadata)
-												{
-													// Refresh the list so it has the new name.
-													m_metadataList.refresh(newName);
-												}
-											});
+											updateMetadata(metadata);
 										}
 									});
 								}
@@ -128,6 +129,19 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 						});
 					}
 				}
+			}
+		});
+	}
+	
+	private void updateMetadata(final Metadata metadata)
+	{
+		MetadataService service = MetadataService.get();
+		service.updateMetadata(metadata, new UpdateMetadataHandler()
+		{
+			public void onUpdateMetadata(Metadata m)
+			{
+				// Refresh the list so it has the new name.
+				m_metadataList.refresh(m.getName());
 			}
 		});
 	}
