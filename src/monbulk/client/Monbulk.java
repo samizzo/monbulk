@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import monbulk.MediaFlux.Services.MediaFluxServices;
 import monbulk.client.desktop.*;
+import monbulk.shared.util.GWTLogger;
 import monbulk.MetadataEditor.MetadataEditor;
 import monbulk.MetadataEditor.ElementEditor;
 import monbulk.MetadataEditor.MetadataSelectWindow;
@@ -30,10 +31,12 @@ public class Monbulk implements EntryPoint
 		if (hostName.equals("127.0.0.1") || hostName.equals("localhost"))
 		{
 			debugLogon();
+			GWTLogger.isDebug = true;
 		}
 		else
 		{
 			showLogin();
+			GWTLogger.isDebug = false;
 		}
 	}
 	
