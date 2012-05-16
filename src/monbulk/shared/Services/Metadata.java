@@ -441,11 +441,6 @@ public class Metadata
 			super(ElementTypes.Document, name, description, false);
 		}
 		
-		public ArrayList<Element> getChildren()
-		{
-			return m_children;
-		}
-		
 		public void replaceChild(Element oldElement, Element newElement)
 		{
 			int index = m_children.indexOf(oldElement);
@@ -464,12 +459,6 @@ public class Metadata
 		public Element getChild(int index)
 		{
 			return m_children.get(index);
-		}
-		
-		public void addChild(Element element)
-		{
-			element.m_parent = this;
-			m_children.add(element);
 		}
 		
 		public void removeChild(Element element)
@@ -774,8 +763,10 @@ public class Metadata
 		}
 		
 		x.push("definition");
-		for (Element e : m_rootElement.getChildren())
+		int numChildren = m_rootElement.getNumChildren();
+		for (int i = 0; i < numChildren; i++)
 		{
+			Element e = m_rootElement.getChild(i);
 			e.addXml(x);
 
 			// This feels a bit messy.  Pop should probably be in addXml()

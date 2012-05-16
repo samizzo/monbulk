@@ -193,8 +193,10 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	{
 		TreeItem result = null;
 
-		for (Metadata.Element e : rootElement.getChildren())
+		int numChildren = rootElement.getNumChildren();
+		for (int i = 0; i < numChildren; i++)
 		{
+			Metadata.Element e = rootElement.getChild(i);
 			if (e.getType().isVisible())
 			{
 				TreeItem treeItem = createTreeItem(e.getName(), e, root);
@@ -257,7 +259,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		// Remove the element.
 		Metadata.Element element = (Metadata.Element)m_selectedElement.getUserObject();
 		Metadata.DocumentElement parent = element.getParent();
-		parent.getChildren().remove(element);
+		parent.removeChild(element);
 
 		// Find the index of the item we are removing.
 		TreeItem parentItem = m_selectedElement.getParentItem();
