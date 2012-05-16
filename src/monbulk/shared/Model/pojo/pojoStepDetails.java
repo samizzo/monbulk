@@ -22,16 +22,18 @@ public class pojoStepDetails implements IPojo{
 	private Boolean hasStudy;
 	private int FormIndex;
 	
-	public  static final String FormName = "StepDetails";
+	public  static final String FormName = "STEP_DETAILS";
 	public static final String StepNameField = "Title";
 	public static final String StepDescriptionField = "Description";
 	public static final String HasStudyField = "HasStudy";
 	public static final String FormIndexField = "StepIndex";
+	
+	private FormBuilder StepDetailsForm;
 	public pojoStepDetails(int Index)
 	{
 		this.FormIndex = Index;
 		this.relatedStudy = new pojoStudy();
-		
+		StepDetailsForm = new FormBuilder();
 		
 		this.attachedMetaData = new ArrayList<pojoMetaData>();
 	}
@@ -90,12 +92,14 @@ public class pojoStepDetails implements IPojo{
 	@Override
 	public FormBuilder getFormStructure() {
 		// TODO Auto-generated method stub
-		FormBuilder StepDetailsForm = new FormBuilder();
+//		StepDetailsForm = new FormBuilder();
 		//String FormName = FormName + FormIndex;
-		StepDetailsForm.SetFormName(FormName + FormIndex);
+		try
+		{
+		//StepDetailsForm.SetFormName(FormName + FormIndex);
 
-		
-		if(this.StepName.equals(null))
+		StepDetailsForm.SetFormName(FormName);
+		if(this.StepName==null)
 		{
 			StepDetailsForm.AddTitleItem(StepNameField,"String","");
 		}
@@ -103,32 +107,38 @@ public class pojoStepDetails implements IPojo{
 		{
 			StepDetailsForm.AddTitleItem(StepNameField,"String",this.StepName);
 		}
-		if(this.StepDescription.equals(null))
+		if(this.StepDescription==null)
 		{	
-			StepDetailsForm.AddSummaryItem(StepDescriptionField, "String");	
+			StepDetailsForm.AddSummaryItem(StepDescriptionField, "Description");	
 		}
 		else
 		{
-			StepDetailsForm.AddSummaryItem(StepDescriptionField, "String",StepDescription);
+			StepDetailsForm.AddSummaryItem(StepDescriptionField, "Description",StepDescription);
 		}
-		if(this.hasStudy.equals(null))
+		if(this.hasStudy==null)
 		{
-			StepDetailsForm.AddItem(HasStudyField, "String");
+			StepDetailsForm.AddItem(HasStudyField, "Boolean");
 		}
 		else
 		{
-			StepDetailsForm.AddItem(HasStudyField, "String",this.hasStudy); 
+			StepDetailsForm.AddItem(HasStudyField, "Boolean",this.hasStudy); 
 		}
 		
-		StepDetailsForm.MergeForm(this.relatedStudy.getFormStructure());
+		//StepDetailsForm.MergeForm(this.relatedStudy.getFormStructure());
 		
-		Iterator<pojoMetaData> i = this.attachedMetaData.iterator();
+		/*Iterator<pojoMetaData> i = this.attachedMetaData.iterator();
 		while(i.hasNext())
 		{
 			pojoMetaData tmpItem = i.next();
 			StepDetailsForm.MergeForm(tmpItem.getFormStructure());
-		}
+		}*/
 		
+		return StepDetailsForm;
+		}
+		catch(Exception ex)
+		{
+			GWT.log("Error @ pojoStepDetails.getFormStructure:" + ex.getMessage());
+		}
 		return StepDetailsForm;
 	}
 
@@ -155,14 +165,44 @@ public class pojoStepDetails implements IPojo{
 	}
 	@Override
 	public void setFieldVale(String FieldName, Object FieldValue) {
-		// TODO Auto-generated method stub
+		Window.alert("FieldName:" + FieldName + "Field Value:" + FieldValue);
+		if(!FieldValue.equals(null))
+		{
+			if(FieldName == this.StepDescriptionField)
+			{
+				this.StepDescription = FieldValue.toString();
+			}
+			else if(FieldName == this.StepNameField)
+			{
+				this.StepName = FieldValue.toString();
+			}
+			else if(FieldName == this.HasStudyField)
+			{
+				this.hasStudy = (Boolean) FieldValue;
+			}
+			
+		}
 		
 	}
 
 	@Override
 	public String getFieldVale(String FieldName) {
-		// TODO Auto-generated method stub
-		return null;
+		if(FieldName == this.StepDescriptionField)
+		{
+			return this.StepDescription;
+		}
+		else if(FieldName == this.StepNameField)
+		{
+			return this.StepName;
+		}
+		else if(FieldName == this.HasStudyField)
+		{
+			return this.hasStudy.toString();
+		}
+		else
+		{
+			return "";
+		}
 	}
 
 	@Override
@@ -179,7 +219,7 @@ public class pojoStepDetails implements IPojo{
 				this.StepName = document.selectValue("/step/name");
 				this.StepDescription = document.selectValue("/step/description");
 				//document.selectValue("/step") Gives Description?
-				Window.alert(document.selectNode("/step/study").toString());
+				//Window.alert(document.selectNode("/step/study").toString());
 			}
 			catch(Exception ex)
 			{

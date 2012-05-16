@@ -75,7 +75,7 @@ public class pojoMethod implements IPojo {
 	{
 
 		MethodForm.SetFormName(FormName);
-		if(this.MethodID==null)
+		/*if(this.MethodID==null)
 		{
 			
 			MethodForm.AddItem(MethodIDField,"String","Test Value");
@@ -84,7 +84,7 @@ public class pojoMethod implements IPojo {
 		{
 			
 			MethodForm.AddItem(MethodIDField,"String",MethodID);
-		}
+		}*/
 		if(this.MethodName==null)
 		{
 			MethodForm.AddTitleItem(MethodNameField, "String");	
@@ -94,21 +94,21 @@ public class pojoMethod implements IPojo {
 			
 			MethodForm.AddTitleItem(MethodNameField, "String",this.MethodName);
 		}
-		if(this.MethodAuthor==null)
+		/*if(this.MethodAuthor==null)
 		{	
 			MethodForm.AddSummaryItem(MethodAuthorField, "String","Test Author");	
 		}
 		else
 		{
 			MethodForm.AddSummaryItem(MethodAuthorField,"String", this.MethodAuthor);
-		}
+		}*/
 		if(this.MethodDescription== null)
 		{
-			MethodForm.AddSummaryItem(MethodDescriptionField, "String");	
+			MethodForm.AddSummaryItem(MethodDescriptionField, "Description");	
 		}
 		else
 		{
-			MethodForm.AddSummaryItem(MethodDescriptionField, "String", this.MethodDescription);
+			MethodForm.AddSummaryItem(MethodDescriptionField, "Description", this.MethodDescription);
 		}
 		/*
 		if(this.DateCreated==null)

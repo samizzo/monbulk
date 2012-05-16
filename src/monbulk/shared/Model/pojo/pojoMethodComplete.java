@@ -42,11 +42,18 @@ public class pojoMethodComplete implements IPojo{
 		this.SubjectProperties = new pojoSubjectProperties();
 		this.allSteps = new ArrayList<pojoStepDetails>();
 	}
-	
+	public void addStep(pojoStepDetails tmpStep)
+	{
+		this.allSteps.add(tmpStep);
+	}
+	public void removeStep(int StepIndex)
+	{
+		this.allSteps.remove(StepIndex);
+	}
 	@Override
 	public String writeOutput(String Format) {
 		// TODO Auto-generated method stub
-		return null;
+		return this.MethodDetails.writeTCL();
 	}
 
 	@Override

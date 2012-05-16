@@ -2,18 +2,21 @@ package monbulk.shared.Form;
 
 import java.util.Date;
 
-import arc.gui.gwt.widget.input.TextArea;
-
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.HasDirection.Direction;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -21,7 +24,13 @@ import monbulk.shared.Form.DateValidation;
 import monbulk.shared.Form.IntegerValidation;
 import monbulk.shared.Form.StringValidation;
 import monbulk.shared.Form.TextFieldValidation;
-
+/**
+ * This is the basic Form Field class
+ * TODO: It needs an enum for FieldTypes
+ * 
+ * @author Andrew Glenn
+ *
+ */
 	public class FormField implements iFormField
 	{
 		private String FieldName;
@@ -52,6 +61,7 @@ import monbulk.shared.Form.TextFieldValidation;
 			this.FieldName = FormName;
 			this.FieldType = objectType;
 			this.FieldValue = Value;
+			setFieldWidget();
 			this.FieldWidget="Label";
 			this.fieldValidator = null;
 			isSummaryField = false;
@@ -95,11 +105,13 @@ import monbulk.shared.Form.TextFieldValidation;
 			FieldNameLabel.setText(this.FieldName);
 			this._ValidationWidget = new Label();
 			this.returnWidget = new FormWidget(this.FieldName);
+			GWT.log("Adding Field:" + FieldType);
 			if(FieldType=="String")
 			{
 				this.FieldWidget="TextBox";
-				this.FieldValue="Enter Text here";
+				this.FieldValue="";
 				this._FieldVaLueWidget = new TextBox();
+				//this._FieldVaLueWidget.add
 				
 				this._ValidationWidget = new Label();
 				
@@ -114,30 +126,33 @@ import monbulk.shared.Form.TextFieldValidation;
 				this.fieldValidator = new DateValidation(this.FieldName);
 				this._FieldVaLueWidget = new TextBox();
 			}
-			else if(FieldName=="Description")
+			else if(FieldType=="Description")
 			{
 				this.FieldWidget="TextArea";
-				this.FieldValue="Enter Text here";
+				this.FieldValue="";
 				this.fieldValidator = new TextFieldValidation(this.FieldName);
 				this._FieldVaLueWidget = new TextArea();
+				this._FieldVaLueWidget.setHeight("100px");
+				//Window.alert("A TextArea is added");
 				
 				
 			}
-			else if(FieldName=="Int")
+			else if(FieldType=="Int")
 			{
 				this.FieldWidget="TextBox";
-				this.FieldValue="Enter Number here";
+				this.FieldValue="0";
 				this.fieldValidator = new IntegerValidation(this.FieldName);
 				this._FieldVaLueWidget = new TextBox();
 			}
-			else if(FieldName=="Boolean")
+			else if(FieldType.contains("Boolean"))
 			{
 				this.FieldWidget="CheckBox";
 				this.FieldValue=false;
 				this.fieldValidator = null;
 				this._FieldVaLueWidget = new CheckBox();
+				
 			}
-			else if(FieldName=="List")
+			else if(FieldType=="List")
 			{
 				this.FieldWidget="ListBox";
 				this.FieldValue=false;
@@ -147,7 +162,7 @@ import monbulk.shared.Form.TextFieldValidation;
 			else
 			{
 				this.FieldWidget="TextBox";
-				this.FieldValue="Enter Number here";
+				this.FieldValue="";
 				this.fieldValidator = new IntegerValidation(this.FieldName);
 				this._FieldVaLueWidget = new TextBox();
 			}
@@ -213,16 +228,20 @@ import monbulk.shared.Form.TextFieldValidation;
 
 		@Override
 		public String Validate(String FieldValue) {
-			if(this.fieldValidator.isValueValid(FieldValue))
-			{
-				this._ValidationWidget.setStyleName("Valid");
-				return "";
+			if(this.fieldValidator!=null)
+				{
+				if(this.fieldValidator.isValueValid(FieldValue))
+				{
+					this._ValidationWidget.setStyleName("Valid");
+					return "";
+				}
+				else
+				{
+					this._ValidationWidget.setStyleName("InValid");
+					return fieldValidator.getInvalidReason();
+				}
 			}
-			else
-			{
-				this._ValidationWidget.setStyleName("InValid");
-				return fieldValidator.getInvalidReason();
-			}
+			return "";
 		}
 
 		@Override

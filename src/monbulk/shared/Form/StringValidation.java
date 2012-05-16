@@ -24,6 +24,11 @@ public class StringValidation implements iFormFieldValidation{
 				InvalidReason = this.FieldName + ": String is too long. A Maximum of 256 characters are permitted";
 				return false;
 			}
+			else if(value.length() == 0)
+			{
+				InvalidReason = this.FieldName + ": No Value entered";
+				return true;
+			}
 			else
 			{
 				return true;
