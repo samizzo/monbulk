@@ -172,20 +172,23 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 		CustomStackHeader tmpHeader = null;
 		HTML tmpBody = null;
 		Boolean isNewStep = false;
+		//Window.alert("Setting the following:" + this.currentForm);
 		if(anyBuilder.getFormName().contains(pojoStepDetails.FormName))
 		{
+			GWT.log("Step Path C");
 			if(StepExists(anyBuilder.getFormName())!=null)
 			{
 				//if we have an Index, append to existing item
 				tmpHeader =  (CustomStackHeader) this.CurrentSteps.get(anyBuilder.getFormName()).getHeader();
 				tmpBody =  (HTML) this.CurrentSteps.get(anyBuilder.getFormName()).getBody();
+				
 				//Widget tmpStack = this.MethodNavigationStack.getWidget(tmpStepIndex+ 2);
 				//this.MethodNavigationStack.getVisibleIndex(); MAY WORK as well
 				//this.StepIndex = this.CurrentSteps.get(anyBuilder.getFormName()).getIndex();
 			}
 			else
 			{
-				
+				GWT.log("Step Path D");
 				
 				//tmpHeader = new CustomStackHeader("New Step",anyBuilder.getFormName());
 				tmpBody = new HTML();
@@ -350,14 +353,16 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 				int Index = removedTab.getIndex();
 				
 				this.CurrentSteps.remove(TabName);
-				ShuffleIndices(Index);
-				GWT.log(this.GetIndexList());
+				
+				//GWT.log(this.GetIndexList());
+				this.MethodNavigationStack.showWidget(1,false);
 				this.MethodNavigationStack.remove(Index+1);
-				this.MethodNavigationStack.showWidget(Index);
-				this.StepIndex = Index;
+				ShuffleIndices(Index);
+				this.StepIndex = 1;
 			}
 		}
 	}
+	
 	private void ShuffleIndices(int RemovedIndex)
 	{
 		Iterator<Entry<String, CustomTab>> it = CurrentSteps.entrySet().iterator();
@@ -373,6 +378,7 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 	@UiHandler("btnNext")
 	public void onClick(ClickEvent e)
 	{
+		
 		this.thisPresenter.FormComplete(this.currentForm, "Next");
 	}
 	/*TODO Implement the handler for navigating from this view

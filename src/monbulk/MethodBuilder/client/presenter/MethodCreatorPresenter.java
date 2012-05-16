@@ -159,23 +159,37 @@ public class MethodCreatorPresenter implements FormPresenter{
 					if(tmpView!=null)
 					{	
 						this.ImplementedMethodView.clearChild();
-					//			GWT.log("1");
+						GWT.log("State change 1");
 						if(!this.mainModel.isLoaded())
 						{
-							tmpView.LoadForm(this.mainModel.getFormData(newState.toString()));
-							countLoads++;
-							GWT.log("Loaded:" + countLoads);
+								GWT.log("State change 2");
+								FormBuilder tmpForm = this.mainModel.getFormData(newState.toString());
+								if(tmpForm!=null)
+								{
+									GWT.log("State change 3");			
+									//this.ImplementedMethodView.setData(tmpForm);
+									tmpView.LoadForm(tmpForm);
+									
+								}
+								else
+								{
+									GWT.log("@MethodCreatorPresenter.ChangeState: Could not find a form for:" + newState);
+								}
+							
+							//countLoads++;
+							GWT.log("Loaded:" + newState);
 						}
 						
-						GWT.log("Pre-SetChild" + this.CurrentState);
+						//GWT.log("Pre-SetChild" + this.CurrentState);
 						this.ImplementedMethodView.setChild(tmpView.asWidget());
-						GWT.log("Post-SetChild" + newState);
+						//GWT.log("Post-SetChild" + newState);
 						this.ImplementedMethodView.setPresenter(this);
 						this.CurrentState=newState;
 								//GWT.log("4");
 								//this.ImplementedDockView.setTabData(tmpState.getModel().getMetaDataCategories(), "MetaData");
 								//GWT.log(tmpState.presenterState.toString());
 						GWT.log("cHILD wIDGET:" + tmpView.getClass());
+						GWT.log("cHILD wIDGET:" + tmpView.asWidget().toString());
 						return;
 					}
 							
@@ -245,11 +259,12 @@ public class MethodCreatorPresenter implements FormPresenter{
 		//	com.google.gwt.user.client.Window.alert("Unable to Save Form.");
 			GWT.log("Next and CurrentState is:" + CurrentState + "New State is: " + FormName);
 			String Validation = tmpModel.ValidateForm(FormName);
-			if(!Validation.equals(""))
+			//FIX: For SOme reason the StepDetails form is loading too many items - need to check
+			/*if(!Validation.equals(""))
 			{
 				com.google.gwt.user.client.Window.alert("Unable to Save Form." + Validation);
 				return;
-			}
+			}*/
 			
 			if(FormName==pojoMethod.FormName)
 			{
@@ -262,21 +277,31 @@ public class MethodCreatorPresenter implements FormPresenter{
 			}
 			else if(FormName==pojoSubjectProperties.FormName)
 			{
+				GWT.log("Step is Selected");				
+				this.mainModel.addStep();
+				//this.ImplementedMethodView.setData(anyBuilder)
+				this.ChangeState(MethodCreatorStates.STEP_DETAILS);
+				this.ImplementedMethodView.setData(this.mainModel.getFormData(MethodCreatorStates.STEP_DETAILS.toString() + "0" ));
+				GWT.log("Step is Selected 2");
+			}
+			else if(FormName.contains(pojoStepDetails.FormName))
+			{
 				//TODO Must ensure next, prev and complete states are submitted to any view/form
-				this.mainModel.addStep(pojoStepDetails.FormName);
+				this.mainModel.addStep();
+				
 				this.ChangeState(MethodCreatorStates.STEP_DETAILS);
 				
 			}
 		}
 		else if(Command=="Prev")
 		{
-			if(FormName=="SubjectProperties")
+			if(FormName==pojoSubjectProperties.FormName)
 			{
 				//DONE Must ensure next, prev and complete states are submitted to any view/form
 				this.ChangeState(MethodCreatorStates.METHOD_DETAILS);
 				this.ImplementedMethodView.SetMenuIndex(MethodCreatorStates.METHOD_DETAILS.toString());
 			}	
-			if(FormName=="StepDetails")
+			else if(FormName.contains(pojoStepDetails.FormName))
 			{
 				//DONE Must ensure next, prev and complete states are submitted to any view/form
 				this.ChangeState(MethodCreatorStates.SUBJECT_PROPERTIES);
@@ -294,11 +319,6 @@ public class MethodCreatorPresenter implements FormPresenter{
 		}
 		else if(Command=="Edit")
 		{
-				GWT.log("Editing" + this.stateSelector.get(FormName));
-				this.ChangeState(this.stateSelector.get(FormName));
-				//this.ImplementedMethodView.SetMenuIndex("MethodDetails");
-			
-			
 			if(FormName.contains("StepDetails"))
 			{
 				/*
@@ -310,13 +330,31 @@ public class MethodCreatorPresenter implements FormPresenter{
 				newState.getView().LoadForm(newStateModel.getFormData());
 				//This works
 				this.ImplementedMethodView.SetMenuIndex(FormName);/*/
-			}	
+			}
+			else
+			{
+				GWT.log("Editing" + this.stateSelector.get(FormName));
+				FormBuilder tmpForm = this.mainModel.getFormData(FormName);
+				this.ImplementedMethodView.clearChild();
+				IFormView tmpView = this._AllStates.get(this.stateSelector.get(FormName));
+				//tmpView.LoadForm(tmpForm);				
+				//GWT.log("Pre-SetChild" + this.CurrentState);
+				this.ImplementedMethodView.setChild(tmpView.asWidget());
+				//GWT.log("Post-SetChild" + newState);
+				this.ImplementedMethodView.setPresenter(this);
+				this.CurrentState=this.stateSelector.get(FormName);
+			}
+				
 		}
 		else if(Command=="Delete")
 		{
-			StepModel revisedModel =(StepModel)tmpModel;
-			revisedModel.RemoveStepForFormName(FormName);
+			//StepModel revisedModel =(StepModel)tmpModel;
+			//revisedModel.RemoveStepForFormName(FormName);
+			MethodCompleteModel delModel = this.mainModel;
+			delModel.removeStep(FormName);
 			this.ImplementedMethodView.RemoveListItem(FormName);
+			this.ImplementedMethodView.clearChild();
+			this.ChangeState(MethodCreatorStates.SUBJECT_PROPERTIES);
 		}
 		else if(Command=="Save")
 		{
@@ -479,12 +517,13 @@ public class MethodCreatorPresenter implements FormPresenter{
 	public String UpdateValue(FormBuilder someFormData) {
 		
 		FormBuilder tmpBuilder = this.mainModel.getFormData(this.CurrentState.toString());
+		//GWT.log(someFormDa)
 		IFormView tmpView = this._AllStates.get(this.CurrentState);
 		
 		if(tmpView!=null)
 		{
 			GWT.log("Not null");
-			this.ImplementedMethodView.setData(tmpBuilder);
+			this.ImplementedMethodView.setData(someFormData);
 			//tmpView.LoadForm(tmpBuilder);
 			
 		}

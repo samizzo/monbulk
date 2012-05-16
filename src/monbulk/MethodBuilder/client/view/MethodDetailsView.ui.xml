@@ -48,7 +48,7 @@
 										<g:ScrollPanel width="510px" height="480px" styleName="{style.Scroll}" >
 										<g:StackLayoutPanel width="497px" height="481px" unit="PX" styleName="StandardStack" ui:field="MethodFormStack">
 											<g:stack>
-												<g:header size="41" ui:field="FormTitle">Method Details</g:header>
+												<g:header size="41" ui:field="FormTitle">Required Fields</g:header>
 												<g:HTMLPanel ui:field="FormDetails" />
 											</g:stack>
 											</g:StackLayoutPanel>

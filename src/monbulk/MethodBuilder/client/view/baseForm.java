@@ -7,6 +7,12 @@ import java.util.Iterator;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 
@@ -18,6 +24,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -160,7 +167,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 			while(i.hasNext())
 			{
 				iFormField item = i.next();
-				//GWT.log("item to add" + item.GetFieldName() +item.getWidgetReference().toString());
+				GWT.log("item to add" + item.GetFieldName() +item.getWidgetReference());
 				if(item.getWidgetReference()!=null)
 				{
 					final FormWidget tmpWidg = item.getWidgetReference();
@@ -180,8 +187,24 @@ public class baseForm extends VerticalPanel implements IFormView {
 									UpdateValue(FieldName, event.getValue());
 									//event.getValue();
 					}
-								
+						
 					});
+					tmpWidg.addHandler(new MouseOverHandler()
+					{
+
+						@Override
+						public void onMouseOver(MouseOverEvent event) {
+							// TODO Auto-generated method stub
+							Window.alert("Entered");
+							TextBox tmpBox = (TextBox) event.getSource();
+							
+							if(tmpBox.getValue()=="Enter Text here")
+							{
+								tmpBox.setValue("");
+							}
+						}
+						
+					},MouseOverEvent.getType());
 					//if(tmpWidget.getValue()!=null){
 					//	tmpWidget.setValue(value, fireEvents)
 					//}
@@ -275,6 +298,11 @@ public class baseForm extends VerticalPanel implements IFormView {
 	{
 		//Window.alert(FieldName + ":" + FieldValue);
 		iFormField tmpField = this.generalForm.getFieldItemForName(generalForm.getFormName()+ "." + FieldName);
+		//Window.alert("IS TmpField null:" + tmpField + "in form:" + generalForm.getFormName()+ "." + FieldName);
+		if(tmpField==null)
+		{
+			tmpField = this.generalForm.getFieldItemForName(FieldName);
+		}
 		if(tmpField!=null)
 		{
 			String response = tmpField.Validate(FieldValue.toString());

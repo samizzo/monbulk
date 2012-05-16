@@ -16,6 +16,7 @@ import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.pojo.pojoMethod;
 import monbulk.shared.Model.pojo.pojoMethodComplete;
 import monbulk.shared.Model.pojo.pojoStepDetails;
+import monbulk.shared.Model.pojo.pojoSubjectProperties;
 import monbulk.shared.Services.MethodService;
 import monbulk.shared.Services.ServiceRegistry;
 import monbulk.shared.Services.MethodService.MethodServiceHandler;
@@ -27,43 +28,67 @@ import monbulk.shared.view.ISearchFilter;
 public class MethodCompleteModel extends baseModel implements iMBModel, MethodService.MethodServiceHandler{
 
 	private pojoMethodComplete CompleteModel;
-	private FormBuilder formCompleteModel;
+	//private FormBuilder formCompleteModel;
 	private FormPresenter Presenter; 
-	
-	private StepModel allSteps;
-	private SubjectPropertiesModel subjectModel;
-	private MethodModel methodModel;
 	
 	private Boolean isLoaded;
 	private int StepCount;
+	private int CurrentStep;
 	public MethodCompleteModel()
 	{
 		isLoaded = false;
-		this.allSteps = new StepModel();
+		
 		//this.allSteps.RemoveStep(0);
-		this.subjectModel = new SubjectPropertiesModel();
-		this.methodModel = new MethodModel(null);
 		this.CompleteModel = new pojoMethodComplete();
-		this.formCompleteModel = this.CompleteModel.getFormStructure();
+		super.formData = this.CompleteModel.getFormStructure();
 		isLoaded = false;
-		//formCompleteModel.MergeForm(this.methodModel.getFormData());
-		//formCompleteModel.MergeForm(this.subjectModel.getFormData());
-		//formCompleteModel.MergeForm(this.allSteps.getFormData());
+		CurrentStep=0;
+		StepCount=0;
+	
 		
 		
 	}
-	public void addStep(String StepFormName)
+	public void removeStep(String StepFormName)
 	{
-		this.allSteps.AddNewStep();
+		String strFormIndex = StepFormName.replace(pojoStepDetails.FormName, "");
+		if(strFormIndex.length()>0)
+		{
+			int FormIndex = Integer.parseInt(strFormIndex);
+			
+			if(FormIndex < this.StepCount)
+			{
+				this.CompleteModel.removeStep(FormIndex);
+				this.StepCount++;
+				this.CurrentStep = 0;
+				
+			}
+			else
+			{
+				this.CompleteModel.removeStep(this.CurrentStep);
+				this.StepCount++;
+				this.CurrentStep = 0;
+			}
+		}
+		
+		
+	}
+	public void addStep()
+	{
+		this.CompleteModel.addStep(new pojoStepDetails(this.StepCount));
+		
+		this.StepCount++;
+	}
+	public void addStep(pojoStepDetails stepIn)
+	{
+		this.CompleteModel.addStep(stepIn);
+		this.StepCount++;
 	}
 	public MethodCompleteModel(String ID, FormPresenter presenter)
 	{
 		isLoaded = true;
 		this.Presenter = presenter;
 		this.loadData(ID);
-		this.allSteps = new StepModel();
-		this.subjectModel = new SubjectPropertiesModel();
-		this.methodModel = new MethodModel(ID);
+	
 	}
 	public Boolean isLoaded()
 	{
@@ -108,25 +133,71 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 	@Override
 	public FormBuilder getFormData() {
 		// TODO Auto-generated method stub
-		return this.formCompleteModel;
+		return this.formData;
 	}
 	public FormBuilder getFormData(String FormName)
 	{
+		try
+		{
 		//Window.alert("Loading form" + FormName);
-		if(FormName=="METHOD_DETAILS")
+		if(FormName==pojoMethod.FormName)
 		{
 			return this.CompleteModel.getMethodDetails().getFormStructure();
 		}
-		else if(FormName=="SUBJECT_PROPERTIES")
+		else if(FormName==pojoSubjectProperties.FormName)
 		{
 			return this.CompleteModel.getSubjectProperties().getFormStructure();
 			
 		}
-		else
+		else if(FormName.contains(pojoStepDetails.FormName))
 		{
 			//return this.CompleteModel.`.getFormStructure();
-			return this.allSteps.getFormData();
+			String strFormIndex = FormName.replace(pojoStepDetails.FormName, "");
+			GWT.log("Get here" + strFormIndex);
+			if(strFormIndex.length()>0)
+			{
+				int FormIndex = Integer.parseInt(strFormIndex);
+				
+				if(FormIndex < this.StepCount)
+				{
+					GWT.log("FormIndex" + FormIndex);
+					this.CurrentStep = FormIndex;
+					return this.CompleteModel.getSteps().get(FormIndex).getFormStructure();
+					
+				}
+				else
+				{
+					GWT.log("FormIndex" + FormIndex + FormName);
+					return this.CompleteModel.getSteps().get(this.CurrentStep).getFormStructure();
+				}
+			}
+			else
+			{
+				pojoStepDetails tmpStep = this.CompleteModel.getSteps().get(this.CurrentStep);
+				if(tmpStep!=null)
+				{
+					GWT.log("Any details" +tmpStep.toString());
+					return tmpStep.getFormStructure();
+				}
+				else
+				{
+					pojoStepDetails tmpItem = new pojoStepDetails(this.StepCount);
+					this.addStep(tmpItem);
+					GWT.log("Step Path B");
+					return tmpItem.getFormStructure();
+				}
+			}
 		}
+		else
+		{
+			return this.formData;
+		}
+		}
+		catch(Exception ex)
+		{
+			GWT.log("Error @ MethodCompleteModel.getFormData(String)" + ex.getMessage());
+		}
+		return formData;
 	}
 
 	@Override
@@ -137,12 +208,12 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 
 	@Override
 	public void onReadMethodList(ArrayList<pojoMethod> arrMethods) {
-		// TODO Auto-generated method stub
+		return;
 		
 	}
 	@Override
 	public String ValidateForm() {
-		super.formData = this.formCompleteModel;
+		//super.formData = this.formCompleteModel;
 		return super.ValidateForm();
 	}
 	@Override
@@ -158,52 +229,11 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 		{
 			
 		this.CompleteModel = method;
-		
+		this.StepCount = this.CompleteModel.getStepCount(); 
 		//this.formCompleteModel = this.CompleteModel.getFormStructure();
 		//this.Presenter.ModelUpdate("GetMethod");
 		GWT.log("thus far A");
 		isLoaded = true;
-		//GWT.log(this.CompleteModel.getMethodDetails().getMethodID());
-		//this.methodModel.Update(this.CompleteModel.getMethodDetails().getFormStructure());
-		
-		
-		/*Test Code
-		//Iterator<iFormField> ind =this.CompleteModel.getMethodDetails().getFormStructure().getFormDetails().iterator();
-		//int x =0;
-		/*while(ind.hasNext())
-		{
-			iFormField item = ind.next();
-			
-			if(item.getWidgetReference()!=null)
-			{
-				FormWidget tmpWidg = item.getWidgetReference();
-				
-				GWT.log(x  + ":Name = " + tmpWidg.getWidgetName() + "Value=" + item.GetFieldValue());
-							//tmpWidg.addHandler(handler, type)
-				x++;
-				//allFormItems.add(tmpWidg);
-			}
-		}
-		*/
-		//this.subjectModel.Update(this.CompleteModel.getSubjectProperties().getFormStructure());
-		/*
-		if(this.CompleteModel.getStepCount() > 0)
-		{
-			
-			ArrayList<pojoStepDetails> tmpList = this.CompleteModel.getSteps();
-			Iterator<pojoStepDetails> i = tmpList.iterator();
-			//allSteps.RemoveStep(0);
-			while(i.hasNext())
-			{
-				pojoStepDetails tmpItem = i.next();
-				this.allSteps.AddNewStep();
-				this.allSteps.Update(tmpItem.getFormStructure());
-			}
-			
-			//this.subjectModel.Update(this.CompleteModel.getSubjectProperties().getFormStructure());/
-			
-		}
-		*/
 		
 		this.Presenter.ModelUpdate("GetMethod");
 		GWT.log("thus far");
@@ -227,8 +257,8 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 	}
 	@Override
 	public String getStringRpresentation(String Format) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return this.CompleteModel.writeOutput(Format);
 	}
 	
 	

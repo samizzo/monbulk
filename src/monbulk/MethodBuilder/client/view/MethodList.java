@@ -191,13 +191,29 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	 * 
 	 */
 	@Override
-	public void setActiveMenu(String activeItem) {
+	public final void setActiveMenu(String activeItem) {
 		int count = this._MenuStack.getRowCount();
 		int i=0;
+//		GWT.log("SetActiveMenu Called" + activeItem + count);
 		while(i<count)
 		{
-			MethodMenuItem tmpItem = (MethodMenuItem)this._MenuStack.getWidget(i, 0);
-			tmpItem.setActive(activeItem);
+			Label tmpItem = (Label)this._MenuStack.getWidget(i, 0);
+///			GWT.log("ItemFound:" + tmpItem.getText() + activeItem + tmpItem.getText().length() + activeItem.length());
+			//Not sure why == doesn't work...
+			if(tmpItem.getText().contains(activeItem)&& tmpItem.getText().length()==activeItem.length())
+			{
+				_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 2px #345484;font-weight:bold;color:#345484;");
+				_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;background-color:#345484;");
+				_MenuStack.getFlexCellFormatter().getElement(i, 2).setAttribute("style", "background-color:#345484;");
+				GWT.log("ItemFound:" + activeItem);
+			}
+			else
+			{
+				_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 1px #ccc;");
+				_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
+				_MenuStack.getFlexCellFormatter().getElement(i, 2).setAttribute("style", "");	
+			}
+			//tmpItem.setActive(activeItem);
 			i++;
 		}
 		
@@ -213,65 +229,61 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 		try
 		{
 			Iterator<pojoMethod> it = arrMethods.iterator();
-			
 			SearchWidget _SearchWidget = new SearchWidget(this);
-			
 			this._searchPanel.add(_SearchWidget.getHeaderWidget());
-			//this._MenuStack.setWidget(0,0,_SearchWidget.getHeaderWidget());
-			
 			int i=0;
+			
 			while(it.hasNext())
 			{
-				//What this should be is a 2d array with a string for the text and a string for the command to call
-				//this.addItem(new MenuItem());
-				
+				//Use of final to allow access to it in the clickHandlers
+				final int index = i;  //This keeps track of which item we are looking at
 				final pojoMethod tmpMethod = it.next();
-				//MenuCommand tmpCommand = new MenuCommand("Edit:" + tmpMethod.getMethodID(), eventBus);
-				//MenuItem tmpItem= new MenuItem(tmpMethod.getFieldVale(pojoMethod.MethodNameField),tmpCommand);
-				//
-				//tmpItem.setStyleName(this.PassiveClassName);
-				MethodMenuItem tmpItem = new MethodMenuItem(tmpMethod, i);
-				i++;
-				//this._MethodList.addItem(tmpItem);
-//				this._MenuStack.add(new HTML("Test"));
+			
 				
 				final Label titleLabel = new Label();
 				titleLabel.setText(tmpMethod.getMethodName());
 				titleLabel.addStyleName("menuMethodName");
-				
 				//titleLabel.setWidth("150px");
-				PushButton _clone = new PushButton();
 				
+				PushButton _clone = new PushButton();
 				_clone.setStyleName("btnCloneMethod");
+				_clone.addClickHandler(new ClickHandler()
+				{
+
+					@Override
+					public void onClick(ClickEvent event) {
+						setActiveMenu(titleLabel.getText());
+						eventBus.fireEvent(new DragEvent(titleLabel.getText(),"CloneMethod",index,(IPojo)tmpMethod));
+						
+					}
+					
+				});
 				
 				PushButton _edit = new PushButton();
-				
 				_edit.setStyleName("btnEditMethod");
-				final int index = i;
 				_edit.addClickHandler(new ClickHandler()
 				{
 
 					@Override
 					public void onClick(ClickEvent event) {
 						
+						//set selected style/should shuffle as well
+						setActiveMenu(titleLabel.getText());
 						eventBus.fireEvent(new DragEvent(titleLabel.getText(),"EditMethod",index,(IPojo)tmpMethod));
 						
 					}
 					
 				});
-				this._MenuStack.setWidget(i,0,tmpItem.asWidget());
+				
+				//this._MenuStack.setWidget(i,0,tmpItem.asWidget());
 				this._MenuStack.setWidget(i,0,titleLabel);
 				this._MenuStack.setWidget(i,1,_edit);
 				this._MenuStack.setWidget(i,2,_clone);
 				_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 1px #ccc;");
 				_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
+				i++;
 			}
-			//GWT.log("We added widgets: " + this._MenuStack.getWidgetCount());
-			//_MenuStack.getColumnFormatter().setWidth(0, "145px");
-			//_MenuStack.getColumnFormatter().setWidth(1, "22px");
-			//_MenuStack.getColumnFormatter().setWidth(2, "22px");
-			//_MenuStack.getFlexCellFormatter().setColSpan(0, 0, 3);
-			//_MenuStack.getFlexCellFormatter().getElement(0, 0).setAttribute("style", "padding-left:5px;");
+			
 			_MenuStack.setCellPadding(0);
 			_MenuStack.setCellSpacing(0);
 		}

@@ -33,7 +33,7 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 	@Override
 	public void LoadForm(FormBuilder someForm) {
 		super.LoadForm(someForm);
-		this.add(this.MetaDatatable);
+	//	this.add(this.MetaDatatable);
 	}
 	private int getListIndexForName(String Name)
 	{
@@ -90,7 +90,7 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 		
 		//this.MetaDataTable.setWidget(AddedRowIndex, 1, tmpWidget);
 		//this.MetaDataTable.add(tmpWidget);
-		AddedRowIndex ++;;
+		AddedRowIndex ++;
 		return true;
 	}
 }

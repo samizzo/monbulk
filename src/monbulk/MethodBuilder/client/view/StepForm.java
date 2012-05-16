@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 
@@ -48,16 +49,17 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 					// TODO Auto-generated method stub
 					if(event.getValue())
 					{
-						showStudyDetails();
+						//showStudyDetails();
+						Window.alert("Clicked");
 					}
 					else
 					{
-						hideStudyDetails();
+						Window.alert("Clicked");
 					}
 					//event.getValue();
 				}
 				
-			},null);
+			},ValueChangeEvent.getType());
 		}
 
 	}
@@ -69,14 +71,14 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 
 	private final void hideStudyDetails()
 	{
-		this.getFormWidgetForName(pojoStudy.DicomModalityField).disable();
-		this.getFormWidgetForName(pojoStudy.StudyTypeField).disable();
+		//this.getFormWidgetForName(pojoStudy.DicomModalityField).disable();
+		//this.getFormWidgetForName(pojoStudy.StudyTypeField).disable();
 		
 	}
 	private final void showStudyDetails()
 	{
-		this.getFormWidgetForName(pojoStudy.DicomModalityField).enable();
-		this.getFormWidgetForName(pojoStudy.StudyTypeField).enable();
+		//this.getFormWidgetForName(pojoStudy.DicomModalityField).enable();
+		//this.getFormWidgetForName(pojoStudy.StudyTypeField).enable();
 		
 	}
 
