@@ -472,4 +472,13 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			m_metadata.setDescription(m_description.getText());
 		}
 	}
+	
+	/**
+	 * Gives the name field focus and selects all text in the field.
+	 */
+	public void setNameFocus()
+	{
+		m_name.setFocus(true);
+		m_name.selectAll();
+	}
 }
