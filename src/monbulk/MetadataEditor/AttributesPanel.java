@@ -1,7 +1,5 @@
 package monbulk.MetadataEditor;
 
-import java.util.ArrayList;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -15,6 +13,11 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import monbulk.shared.Services.Metadata;
 import monbulk.shared.widgets.Window.OkCancelWindow.OkCancelHandler;
 import monbulk.client.desktop.Desktop;
+
+/*
+ * TODO: Tidy this up so it mirrors the metadata properties.  The editor
+ * should work with a clone of the attribute.
+ */
 
 public class AttributesPanel extends ElementPanel implements OkCancelHandler
 {
@@ -41,9 +44,11 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 		super.set(element);
 		m_attributes.clear();
 		
-		for (Metadata.Element e : element.getAttributes())
+		int numAttributes = element.getNumAttributes();
+		for (int i = 0; i < numAttributes; i++)
 		{
-			String name = e.getName();
+			Metadata.Element attribute = element.getAttribute(i);
+			String name = attribute.getName();
 			if (name.length() > 0)
 			{
 				m_attributes.addItem(name);
@@ -126,11 +131,11 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 	void onEditClicked(ClickEvent event)
 	{
 		int index = m_attributes.getSelectedIndex();
-		ArrayList<Metadata.Element> attributes = m_element.getAttributes();
-		if (index >= 0 && index < attributes.size()) 
+		int numAttributes = m_element.getNumAttributes();
+		if (index >= 0 && index < numAttributes) 
 		{
 			// Show the editor and set the element to edit.
-			Metadata.Element element = attributes.get(index);
+			Metadata.Element element = m_element.getAttribute(index);
 			showEditor(element, false);
 		}
 	}
@@ -139,13 +144,13 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 	void onRemoveClicked(ClickEvent event)
 	{
 		int index = m_attributes.getSelectedIndex();
-		ArrayList<Metadata.Element> attributes = m_element.getAttributes();
-		if (index >= 0 && index < attributes.size())
+		int numAttributes = m_element.getNumAttributes();
+		if (index >= 0 && index < numAttributes)
 		{
-			attributes.remove(index);
+			m_element.removeAttribute(index);
 			m_attributes.removeItem(index);
 			
-			index = index < attributes.size() ? index : (attributes.size() - 1);
+			index = index < numAttributes ? index : (numAttributes - 1);
 			if (index >= 0)
 			{
 				m_attributes.setSelectedIndex(index);
@@ -183,8 +188,6 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 		{
 			case Ok:
 			{
-				ArrayList<Metadata.Element> attributes = m_element.getAttributes();
-
 				if (m_addNewElement)
 				{
 					// Adding a new element, so add it to the list and the
@@ -193,7 +196,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 					if (name.length() > 0)
 					{
 						m_attributes.addItem(name);
-						attributes.add(m_editAttribute);
+						m_element.addAttribute(m_editAttribute);
 					}
 				}
 				else
@@ -202,8 +205,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 				 	{
 						// Editing an attribute and it changed type, so replace
 						// the old element with the new one.
-						int index = attributes.indexOf(m_editAttribute);
-						attributes.set(index, m_newAttribute);
+						m_element.replaceAttribute(m_editAttribute, m_newAttribute);
 						m_editAttribute = m_newAttribute;
 				 	}
 				 	

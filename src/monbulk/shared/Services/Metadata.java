@@ -316,35 +316,103 @@ public class Metadata
 			return m_parent;
 		}
 		
+		/**
+		 * Sets the parent of this element.  Adds itself to the parent.
+		 * @param parent
+		 */
 		public void setParent(DocumentElement parent)
 		{
 			m_parent = parent;
 			parent.m_children.add(this);
 		}
 		
+		/**
+		 * Sets the description of this element.
+		 * @param description
+		 */
 		public void setDescription(String description)
 		{
 			setSetting("description", description);
 		}
 		
+		/**
+		 * Returns the description of this element or empty string if none
+		 * has been set.
+		 * @return
+		 */
 		public String getDescription()
 		{
 			return getSetting("description", "");
 		}
 		
+		/**
+		 * Returns the name of this element or empty string if none
+		 * has been set.
+		 * @return
+		 */
 		public String getName()
 		{
 			return getSetting("name", "");
 		}
 
+		/**
+		 * Returns the type of this element.
+		 * @return
+		 */
 		public ElementTypes getType()
 		{
 			return m_type;
 		}
 		
-		public ArrayList<Element> getAttributes()
+		/**
+		 * Returns the number of attributes on this element.
+		 * @return
+		 */
+		public int getNumAttributes()
 		{
-			return m_attributes;
+			return m_attributes.size();
+		}
+
+		/**
+		 * Returns the specified attribute on this element.
+		 * @param index
+		 * @return
+		 */
+		public Element getAttribute(int index)
+		{
+			return m_attributes.get(index);
+		}
+		
+		/**
+		 * Removes the specified attribute from this element.
+		 * @param index
+		 */
+		public void removeAttribute(int index)
+		{
+			m_attributes.remove(index);
+		}
+		
+		/**
+		 * Adds a new attribute to this element.
+		 * @param attribute
+		 */
+		public void addAttribute(Element attribute)
+		{
+			m_attributes.add(attribute);
+		}
+		
+		/**
+		 * Replaces an attribute in this element.
+		 * @param oldAttribute
+		 * @param newAttribute
+		 */
+		public void replaceAttribute(Element oldAttribute, Element newAttribute)
+		{
+			int index = m_attributes.indexOf(oldAttribute);
+			if (index >= 0)
+			{
+				m_attributes.set(index, newAttribute);
+			}
 		}
 		
 		public boolean canHaveAttributes()
