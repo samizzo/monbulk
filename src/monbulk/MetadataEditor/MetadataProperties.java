@@ -29,13 +29,14 @@ import monbulk.shared.Services.Metadata.ElementTypes;
 import monbulk.shared.Services.MetadataService.GetMetadataHandler;
 import monbulk.shared.widgets.Window.OkCancelWindow.OkCancelHandler;
 import monbulk.shared.widgets.Window.WindowSettings;
+import monbulk.shared.widgets.TextBoxEx;
 
 public class MetadataProperties extends Composite implements SelectionHandler<TreeItem>, CommonElementPanel.ChangeTypeHandler, OkCancelHandler
 {
 	private static MetadataPropertiesUiBinder uiBinder = GWT.create(MetadataPropertiesUiBinder.class);
 	interface MetadataPropertiesUiBinder extends UiBinder<Widget, MetadataProperties> { }
 
-	@UiField TextBox m_name;
+	@UiField TextBoxEx m_name;
 	@UiField TextBox m_label;
 	@UiField TextBox m_description;
 	@UiField Tree m_elementsTree;
@@ -56,12 +57,16 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		initWidget(uiBinder.createAndBindUi(this));
 		m_elementsTree.addSelectionHandler(this);
 
+		// Register our own element editor window.
 		m_elementEditor = new ElementEditor();
 		m_elementEditor.setChangeTypeHandler(this);
 		WindowSettings w = m_elementEditor.getWindowSettings();
 		w.windowId = "ElementEditor-Main";
 		w.windowTitle = "Element";
 		Desktop.get().registerWindow(m_elementEditor);
+
+		// Only allow upper and lower letters, full stop, and hyphen.
+		m_name.setValidCharRegex("[a-zA-Z.-]");
 	}
 
 	/**
