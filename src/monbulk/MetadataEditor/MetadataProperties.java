@@ -142,7 +142,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_name.setText(metadata.getName());
 		m_label.setText(metadata.getLabel());
 		m_description.setText(metadata.getDescription());
-		populateElementTree(null, metadata.getElements(), null);
+		populateElementTree(null, metadata.getRootElement(), null);
 		if (m_elementsTree.getItemCount() > 0)
 		{
 			// Select the first item in the tree automatically.
@@ -189,11 +189,11 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		}
 	}
 	
-	private TreeItem populateElementTree(TreeItem root, ArrayList<Metadata.Element> elements, Metadata.Element searchElement)
+	private TreeItem populateElementTree(TreeItem root, Metadata.DocumentElement rootElement, Metadata.Element searchElement)
 	{
 		TreeItem result = null;
 
-		for (Metadata.Element e : elements)
+		for (Metadata.Element e : rootElement.getChildren())
 		{
 			if (e.getType().isVisible())
 			{
@@ -203,7 +203,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 				if (e instanceof Metadata.DocumentElement)
 				{
 					Metadata.DocumentElement doc = (Metadata.DocumentElement)e;
-					TreeItem r = populateElementTree(treeItem, doc.getChildren(), searchElement);
+					TreeItem r = populateElementTree(treeItem, doc, searchElement);
 					result = r != null ? r : result;
 				}
 	
@@ -227,16 +227,13 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			Metadata.Element selectedElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
 			
 			// If there is a selected element and it's a document element pull it out.
-			Metadata.DocumentElement docElement = selectedElement != null && selectedElement.getType() == ElementTypes.Document ? (Metadata.DocumentElement)selectedElement : null;
+			boolean selectedIsDoc = selectedElement != null && selectedElement.getType() == ElementTypes.Document;
+			Metadata.DocumentElement docElement = selectedIsDoc ? (Metadata.DocumentElement)selectedElement : m_metadata.getRootElement();
 			newElement.setParent(docElement);
-
-			// If there is a doc element, add the new element to it, otherwise add
-			// it to the metadata.
-			ArrayList<Metadata.Element> elements = docElement != null ? docElement.getChildren() : m_metadata.getElements();
-			elements.add(newElement);
+			docElement.getChildren().add(newElement);
 
 			// If the selected item is a doc element then use it as the parent. 
-			TreeItem parentTreeItem = docElement != null ? m_selectedElement : null;
+			TreeItem parentTreeItem = selectedIsDoc ? m_selectedElement : null;
 
 			// Add a new tree item and select it.
 			TreeItem newTreeItem = createTreeItem(newElement.getName(), newElement, parentTreeItem);
@@ -258,12 +255,10 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	@UiHandler("m_removeElement")
 	public void onRemoveElementClicked(ClickEvent event)
 	{
+		// Remove the element.
 		Metadata.Element element = (Metadata.Element)m_selectedElement.getUserObject();
 		Metadata.DocumentElement parent = element.getParent();
-
-		// Remove from the metadata object itself, or the parent.
-		ArrayList<Metadata.Element> elements = parent == null ? m_metadata.getElements() : parent.getChildren();
-		elements.remove(element);
+		parent.getChildren().remove(element);
 
 		// Find the index of the item we are removing.
 		TreeItem parentItem = m_selectedElement.getParentItem();
@@ -438,7 +433,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 		// Remove old element and insert new element at same position.
 		Metadata.DocumentElement docParent = oldElement.getParent();
-		ArrayList<Metadata.Element> elements = docParent == null ? m_metadata.getElements() : docParent.getChildren();
+		ArrayList<Metadata.Element> elements = docParent.getChildren();
 		
 		int index = elements.indexOf(oldElement);
 		elements.set(index, newElement);

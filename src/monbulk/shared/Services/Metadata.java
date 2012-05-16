@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import monbulk.shared.util.XmlHelper;
 import arc.mf.client.xml.*;
+
 import com.google.gwt.core.client.GWT;
 
 public class Metadata
@@ -515,6 +516,8 @@ public class Metadata
 		
 		public void addXml(XmlStringWriter w)
 		{
+			super.addXml(w);
+
 			if (getIsReference())
 			{
 				// Add reference info.
@@ -641,7 +644,7 @@ public class Metadata
 		}
 	}
 	
-	private ArrayList<Element> m_elements = new ArrayList<Element>();
+	private DocumentElement m_rootElement = new DocumentElement("root", "root");
 	private String m_name;
 	private String m_description;
 	private String m_label;
@@ -683,15 +686,48 @@ public class Metadata
 		return m_label;
 	}
 	
-	public ArrayList<Element> getElements()
+	public DocumentElement getRootElement()
 	{
-		return m_elements;
+		return m_rootElement;
+	}
+	
+	/**
+	 * Create a new metadata object from the specified MF xml definition.
+	 * @param element
+	 * @return
+	 * @throws Exception
+	 */
+	public static Metadata create(XmlElement element) throws Exception
+	{
+		XmlElement type = element.element("type");
+		Metadata metadata = new Metadata(type.value("@name"), type.value("description"), type.value("label"));
+		parseMetadata(metadata.getRootElement(), type.elements("definition/element"));
+		return metadata;
+	}
+	
+	private static void parseMetadata(Metadata.DocumentElement parent, List<XmlElement> xmlElements) throws Exception
+	{
+		if (xmlElements == null)
+		{
+			return;
+		}
+
+		for (XmlElement e : xmlElements)
+		{
+			Metadata.Element element = Metadata.createElement(e);
+			element.setParent(parent);
+			parent.getChildren().add(element);
+			if (element instanceof Metadata.DocumentElement)
+			{
+				Metadata.DocumentElement docElement = (Metadata.DocumentElement)element;
+				parseMetadata(docElement, e.elements("element"));
+			}
+		}
 	}
 	
 	public String getXml()
 	{
 		XmlStringWriter x = new XmlStringWriter();
-		x.setAddCarriageReturnAfterElement(true);
 		x.add("type", m_name);
 
 		if (m_label != null && m_label.length() > 0)
@@ -705,7 +741,7 @@ public class Metadata
 		}
 		
 		x.push("definition");
-		for (Element e : m_elements)
+		for (Element e : m_rootElement.getChildren())
 		{
 			e.addXml(x);
 

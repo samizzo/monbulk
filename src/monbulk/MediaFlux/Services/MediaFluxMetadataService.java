@@ -82,7 +82,7 @@ public class MediaFluxMetadataService extends MetadataService
 				// Read a specific metadata entry.
 				GetMetadataHandler handler = (GetMetadataHandler)m_handler;
 
-				Metadata metadata = MediaFluxMetadataAdapter.createMetadata(xe);
+				Metadata metadata = Metadata.create(xe);
 				handler.onGetMetadata(metadata);
 			}
 			else if (m_handler instanceof MetadataExistsHandler)

@@ -95,14 +95,16 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 					final String oldName = m_metadataList.getSelectedMetadataName();
 					final String newName = metadata.getName();
 					
-					// If the metadata name hasn't changed or it's a new metadta we can update immediately.
-					if (oldName == null || oldName.length() == 0 || oldName.equals(newName))
+					boolean nameIsSame = oldName.equals(newName);
+					if (oldName.length() == 0 || nameIsSame)
 					{
-						updateMetadata(metadata);
+						// If the metadata name hasn't changed or it's a new metadata
+						// we can update immediately.
+						updateMetadata(metadata, !nameIsSame);
 					}
 					else
 					{
-						// The name has changed, so we need to rename before
+						// The name has changed so we need to rename before
 						// updating.  First check if the new name already exists.
 						service.metadataExists(newName, new MetadataExistsHandler()
 						{
@@ -121,7 +123,7 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 									{
 										public void onRenameMetadata()
 										{
-											updateMetadata(metadata);
+											updateMetadata(metadata, true);
 										}
 									});
 								}
@@ -133,7 +135,7 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 		});
 	}
 	
-	private void updateMetadata(final Metadata metadata)
+	private void updateMetadata(final Metadata metadata, final boolean refresh)
 	{
 		MetadataService service = MetadataService.get();
 		service.updateMetadata(metadata, new UpdateMetadataHandler()
@@ -141,7 +143,10 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 			public void onUpdateMetadata(Metadata m)
 			{
 				// Refresh the list so it has the new name.
-				m_metadataList.refresh(m.getName());
+				if (refresh)
+				{
+					m_metadataList.refresh(m.getName());
+				}
 			}
 		});
 	}
