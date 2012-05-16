@@ -230,7 +230,6 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			boolean selectedIsDoc = selectedElement != null && selectedElement.getType() == ElementTypes.Document;
 			Metadata.DocumentElement docElement = selectedIsDoc ? (Metadata.DocumentElement)selectedElement : m_metadata.getRootElement();
 			newElement.setParent(docElement);
-			docElement.getChildren().add(newElement);
 
 			// If the selected item is a doc element then use it as the parent. 
 			TreeItem parentTreeItem = selectedIsDoc ? m_selectedElement : null;
@@ -374,7 +373,6 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			// Create new element from old.
 			Metadata.ElementTypes t = Metadata.ElementTypes.valueOf(newType);
 			Metadata.Element newElement = Metadata.createElement(t.getMetaName(), element.getName(), element.getDescription(), false);
-			newElement.setParent(element.getParent());
 			m_elementEditor.setMetadataElement(newElement);
 		}
 		catch (Exception e)
@@ -431,34 +429,20 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		Metadata.Element oldElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
 		Metadata.Element newElement = m_elementEditor.getMetadataElement();
 
-		// Remove old element and insert new element at same position.
+		// Replace old element with new element in parent.
 		Metadata.DocumentElement docParent = oldElement.getParent();
-		ArrayList<Metadata.Element> elements = docParent.getChildren();
-		
-		int index = elements.indexOf(oldElement);
-		elements.set(index, newElement);
 
-		// Refresh the tree of elements by removing the old
-		// element and inserting the new one.
-		TreeItem parent = m_selectedElement.getParentItem();
-		index = parent != null ? parent.getChildIndex(m_selectedElement) : getTreeItemIndex(m_selectedElement);
+		docParent.replaceChild(oldElement, newElement);
+
+		m_selectedElement.setUserObject(newElement);
+		m_selectedElement.setText(newElement.getName());
+		m_elementsTree.setSelectedItem(m_selectedElement, true);
 		
-		if (index >= 0)
+		if (oldElement instanceof Metadata.DocumentElement && !(newElement instanceof Metadata.DocumentElement))
 		{
-			TreeItem newItem = createTreeItem(newElement.getName(), newElement, parent);
-
-			if (parent != null)
-			{
-				parent.removeItem(m_selectedElement);
-				parent.insertItem(index, newItem);
-			}
-			else
-			{
-				m_elementsTree.removeItem(m_selectedElement);
-				m_elementsTree.insertItem(index, newItem);
-			}
-
-			m_elementsTree.setSelectedItem(newItem, true);
+			// Old element was a document and new one isn't.  Remove all
+			// tree children that exist.
+			m_selectedElement.removeItems();
 		}
 	}
 	

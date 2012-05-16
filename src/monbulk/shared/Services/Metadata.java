@@ -271,9 +271,10 @@ public class Metadata
 			return m_parent;
 		}
 		
-		public void setParent(DocumentElement element)
+		public void setParent(DocumentElement parent)
 		{
-			m_parent = element;
+			m_parent = parent;
+			parent.m_children.add(this);
 		}
 		
 		public void setDescription(String description)
@@ -424,7 +425,9 @@ public class Metadata
 			
 			for (Element e : element.m_children)
 			{
-				m_children.add(e.clone());
+				Element child = e.clone();
+				m_children.add(child);
+				child.m_parent = this;
 			}
 
 			m_isReference = element.m_isReference;
@@ -441,6 +444,37 @@ public class Metadata
 		public ArrayList<Element> getChildren()
 		{
 			return m_children;
+		}
+		
+		public void replaceChild(Element oldElement, Element newElement)
+		{
+			int index = m_children.indexOf(oldElement);
+			if (index >= 0)
+			{
+				m_children.set(index, newElement);
+				newElement.m_parent = this;
+			}
+		}
+		
+		public int getNumChildren()
+		{
+			return m_children.size();
+		}
+		
+		public Element getChild(int index)
+		{
+			return m_children.get(index);
+		}
+		
+		public void addChild(Element element)
+		{
+			element.m_parent = this;
+			m_children.add(element);
+		}
+		
+		public void removeChild(Element element)
+		{
+			m_children.remove(element);
 		}
 		
 		public boolean canHaveAttributes()
@@ -716,7 +750,6 @@ public class Metadata
 		{
 			Metadata.Element element = Metadata.createElement(e);
 			element.setParent(parent);
-			parent.getChildren().add(element);
 			if (element instanceof Metadata.DocumentElement)
 			{
 				Metadata.DocumentElement docElement = (Metadata.DocumentElement)element;
