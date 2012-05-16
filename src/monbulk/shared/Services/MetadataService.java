@@ -89,7 +89,7 @@ public abstract class MetadataService implements iService
 
 	public interface UpdateMetadataHandler
 	{
-		public void onUpdateMetadata(Metadata metadata, boolean success);
+		public void onUpdateMetadata(Metadata metadata);
 	}
 
 	/**
@@ -101,7 +101,7 @@ public abstract class MetadataService implements iService
 
 	public interface RenameMetadataHandler
 	{
-		public void onRenameMetadata(boolean success);
+		public void onRenameMetadata();
 	}
 
 	/**

@@ -2,6 +2,7 @@ package monbulk.MetadataEditor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.ResizeComposite;
@@ -82,42 +83,50 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 				final MetadataService service = MetadataService.get();
 				if (service != null)
 				{
-					String oldName = m_metadataList.getSelectedMetadataName();
+					final String oldName = m_metadataList.getSelectedMetadataName();
 					final String newName = metadata.getName();
-					if (!oldName.equals(newName))
+					
+					// If the metadata name hasn't changed we can update immediately.
+					if (oldName.equals(newName))
 					{
-						// Metadata name has changed so rename it first before updating.
-						service.renameMetadata(oldName, newName, new RenameMetadataHandler()
+						service.updateMetadata(metadata, null);
+					}
+					else
+					{
+						// The name has changed, so we need to rename before
+						// updating.  First check if the new name already exists.
+						service.metadataExists(newName, new MetadataExistsHandler()
 						{
-							public void onRenameMetadata(boolean success)
+							public void onMetadataExists(String metadataName, boolean exists)
 							{
-								GWT.log("renamed metadata: " + success);
-
-								if (success)
+								if (exists)
 								{
-									// We can now update the metadata.
-									service.updateMetadata(metadata, new UpdateMetadataHandler()
+									// New metadata name already exists, so don't allow the user to save yet.
+									Window.alert("A metadata with the name '" + metadataName + "' already exists.  Please use a different name.");
+									m_metadataProperties.setNameFocus();
+								}
+								else
+								{
+									// New name doesn't exist so rename the metadata.
+									service.renameMetadata(oldName, newName, new RenameMetadataHandler()
 									{
-										public void onUpdateMetadata(Metadata metadata, boolean success)
+										public void onRenameMetadata()
 										{
-											GWT.log("updated metadata: " + success);
-
-											// Refresh the list so it has the new name.
-											m_metadataList.refresh(newName);
+											// We can now update the metadata.
+											service.updateMetadata(metadata, new UpdateMetadataHandler()
+											{
+												public void onUpdateMetadata(Metadata metadata)
+												{
+													// Refresh the list so it has the new name.
+													m_metadataList.refresh(newName);
+												}
+											});
 										}
 									});
 								}
 							}
 						});
 					}
-
-					service.updateMetadata(metadata, new UpdateMetadataHandler()
-					{
-						public void onUpdateMetadata(Metadata metadata, boolean success)
-						{
-							GWT.log("updated metadata: " + success);
-						}
-					});
 				}
 			}
 		});

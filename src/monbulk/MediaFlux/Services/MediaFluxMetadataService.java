@@ -114,12 +114,12 @@ public class MediaFluxMetadataService extends MetadataService
 			else if (m_handler instanceof UpdateMetadataHandler)
 			{
 				UpdateMetadataHandler handler = (UpdateMetadataHandler)m_handler;
-				handler.onUpdateMetadata(m_metadata, true);
+				handler.onUpdateMetadata(m_metadata);
 			}
 			else if (m_handler instanceof RenameMetadataHandler)
 			{
 				RenameMetadataHandler handler = (RenameMetadataHandler)m_handler;
-				handler.onRenameMetadata(true);
+				handler.onRenameMetadata();
 			}
 			else
 			{
