@@ -18,6 +18,11 @@ public class ElementEditor extends OkCancelWindow
 		m_contentPanel.add(m_elementProperties);
 	}
 	
+	public void updateCurrentElement()
+	{
+		m_elementProperties.updateCurrentElement();
+	}
+	
 	public void setReadOnly(boolean readOnly)
 	{
 		m_elementProperties.setReadOnly(readOnly);
