@@ -1,14 +1,23 @@
 package monbulk.shared.Model.pojo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 
+import monbulk.shared.Form.ButtonField;
+import monbulk.shared.Form.DictionaryFormField;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Form.FormField;
+import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.IPojo;
+import monbulk.shared.Services.Dictionary;
+import monbulk.shared.Services.Dictionary.Entry;
+import monbulk.shared.Services.DictionaryService;
+import monbulk.shared.Services.DictionaryService.GetDictionaryHandler;
+import monbulk.shared.util.GWTLogger;
 import monbulk.shared.util.HtmlFormatter;
 
 public class pojoStepDetails implements IPojo{
@@ -25,12 +34,15 @@ public class pojoStepDetails implements IPojo{
 	public  static final String FormName = "STEP_DETAILS";
 	public static final String StepNameField = "Title";
 	public static final String StepDescriptionField = "Description";
-	public static final String HasStudyField = "HasStudy";
+	public static final String HasStudyField = "Has Study?";
 	public static final String FormIndexField = "StepIndex";
+	public static final String StepMetaDataField = "Step MetaData";
+	public static final String SubjectMetaDataField = "Subject MetaData";
 	
 	private FormBuilder StepDetailsForm;
 	public pojoStepDetails(int Index)
 	{
+		
 		this.FormIndex = Index;
 		this.relatedStudy = new pojoStudy();
 		StepDetailsForm = new FormBuilder();
@@ -123,21 +135,36 @@ public class pojoStepDetails implements IPojo{
 		{
 			StepDetailsForm.AddItem(HasStudyField, "Boolean",this.hasStudy); 
 		}
+				//StepDetailsForm.AddListItem(pojoStudy.DicomModalityField, new ArrayList<String>(), "Loading");
+		 
+		GWTLogger.Log("Running @ pojoStepDetails.getFormStructure:", "pojoStepDetails", "getFormStructure", "140");
 		
-		//StepDetailsForm.MergeForm(this.relatedStudy.getFormStructure());
+		StepDetailsForm.AddItem(new DictionaryFormField(pojoStudy.DicomModalityField,pojoStudy.DICOM_DICTIONARY));
+		GWTLogger.Log("Running @ pojoStepDetails.getFormStructure:", "pojoStepDetails", "getFormStructure", "143");
 		
-		/*Iterator<pojoMetaData> i = this.attachedMetaData.iterator();
-		while(i.hasNext())
+		StepDetailsForm.AddItem(new DictionaryFormField(pojoStudy.StudyTypeField,pojoStudy.STUDYTYPE_DICTIONARY));
+		GWTLogger.Log("Running @ pojoStepDetails.getFormStructure:", "pojoStepDetails", "getFormStructure", "146");
+		
+		
+		StepDetailsForm.AddItem(new ButtonField(this.SubjectMetaDataField,"Add MetaData"));
+		GWTLogger.Log("Running @ pojoStepDetails.getFormStructure:", "pojoStepDetails", "getFormStructure", "150");
+		if(this.attachedMetaData.size() > 0)
 		{
-			pojoMetaData tmpItem = i.next();
-			StepDetailsForm.MergeForm(tmpItem.getFormStructure());
-		}*/
+			
+		}
+		
+		StepDetailsForm.AddItem(new ButtonField(pojoStudy.STUDY_METADATA,"Add MetaData"));
+		GWTLogger.Log("Running @ pojoStepDetails.getFormStructure:", "pojoStepDetails", "getFormStructure", "157");
+		if(this.relatedStudy.getMetaDataList().size()>0)
+		{
+			
+		}
 		
 		return StepDetailsForm;
 		}
 		catch(Exception ex)
 		{
-			GWT.log("Error @ pojoStepDetails.getFormStructure:" + ex.getMessage());
+			GWTLogger.Log("Error @ pojoStepDetails.getFormStructure:" + ex.getMessage(), "pojoStepDetails", "getFormStructure", "167");
 		}
 		return StepDetailsForm;
 	}

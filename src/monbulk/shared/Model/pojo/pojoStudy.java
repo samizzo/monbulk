@@ -13,9 +13,12 @@ public class pojoStudy implements IPojo {
 	private pojoDictionary DicomModality;
 	private pojoDictionary StudyType;
 	
-	public static final String StudyTypeField = "StudyType";
-	public static final String DicomModalityField = "DicomModality";
-	public static final String FormName = "StudyDetails";
+	public static final String StudyTypeField = "Study Type";
+	public static final String DicomModalityField = "Dicom Modality";
+	public static final String FormName = "Study Details";
+	public static final String DICOM_DICTIONARY = "pssd.dicom.modality";
+	public static final String STUDYTYPE_DICTIONARY = "pssd.study.types";
+	public static final String STUDY_METADATA= "Study MetaData";
 	
 	public pojoStudy()
 	{
@@ -34,7 +37,10 @@ public class pojoStudy implements IPojo {
 		// TODO Auto-generated method stub
 		
 	}
-	
+	public ArrayList<pojoMetaData> getMetaDataList()
+	{
+		return attachedMetaData;
+	}
 	@Override
 	public FormBuilder getFormStructure() {
 		
