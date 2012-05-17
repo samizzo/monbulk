@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Button;
@@ -12,7 +13,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 
 import monbulk.shared.Services.Metadata;
 import monbulk.shared.widgets.Window.WindowSettings;
-import monbulk.shared.widgets.Window.OkCancelWindow.OkCancelHandler;
+import monbulk.shared.widgets.Window.OkCancelWindow.*;
 import monbulk.client.desktop.Desktop;
 
 /*
@@ -20,7 +21,7 @@ import monbulk.client.desktop.Desktop;
  * should work with a clone of the attribute.
  */
 
-public class AttributesPanel extends ElementPanel implements OkCancelHandler, CommonElementPanel.ChangeTypeHandler
+public class AttributesPanel extends ElementPanel implements OkCancelHandler, CommonElementPanel.ChangeTypeHandler, ValidateHandler
 {
 	private static AttributesPanelUiBinder uiBinder = GWT.create(AttributesPanelUiBinder.class);
 	interface AttributesPanelUiBinder extends UiBinder<Widget, AttributesPanel> { }
@@ -43,6 +44,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler, Co
 		// Register our own element editor window.
 		m_elementEditor = new ElementEditor(false);
 		m_elementEditor.setChangeTypeHandler(this);
+		m_elementEditor.setValidateHandler(this);
 		WindowSettings w = m_elementEditor.getWindowSettings();
 		w.windowId = "ElementEditor-Attributes";
 		w.windowTitle = "Attribute";
@@ -234,5 +236,25 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler, Co
 			GWT.log(e.toString());
 			return;
 		}
+	}
+	
+	public boolean validate()
+	{
+		// If the new attribute already exists in the attribute list,
+		// show the user an error message and don't let them continue.
+		String newAttribute = m_elementEditor.getName();
+		int numAttributes = m_attributes.getItemCount();
+		for (int i = 0; i < numAttributes; i++)
+		{
+			String attr = m_attributes.getItemText(i);
+			if ((i != m_attributes.getSelectedIndex() || m_addNewElement) && attr.equalsIgnoreCase(newAttribute))
+			{
+				Window.alert("There is already an attribute with the name '" + attr + "'.  Please enter a new name.");
+				m_elementEditor.setNameFocus();
+				return false;
+			}
+		}
+		
+		return true;
 	}
 }

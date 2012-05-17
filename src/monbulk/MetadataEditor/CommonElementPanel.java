@@ -46,6 +46,12 @@ public class CommonElementPanel extends ElementPanel
 		initWidget(w);
 	}
 	
+	public void setNameFocus()
+	{
+		m_name.setFocus(true);
+		m_name.selectAll();
+	}
+	
 	public void addNameKeyUpHandler(KeyUpHandler handler)
 	{
 		m_name.addKeyUpHandler(handler);

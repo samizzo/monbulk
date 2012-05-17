@@ -41,9 +41,19 @@ public class ElementEditor extends OkCancelWindow
 		m_elementProperties.updateCurrentElement();
 	}
 	
+	public String getName()
+	{
+		return m_elementProperties.getName();
+	}
+	
 	public void setReadOnly(boolean readOnly)
 	{
 		m_elementProperties.setReadOnly(readOnly);
+	}
+	
+	public void setNameFocus()
+	{
+		m_elementProperties.setNameFocus();
 	}
 
 	public void setChangeTypeHandler(CommonElementPanel.ChangeTypeHandler handler)

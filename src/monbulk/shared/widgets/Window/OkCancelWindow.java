@@ -31,19 +31,23 @@ public class OkCancelWindow extends Composite implements IWindow, IWindow.HideHa
 		
 		public abstract void onOkCancelClicked(Event eventType);
 	};
-	
-	public interface CancelHandler
+
+	/**
+	 * Validation handler.Validates data in this dialog box.  This callback is
+	 * called when 'ok' is pressed.  If it returns false the window will not
+	 * be hidden.  
+	 */
+	public interface ValidateHandler
 	{
-		public abstract void onCancelClicked();
+		public abstract boolean validate();
 	};
 	
 	protected @UiField Button m_ok;
 	protected @UiField Button m_cancel;
 	protected @UiField HTMLPanel m_contentPanel;
-	
-	private OkCancelHandler m_okCancelHandler;
-
 	protected WindowSettings m_windowSettings;
+	private OkCancelHandler m_okCancelHandler;
+	private ValidateHandler m_validateHandler;
 	
 	/**
 	 * Constructs a new OkCancelWindow with the specified window id
@@ -100,11 +104,23 @@ public class OkCancelWindow extends Composite implements IWindow, IWindow.HideHa
 		m_okCancelHandler = handler;
 	}
 	
+	/**
+	 * Sets the ValidateHandler.
+	 * @param handler
+	 */
+	public void setValidateHandler(ValidateHandler handler)
+	{
+		m_validateHandler = handler;
+	}
+	
 	@UiHandler("m_ok")
 	protected void onOkClicked(ClickEvent event)
 	{
-		onOk();
-		hide(OkCancelHandler.Event.Ok);
+		if (m_validateHandler == null || m_validateHandler.validate())
+		{
+			onOk();
+			hide(OkCancelHandler.Event.Ok);
+		}
 	}
 
 	@UiHandler("m_cancel")
