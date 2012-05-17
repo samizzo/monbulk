@@ -2,6 +2,7 @@ package monbulk.MetadataEditor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
@@ -46,7 +47,8 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	@UiField CaptionPanel m_elements;
 	@UiField Label m_elementType;
 	@UiField Label m_elementDescription;
-
+	@UiField Button m_MethodSelect;
+	
 	private TreeItem m_selectedElement = null;
 	private Metadata m_metadata = null;
 	private ElementEditor m_elementEditor;
@@ -475,36 +477,22 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_name.setFocus(true);
 		m_name.selectAll();
 	}
-	
-	public boolean validate()
+	/**
+	 * By Andrew Glenn
+	 * For Integration with MethodBuilder
+	 * @param event
+	 */
+	/**
+	 * Adds a handler to the save button.
+	 * @param event
+	 */
+	public void addSaveHandler(ClickHandler handler)
 	{
-		// If there is already an element with the same name
-		// as the element we are editing, show the user an
-		// error message and don't let them continue.
-
-		// First update the current element so it reflects the ui.
-		// Note: we can do this because we work with a clone, so
-		// updating here won't cause any changes to be committed.
-		m_elementEditor.updateCurrentElement();
-
-		Metadata.Element oldElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
-		Metadata.Element newElement = m_elementEditor.getMetadataElement();
-		String newName = newElement.getName();
-		Metadata.DocumentElement parent = oldElement.getParent();
-		
-		// Check the parent's children for any similarly named elements.
-		int numChildren = parent.getNumChildren();
-		for (int i = 0; i < numChildren; i++)
-		{
-			Metadata.Element child = parent.getChild(i);
-			if (child != oldElement && child.getName().equalsIgnoreCase(newName))
-			{
-				Window.alert("There is already an element with the name '" + newName + "'.  Please enter a new name.");
-				m_elementEditor.setNameFocus();
-				return false;
-			}
-		}
-
-		return true;
+		this.m_MethodSelect.addClickHandler(handler);
+	}
+	
+	public void enableMethodSelect(Boolean enable)
+	{
+		this.m_MethodSelect.setVisible(enable);
 	}
 }
