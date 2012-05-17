@@ -50,7 +50,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	private TreeItem m_selectedElement = null;
 	private Metadata m_metadata = null;
 	private ElementEditor m_elementEditor;
-	private Button test_me;
+	
 	public MetadataProperties() throws Exception
 	{
 		initWidget(uiBinder.createAndBindUi(this));
