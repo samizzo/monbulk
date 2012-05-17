@@ -19,6 +19,8 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 import monbulk.MetadataEditor.MetadataList;
+import monbulk.MethodBuilder.client.PreviewWindow;
+import monbulk.MethodBuilder.client.PreviewWindow.SupportedFormats;
 import monbulk.MethodBuilder.client.event.ChangeWindowEvent;
 import monbulk.MethodBuilder.client.event.ChangeWindowEventHandler;
 import monbulk.MethodBuilder.client.model.MethodCompleteModel;
@@ -32,6 +34,7 @@ import monbulk.MethodBuilder.client.view.MethodForm;
 import monbulk.MethodBuilder.client.view.StepForm;
 import monbulk.MethodBuilder.client.view.SubjectPropertiesForm;
 import monbulk.MethodBuilder.client.view.metaDataListIntegrated;
+import monbulk.client.desktop.Desktop;
 import monbulk.client.event.WindowEvent;
 import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Architecture.IView;
@@ -52,13 +55,14 @@ import monbulk.shared.Services.MethodService.MethodServiceHandler;
 import monbulk.shared.Services.ServiceRegistry;
 import monbulk.shared.util.HtmlFormatter;
 import monbulk.shared.util.MonbulkEnums;
+import monbulk.shared.widgets.Window.OkCancelWindow.OkCancelHandler;
 import monbulk.shared.widgets.Window.appletWindow;
 import monbulk.MethodBuilder.shared.IMethodsView;
 import monbulk.MethodBuilder.shared.iMBModel;
 
 ///I think we can change this just to a view state with a main model that can be queried on each state
 
-public class MethodCreatorPresenter implements FormPresenter{
+public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 
 	private int countLoads;
 	//private IView vwMethodCreator;
@@ -71,6 +75,9 @@ public class MethodCreatorPresenter implements FormPresenter{
 	public enum MethodCreatorStates{
 		METHOD_DETAILS,SUBJECT_PROPERTIES,STEP_DETAILS,COMPLETE, INIT
 	};
+	public enum SupportedMethodCommands{
+		NEW,EDIT,NEXT,PREV,ADD_STEP,REMOVE_STEP,PREVIEW,SAVE,PUBLISH,DELETE_METHOD,CANCEL,EXPAND
+	}
 	
 	public final HashMap<String,MethodCreatorStates> stateSelector;
 	public final HashMap<MethodCreatorStates,IFormView> _AllStates;
@@ -90,6 +97,10 @@ public class MethodCreatorPresenter implements FormPresenter{
 		Construct("");
 	
 	}
+	/**
+	 * Generalised constructor
+	 * @param ID
+	 */
 	public void Construct(String ID)
 	{	
 		//METHOD_DETAILS,SUBJECT_PROPERTIES,STEP_DETAILS,COMPLETE, INIT
@@ -99,8 +110,10 @@ public class MethodCreatorPresenter implements FormPresenter{
 		stateSelector.put("COMPLETE", MethodCreatorStates.COMPLETE);
 		stateSelector.put("INIT", MethodCreatorStates.INIT);
 		this.ImplementedMethodView = new MethodDetailsView();		
-		this.ImplementedDockView = new metaDataListIntegrated();		
-		this.ImplementedDockView.setPresenter(this);
+		
+		//Not supported
+		//this.ImplementedDockView = new metaDataListIntegrated();		
+		//this.ImplementedDockView.setPresenter(this);
 		countLoads = 0;
 		//AllStates = new ArrayList<PresenterState>();
 		//tclBox = new appletWindow("TCL Viewer", "TCLViewer", this.eventBus, null);
@@ -147,7 +160,10 @@ public class MethodCreatorPresenter implements FormPresenter{
 		
 		
 	}
-	//TODO May be redundant code here - CLEAN UP!
+	/**
+	 * 
+	 * @param newState
+	 */
 	private void ChangeState(MethodCreatorStates newState)
 	{
 			if(this.CurrentState != null)
@@ -226,24 +242,29 @@ public class MethodCreatorPresenter implements FormPresenter{
 	{
 		this.tclBox.hide();
 	}
+	/**
+	 * go(HasWidgets Container) - loads a single panel
+	 */
 	@Override
 	public void go(HasWidgets container) {
 		// TODO Auto-generated method stub
-		//container.add(this.vwMethodCreator.asWidget());
+		container.add(this.ImplementedMethodView.asWidget());
 	}
 
+	/**
+	 * Loads two panels
+	 * NB: Dock Panel not currently supported
+	 * This is called by a parent class which loads panels into a layout 
+	 */
 	@Override
 	public void go(HasWidgets bodyContainer, HasWidgets dockContainer) {
 		// TODO Auto-generated method stub
-		//dockContainer.add(this.vwDockPanel.asWidget());
-		//this.DockedContainer = Dock;
-		//this.BodyContainer= Body;
 		
-		dockContainer.add(this.ImplementedDockView.asWidget());
+		//Dock container not supported
+		//dockContainer.add(this.ImplementedDockView.asWidget());
 		bodyContainer.add(this.ImplementedMethodView.asWidget());
-		//bodyContainer.add(w) Add the stack Panel Navigation
-		//Creates the New Body Container
-		//bodyContainer.add(w)
+
+		//Load initial state
 		this.CurrentState = MethodCreatorStates.INIT;
 		this.ChangeState(MethodCreatorStates.METHOD_DETAILS);
 		
@@ -367,10 +388,10 @@ public class MethodCreatorPresenter implements FormPresenter{
 			tclBox.clear();
 			
 			HTML tclText = new HTML();
-			String strTCL = "";
-			strTCL = strTCL + HtmlFormatter.GetHTMLUtilityScript("TCL");
+			StringBuilder strTCL = new StringBuilder();
+			strTCL = strTCL.append(HtmlFormatter.GetHTMLUtilityScript("TCL"));
 			
-			strTCL = strTCL + tmpModel.getStringRpresentation("tcl");
+			strTCL = strTCL.append(tmpModel.getStringRpresentation("tcl"));
 			/*This is in Model
 			strTCL = strTCL + HtmlFormatter.GetHTMLTab() + "\"" + HtmlFormatter.GetHTMLNewline();
 			strTCL = strTCL + HtmlFormatter.GetHTMLTab() + "set id2 [xvalue id [om.pssd.method.for.subject.update $args]]" + HtmlFormatter.GetHTMLNewline();
@@ -382,7 +403,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 			strTCL = strTCL + "}" + HtmlFormatter.GetHTMLNewline();
 			*/
 			
-			tclText.setHTML(strTCL);
+			//tclText.setHTML(strTCL);
 			//tmpPanel2.add(tclText);
 			
 			//Button ok = new Button("CLOSE WINDOW");
@@ -393,35 +414,16 @@ public class MethodCreatorPresenter implements FormPresenter{
 		      //});
 			
 			//Should just launch a Window with a Pojo
-		      WindowProperties wp = new WindowProperties();
-				wp.setModal(true);
-				wp.setCanBeResized(true);
-				wp.setCanBeClosed(true);
-				wp.setCanBeMoved(true);
-				wp.setCentered(false);
-				wp.setTitle("TCL Viewer");
-				wp.setPosition(900, 0);
-				wp.setShowFooter(true);
-				wp.setShowHeader(true);
-				wp.setSize(680, 680);
-				wp.setCanBeMaximised(true);
-				
-				AbsolutePanel tmpWidget = new AbsolutePanel();
-				
-				Window _win = Window.create(wp);
-				_win.setZIndex(1150);
-				
-				tmpWidget.setOverflow(Overflow.SCROLL);
-				tmpWidget.add(tclText);
-				//tmpWidget.add(ok);
-				//tmpWidget.setWidth(1000);
-				//MethodBuilder tmpBuilder= new MethodBuilder(eventBus,(HasWidgets) tmpWidget);
-				_win.setContent(tmpWidget);
-				_win.bringToFront();
-				WindowManager tmpManager = WindowManager.manager();
-				tmpManager.add(_win);
+			Desktop d = Desktop.get();
+			PreviewWindow _newWin = new PreviewWindow("MethodPreviewWindow","Preview Method");
+			_newWin.loadPreview(strTCL, SupportedFormats.TCL);
+		    _newWin.setOkCancelHandler(this);
+		    d.show(_newWin, true);
+		    //_newWin.
+				//WindowManager tmpManager = WindowManager.manager();
+			//	tmpManager.add(_win);
 				//tmpManager.setDefaultParentWidget(defaultPar)
-				_win.show();
+				//_win.show();
 				
 	
 		}
@@ -532,6 +534,11 @@ public class MethodCreatorPresenter implements FormPresenter{
 			return "Form not found";
 		}
 		return "";
+		
+	}
+	@Override
+	public void onOkCancelClicked(Event eventType) {
+		// TODO Auto-generated method stub
 		
 	}
 	
