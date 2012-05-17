@@ -22,7 +22,7 @@ public class ElementProperties extends Composite
 	private ArrayList<ElementPanel> m_availablePanels = new ArrayList<ElementPanel>();
 	private ArrayList<ElementPanel> m_elementPanels = new ArrayList<ElementPanel>();
 	
-	public ElementProperties()
+	public ElementProperties(boolean canHaveAttributes) throws Exception
 	{
 		// Register all available element panels.
 		m_availablePanels.add(new CommonElementPanel());
@@ -30,7 +30,10 @@ public class ElementProperties extends Composite
 		m_availablePanels.add(new StringElementPanel());
 		m_availablePanels.add(new DateElementPanel());
 		m_availablePanels.add(new NumberElementPanel());
-		m_availablePanels.add(new AttributesPanel());
+		if (canHaveAttributes)
+		{
+			m_availablePanels.add(new AttributesPanel());
+		}
 		m_availablePanels.add(new DocumentElementPanel());
 
 		initWidget(uiBinder.createAndBindUi(this));

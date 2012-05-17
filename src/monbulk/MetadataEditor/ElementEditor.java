@@ -7,13 +7,13 @@ public class ElementEditor extends OkCancelWindow
 {
 	private ElementProperties m_elementProperties;
 
-	public ElementEditor()
+	public ElementEditor(boolean canHaveAttributes) throws Exception
 	{
-		super("ElementEditor", "Attributes");
+		super("ElementEditor", "Element Editor");
 		m_windowSettings.width = -1;
 		m_windowSettings.height = -1;
 
-		m_elementProperties = new ElementProperties();
+		m_elementProperties = new ElementProperties(canHaveAttributes);
 		m_elementProperties.setWidth("500px");
 		m_contentPanel.add(m_elementProperties);
 	}

@@ -16,7 +16,6 @@ import monbulk.MediaFlux.Services.MediaFluxServices;
 import monbulk.client.desktop.*;
 import monbulk.shared.util.GWTLogger;
 import monbulk.MetadataEditor.MetadataEditor;
-import monbulk.MetadataEditor.ElementEditor;
 import monbulk.MetadataEditor.MetadataSelectWindow;
 import monbulk.MethodBuilder.client.MethodBuilder;
 
@@ -88,10 +87,7 @@ public class Monbulk implements EntryPoint
 					// Register our window instances.
 					MetadataEditor me = new MetadataEditor();
 					d.registerWindow(me);
-					
-					ElementEditor ae = new ElementEditor();
-					d.registerWindow(ae);
-					
+
 					MetadataSelectWindow ms = new MetadataSelectWindow();
 					d.registerWindow(ms);
 

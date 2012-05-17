@@ -56,7 +56,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_elementsTree.addSelectionHandler(this);
 
 		// Register our own element editor window.
-		m_elementEditor = new ElementEditor();
+		m_elementEditor = new ElementEditor(true);
 		m_elementEditor.setChangeTypeHandler(this);
 		WindowSettings w = m_elementEditor.getWindowSettings();
 		w.windowId = "ElementEditor-Main";

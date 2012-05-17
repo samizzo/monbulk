@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 
 import monbulk.shared.Services.Metadata;
+import monbulk.shared.widgets.Window.WindowSettings;
 import monbulk.shared.widgets.Window.OkCancelWindow.OkCancelHandler;
 import monbulk.client.desktop.Desktop;
 
@@ -19,7 +20,7 @@ import monbulk.client.desktop.Desktop;
  * should work with a clone of the attribute.
  */
 
-public class AttributesPanel extends ElementPanel implements OkCancelHandler
+public class AttributesPanel extends ElementPanel implements OkCancelHandler, CommonElementPanel.ChangeTypeHandler
 {
 	private static AttributesPanelUiBinder uiBinder = GWT.create(AttributesPanelUiBinder.class);
 	interface AttributesPanelUiBinder extends UiBinder<Widget, AttributesPanel> { }
@@ -33,10 +34,19 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 	private Metadata.Element m_newAttribute;
 	private boolean m_addNewElement = false;
 	private boolean m_typeChanged = false;
+	private ElementEditor m_elementEditor;
 
-	public AttributesPanel()
+	public AttributesPanel() throws Exception
 	{
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		// Register our own element editor window.
+		m_elementEditor = new ElementEditor(false);
+		m_elementEditor.setChangeTypeHandler(this);
+		WindowSettings w = m_elementEditor.getWindowSettings();
+		w.windowId = "ElementEditor-Attributes";
+		w.windowTitle = "Attribute";
+		Desktop.get().registerWindow(m_elementEditor);
 	}
 
 	public void set(Metadata.Element element)
@@ -83,48 +93,9 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 		m_editAttribute = element;
 		m_addNewElement = addNewElement;
 
-		final ElementEditor editor = (ElementEditor)d.getWindow("ElementEditor");
-		editor.setOkCancelHandler(this);
-		editor.setMetadataElement(element);
-		
-		// We need to process a change of type event by creating a new element
-		// and giving it to the owning metadata.
-		// FIXME: This should be in the attributes editor not here.
-		editor.setChangeTypeHandler(new CommonElementPanel.ChangeTypeHandler()
-		{
-			public void onChangeType(Metadata.Element element, String newType)		
-			{
-				// Create new element from old and give it to the editor.
-				try
-				{
-					Metadata.ElementTypes t = Metadata.ElementTypes.valueOf(newType);
-					Metadata.Element newAttribute = Metadata.createElement(t.getTypeName(), element.getName(), element.getDescription(), true);
-					if (m_addNewElement)
-					{
-						// Adding a new attribute so just overwrite the
-						// previous m_editAttribute.
-						m_editAttribute = m_newAttribute = newAttribute;
-					}
-					else
-					{
-						// Changing the type of an existing attribute so
-						// we need to remember the previous attribute.
-						m_newAttribute = newAttribute;
-					}
-
-					editor.setMetadataElement(m_newAttribute);
-					m_typeChanged = true;
-				}
-				catch (Exception e)
-				{
-					GWT.log(e.toString());
-					return;
-				}
-
-			}
-		});
-
-		d.show(editor, true);
+		m_elementEditor.setOkCancelHandler(this);
+		m_elementEditor.setMetadataElement(element);
+		d.show(m_elementEditor, true);
 	}
 
 	@UiHandler("m_edit")
@@ -223,5 +194,38 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler
 		}
 		
 		m_newAttribute = m_editAttribute = null;
+	}
+	
+	// We need to process a change of type event by creating a new element
+	// and giving it to the owning metadata.
+	// FIXME: This should be in the attributes editor not here.
+	public void onChangeType(Metadata.Element element, String newType)
+	{
+		// Create new element from old and give it to the editor.
+		try
+		{
+			Metadata.ElementTypes t = Metadata.ElementTypes.valueOf(newType);
+			Metadata.Element newAttribute = Metadata.createElement(t.getTypeName(), element.getName(), element.getDescription(), true);
+			if (m_addNewElement)
+			{
+				// Adding a new attribute so just overwrite the
+				// previous m_editAttribute.
+				m_editAttribute = m_newAttribute = newAttribute;
+			}
+			else
+			{
+				// Changing the type of an existing attribute so
+				// we need to remember the previous attribute.
+				m_newAttribute = newAttribute;
+			}
+
+			m_elementEditor.setMetadataElement(m_newAttribute);
+			m_typeChanged = true;
+		}
+		catch (Exception e)
+		{
+			GWT.log(e.toString());
+			return;
+		}
 	}
 }
