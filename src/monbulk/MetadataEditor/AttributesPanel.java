@@ -240,13 +240,18 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler, Co
 	
 	public boolean validate()
 	{
-		// If the new attribute already exists in the attribute list,
+		// If the attribute name already exists in the attribute list,
 		// show the user an error message and don't let them continue.
 		String newAttribute = m_elementEditor.getName();
 		int numAttributes = m_attributes.getItemCount();
 		for (int i = 0; i < numAttributes; i++)
 		{
 			String attr = m_attributes.getItemText(i);
+
+			// If we're adding a new attribute and the name exists,
+			// show error message.  If we're at the current selection,
+			// don't check the names because it's the attribute that
+			// we are currently editing.
 			if ((i != m_attributes.getSelectedIndex() || m_addNewElement) && attr.equalsIgnoreCase(newAttribute))
 			{
 				Window.alert("There is already an attribute with the name '" + attr + "'.  Please enter a new name.");
