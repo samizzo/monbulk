@@ -2,8 +2,12 @@ package monbulk.shared.Form;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 
+
+
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
@@ -16,11 +20,25 @@ public class FormBuilder {
 
 	private ArrayList<iFormField> FieldList;
 	private String FormName;
+	public enum SupportedFieldTypes{STRING, DATE, INT, BOOLEAN, DESCRIPTION,LIST,MULTILIST,BUTTON,TITLE,SUMMARY,INVISIBLE,STATIC,XML};
+	public HashMap<String,SupportedFieldTypes> SupportedFieldMap;
 	
 	
-
 	public FormBuilder()
 	{
+		SupportedFieldMap = new HashMap<String,SupportedFieldTypes>();
+		SupportedFieldMap.put("String", SupportedFieldTypes.STRING);
+		SupportedFieldMap.put("INT", SupportedFieldTypes.INT);
+		SupportedFieldMap.put("BOOLEAN", SupportedFieldTypes.BOOLEAN);
+		SupportedFieldMap.put("DESCRIPTION", SupportedFieldTypes.DESCRIPTION);
+		SupportedFieldMap.put("LIST", SupportedFieldTypes.LIST);
+		SupportedFieldMap.put("MULTILIST", SupportedFieldTypes.MULTILIST);
+		SupportedFieldMap.put("BUTTON", SupportedFieldTypes.BUTTON);
+		SupportedFieldMap.put("TITLE", SupportedFieldTypes.TITLE);
+		SupportedFieldMap.put("SUMMARY", SupportedFieldTypes.SUMMARY);
+		SupportedFieldMap.put("INVISIBLE", SupportedFieldTypes.INVISIBLE);
+		SupportedFieldMap.put("STATIC", SupportedFieldTypes.STATIC);
+		SupportedFieldMap.put("XML", SupportedFieldTypes.XML);
 		this.FieldList = new ArrayList<iFormField>();
 		this.FormName = "DefaultForm";
 	}
@@ -57,6 +75,11 @@ public class FormBuilder {
 		FieldList.add(newField);
 				
 	}
+	public void AddItem(iFormField anyField)
+	{
+		FieldList.add(anyField);
+				
+	}
 	public void AddTitleItem(String FieldName,String FieldType)
 	{
 		FormField newField = new FormField(FieldName,FieldType);
@@ -90,6 +113,23 @@ public class FormBuilder {
 		FormField newField = new FormField(FieldName,FieldType,FieldValue);
 		this.FieldList.add(newField);
 					
+	}
+	public void loadList(String FieldName,ArrayList<String> Items,String DefaultValue)
+	{
+		try
+		{
+			ListField newList = (ListField) this.getFieldItemForName(FieldName);
+			newList.loadList(Items, DefaultValue);
+		}
+		catch(Exception ex)
+		{
+			GWT.log("Error at FormBuilder.loadList: Likely Cast Exception" + ex.getMessage());
+		}
+	}
+	public void AddListItem(String FieldName,ArrayList<String> Items,String DefaultValue)
+	{
+		ListField newList = new ListField(FieldName);
+		newList.loadList(Items, DefaultValue);
 	}
 	public Widget CreateForm()
 	{
@@ -206,3 +246,4 @@ public class FormBuilder {
 		return false;
 	}
 }
+

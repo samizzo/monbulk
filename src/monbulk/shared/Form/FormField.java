@@ -1,6 +1,8 @@
 package monbulk.shared.Form;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -24,6 +26,7 @@ import monbulk.shared.Form.DateValidation;
 import monbulk.shared.Form.IntegerValidation;
 import monbulk.shared.Form.StringValidation;
 import monbulk.shared.Form.TextFieldValidation;
+import monbulk.shared.util.GWTLogger;
 /**
  * This is the basic Form Field class
  * TODO: It needs an enum for FieldTypes
@@ -33,29 +36,43 @@ import monbulk.shared.Form.TextFieldValidation;
  */
 	public class FormField implements iFormField
 	{
-		private String FieldName;
-		private String FieldType;
-		private Object FieldValue;
-		private String FieldWidget;
-		private Widget _FieldVaLueWidget;
-		private Widget _ValidationWidget;
-		private iFormFieldValidation fieldValidator;
-		private Boolean isSummaryField;
-		private Boolean isTitleField;
-		private Boolean isStatic;
-		private Boolean hasValue;
-		private FormWidget returnWidget;
+		protected String FieldName;
+		protected String FieldType;
+		protected Object FieldValue;
+		protected String FieldWidget;
+		protected Widget _FieldVaLueWidget;
+		protected Widget _ValidationWidget;
+		protected iFormFieldValidation fieldValidator;
+		protected Boolean isSummaryField;
+		protected Boolean isTitleField;
+		protected Boolean isStatic;
+		protected Boolean hasValue;
+		protected FormWidget returnWidget;
+		
+		
 		public FormField(String FormName,String objectType)
 		{
+			//
+			
 			this.FieldName = FormName;
 			this.FieldType = objectType;
 			setFieldWidget();
 			isSummaryField = false;
 			isTitleField = false;
-			isStatic = false;
-			hasValue = false;
+			
 		}
-		
+		public FormField(String FormName,String objectType,Boolean shouldLoad)
+		{
+			//
+			if(!shouldLoad)
+			{
+				this.FieldName = FormName;
+				this.FieldType = objectType;
+			
+				isSummaryField = false;
+				isTitleField = false;
+			}
+		}
 		public FormField(String FormName,String objectType, Object Value)
 		{
 			this.FieldName = FormName;
@@ -69,6 +86,7 @@ import monbulk.shared.Form.TextFieldValidation;
 			isStatic = true;
 			hasValue = true;
 		}
+		
 		@Override
 		public Boolean hasValue()
 		{
@@ -105,7 +123,7 @@ import monbulk.shared.Form.TextFieldValidation;
 			FieldNameLabel.setText(this.FieldName);
 			this._ValidationWidget = new Label();
 			this.returnWidget = new FormWidget(this.FieldName);
-			GWT.log("Adding Field:" + FieldType);
+			GWTLogger.Log("Adding Field:" + FieldType + ":" + FieldName, "FormField", "setFieldWidget", "126");
 			if(FieldType=="String")
 			{
 				this.FieldWidget="TextBox";

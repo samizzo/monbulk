@@ -10,6 +10,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -84,5 +85,10 @@ public class FormWidget extends HorizontalPanel{
 	{
 		HasValue<Object> item = (HasValue<Object>)WidgetList.get(FORM_WIDGET);
 		item.setValue(Value);
+	}
+	public void setListValue(int Value)
+	{
+		ListBox item = (ListBox)WidgetList.get(FORM_WIDGET);
+		item.setSelectedIndex( Value);
 	}
 }
