@@ -12,7 +12,7 @@
 	<g:HTMLPanel>
 	<g:DockLayoutPanel unit="PX" styleName="BodyPanel" height="570px" ui:field="LayoutPanel">
 							<g:north size="40" unit="PX">
-								<g:Grid width="800px" height="40px;">
+								<g:Grid width="100%" height="40px;">
 									<g:row>
 										<g:customCell styleName="MethodComponents" >
 											<g:Label>Method Components</g:Label>	
@@ -46,12 +46,8 @@
 								<g:west unit="px" size="510">							
 									<g:VerticalPanel>
 										<g:ScrollPanel width="510px" height="480px" styleName="{style.Scroll}" >
-										<g:StackLayoutPanel width="497px" height="481px" unit="PX" styleName="StandardStack" ui:field="MethodFormStack">
-											<g:stack>
-												<g:header size="41" ui:field="FormTitle">Required Fields</g:header>
 												<g:HTMLPanel ui:field="FormDetails" />
-											</g:stack>
-											</g:StackLayoutPanel>
+											
 										</g:ScrollPanel>
 										<g:HorizontalPanel width="513px" styleName="FormNav">
 											<g:PushButton ui:field="btnPrev" styleName="btnDefault" text="Prev"/><g:PushButton ui:field="btnNext" styleName="btnDefault" text="Next"/>

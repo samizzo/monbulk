@@ -5,6 +5,8 @@ import java.util.Iterator;
 
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -21,6 +23,7 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -36,6 +39,7 @@ import monbulk.shared.Form.FormBuilder;
 
 import monbulk.shared.Form.FormWidget;
 import monbulk.shared.Form.iFormField;
+import monbulk.shared.util.GWTLogger;
 
 /**
  * This is the baseForm widget which takes a FormBuilder data structure and renders it in order
@@ -160,54 +164,76 @@ public class baseForm extends VerticalPanel implements IFormView {
 			*/
 			widgetStructure = new ArrayList<HorizontalPanel>();
 			//widgetStructure.add(errorPanel);
-			GWT.log("We start to render the form items - form Items:" + generalForm.getFormDetails().size());
 			
+			GWTLogger.Log("We start to render the form items - form Items:" + generalForm.getFormDetails().size(), "baseForm", "RenderForm", "165");
 			Iterator<iFormField> i = generalForm.getFormDetails().iterator();
 			
 			while(i.hasNext())
 			{
 				iFormField item = i.next();
-				GWT.log("item to add" + item.GetFieldName() +item.getWidgetReference());
+				GWTLogger.Log("item to add" + item.GetFieldName() +item.getFieldTypeName(), "baseForm", "RenderForm", "171");
+				
 				if(item.getWidgetReference()!=null)
 				{
 					final FormWidget tmpWidg = item.getWidgetReference();
-					HasValue<Object> tmpWidget = (HasValue<Object>)tmpWidg.getFormWidget(); 
-					tmpWidg.setFormValue(item.GetFieldValue());
-					
-					GWT.log("Value rendered should be:" + item.GetFieldValue());
-					tmpWidget.addValueChangeHandler(new ValueChangeHandler<Object>()
+					if(item.getFieldTypeName()=="List" || item.getFieldTypeName()=="Dictionary")
 					{
-				
-								@Override
-								public void onValueChange(ValueChangeEvent<Object> event) {
-									// TODO Auto-generated method stub
-									Widget source = (Widget)event.getSource();
-									String FieldName = tmpWidg.getWidgetName();
-									//String FieldName = source.getTitle();
-									UpdateValue(FieldName, event.getValue());
-									//event.getValue();
-					}
 						
-					});
-					tmpWidg.addHandler(new MouseOverHandler()
-					{
+						final ListBox tmpBox = (ListBox)tmpWidg.getFormWidget();
+						tmpBox.addChangeHandler(new ChangeHandler(){
 
-						@Override
-						public void onMouseOver(MouseOverEvent event) {
-							// TODO Auto-generated method stub
-							Window.alert("Entered");
-							TextBox tmpBox = (TextBox) event.getSource();
+							@Override
+							public void onChange(ChangeEvent event) {
+								
+								String Value = tmpBox.getValue(tmpBox.getSelectedIndex());
+								String FieldName = tmpWidg.getWidgetName();
+								UpdateValue(FieldName, Value);
+							}
 							
-							if(tmpBox.getValue()=="Enter Text here")
+						});
+						tmpWidg.setListValue(tmpBox.getSelectedIndex());
+					}
+					else if(item.getFieldTypeName()=="Button")
+					{
+						final PushButton tmpButton = (PushButton)tmpWidg.getFormWidget();
+						tmpButton.setStyleName("formButtonAdd");
+						
+					}
+					else
+					{
+						HasValue<Object> tmpWidget = (HasValue<Object>)tmpWidg.getFormWidget();
+						tmpWidget.addValueChangeHandler(new ValueChangeHandler<Object>()
+								{
+							
+											@Override
+											public void onValueChange(ValueChangeEvent<Object> event) {
+												// TODO Auto-generated method stub
+												Widget source = (Widget)event.getSource();
+												String FieldName = tmpWidg.getWidgetName();
+												//String FieldName = source.getTitle();
+												UpdateValue(FieldName, event.getValue());
+												//event.getValue();
+								}
+									
+								});
+						if(item.getFieldTypeName()=="Boolean")
+						{
+							if(item.GetFieldValue()=="true")
 							{
-								tmpBox.setValue("");
+								tmpWidg.setFormValue(true);
+							}
+							else
+							{
+								tmpWidg.setFormValue(false);
 							}
 						}
-						
-					},MouseOverEvent.getType());
-					//if(tmpWidget.getValue()!=null){
-					//	tmpWidget.setValue(value, fireEvents)
-					//}
+						else
+						{
+							tmpWidg.setFormValue(item.GetFieldValue());
+						}
+					}
+	
+			
 					HorizontalPanel hzPanel = new HorizontalPanel();
 					HorizontalPanel spacePanel = new HorizontalPanel();
 					hzPanel.add(tmpWidg);
@@ -243,11 +269,12 @@ public class baseForm extends VerticalPanel implements IFormView {
 				this.add(tmpPanel);
 			}
 			isLoaded = true;
-			GWT.log("Widget COunt" + tmpPanel.getWidgetCount());
+			GWTLogger.Log("Widget COunt" + tmpPanel.getWidgetCount(), "baseForm", "RenderForm", "248");
+			
 		}
 		catch(Exception ex)
 		{
-			Window.alert("Error in Render" + ex.getMessage());
+			Window.alert("Could not render the form, for reference: Exception is" + ex.getMessage() + "Location is baseForm.RenderForm");
 		}
 	}
 	private final void completeForm(String State)
@@ -261,10 +288,12 @@ public class baseForm extends VerticalPanel implements IFormView {
 	public void LoadForm(FormBuilder someForm) {
 		try
 		{
-			GWT.log("Which form is loading" + someForm.getFormName());
+			
+			GWTLogger.Log("Which form is loading" + someForm.getFormName(), "baseForm", "loadForm", "267");
 			if(someForm==null)
 			{
-				GWT.log("Form Expected @ baseForm.LoadForm(someForm):No form provided");
+				GWTLogger.Log("Form Expected @ baseForm.LoadForm(someForm):No form provided", "baseForm", "loadForm", "270");
+				
 				//Window.alert("No Form");
 				renderForm();
 				return;
@@ -286,7 +315,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 					allFormItems.add(tmpWidg);
 				}
 			}
-			GWT.log("We load the Form");
+			GWTLogger.Log("we load the form", "baseForm", "loadForm", "267");
 			renderForm();
 		}
 		catch(Exception ex)

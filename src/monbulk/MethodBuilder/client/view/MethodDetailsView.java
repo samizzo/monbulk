@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -30,6 +31,7 @@ import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.pojo.pojoMethod;
 import monbulk.shared.Model.pojo.pojoStepDetails;
 import monbulk.shared.Model.pojo.pojoSubjectProperties;
+import monbulk.shared.util.GWTLogger;
 
 public class MethodDetailsView extends Composite implements IMethodsView {
 
@@ -44,9 +46,6 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 	
 	@UiField
 	StackLayoutPanel MethodNavigationStack;
-	
-	@UiField
-	StackLayoutPanel MethodFormStack;
 	
 	@UiField
 	PushButton btnNext;
@@ -214,7 +213,11 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 				
 				if(tmpField.isSummary())
 				{
-					if(tmpField.hasValue())
+					if(tmpField.getFieldTypeName()=="List" || tmpField.getFieldTypeName()=="Dictionary" || tmpField.getFieldTypeName()=="Button")
+					{
+						GWTLogger.Log("isSummary - should not hit", "MethodDetailsView", "setData", "221");
+					}
+					else if(tmpField.hasValue())
 					{
 						String FieldName = tmpField.GetFieldName();
 						if(tmpField.GetFieldName().contains(anyBuilder.getFormName()))
@@ -235,16 +238,15 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 				}
 				else if(tmpField.isTitle() && tmpField.hasValue() && anyBuilder.getFormName().contains(pojoStepDetails.FormName))
 				{
-					//Window.alert(tmpField.GetFieldValue().toString());
-					//this.MethodTitle.setText((String) tmpField.GetFieldValue());
+					GWTLogger.Log("isTitle - should not hit" + tmpField.GetFieldName(), "MethodDetailsView", "setData", "244");
 					String Title = "Step " + this.CurrentSteps.get(anyBuilder.getFormName()).getIndex() + ": " + tmpField.GetFieldValue().toString();
 					tmpHeader.setTitle(Title);
-					//tmpHeader.setTitle(tmpField.GetFieldValue().toString());
-					//this.MethodNavigationStack.add(, header, 41);
+					
 				}
 			}
 		}
 		html = html +"</<table>";
+		GWTLogger.Log("HTML success", "MethodDetailsView", "setData", "252");
 		if(anyBuilder.getFormName().contains(pojoMethod.FormName))
 		{
 			this.MethodNavigationStack.showWidget(0);

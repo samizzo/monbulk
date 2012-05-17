@@ -107,17 +107,13 @@
 					 			Select Method
 					 		</div>
 					 	</td>
-					 	<td class="methodHelpSummary mbRow1" style="min-width:782px;">
+					 	<td class="methodHelpSummary mbRow1">
 					 		<!-- Text -->
 					 		<g:HorizontalPanel>
 					 		<g:Label>To create a new method, you need to provide general details for the method, some generic details for a subject and any number of steps. 
 					 				You can attach any metadata to the subject generally or via a step which supports attachments to the subject or the study (MRI, PET, CT, etc...). 
 					 		 </g:Label>
 					 		</g:HorizontalPanel>
-					 	</td>
-					 	<td class="mbColumn3 mbRow1" style="min-width:280px;height:62px;">
-					 		<!--  MetaData Title -->
-					 	    <g:PushButton styleName="mdHeader"></g:PushButton>
 					 	</td>
 					 </tr>
 					 <tr>
@@ -130,15 +126,10 @@
 								<g:HTMLPanel ui:field="BodyPanel"/>
 							</div>
 						</td>
-						<td class="mbRow2" style="vertical-align:top;padding-top:0px;height:570px;background-color:#dadada;">
-							
-					 	 			<g:HTMLPanel ui:field="DockPanel"/>	 	
-						
-						</td>
 					</tr>
 					 
 							<tr>
-								<td colspan="3" class="mbRow3 navPanel" style="width:100%">
+								<td colspan="2" class="mbRow3 navPanel" style="width:100%">
 									<g:HTMLPanel ui:field="NavigationsPanel"></g:HTMLPanel>
 								</td>
 					 	 	</tr>

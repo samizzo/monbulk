@@ -1,5 +1,8 @@
 package monbulk.MethodBuilder.client;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -15,11 +18,15 @@ import monbulk.shared.Architecture.IPresenter.DockedPresenter;
 import monbulk.shared.Events.DragEvent;
 import monbulk.shared.Events.DragEventHandler;
 import monbulk.shared.Model.pojo.pojoMethod;
+import monbulk.shared.Services.Dictionary;
+import monbulk.shared.Services.DictionaryService;
+import monbulk.shared.Services.DictionaryService.GetDictionaryHandler;
+import monbulk.shared.util.GWTLogger;
 import monbulk.shared.view.iMenuWidget;
 import monbulk.shared.widgets.Window.*;
 import com.google.gwt.user.client.ui.ResizeComposite;
 
-public class MethodBuilder extends ResizeComposite implements IWindow
+public class MethodBuilder extends ResizeComposite implements IWindow,GetDictionaryHandler
 {
 	private iMenuWidget AppletMenu;
 	private DockedPresenter CurrentPresenter;
@@ -28,12 +35,17 @@ public class MethodBuilder extends ResizeComposite implements IWindow
 	private WindowSettings m_windowSettings;
 	private String loadedMethodID;
 	private String loadedMethodName;
+	
+	public enum PreLoadedLists{STUDY_TYPES,DICOM_MODALITY,METADATA}
+	private HashMap<PreLoadedLists,ArrayList<String>> loadedLists;
+	
 	public MethodBuilder(HandlerManager evtBus)
 	{
+		
 		m_windowSettings = new WindowSettings();
-		m_windowSettings.width = 1305;
-		m_windowSettings.height = 680;
-		m_windowSettings.minWidth = 1050;
+		m_windowSettings.width = 1025;
+		m_windowSettings.height = 700;
+		m_windowSettings.minWidth = 700;
 		m_windowSettings.minHeight = 680;
 		m_windowSettings.windowId = "MethodBuilder";
 		m_windowSettings.windowTitle = "Method Builder";
@@ -194,4 +206,10 @@ public class MethodBuilder extends ResizeComposite implements IWindow
 	{
 		return m_windowSettings;
 	}
+	@Override
+	public void onGetDictionary(Dictionary dictionary) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

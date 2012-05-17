@@ -6,6 +6,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class MethodBuilderMaster extends ResizeComposite
@@ -19,8 +20,6 @@ public class MethodBuilderMaster extends ResizeComposite
 	@UiField
     HTMLPanel MenuPanel;
 	
-	@UiField
-    HTMLPanel DockPanel;
 	
 	@UiField
     HTMLPanel BodyPanel;
@@ -49,6 +48,6 @@ public class MethodBuilderMaster extends ResizeComposite
 
 	public HasWidgets getDockContainer() {
 		// TODO Auto-generated method stub
-		return DockPanel;
+		return new VerticalPanel();
 	}
 }
