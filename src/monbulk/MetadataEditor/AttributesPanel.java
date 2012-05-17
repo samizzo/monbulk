@@ -204,8 +204,15 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler, Co
 		// Create new element from old and give it to the editor.
 		try
 		{
+			// Ensure the current attribute is up to date.
+			m_elementEditor.updateCurrentElement();
+
 			Metadata.ElementTypes t = Metadata.ElementTypes.valueOf(newType);
 			Metadata.Element newAttribute = Metadata.createElement(t.getTypeName(), element.getName(), element.getDescription(), true);
+			
+			// Pass along any settings that are common to all element types. 
+			newAttribute.setSetting("min-occurs", element.getSetting("min-occurs", ""));
+
 			if (m_addNewElement)
 			{
 				// Adding a new attribute so just overwrite the
