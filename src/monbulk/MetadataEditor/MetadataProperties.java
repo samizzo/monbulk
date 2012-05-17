@@ -8,6 +8,7 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
@@ -25,11 +26,11 @@ import monbulk.shared.Services.Metadata;
 import monbulk.shared.Services.MetadataService;
 import monbulk.shared.Services.Metadata.ElementTypes;
 import monbulk.shared.Services.MetadataService.GetMetadataHandler;
-import monbulk.shared.widgets.Window.OkCancelWindow.OkCancelHandler;
+import monbulk.shared.widgets.Window.OkCancelWindow.*;
 import monbulk.shared.widgets.Window.WindowSettings;
 import monbulk.shared.widgets.TextBoxEx;
 
-public class MetadataProperties extends Composite implements SelectionHandler<TreeItem>, CommonElementPanel.ChangeTypeHandler, OkCancelHandler
+public class MetadataProperties extends Composite implements SelectionHandler<TreeItem>, CommonElementPanel.ChangeTypeHandler, OkCancelHandler, ValidateHandler
 {
 	private static MetadataPropertiesUiBinder uiBinder = GWT.create(MetadataPropertiesUiBinder.class);
 	interface MetadataPropertiesUiBinder extends UiBinder<Widget, MetadataProperties> { }
@@ -58,6 +59,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		// Register our own element editor window.
 		m_elementEditor = new ElementEditor(true);
 		m_elementEditor.setChangeTypeHandler(this);
+		m_elementEditor.setValidateHandler(this);
 		WindowSettings w = m_elementEditor.getWindowSettings();
 		w.windowId = "ElementEditor-Main";
 		w.windowTitle = "Element";
@@ -472,5 +474,37 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	{
 		m_name.setFocus(true);
 		m_name.selectAll();
+	}
+	
+	public boolean validate()
+	{
+		// If there is already an element with the same name
+		// as the element we are editing, show the user an
+		// error message and don't let them continue.
+
+		// First update the current element so it reflects the ui.
+		// Note: we can do this because we work with a clone, so
+		// updating here won't cause any changes to be committed.
+		m_elementEditor.updateCurrentElement();
+
+		Metadata.Element oldElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
+		Metadata.Element newElement = m_elementEditor.getMetadataElement();
+		String newName = newElement.getName();
+		Metadata.DocumentElement parent = oldElement.getParent();
+		
+		// Check the parent's children for any similarly named elements.
+		int numChildren = parent.getNumChildren();
+		for (int i = 0; i < numChildren; i++)
+		{
+			Metadata.Element child = parent.getChild(i);
+			if (child != oldElement && child.getName().equalsIgnoreCase(newName))
+			{
+				Window.alert("There is already an element with the name '" + newName + "'.  Please enter a new name.");
+				m_elementEditor.setNameFocus();
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
