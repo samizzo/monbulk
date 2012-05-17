@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.dom.client.Style;
 
 import monbulk.shared.Services.*;
@@ -43,6 +44,16 @@ public class CommonElementPanel extends ElementPanel
 	{
 		Widget w = uiBinder.createAndBindUi(this);
 		initWidget(w);
+	}
+	
+	public void addNameKeyUpHandler(KeyUpHandler handler)
+	{
+		m_name.addKeyUpHandler(handler);
+	}
+	
+	public String getName()
+	{
+		return m_name.getText();
 	}
 	
 	public void setChangeTypeHandler(ChangeTypeHandler handler)

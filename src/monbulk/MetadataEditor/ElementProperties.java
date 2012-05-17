@@ -1,15 +1,14 @@
 package monbulk.MetadataEditor;
 
 import java.util.ArrayList;
-
-import monbulk.shared.Services.Metadata;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.event.dom.client.KeyUpHandler;
+import monbulk.shared.Services.Metadata;
 
 public class ElementProperties extends Composite
 {
@@ -51,6 +50,18 @@ public class ElementProperties extends Composite
 		}
 		
 		return null;
+	}
+	
+	public void addNameKeyUpHandler(KeyUpHandler handler)
+	{
+		CommonElementPanel p = getCommonElementPanel();
+		p.addNameKeyUpHandler(handler);
+	}
+	
+	public String getName()
+	{
+		CommonElementPanel p = getCommonElementPanel();
+		return p.getName();
 	}
 
 	public void setChangeTypeHandler(CommonElementPanel.ChangeTypeHandler handler)
@@ -116,8 +127,10 @@ public class ElementProperties extends Composite
 		m_properties.clear();
 	}
 	
-	// Updates the currently selected element from the user's settings
-	// on the panels.
+	/**
+	 *  Updates the currently selected element from the user's settings
+	 *  on the panels.
+	 */
 	public void updateCurrentElement()
 	{
 		if (m_element != null)
