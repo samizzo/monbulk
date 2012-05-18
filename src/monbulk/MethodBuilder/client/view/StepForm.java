@@ -13,6 +13,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
@@ -20,36 +21,51 @@ import com.google.gwt.user.client.ui.PushButton;
 
 
 import monbulk.MetadataEditor.MetadataEditor;
+import monbulk.MetadataEditor.MetadataSelectWindow;
 import monbulk.MethodBuilder.client.PreviewWindow;
+import monbulk.MethodBuilder.client.PreviewWindow.SupportedFormats;
 import monbulk.client.desktop.Desktop;
+import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Architecture.IView.IFormView;
 import monbulk.shared.Architecture.IView.IDraggable;
+import monbulk.shared.Events.DragEvent;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Form.FormWidget;
+import monbulk.shared.Model.pojo.pojoMetaData;
 import monbulk.shared.Model.pojo.pojoStepDetails;
 import monbulk.shared.Model.pojo.pojoStudy;
 import monbulk.shared.Services.Dictionary;
 import monbulk.shared.Services.Dictionary.Entry;
 import monbulk.shared.Services.DictionaryService;
 import monbulk.shared.Services.DictionaryService.GetDictionaryHandler;
+import monbulk.shared.widgets.Window.OkCancelWindow;
 
 
 public class StepForm extends SubjectPropertiesForm implements IFormView,IDraggable,GetDictionaryHandler {
 
 	private int AddedRowIndex; 
+	protected final FlexTable _StepMetaDataList;
 	
 	
-	
-	public StepForm() {
+	public StepForm(FormPresenter presenter) {
 		
-		super();
+		super(presenter);
+		_StepMetaDataList = new FlexTable();
 		
+		//super.MetaDatatable
 		//Modality.
 	}
 
 	@Override
 	public void LoadForm(FormBuilder someForm) {
-		super.LoadForm(someForm);
+		super.LoadForm(someForm,true);
+		
+		int requiredIndex = this.getWidgetIndexForName(pojoStepDetails.SubjectMetaDataField);
+		
+		this.setMetaDataLocation(requiredIndex+1); //we want this after the spacing row
+		this._formItems.add(_StepMetaDataList);
+		this.linkMetaDataEditor(pojoStepDetails.SubjectMetaDataField, this.MetaDatatable);
+		
 		FormWidget tmpWidg = this.getFormWidgetForName(pojoStepDetails.HasStudyField);
 		hideStudyDetails();
 		if(tmpWidg !=null)
@@ -84,27 +100,12 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 
 			}
 		}
-		final FormWidget tmpWidg2 = this.getFormWidgetForName(pojoStepDetails.SubjectMetaDataField);
-		PushButton tmpButton = (PushButton)tmpWidg2.getFormWidget();
-		tmpButton.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				
-				String FieldName = tmpWidg2.getWidgetName();
-				//MetadataEditor tmpEditor = new MetadataEditor();
-				Desktop d = Desktop.get();
-				//PreviewWindow _newWin = new PreviewWindow("MethodPreviewWindow","Preview Method");
-				d.show("MetadataEditor", true);
-				//tmpEditor.
-				
-			}
-
-			
-			
-		});
-
+		//final FormWidget tmpWidg2 = this.getFormWidgetForName(pojoStepDetails.SubjectMetaDataField);
+		
+		this.linkMetaDataEditor(pojoStudy.STUDY_METADATA, this._StepMetaDataList);
+		
 	}
+	
 	@Override
 	public void setData(ArrayList<String> someList) {
 		// TODO Auto-generated method stub
@@ -113,30 +114,18 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 
 	private final void hideStudyDetails()
 	{
-		this.getFormWidgetForName(pojoStudy.DicomModalityField).setVisible(false);
-		this.getFormWidgetForName(pojoStudy.StudyTypeField).setVisible(false);
-		this.getFormWidgetForName(pojoStudy.STUDY_METADATA).setVisible(false);
-		//OK Big hack
-		this._formItems.getWidget(6).setVisible(false);
-		this._formItems.getWidget(7).setVisible(false);
-		this._formItems.getWidget(8).setVisible(false);
-		this._formItems.getWidget(9).setVisible(false);
-		this._formItems.getWidget(12).setVisible(false);
-		this._formItems.getWidget(13).setVisible(false);
-		
+		this.hideShowWidget(pojoStudy.DicomModalityField,false,false);
+		this.hideShowWidget(pojoStudy.StudyTypeField,false,false);
+		this.hideShowWidget(pojoStudy.STUDY_METADATA,false,false);
+		this._StepMetaDataList.setVisible(false);
 		
 	}
 	private final void showStudyDetails()
 	{
-		this.getFormWidgetForName(pojoStudy.DicomModalityField).setVisible(true);
-		this.getFormWidgetForName(pojoStudy.StudyTypeField).setVisible(true);
-		this.getFormWidgetForName(pojoStudy.STUDY_METADATA).setVisible(true);
-		this._formItems.getWidget(6).setVisible(true);
-		this._formItems.getWidget(7).setVisible(true);
-		this._formItems.getWidget(8).setVisible(true);
-		this._formItems.getWidget(9).setVisible(true);
-		this._formItems.getWidget(12).setVisible(true);
-		this._formItems.getWidget(13).setVisible(true);
+		this.hideShowWidget(pojoStudy.DicomModalityField,true,true);
+		this.hideShowWidget(pojoStudy.StudyTypeField,true,true);
+		this.hideShowWidget(pojoStudy.STUDY_METADATA,true,true);
+		this._StepMetaDataList.setVisible(true);
 	}
 
 	@Override

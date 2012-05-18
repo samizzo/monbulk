@@ -195,13 +195,13 @@ public class DockView extends Composite implements IDockView, IDraggable {
 	}
 
 	@Override
-	public Boolean DragItem(IPojo someItem) {
+	public Boolean DragItem(IPojo someItem,Widget inList) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Boolean DroptItem(IPojo someItem) {
+	public Boolean DroptItem(IPojo someItem,Widget inList) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -33,6 +33,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /*Monbulk Imports */
+import monbulk.MethodBuilder.client.event.MenuChangeEvent;
 import monbulk.shared.Architecture.IPresenter;
 import monbulk.shared.Architecture.ISearchController;
 import monbulk.shared.Events.DragEvent;
@@ -147,7 +148,8 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	 */
 	@UiHandler("_Newbutton")
 	void onClick(ClickEvent e) {
-		this._presenter.FireDragEvent(new DragEvent("","NewMethod",0,null));
+		//FIXChange to MenuChangeEvent("NewMethod")
+		eventBus.fireEvent(new DragEvent("NewMethod","NewMethod",0,null));
 	}
 
 	

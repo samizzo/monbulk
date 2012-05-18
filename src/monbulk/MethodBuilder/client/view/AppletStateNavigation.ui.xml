@@ -8,10 +8,10 @@
 		<g:Grid styleName="AppletStateButtons">
 			<g:row >
 				<g:customCell>
-					<g:PushButton ui:field="btnSave" styleName="btnDefault" text="Save"/>
+					<g:PushButton ui:field="btnSave" styleName="btnDefault" text="SAVE"/>
 				</g:customCell>
 				<g:customCell>
-					<g:PushButton ui:field="btnPublish" styleName="btnDefault" text="PUBLISH"/>
+					<g:PushButton ui:field="btnPublish" styleName="btnDefault" text="PREVIEW"/>
 				</g:customCell>
 				<g:customCell>
 					<g:PushButton ui:field="btnCancel" styleName="btnDefault" text="CANCEL"/>

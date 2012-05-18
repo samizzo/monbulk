@@ -52,7 +52,7 @@ import monbulk.shared.util.GWTLogger;
 public class baseForm extends VerticalPanel implements IFormView {
 
 	protected FormBuilder generalForm;
-	protected FormPresenter Presenter;
+	public final FormPresenter Presenter;
 	protected ArrayList<FormWidget> allFormItems;
 	protected ArrayList<String> ErrorSummary;
 	protected Label _errors;
@@ -64,9 +64,10 @@ public class baseForm extends VerticalPanel implements IFormView {
 	protected VerticalPanel _formItems = new VerticalPanel();
 	
 	private Boolean isLoaded;
-	public baseForm()
+	public baseForm(FormPresenter presenter)
 	{
 		super();
+		this.Presenter = presenter;
 		this.allFormItems = new ArrayList<FormWidget>();
 		this.widgetStructure = new ArrayList<HorizontalPanel>();
 		
@@ -131,6 +132,40 @@ public class baseForm extends VerticalPanel implements IFormView {
 			
 		}
 		return null;
+	}
+	public int getWidgetIndexForName(String Name)
+	{
+		Iterator<FormWidget> i = this.allFormItems.iterator();
+		int index = 0;
+		while(i.hasNext())
+		{
+			FormWidget tmpWidg = i.next();
+			if(tmpWidg.getWidgetName().equals(Name))
+			{
+				return index*2;///// *2 is for the 2 widgets per row
+			}
+			index++;
+			
+		}
+		return -1;	
+		
+	}
+	public void hideShowWidget(String WidgetName,Boolean show,Boolean showSpacing)
+	{
+		if(this._formItems != null)
+		{
+			int index = this.getWidgetIndexForName(WidgetName);
+			if(index>0)
+			{
+				
+				this._formItems.getWidget(index).setVisible(show);
+				this._formItems.getWidget(index+1).setVisible(showSpacing);
+				//this._formItems.getWidget(resolvedIndex+2).setVisible(showSpacing);
+				//this._formItems.getWidget(resolvedIndex+3).setVisible(showSpacing);
+				
+			}
+		}
+		
 	}
 	private void emptyForm()
 	{
@@ -357,7 +392,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 	}
 	@Override
 	public void setPresenter(FormPresenter presenter) {
-		this.Presenter = presenter;
+		//this.Presenter = presenter;
 		
 	}
 

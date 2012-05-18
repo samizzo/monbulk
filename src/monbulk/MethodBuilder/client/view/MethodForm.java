@@ -31,8 +31,8 @@ import monbulk.shared.Model.StackedCategories;
 
 public class MethodForm extends baseForm implements IFormView {
 
-	public MethodForm() {
-		super();
+	public MethodForm(FormPresenter presenter) {
+		super(presenter);
 	}
 	
 }
