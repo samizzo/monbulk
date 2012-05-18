@@ -92,6 +92,16 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 					this.CurrentPresenter.go(getBodyContainer(),getDockContainer(),getNavigationContainer());
 			
 			}
+			else if(initState.equals("NewMethod"))
+			{
+				///Basically we need to provide Panels for adding widgets to
+				//And we need to launch a Presenter to control with a DefaultState 
+				//
+					this.CurrentState="Create Method";
+					this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
+					this.CurrentPresenter.go(getBodyContainer(),getDockContainer(),getNavigationContainer());
+			
+			}
 			else if(initState.equals("Edit Methods"))
 			{
 				this.CurrentState="Edit Methods";
@@ -118,7 +128,7 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 				}
 				catch(Exception ex)
 				{
-					GWT.log("Error occurs @ MethodBuilder.ChangeAppletState:" + ex.getMessage());
+					GWTLogger.Log("Error occurs @ MethodBuilder.ChangeAppletState:", "MethodBuilder", "ChangeAppletState", "121");
 				}
 				//this.CurrentPresenter.
 			}
@@ -151,8 +161,15 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 					public void onDrag(DragEvent event) {
 						//this.loadedMethodID = event.getPojo().getFieldVale(pojoMethod.MethodIDField);
 						//this.loadedMethodID = event.getPojo().getFieldVale(pojoMethod.MethodIDField);
-	    				loadMethod(event.getPojo().getFieldVale(pojoMethod.MethodIDField),event.getName());
-	    				ChangeAppletState(event.getId());
+	    				if(event.getId()=="NewMethod")
+	    				{
+	    					ChangeAppletState("NewMethod");
+	    				}
+	    				else
+	    				{
+	    					loadMethod(event.getPojo().getFieldVale(pojoMethod.MethodIDField),event.getName());
+	    					ChangeAppletState(event.getId());
+	    				}
 					}
 	    		}
 	    );
