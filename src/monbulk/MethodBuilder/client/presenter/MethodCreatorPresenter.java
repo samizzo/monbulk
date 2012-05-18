@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 import monbulk.MetadataEditor.MetadataList;
+import monbulk.MetadataEditor.MetadataSelectWindow;
 import monbulk.MethodBuilder.client.PreviewWindow;
 import monbulk.MethodBuilder.client.PreviewWindow.SupportedFormats;
 import monbulk.MethodBuilder.client.event.ChangeWindowEvent;
@@ -140,12 +141,10 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 			try
 			{
 			//GWT.log(mainModel.getFormData().toString());
-			MethodForm tmpForm = new MethodForm();
-			tmpForm.setPresenter(this);			
-			SubjectPropertiesForm tmpForm2 = new SubjectPropertiesForm();
-			tmpForm2.setPresenter(this);
-			StepForm tmpForm3 = new StepForm();
-			tmpForm3.setPresenter(this);
+			MethodForm tmpForm = new MethodForm(this);
+			SubjectPropertiesForm tmpForm2 = new SubjectPropertiesForm(this);
+			StepForm tmpForm3 = new StepForm(this);
+			
 			this._AllStates.put(MethodCreatorStates.METHOD_DETAILS, tmpForm);
 			this._AllStates.put(MethodCreatorStates.SUBJECT_PROPERTIES, tmpForm2);
 			this._AllStates.put(MethodCreatorStates.STEP_DETAILS, tmpForm3);
@@ -377,6 +376,11 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 			this.ImplementedMethodView.clearChild();
 			this.ChangeState(MethodCreatorStates.SUBJECT_PROPERTIES);
 		}
+		else if(Command=="NewMethod")
+		{
+			this.mainModel.loadData("");
+			this.ImplementedMethodView.clearChild();
+		}
 		else if(Command=="Save")
 		{
 			
@@ -384,14 +388,14 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		else if(Command=="Publish")
 		{
 			
-			tclBox.setModal(true);
-			tclBox.clear();
+			//tclBox.setModal(true);
+		//	tclBox.clear();
 			
-			HTML tclText = new HTML();
+			//HTML tclText = new HTML();
 			StringBuilder strTCL = new StringBuilder();
 			strTCL = strTCL.append(HtmlFormatter.GetHTMLUtilityScript("TCL"));
 			
-			strTCL = strTCL.append(tmpModel.getStringRpresentation("tcl"));
+			strTCL = strTCL.append(this.mainModel.getStringRpresentation("TCL"));
 			/*This is in Model
 			strTCL = strTCL + HtmlFormatter.GetHTMLTab() + "\"" + HtmlFormatter.GetHTMLNewline();
 			strTCL = strTCL + HtmlFormatter.GetHTMLTab() + "set id2 [xvalue id [om.pssd.method.for.subject.update $args]]" + HtmlFormatter.GetHTMLNewline();
@@ -415,10 +419,12 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 			
 			//Should just launch a Window with a Pojo
 			Desktop d = Desktop.get();
-			PreviewWindow _newWin = new PreviewWindow("MethodPreviewWindow","Preview Method");
-			_newWin.loadPreview(strTCL, SupportedFormats.TCL);
-		    _newWin.setOkCancelHandler(this);
-		    d.show(_newWin, true);
+			final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
+			m.loadPreview(strTCL, SupportedFormats.TCL);
+			//d.
+			//_newWin.loadPreview(strTCL, SupportedFormats.TCL);
+		    //_newWin.setOkCancelHandler(this);
+		    d.show(m, true);
 		    //_newWin.
 				//WindowManager tmpManager = WindowManager.manager();
 			//	tmpManager.add(_win);
@@ -459,6 +465,11 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 				//RelatedView.addListItem(e.getName(),"MetaData");
 				this.ImplementedMethodView.setData(RelatedModel.getFormData());
 
+			}
+			//HACK - should just call formComplete or change state
+			else if(e.getId()=="NewMethod")
+			{
+				this.FormComplete("NewMethod", "NewMethod");
 			}
 			else
 			{
