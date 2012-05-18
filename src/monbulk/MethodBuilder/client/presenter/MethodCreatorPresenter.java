@@ -463,14 +463,20 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 				//This rebuilds the list
 			//	this.ImplementedDockView.setTabData(RelatedModel.GetListData("MetaData"), "MetaData");				
 				//RelatedView.addListItem(e.getName(),"MetaData");
-				this.ImplementedMethodView.setData(RelatedModel.getFormData());
+			
+				//this.ImplementedMethodView.setData(RelatedModel.getFormData());
+				
+				if(e.getPojo()!=null)
+				{
+					this.mainModel.loadData(e.getPojo());
+					//this.ImplementedMethodView ADD into the summary items
+				}
+				
+				//TODO - we need to set metaData
 
 			}
 			//HACK - should just call formComplete or change state
-			else if(e.getId()=="NewMethod")
-			{
-				this.FormComplete("NewMethod", "NewMethod");
-			}
+			
 			else
 			{
 				
