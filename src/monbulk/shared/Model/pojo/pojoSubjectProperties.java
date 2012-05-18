@@ -3,6 +3,7 @@ package monbulk.shared.Model.pojo;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import monbulk.shared.Form.ButtonField;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Model.IPojo;
 
@@ -16,6 +17,7 @@ public class pojoSubjectProperties implements IPojo {
 	public  static final String FormName = "SUBJECT_PROPERTIES";
 	public static final String SubjectNameField = "SubjectName";
 	public static final String SubjectTypeField = "SubjectType";
+	public static final String SubjectMetaDataField = "Add MetaData";
 	private FormBuilder SubjectPropertiesForm;
 	@Override
 	public void saveForm(FormBuilder input) {
@@ -51,6 +53,7 @@ public class pojoSubjectProperties implements IPojo {
 		{
 			SubjectPropertiesForm.AddSummaryItem(SubjectTypeField, "String",SubjectType);
 		}
+		SubjectPropertiesForm.AddItem(new ButtonField(this.SubjectMetaDataField,"Add MetaData"));
 		Iterator<pojoMetaData> i = this.attachedMetaData.iterator();
 		while(i.hasNext())
 		{

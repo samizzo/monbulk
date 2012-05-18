@@ -42,8 +42,7 @@ public class pojoMethod implements IPojo {
 	}
 	
 	public String writeTCL() {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
+		this.saveForm(MethodForm);
 					String Output="";
 					
 					String MethodName = "" + this.MethodName;
@@ -202,7 +201,13 @@ public class pojoMethod implements IPojo {
 			iFormField tmpItem = i.next();
 			if(tmpItem.hasValue())
 			{
-				setFieldVale(tmpItem.GetFieldName(),tmpItem.GetFieldValue());
+				String FieldName = tmpItem.GetFieldName(); 
+				if(tmpItem.GetFieldName().contains(input.getFormName()))
+				{
+					FieldName = FieldName.replace(input.getFormName() + ".", "");
+					
+				}
+				setFieldVale(FieldName,tmpItem.GetFieldValue() + "");
 				
 			}
 		}
@@ -220,28 +225,28 @@ public class pojoMethod implements IPojo {
 	public void setFieldVale(String FieldName, Object FieldValue) {
 		if(!FieldValue.equals(null))
 		{
-			if(FieldName == MethodAuthorField)
+			if(FieldName.contains(MethodAuthorField) && FieldName.length()==MethodAuthorField.length())
 			{
 				this.MethodAuthor = FieldValue.toString();
 			}
-			else if(FieldName == MethodIDField)
+			else if(FieldName.contains(MethodIDField)  && FieldName.length()==MethodIDField.length())
 			{
 				this.MethodID = FieldValue.toString();
 			}
-			else if(FieldName == MethodKeywordsField)
+			else if(FieldName.contains(MethodKeywordsField)  && FieldName.length()==MethodKeywordsField.length())
 			{
 				this.KeyWords = FieldValue.toString();
 			}
-			else if(FieldName == MethodNameField)
+			else if(FieldName.contains(MethodNameField)  && FieldName.length()==MethodNameField.length())
 			{
 				this.MethodName = FieldValue.toString();
 			}
-			else if(FieldName == MethodDescriptionField)
+			else if(FieldName.contains(MethodDescriptionField) && FieldName.length()==MethodDescriptionField.length())
 			{
 				this.MethodDescription = FieldValue.toString();
-				this.MethodForm.getFieldItemForName(this.MethodDescriptionField).SetFieldValue(FieldValue.toString());
+				//this.MethodForm.getFieldItemForName(this.MethodDescriptionField).SetFieldValue(FieldValue.toString());
 			}
-			else if(FieldName == MethodDateCreatedField)
+			else if(FieldName.contains(MethodDateCreatedField)  && FieldName.length()==MethodDateCreatedField.length())
 			{
 				this.DateCreated = FieldValue.toString();
 			}

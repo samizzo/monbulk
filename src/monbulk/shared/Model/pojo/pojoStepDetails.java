@@ -108,6 +108,7 @@ public class pojoStepDetails implements IPojo{
 		//String FormName = FormName + FormIndex;
 		try
 		{
+			GWTLogger.Log("Running @ pojoStepDetails.getFormStructure:", "pojoStepDetails", "getFormStructure", "111");
 		//StepDetailsForm.SetFormName(FormName + FormIndex);
 
 		StepDetailsForm.SetFormName(FormName);
@@ -137,13 +138,13 @@ public class pojoStepDetails implements IPojo{
 		}
 				//StepDetailsForm.AddListItem(pojoStudy.DicomModalityField, new ArrayList<String>(), "Loading");
 		 
-		GWTLogger.Log("Running @ pojoStepDetails.getFormStructure:", "pojoStepDetails", "getFormStructure", "140");
+		
 		
 		StepDetailsForm.AddItem(new DictionaryFormField(pojoStudy.DicomModalityField,pojoStudy.DICOM_DICTIONARY));
-		GWTLogger.Log("Running @ pojoStepDetails.getFormStructure:", "pojoStepDetails", "getFormStructure", "143");
+		
 		
 		StepDetailsForm.AddItem(new DictionaryFormField(pojoStudy.StudyTypeField,pojoStudy.STUDYTYPE_DICTIONARY));
-		GWTLogger.Log("Running @ pojoStepDetails.getFormStructure:", "pojoStepDetails", "getFormStructure", "146");
+		
 		
 		
 		StepDetailsForm.AddItem(new ButtonField(this.SubjectMetaDataField,"Add MetaData"));

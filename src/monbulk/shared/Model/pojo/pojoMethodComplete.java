@@ -52,8 +52,16 @@ public class pojoMethodComplete implements IPojo{
 	}
 	@Override
 	public String writeOutput(String Format) {
-		// TODO Auto-generated method stub
-		return this.MethodDetails.writeTCL();
+		
+		StringBuilder Output = new StringBuilder();
+		if(Format=="TCL")
+		{
+			Output.append(this.MethodDetails.writeTCL());
+			Output.append(this.SubjectProperties.writeOutput("TCL"));
+			return this.MethodDetails.writeTCL();
+		}
+		
+		return Output.toString();
 	}
 
 	@Override
