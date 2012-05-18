@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gwt.user.client.ui.Widget;
+
 import monbulk.shared.util.HtmlFormatter;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.StackedCategories;
@@ -110,13 +112,13 @@ public class StepDetailsModel implements iMBModel, IDraggable{
 	}
 
 	@Override
-	public Boolean DragItem(IPojo someItem) {
+	public Boolean DragItem(IPojo someItem,Widget inList) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Boolean DroptItem(IPojo someItem) {
+	public Boolean DroptItem(IPojo someItem,Widget inList) {
 		// TODO Auto-generated method stub
 		return null;
 	}

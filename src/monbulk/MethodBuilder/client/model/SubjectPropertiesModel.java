@@ -3,6 +3,9 @@ package monbulk.MethodBuilder.client.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.google.gwt.user.client.ui.Widget;
+
 import monbulk.shared.util.HtmlFormatter;
 import monbulk.shared.util.MonbulkEnums.ServiceNames;
 import monbulk.shared.Model.IPojo;
@@ -137,12 +140,12 @@ public class SubjectPropertiesModel implements iMBModel,IDraggable{
 		
 	}
 	@Override
-	public Boolean DragItem(IPojo someItem) {
+	public Boolean DragItem(IPojo someItem,Widget inList) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
-	public Boolean DroptItem(IPojo someItem) {
+	public Boolean DroptItem(IPojo someItem,Widget inList) {
 		// TODO Auto-generated method stub
 		return null;
 	}

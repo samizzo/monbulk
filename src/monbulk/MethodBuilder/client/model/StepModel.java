@@ -8,6 +8,7 @@ import arc.mf.model.dictionary.TermRef;
 import arc.mf.object.CollectionResolveHandler;
 
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Widget;
 
 
 import monbulk.shared.Model.IPojo;
@@ -253,14 +254,14 @@ public class StepModel implements iMBModel,IDraggable {
 		
 	}
 	@Override
-	public Boolean DragItem(IPojo someItem) {
+	public Boolean DragItem(IPojo someItem,Widget inList) {
 		// TODO Auto-generated method stub
-		return allSteps.get(CurrentStepIndex).DragItem(someItem);
+		return allSteps.get(CurrentStepIndex).DragItem(someItem,inList);
 	}
 	@Override
-	public Boolean DroptItem(IPojo someItem) {
+	public Boolean DroptItem(IPojo someItem,Widget inList) {
 		// TODO Auto-generated method stub
-		return allSteps.get(CurrentStepIndex).DroptItem(someItem);
+		return allSteps.get(CurrentStepIndex).DroptItem(someItem,inList);
 	}
 	@Override
 	public void Update(FormBuilder formData) {

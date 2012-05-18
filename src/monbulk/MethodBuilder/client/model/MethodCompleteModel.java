@@ -108,25 +108,30 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 	
 	@Override
 	public void loadData(String ID) {
-		
-		try
+		if(ID!="")
 		{
-			MethodService tmpSvc = MethodService.get();
-			if(tmpSvc != null)
+			try
 			{
-				tmpSvc.getMethod(ID, this);
-					
+				MethodService tmpSvc = MethodService.get();
+				if(tmpSvc != null)
+				{
+					tmpSvc.getMethod(ID, this);
+						
+				}
+				else
+				{
+					throw new ServiceRegistry.ServiceNotFoundException(ServiceNames.Methods);
+				}
 			}
-			else
+			catch (ServiceRegistry.ServiceNotFoundException e)
 			{
-				throw new ServiceRegistry.ServiceNotFoundException(ServiceNames.Methods);
+				GWT.log("Couldn't find Method service");
 			}
 		}
-		catch (ServiceRegistry.ServiceNotFoundException e)
+		else
 		{
-			GWT.log("Couldn't find Method service");
+			this.CompleteModel = new pojoMethodComplete(); 
 		}
-		
 		
 	}
 

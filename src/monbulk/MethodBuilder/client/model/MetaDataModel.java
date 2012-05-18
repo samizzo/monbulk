@@ -3,6 +3,8 @@ package monbulk.MethodBuilder.client.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.google.gwt.user.client.ui.Widget;
+
 
 import monbulk.shared.Architecture.IView.IDraggable;
 import monbulk.shared.Architecture.iModel;
@@ -52,7 +54,7 @@ public class MetaDataModel implements iModel,iListModel,IDraggable {
 
 
 	@Override
-	public Boolean DragItem(IPojo someItem) {
+	public Boolean DragItem(IPojo someItem, Widget item) {
 		// If the item Contains name X = then traverse list until we find name and set disabled
 		String MetaDataName =someItem.getFieldVale(pojoMetaData.MetaDataNameField);
 		if(MetaDataName.contains("animal"))
@@ -74,8 +76,8 @@ public class MetaDataModel implements iModel,iListModel,IDraggable {
 		return true;
 	}
 
-	@Override
-	public Boolean DroptItem(IPojo someItem) {
+	
+	public Boolean DroptItem(IPojo someItem,Widget someTable) {
 		// If the item Contains name X = then traverse list until we find name and set enabled
 		String MDName =someItem.getFieldVale(pojoMetaData.MetaDataNameField);
 		if(MDName.contains("animal"))
