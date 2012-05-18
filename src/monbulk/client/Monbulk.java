@@ -18,6 +18,7 @@ import monbulk.shared.util.GWTLogger;
 import monbulk.MetadataEditor.MetadataEditor;
 import monbulk.MetadataEditor.MetadataSelectWindow;
 import monbulk.MethodBuilder.client.MethodBuilder;
+import monbulk.MethodBuilder.client.PreviewWindow;
 
 /**
  * Monbulk entry point.
@@ -93,6 +94,9 @@ public class Monbulk implements EntryPoint
 
 					MethodBuilder mb = new MethodBuilder(d.getEventBus());
 					d.registerWindow(mb);
+					
+					PreviewWindow mp  = new PreviewWindow();
+					d.registerWindow(mp);
 				}
 				catch (Exception e)
 				{
