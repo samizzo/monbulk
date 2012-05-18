@@ -1,6 +1,8 @@
 package monbulk.shared.Architecture;
 
 import java.util.ArrayList;
+
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
 import monbulk.shared.Form.FormField;
 import monbulk.shared.Form.FormBuilder;
@@ -37,8 +39,8 @@ public interface IView {
 	 }
 	 public interface IDraggable
 	 {
-			public Boolean DragItem(IPojo someItem);
-			public Boolean DroptItem(IPojo someItem);
+			public Boolean DragItem(IPojo someItem,Widget fromList);
+			public Boolean DroptItem(IPojo someItem,Widget toList);
 	 }
 	 
 
