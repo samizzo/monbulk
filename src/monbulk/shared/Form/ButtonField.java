@@ -16,7 +16,8 @@ public class ButtonField extends FormField {
 		PushButton selectButton = new PushButton();
 		selectButton.setStyleName("btnDefault-Add");
 		selectButton.setText(ButtonName);
-		
+		this.hasValue=false;
+		this.isStatic=true;
 		this._FieldVaLueWidget = selectButton;
 		Label FieldNameLabel = new Label();
 		FieldNameLabel.setText(this.FieldName);
