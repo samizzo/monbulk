@@ -31,7 +31,8 @@ public class Monbulk implements EntryPoint
 		if (hostName.equals("127.0.0.1") || hostName.equals("localhost"))
 		{
 			debugLogon();
-			GWTLogger.isDebug = true;
+			String user = Window.Location.getParameter("user");
+			GWTLogger.isDebug = user == null || !user.equals("izzo");
 		}
 		else
 		{
