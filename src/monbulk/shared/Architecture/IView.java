@@ -40,7 +40,7 @@ public interface IView {
 	 public interface IDraggable
 	 {
 			public Boolean DragItem(IPojo someItem,Widget fromList);
-			public Boolean DroptItem(IPojo someItem,Widget toList);
+			public Boolean DroptItem(IPojo someItem,Widget toList,String FieldName);
 	 }
 	 
 
