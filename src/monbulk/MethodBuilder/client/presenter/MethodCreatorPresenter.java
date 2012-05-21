@@ -47,6 +47,7 @@ import monbulk.shared.Form.FormField;
 import monbulk.shared.Form.iFormField;
 import monbulk.shared.Form.iFormField.iFormFieldValidation;
 import monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.pojo.pojoMetaData;
 import monbulk.shared.Model.pojo.pojoMethod;
 import monbulk.shared.Model.pojo.pojoMethodComplete;
 import monbulk.shared.Model.pojo.pojoStepDetails;
@@ -297,20 +298,48 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 			}
 			else if(FormName==pojoSubjectProperties.FormName)
 			{
-				GWT.log("Step is Selected");				
-				this.mainModel.addStep();
-				//this.ImplementedMethodView.setData(anyBuilder)
-				this.ChangeState(MethodCreatorStates.STEP_DETAILS);
-				this.ImplementedMethodView.setData(this.mainModel.getFormData(MethodCreatorStates.STEP_DETAILS.toString() + "0" ));
-				GWT.log("Step is Selected 2");
+				IFormView tmpView = this._AllStates.get(MethodCreatorStates.STEP_DETAILS);
+				this.ImplementedMethodView.clearChild();
+				pojoStepDetails tmpPojo1 = this.mainModel.getFirstStep();
+				if(tmpPojo1!=null)
+				{
+					FormBuilder tmpForm  = tmpPojo1.getFormStructure();
+					if(tmpForm!=null)
+					{
+						GWT.log("State change 3");			
+						//this.ImplementedMethodView.setData(tmpForm);
+						tmpView.LoadForm(tmpForm);
+						this.ImplementedMethodView.setData(tmpForm);
+						this.ImplementedMethodView.setChild(tmpView.asWidget());
+					}
+				}
+				
+				
+				//this.ImplementedMethodView.setData(this.mainModel.getFormData(this.mainModel.get);
+			
 			}
 			else if(FormName.contains(pojoStepDetails.FormName))
 			{
 				//TODO Must ensure next, prev and complete states are submitted to any view/form
-				this.mainModel.addStep();
-				
-				this.ChangeState(MethodCreatorStates.STEP_DETAILS);
-				
+				IFormView tmpView = this._AllStates.get(MethodCreatorStates.STEP_DETAILS);
+				this.ImplementedMethodView.clearChild();
+				pojoStepDetails tmpPojo = this.mainModel.getNextStep(FormName); 
+				tmpView.ClearForm();
+				if(tmpPojo!=null)
+				{
+					FormBuilder tmpForm  = tmpPojo.getFormStructure();
+					if(tmpForm!=null)
+					{
+						GWT.log("State change 3");			
+						//this.ImplementedMethodView.setData(tmpForm);
+						tmpView.LoadForm(tmpForm);
+						this.ImplementedMethodView.setData(tmpForm);
+						
+						this.ImplementedMethodView.setChild(tmpView.asWidget());
+					}
+				}
+				//this.ImplementedMethodView.clearChild();
+		
 			}
 		}
 		else if(Command=="Prev")
@@ -339,17 +368,28 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		}
 		else if(Command=="Edit")
 		{
-			if(FormName.contains("StepDetails"))
+			if(FormName.contains(pojoStepDetails.FormName))
 			{
-				/*
-				this.ChangeState(MethodCreatorStates.STEP_DETAILS);
-				PresenterState newState =this.getCurrentPresenterState();
-				StepModel newStateModel =(StepModel)newState.getModel();
+				IFormView tmpView = this._AllStates.get(MethodCreatorStates.STEP_DETAILS);
+				this.ImplementedMethodView.clearChild();
+				pojoStepDetails tmpPojo = this.mainModel.getStep(FormName); 
+				tmpView.ClearForm();
+				if(tmpPojo!=null)
+				{
+					FormBuilder tmpForm  = tmpPojo.getFormStructure();
+					//com.google.gwt.user.client.Window.alert(tmpPojo.getFormStructure().getFormDetails().toString() + tmpPojo.getFormStructure().getFormDetails().size());
+					//tmpPojo.getFormStructure().getFormDetails()
+					if(tmpForm!=null)
+					{
+						GWT.log("State change 3");			
+						//this.ImplementedMethodView.setData(tmpForm);
+						tmpView.LoadForm(tmpForm);
+						this.ImplementedMethodView.setData(tmpForm);						
+						this.ImplementedMethodView.setChild(tmpView.asWidget());
+					}
+				}
 				
-				newStateModel.setCurrentStep(FormName, true);
-				newState.getView().LoadForm(newStateModel.getFormData());
-				//This works
-				this.ImplementedMethodView.SetMenuIndex(FormName);/*/
+				
 			}
 			else
 			{
@@ -387,35 +427,10 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		}
 		else if(Command=="Publish")
 		{
-			
-			//tclBox.setModal(true);
-		//	tclBox.clear();
-			
-			//HTML tclText = new HTML();
 			StringBuilder strTCL = new StringBuilder();
 			strTCL = strTCL.append(HtmlFormatter.GetHTMLUtilityScript("TCL"));
 			
 			strTCL = strTCL.append(this.mainModel.getStringRpresentation("TCL"));
-			/*This is in Model
-			strTCL = strTCL + HtmlFormatter.GetHTMLTab() + "\"" + HtmlFormatter.GetHTMLNewline();
-			strTCL = strTCL + HtmlFormatter.GetHTMLTab() + "set id2 [xvalue id [om.pssd.method.for.subject.update $args]]" + HtmlFormatter.GetHTMLNewline();
-			strTCL = strTCL + HtmlFormatter.GetHTMLTab() + "if { $id2 == \"\" } {" + HtmlFormatter.GetHTMLNewline();
-			strTCL = strTCL + HtmlFormatter.GetHTMLTabs(2) + "return $id" + HtmlFormatter.GetHTMLNewline();
-			strTCL = strTCL + HtmlFormatter.GetHTMLTab() + "} else {" + HtmlFormatter.GetHTMLNewline();
-			strTCL = strTCL + HtmlFormatter.GetHTMLTabs(2) + "return $id2" + HtmlFormatter.GetHTMLNewline();
-			strTCL = strTCL + HtmlFormatter.GetHTMLTab() + "}" + HtmlFormatter.GetHTMLNewline();
-			strTCL = strTCL + "}" + HtmlFormatter.GetHTMLNewline();
-			*/
-			
-			//tclText.setHTML(strTCL);
-			//tmpPanel2.add(tclText);
-			
-			//Button ok = new Button("CLOSE WINDOW");
-		     // ok.addClickHandler(new ClickHandler() {
-		       // public void onClick(ClickEvent event) {
-		       // 	tclBox.hide();
-		        //}
-		      //});
 			
 			//Should just launch a Window with a Pojo
 			Desktop d = Desktop.get();
@@ -441,55 +456,44 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 			eventBus.fireEvent(new WindowEvent("MethodBuilder", WindowEvent.EventType.CloseWindow));
 		}
 	
-	}
+		}
 	
 	@Override
 	public void FireDragEvent(DragEvent e) {
 		
 		
 		
-		iMBModel RelatedModel = this.mainModel;
-		IFormView RelatedView = this._AllStates.get(CurrentState);
+		
+		
 		//RelatedModel.
 		
-		if(RelatedView!=null)
-		{
-			if(e.getId().equals("true"))
+		String DataObjectType = e.getName();
+		String DataFieldName = e.getId();
+		int Action = e.getIndex();
+		//0 = Add
+		//1= remove
+		IPojo relatedPOJO = e.getPojo();
+		
+			if(Action ==0)
 			{
-			
-				//This takes care of the new list
-			///	RelatedModel.AddListItem.AddMetaDataItem(e.getName(),"MetaData");
-				
-				//This rebuilds the list
-			//	this.ImplementedDockView.setTabData(RelatedModel.GetListData("MetaData"), "MetaData");				
-				//RelatedView.addListItem(e.getName(),"MetaData");
-			
-				//this.ImplementedMethodView.setData(RelatedModel.getFormData());
-				
-				if(e.getPojo()!=null)
+				if(DataObjectType==pojoMetaData.FormName)
 				{
-					this.mainModel.loadData(e.getPojo());
-					//this.ImplementedMethodView ADD into the summary items
+					this.mainModel.loadMetaData(DataFieldName, (pojoMetaData) relatedPOJO);
+					///this.ImplementedMethodView.setData(anyBuilder)
 				}
-				
-				//TODO - we need to set metaData
-
 			}
-			//HACK - should just call formComplete or change state
-			
-			else
+			if(Action==1)
 			{
-				
-				//The Variation is to follow the list index
-			//	RelatedModel.RemoveMetaDataItem(e.getName());
-				//RelatedView.RemoveListItem("MetaData",e.getIndex());
-			//	this.ImplementedDockView.setTabData(RelatedModel.getMetaDataCategories(), "MetaData");
-				this.ImplementedMethodView.setData(RelatedModel.getFormData());
-				//Option 2
-				//this.ImplementedDockView.RemoveListItem("", e.getIndex());
-
+				if(DataObjectType==pojoMetaData.FormName)
+				{
+					this.mainModel.removeMetaData(DataFieldName, (pojoMetaData) relatedPOJO);
+					//this.mainModel.loadMetaData(DataFieldName, relatedPOJO);
+				}
 			}
-		}
+		
+		
+		//this.mainModel.
+		
 	}
 	
 	@Override
