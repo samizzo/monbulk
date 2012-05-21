@@ -311,12 +311,8 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_addNewElement = addNewElement;
 		m_elementEditor.setMetadataElement(element);
 
-		// FIXME: For this to work, the title needs to set overflow hidden
-		// and text-overflow ellipsis, but it wasn't working so I've commented
-		// it out for now.
-		//d.setWindowTitle(m_elementEditor, "Element - " + selectedElement.getName());
-		m_elementEditor.setOkCancelHandler(this);
 		Desktop d = Desktop.get();
+		m_elementEditor.setOkCancelHandler(this);
 		d.show(m_elementEditor, true);
 	}
 
