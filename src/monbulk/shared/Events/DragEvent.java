@@ -12,11 +12,11 @@ public class DragEvent extends GwtEvent<DragEventHandler>{
 	private final IPojo draggedPOJO;
 	private final int Index;
 	
-	public DragEvent(String tmpName, String tmpID,int index,IPojo tmpPOJO)
+	public DragEvent(String tmpName, String tmpID,int Action,IPojo tmpPOJO)
 	{
 		this.Id = tmpID;
 		this.Name = tmpName;
-		this.Index = index;
+		this.Index = Action;
 		this.draggedPOJO = tmpPOJO;
 	}
 	
