@@ -707,80 +707,6 @@ h1 {
 	float:right;
 }
 
-/*A StackedPanel with a row for each item - used on MetaData */
- .DraggablePanel 
- {
- 	
- 	background-color:#FFF;
- 	padding:0px;
- 	margin:0px;
- 	text-align:left;
- 	float:left;
- 	vertical-align:top;
- }
- .DraggableChild
- {
- 	
- 	margin:0px;
- 	background: url(images/SpriteSheetStatic.png) no-repeat -759px -274px;
- 	height:36px;
- 	width:140px;
- 	width:100%;
- 	color:#333;
- }
- .DraggableChild:hover
- {
- 	text-decoration:underline
- }
- .DraggableChild-disabled
- {
- 	margin:0px;
- 	background: url(images/SpriteSheetStatic.png) no-repeat -973px -274px;
- 	height:36px;
- 	width:140px;
- 	width:100%;
- 	color:#333;
- 	
- }
- .DraggableChild .LabelCell
- {
-	width:140px;
-	vertical-align:middle; 
- }
- .DraggableChild .mdItemLabel
-{
-	padding-left:4px;
-	font-size:12px;
-}
-.DraggableChild .AddButton
-{
-	background-image:url(images/ICONS.png);
-	height:30px;
-	width:32px;
-	background-position:-680px -908px;
-}
-.DraggableChild .AddButton:Hover,.AddButton-down
-{
-	background-position:-758px -908px;
-}
-.DraggableChild .ActiveAdd
-{
-	background-position:-680px -908px;
-}
-.DraggableChild .AddButton-up-disabled, .AddButton-down-disabled
-{
-	background-position:-680px -908px;
-}
-.DraggableChild .RemoveButton
-{
-	background-image:url(images/ICONS.png);
-	background-position:-466px -184px;
-	height:30px;
-	width:32px;
-	float:right;
-}
-
-/* End Draggable Widget */
  
  .MethodBuilderPlugins .btnMeta-active, .MethodBuilderPlugins .btnMeta-passive:hover {
    background: url(images/SpriteSheetStatic.png) no-repeat -234px 8px;
@@ -990,9 +916,76 @@ MethodEditorDynamicFieldsPanel
 
 
 
-/*AG additions 2/5/12 below */
+/*A StackedPanel with a row for each item - used on MetaData */
+ .DraggablePanel 
+ {
+ 	
+ 	background-color:#FFF;
+ 	padding:0px;
+ 	margin:0px;
+ 	text-align:left;
+ 	float:left;
+ 	vertical-align:top;
+ }
+ .DraggableChild
+ {
+ 	
+ 	margin:0px;
+ 	/*background: url(images/SpriteSheetStatic.png) no-repeat -759px -274px;*/
+ 	height:36px;
+ 	/*width:140px;*/
+	background: url(images/SpriteSheetHorizontalTiles.png) 0px -341px;
+ 	width:100%;
+ 	color:#333;
+	border:Solid 2px #333;
+ }
+ .DraggableChild:hover
+ {
+ 	text-decoration:underline
+ }
+ .DraggableChild-disabled
+ {
+ 	margin:0px;
+ 	background: url(images/SpriteSheetStatic.png) no-repeat -973px -274px;
+ 	height:40px;
+
+ 	width:100%;
+ 	color:#333;
+ 	
+ }
+ .DraggableChild .LabelCell
+ {
+	width:220px;
+	vertical-align:middle; 
+	border-right:Solid 2px #333;
+	height:100%;
+ }
+ .DraggableChild .mdItemLabel
+{
+	padding-left:4px;
+	font-size:12px;
+}
+.btnAdd-Blue
+{
+	
+	background:url(images/ICONS.png) no-repeat -324px -380px;
 
 
+}
+.DraggableChild .checkBox
+{
+	background-color:#CCC;
+	height:30px;
+	border:Solid 2px #333;
+	width:30px;
+}
+/**End Draggable Widget
+/*AG additions 2/5/12->Ongoing below */
+
+.BodyPanel
+{
+
+}
 .menuStack
 {
 	
@@ -1036,7 +1029,7 @@ MethodEditorDynamicFieldsPanel
 	background-image:url("images/SpriteSheetButtons.png");
 	height:35px;
 	color:White;
-	min-width:278px;
+	width:278px;
 	background-position:0px -102px;
 	background-color:red;
 	border:Solid 2px #666;
@@ -1048,12 +1041,12 @@ MethodEditorDynamicFieldsPanel
 		
 .FormTitleDefault
 {
-	width:528px;
+
 	text-align:left;
 	/*background-color:Blue;*/
 	background-image:url("images/SpriteSheetButtons.png");
 	height:35px;
-	min-width:400px;
+	min-width:500px;
 	border:Solid 2px #666;
 	color:White;
 	background-position:0px -145px;
@@ -1155,7 +1148,22 @@ MethodEditorDynamicFieldsPanel
 	height:100%;
 	float:right;
 }
-
+.formButtonAdd
+{
+background-image:url("images/SpriteSheetButtons.png");
+	border:Solid 2px #CCC;
+	color:White;
+	background-position:0px -25px;
+	font-size: 12px;
+	font-family: Myriad Pro, Tahoma,Verdana;
+	text-transform:uppercase;
+	width:160px;
+	height:25px;
+	text-align:center;
+	font-weight:bold;
+	line-height:22px;
+	float:right;
+}
 /*Some Buttons */
 .btnDefault
 {
