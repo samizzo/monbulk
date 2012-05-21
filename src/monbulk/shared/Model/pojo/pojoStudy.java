@@ -1,6 +1,7 @@
 package monbulk.shared.Model.pojo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import monbulk.shared.Form.FormBuilder;
@@ -8,8 +9,8 @@ import monbulk.shared.Form.ListField;
 import monbulk.shared.Model.IPojo;
 
 public class pojoStudy implements IPojo {
-
-	private ArrayList<pojoMetaData> attachedMetaData;
+	private HashMap<String,pojoMetaData> attachedMetaData;
+	//private ArrayList<pojoMetaData> attachedMetaData;
 	private pojoDictionary DicomModality;
 	private pojoDictionary StudyType;
 	
@@ -24,20 +25,20 @@ public class pojoStudy implements IPojo {
 	{
 		DicomModality = new pojoDictionary("");
 		StudyType = new pojoDictionary("");
-		attachedMetaData = new ArrayList<pojoMetaData>(); 
+		attachedMetaData = new HashMap<String,pojoMetaData>(); 
 	}
 	public pojoStudy(pojoDictionary Dicom, pojoDictionary StudyTypes)
 	{
 		DicomModality = Dicom;
 		StudyType = StudyTypes;
-		attachedMetaData = new ArrayList<pojoMetaData>();
+		attachedMetaData = new HashMap<String,pojoMetaData>();
 	}
 	@Override
 	public void saveForm(FormBuilder input) {
 		// TODO Auto-generated method stub
 		
 	}
-	public ArrayList<pojoMetaData> getMetaDataList()
+	public HashMap<String,pojoMetaData> getMetaDataList()
 	{
 		return attachedMetaData;
 	}
@@ -49,12 +50,12 @@ public class pojoStudy implements IPojo {
 		ListField tmpField = new ListField(StudyTypeField,"");
 		ListField tmpField2 = new ListField(DicomModalityField,"");
 		
-		Iterator<pojoMetaData> i = this.attachedMetaData.iterator();
+		/*Iterator<pojoMetaData> i = this.attachedMetaData.iterator();
 		while(i.hasNext())
 		{
 			pojoMetaData tmpItem = i.next();
 			studyForm.MergeForm(tmpItem.getFormStructure());
-		}
+		}*/
 		return studyForm;
 	}
 

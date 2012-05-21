@@ -1,22 +1,18 @@
 package monbulk.shared.Model.pojo;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 
 import monbulk.shared.Form.ButtonField;
 import monbulk.shared.Form.DictionaryFormField;
+import monbulk.shared.Form.DraggableFormField;
 import monbulk.shared.Form.FormBuilder;
-import monbulk.shared.Form.FormField;
-import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.IPojo;
-import monbulk.shared.Services.Dictionary;
-import monbulk.shared.Services.Dictionary.Entry;
-import monbulk.shared.Services.DictionaryService;
-import monbulk.shared.Services.DictionaryService.GetDictionaryHandler;
+
 import monbulk.shared.util.GWTLogger;
 import monbulk.shared.util.HtmlFormatter;
 
@@ -25,7 +21,7 @@ public class pojoStepDetails implements IPojo{
 	private String StepName;
 	private String StepDescription;
 	private String StepID;
-	private ArrayList<pojoMetaData> attachedMetaData;
+	private HashMap<String,pojoMetaData> attachedMetaData;
 	
 	private pojoStudy relatedStudy;
 	private Boolean hasStudy;
@@ -47,12 +43,47 @@ public class pojoStepDetails implements IPojo{
 		this.relatedStudy = new pojoStudy();
 		StepDetailsForm = new FormBuilder();
 		
-		this.attachedMetaData = new ArrayList<pojoMetaData>();
+		this.attachedMetaData = new HashMap<String,pojoMetaData>();
 	}
-	
+	public int getFormIndex()
+	{
+		return this.FormIndex;
+	}
+	public void setFormIndex(int newIndex)
+	{
+		this.FormIndex = newIndex;
+	}
+	public void UpdateMetaData(pojoMetaData selectedPOJO,Boolean isAdd,String FieldName)
+	{
+		if(FieldName==SubjectMetaDataField)
+		{
+			this.UpdateMetaData(selectedPOJO, isAdd, this.attachedMetaData);
+		}
+		else if(FieldName==pojoStudy.STUDY_METADATA) 
+		{
+			this.UpdateMetaData(selectedPOJO, isAdd, this.relatedStudy.getMetaDataList());
+		}
+	}
+	public void UpdateMetaData(pojoMetaData selectedPOJO,Boolean isAdd,HashMap<String,pojoMetaData> inList)
+	{
+		if(isAdd)
+		{
+			if(inList.get(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField))==null)
+			{
+				inList.put(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField), selectedPOJO);
+			}
+		}
+		else
+		{
+			if(inList.get(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField))==null)
+			{
+				inList.remove(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField));
+			}
+		}
+	}
 	public String writeTCL() {
 		// TODO Auto-generated method stub
-		String Output = "";
+		StringBuilder Output = new StringBuilder();
 		
 		String StepName = "";
 		String StepDescription = "";
@@ -62,22 +93,23 @@ public class pojoStepDetails implements IPojo{
 	
 		//String SubjectType= ":metadata < :definition -requirement mandatory hfi.pssd.subject :value < :type constant(" + this.SubjectType + " > >\\";
 		
-			Output = Output + HtmlFormatter.GetHTMLTabs(2) + ":step < \\" + HtmlFormatter.GetHTMLNewline();
-			Output = Output + HtmlFormatter.GetHTMLTabs(3)+ ":name \\\"" + StepName + "\\\"\\" + HtmlFormatter.GetHTMLNewline();
-			Output = Output + HtmlFormatter.GetHTMLTabs(3)+ ":description \\\"" + StepDescription + "\\\" \\" + HtmlFormatter.GetHTMLNewline();;
+			Output.append(HtmlFormatter.GetHTMLTabs(2) + ":step < \\" + HtmlFormatter.GetHTMLNewline());
+			Output.append(HtmlFormatter.GetHTMLTabs(3)+ ":name \\\"" + StepName + "\\\"\\" + HtmlFormatter.GetHTMLNewline());
+			Output.append(HtmlFormatter.GetHTMLTabs(3)+ ":description \\\"" + StepDescription + "\\\" \\" + HtmlFormatter.GetHTMLNewline());
 			
 			
 			if(this.attachedMetaData.size() > 0)
 			{
-				Iterator<pojoMetaData> i = attachedMetaData.iterator();
-				Output = Output +  HtmlFormatter.GetHTMLTabs(3) + ":subject -part p < \\" + HtmlFormatter.GetHTMLNewline();
+				Iterator<java.util.Map.Entry<String,pojoMetaData>> i = attachedMetaData.entrySet().iterator();
+				Output.append(HtmlFormatter.GetHTMLTabs(3) + ":subject -part p < \\" + HtmlFormatter.GetHTMLNewline());
 				
 				while(i.hasNext())
 				{
-					pojoMetaData tmpItem = i.next();
+					java.util.Map.Entry<String,pojoMetaData> in =  i.next();
+					pojoMetaData tmpItem = in.getValue();
 					if(tmpItem.getFieldVale(pojoMetaData.MetaDataNameSpaceField) == "Subject")
 					{
-						Output = Output + tmpItem.writeOutput("TCL");
+						Output.append(tmpItem.writeOutput("TCL"));
 					}
 					//else add somewhere else
 				}
@@ -88,11 +120,11 @@ public class pojoStepDetails implements IPojo{
 			if(hasStudy)
 			{
 				//Output = Output + HtmlFormatter.GetHTMLTabs(3) + ":study < :type \\\"" + StepStudy + "\\\" :dicom < :modality " + Modality + " > > \\" + HtmlFormatter.GetHTMLNewline();
-				Output = Output + relatedStudy.writeOutput("TCL");
+				Output.append(relatedStudy.writeOutput("TCL"));
 			}
-			Output = Output + HtmlFormatter.GetHTMLTabs(2)+ "> \\" + HtmlFormatter.GetHTMLNewline();
+			Output.append(HtmlFormatter.GetHTMLTabs(2)+ "> \\" + HtmlFormatter.GetHTMLNewline());
 		
-		return Output;
+		return Output.toString();
 	}
 
 	@Override
@@ -106,12 +138,13 @@ public class pojoStepDetails implements IPojo{
 		// TODO Auto-generated method stub
 //		StepDetailsForm = new FormBuilder();
 		//String FormName = FormName + FormIndex;
+		//StepDetailsForm.
 		try
 		{
 			GWTLogger.Log("Running @ pojoStepDetails.getFormStructure:", "pojoStepDetails", "getFormStructure", "111");
 		//StepDetailsForm.SetFormName(FormName + FormIndex);
 
-		StepDetailsForm.SetFormName(FormName);
+		StepDetailsForm.SetFormName(FormName+this.FormIndex);
 		if(this.StepName==null)
 		{
 			StepDetailsForm.AddTitleItem(StepNameField,"String","");
@@ -124,6 +157,7 @@ public class pojoStepDetails implements IPojo{
 		{	
 			StepDetailsForm.AddSummaryItem(StepDescriptionField, "Description");	
 		}
+		
 		else
 		{
 			StepDetailsForm.AddSummaryItem(StepDescriptionField, "Description",StepDescription);
@@ -151,14 +185,28 @@ public class pojoStepDetails implements IPojo{
 		GWTLogger.Log("Running @ pojoStepDetails.getFormStructure:", "pojoStepDetails", "getFormStructure", "150");
 		if(this.attachedMetaData.size() > 0)
 		{
-			
+			Iterator<Entry<String, pojoMetaData>> i = this.attachedMetaData.entrySet().iterator();
+			int index = 0;
+			while(i.hasNext())
+			{
+				Entry<String, pojoMetaData> tmpItem = i.next();
+				//SubjectPropertiesForm.MergeForm(tmpItem.getFormStructure());
+				StepDetailsForm.AddItem(new DraggableFormField(SubjectMetaDataField + index, index, false, tmpItem.getValue()));
+			}
 		}
 		
 		StepDetailsForm.AddItem(new ButtonField(pojoStudy.STUDY_METADATA,"Add MetaData"));
 		GWTLogger.Log("Running @ pojoStepDetails.getFormStructure:", "pojoStepDetails", "getFormStructure", "157");
 		if(this.relatedStudy.getMetaDataList().size()>0)
 		{
-			
+			Iterator<Entry<String, pojoMetaData>> i = this.relatedStudy.getMetaDataList().entrySet().iterator();
+			int index = 0;
+			while(i.hasNext())
+			{
+				Entry<String, pojoMetaData> tmpItem = i.next();
+				//SubjectPropertiesForm.MergeForm(tmpItem.getFormStructure());
+				StepDetailsForm.AddItem(new DraggableFormField(SubjectMetaDataField + index, index, false, tmpItem.getValue()));
+			}
 		}
 		
 		return StepDetailsForm;
@@ -167,6 +215,7 @@ public class pojoStepDetails implements IPojo{
 		{
 			GWTLogger.Log("Error @ pojoStepDetails.getFormStructure:" + ex.getMessage(), "pojoStepDetails", "getFormStructure", "167");
 		}
+		GWTLogger.Log("Running @ pojoStepDetails.getFormStructure:", "pojoStepDetails", "getFormStructure", "218");
 		return StepDetailsForm;
 	}
 

@@ -1,8 +1,10 @@
 package monbulk.shared.Model.pojo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
@@ -13,6 +15,8 @@ import com.google.gwt.xml.client.XMLParser;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.Services.MethodService;
+import monbulk.shared.util.HtmlFormatter;
+
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.impl.DOMParseException;
@@ -20,18 +24,21 @@ public class pojoMethodComplete implements IPojo{
 
 	private pojoMethod MethodDetails;
 	private pojoSubjectProperties SubjectProperties;
-	private ArrayList<pojoStepDetails> allSteps;
+	private HashMap<String,pojoStepDetails> allSteps;
+	
 	private String MethodID;
 	private String _XML; //So we would hope to be bale to add a schema and hope they match
-	
+	private int stepsAdded;
+	private int stepsDeleted;
 	
 	public pojoMethodComplete()
 	{
 		
 		this.MethodDetails = new pojoMethod();
 		this.SubjectProperties = new pojoSubjectProperties();
-		this.allSteps = new ArrayList<pojoStepDetails>();
-		
+		this.allSteps = new HashMap<String,pojoStepDetails>();
+		stepsAdded=0;
+		stepsDeleted=0;
 	}
 	public pojoMethodComplete(String ID)
 	{
@@ -40,15 +47,36 @@ public class pojoMethodComplete implements IPojo{
 		this.MethodDetails = new pojoMethod();
 		this.MethodDetails.setMethodID(ID);
 		this.SubjectProperties = new pojoSubjectProperties();
-		this.allSteps = new ArrayList<pojoStepDetails>();
+		this.allSteps = new HashMap<String,pojoStepDetails>();
 	}
-	public void addStep(pojoStepDetails tmpStep)
+	
+	public void addStep(pojoStepDetails tmpStep,String StepFormName)
 	{
-		this.allSteps.add(tmpStep);
+		//String formName = pojoStepDetails.FormName+ this.getStepCount();
+		this.allSteps.put(StepFormName, tmpStep); //.add(StepFormName,tmpStep);
+		this.stepsAdded++;
 	}
-	public void removeStep(int StepIndex)
+	public void addStep()
 	{
-		this.allSteps.remove(StepIndex);
+		String formName = pojoStepDetails.FormName+ this.getStepCount();
+		pojoStepDetails tmpStep = new pojoStepDetails(this.stepsAdded);
+		this.allSteps.put(formName,tmpStep); //.add(StepFormName,tmpStep);
+		this.stepsAdded++;
+	}
+	/**
+	 * In case we need to change the ordering of steps we need a sort algorithm, a setter function and an update of all Form Indices 
+	 */
+	public void sortSteps()
+	{
+		HashMap<String,pojoStepDetails> sortedMap = new HashMap<String,pojoStepDetails>();
+		Iterator<java.util.Map.Entry<String,pojoStepDetails>> i = allSteps.entrySet().iterator();
+		int index=0;
+		//find a sorting algorithm - selsort?
+	}
+	public void removeStep(String StepFormName)
+	{
+		this.allSteps.remove(StepFormName);  //.remove(StepIndex);
+		this.stepsDeleted++;
 	}
 	@Override
 	public String writeOutput(String Format) {
@@ -79,10 +107,12 @@ public class pojoMethodComplete implements IPojo{
 		returnForm.MergeForm(this.SubjectProperties.getFormStructure());
 		if(this.allSteps.size() > 0)
 		{
-			Iterator<pojoStepDetails> i = this.allSteps.iterator();
+			Iterator<Entry<String,pojoStepDetails>> i = this.allSteps.entrySet().iterator();
 			while(i.hasNext())
 			{
-				pojoStepDetails step = i.next();
+				Entry<String, pojoStepDetails> in = i.next();
+				
+				pojoStepDetails step = in.getValue();
 				returnForm.MergeForm(step.getFormStructure());				
 			}
 		}
@@ -122,7 +152,7 @@ public class pojoMethodComplete implements IPojo{
 	{
 		return this.SubjectProperties;
 	}
-	public ArrayList<pojoStepDetails> getSteps()
+	public HashMap<String,pojoStepDetails> getSteps()
 	{
 		return this.allSteps;
 	}
@@ -151,6 +181,7 @@ public class pojoMethodComplete implements IPojo{
 				
 				NodeList tmpList = tmpList1.item(0).getChildNodes();
 				int i=0;
+				int j=0;
 				String List ="";
 				while(i<tmpList.getLength())
 				{
@@ -180,7 +211,10 @@ public class pojoMethodComplete implements IPojo{
 						tmpStep.readInput("XML", tmpNode.toString());
 						if(this.allSteps!=null)
 						{
-							this.allSteps.add(tmpStep);
+							String tmpFormName = pojoStepDetails.FormName + j;
+							this.allSteps.put(tmpFormName,tmpStep);
+							j++;
+							
 						}
 						
 					}

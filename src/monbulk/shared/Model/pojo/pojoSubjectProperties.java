@@ -1,9 +1,12 @@
 package monbulk.shared.Model.pojo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import monbulk.shared.Form.ButtonField;
+import monbulk.shared.Form.DraggableFormField;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Model.IPojo;
 
@@ -12,8 +15,9 @@ public class pojoSubjectProperties implements IPojo {
 	private String SubjectName;
 	private String SubjectType;
 	
-	private ArrayList<pojoMetaData> attachedMetaData;
+	//private ArrayList<pojoMetaData> attachedMetaData;
 	
+	private HashMap<String,pojoMetaData> attachedMetaData;
 	public  static final String FormName = "SUBJECT_PROPERTIES";
 	public static final String SubjectNameField = "SubjectName";
 	public static final String SubjectTypeField = "SubjectType";
@@ -26,7 +30,7 @@ public class pojoSubjectProperties implements IPojo {
 	}
 	public pojoSubjectProperties()
 	{
-		this.attachedMetaData = new ArrayList<pojoMetaData>();
+		this.attachedMetaData = new HashMap<String,pojoMetaData>();
 		SubjectPropertiesForm = new FormBuilder();
 		BuildForm();
 	}
@@ -54,11 +58,13 @@ public class pojoSubjectProperties implements IPojo {
 			SubjectPropertiesForm.AddSummaryItem(SubjectTypeField, "String",SubjectType);
 		}
 		SubjectPropertiesForm.AddItem(new ButtonField(this.SubjectMetaDataField,"Add MetaData"));
-		Iterator<pojoMetaData> i = this.attachedMetaData.iterator();
+		Iterator<Entry<String, pojoMetaData>> i = this.attachedMetaData.entrySet().iterator();
+		int index = 0;
 		while(i.hasNext())
 		{
-			pojoMetaData tmpItem = i.next();
-			SubjectPropertiesForm.MergeForm(tmpItem.getFormStructure());
+			Entry<String, pojoMetaData> tmpItem = i.next();
+			//SubjectPropertiesForm.MergeForm(tmpItem.getFormStructure());
+			SubjectPropertiesForm.AddItem(new DraggableFormField(SubjectMetaDataField + index, index, false, tmpItem.getValue()));
 		}
 
 	}
@@ -107,7 +113,23 @@ public class pojoSubjectProperties implements IPojo {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	public void UpdateMetaData(pojoMetaData selectedPOJO,Boolean isAdd)
+	{
+		if(isAdd)
+		{
+			if(this.attachedMetaData.get(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField))==null)
+			{
+				this.attachedMetaData.put(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField), selectedPOJO);
+			}
+		}
+		else
+		{
+			if(this.attachedMetaData.get(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField))==null)
+			{
+				this.attachedMetaData.remove(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField));
+			}
+		}
+	}
 	@Override
 	public void readInput(String Format, Object Input) {
 		
@@ -144,7 +166,7 @@ public class pojoSubjectProperties implements IPojo {
 						{
 							tmpMD.setFieldVale(pojoMetaData.IsMandatoryField, false);
 						}
-						this.attachedMetaData.add(tmpMD);
+						this.attachedMetaData.put(tmpMD.getFieldVale(tmpMD.MetaDataNameField), tmpMD);
 						//
 					}
 				}
@@ -170,7 +192,7 @@ public class pojoSubjectProperties implements IPojo {
 						{
 							tmpMD.setFieldVale(pojoMetaData.IsMandatoryField, false);
 						}
-						this.attachedMetaData.add(tmpMD);
+						this.attachedMetaData.put(tmpMD.getFieldVale(tmpMD.MetaDataNameField), tmpMD);
 						//
 					}
 				}
