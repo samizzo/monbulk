@@ -50,6 +50,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	private TreeItem m_selectedElement = null;
 	private Metadata m_metadata = null;
 	private ElementEditor m_elementEditor;
+	private boolean m_addNewElement = false;
 	
 	public MetadataProperties() throws Exception
 	{
@@ -142,7 +143,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_name.setText(metadata.getName());
 		m_label.setText(metadata.getLabel());
 		m_description.setText(metadata.getDescription());
-		populateElementTree(null, metadata.getRootElement(), null);
+		populateElementTree(null, metadata.getRootElement());
 		if (m_elementsTree.getItemCount() > 0)
 		{
 			// Select the first item in the tree automatically.
@@ -174,46 +175,38 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			treeItem.addStyleName("noItemHighlight");
 		}
 		treeItem.setUserObject(element);
-		return treeItem;
-	}
-	
-	private void addElementTreeItem(TreeItem root, TreeItem newItem)
-	{
+
+		// Add new item to tree.
 		if (root != null)
 		{
-			root.addItem(newItem);
+			root.addItem(treeItem);
 		}
 		else
 		{
-			m_elementsTree.addItem(newItem);
+			m_elementsTree.addItem(treeItem);
 		}
+
+		return treeItem;
 	}
 	
-	private TreeItem populateElementTree(TreeItem root, Metadata.DocumentElement rootElement, Metadata.Element searchElement)
+	private void populateElementTree(TreeItem root, Metadata.DocumentElement rootElement)
 	{
-		TreeItem result = null;
-
 		int numChildren = rootElement.getNumChildren();
 		for (int i = 0; i < numChildren; i++)
 		{
 			Metadata.Element e = rootElement.getChild(i);
 			if (e.getType().isVisible())
 			{
-				TreeItem treeItem = createTreeItem(e.getName(), e, root);
-				result = e == searchElement ? treeItem : result;
-	
+				TreeItem newItem = createTreeItem(e.getName(), e, root);
+			
 				if (e instanceof Metadata.DocumentElement)
 				{
+					// Recurse into DocumentElements.
 					Metadata.DocumentElement doc = (Metadata.DocumentElement)e;
-					TreeItem r = populateElementTree(treeItem, doc, searchElement);
-					result = r != null ? r : result;
+					populateElementTree(newItem, doc);
 				}
-	
-				addElementTreeItem(root, treeItem);
 			}
 		}
-		
-		return result;
 	}
 
 	// -------------------------------------------
@@ -226,26 +219,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		try
 		{
 			Metadata.Element newElement = Metadata.createElement("string", "New element", "New element description", false);
-			Metadata.Element selectedElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
-			
-			// If there is a selected element and it's a document element pull it out.
-			boolean selectedIsDoc = selectedElement != null && selectedElement.getType() == ElementTypes.Document;
-			Metadata.DocumentElement docElement = selectedIsDoc ? (Metadata.DocumentElement)selectedElement : m_metadata.getRootElement();
-			newElement.setParent(docElement);
-
-			// If the selected item is a doc element then use it as the parent. 
-			TreeItem parentTreeItem = selectedIsDoc ? m_selectedElement : null;
-
-			// Add a new tree item and select it.
-			TreeItem newTreeItem = createTreeItem(newElement.getName(), newElement, parentTreeItem);
-			addElementTreeItem(parentTreeItem, newTreeItem);
-			m_elementsTree.setSelectedItem(newTreeItem);
-			m_elementsTree.ensureSelectedItemVisible();
-			
-			// HACK: We have to set the item selected again to
-			// really make sure it is visible because of this bug:
-			// http://code.google.com/p/google-web-toolkit/issues/detail?id=1783
-			m_elementsTree.setSelectedItem(newTreeItem);
+			showEditor(newElement, true);
 		}
 		catch (Exception e)
 		{
@@ -323,21 +297,27 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	@UiHandler("m_editElement")
 	void onEditElementClicked(ClickEvent event)
 	{
-		Desktop d = Desktop.get();
 		Metadata.Element selectedElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
 		if (selectedElement != null)
 		{
 			// We work with a clone so we can easily undo changes.
 			Metadata.Element element = selectedElement.clone();
-			m_elementEditor.setMetadataElement(element);
-
-			// FIXME: For this to work, the title needs to set overflow hidden
-			// and text-overflow ellipsis, but it wasn't working so I've commented
-			// it out for now.
-			//d.setWindowTitle(m_elementEditor, "Element - " + selectedElement.getName());
-			m_elementEditor.setOkCancelHandler(this);
-			d.show(m_elementEditor, true);
+			showEditor(element, false);
 		}
+	}
+	
+	private void showEditor(Metadata.Element element, boolean addNewElement)
+	{
+		m_addNewElement = addNewElement;
+		m_elementEditor.setMetadataElement(element);
+
+		// FIXME: For this to work, the title needs to set overflow hidden
+		// and text-overflow ellipsis, but it wasn't working so I've commented
+		// it out for now.
+		//d.setWindowTitle(m_elementEditor, "Element - " + selectedElement.getName());
+		m_elementEditor.setOkCancelHandler(this);
+		Desktop d = Desktop.get();
+		d.show(m_elementEditor, true);
 	}
 
 	// -------------------------------------------
@@ -392,7 +372,9 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		}
 	}
 	
-	// Tree view selection handler.
+	/**
+	 *  Tree view selection handler.
+	 */
 	public void onSelection(SelectionEvent<TreeItem> event)
 	{
 		// Update metadata from user settings and remove highlight from
@@ -427,32 +409,51 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	{
 		if (eventType == Event.Ok)
 		{
-			// Replace the old element with the new one.
-			replaceElement();
+			Metadata.Element oldElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
+			Metadata.Element newElement = m_elementEditor.getMetadataElement();
 
-			// TODO: Change element name in tree if it changed on the element.
-		}
-	}
+			if (m_addNewElement)
+			{
+				// User is adding a new element.  If the currently selected
+				// element is not a DocumentElement fall back to the root
+				// metadata element.
+				Metadata.Element parent = oldElement != null && oldElement instanceof Metadata.DocumentElement ? (Metadata.DocumentElement)oldElement : m_metadata.getRootElement();
+				
+				// Parent is of type DocumentElement.
+				assert(parent instanceof Metadata.DocumentElement);
+				newElement.setParent((Metadata.DocumentElement)parent);
+				
+				// Adding a new element so create a tree item for it.
+				// The parent of the tree item will be either the current
+				// selection or null (it will be added to root of the tree).
+				TreeItem newItem = createTreeItem(newElement.getName(), newElement, parent == oldElement ? m_selectedElement : null);
+				m_elementsTree.setSelectedItem(newItem, true);
+				m_elementsTree.ensureSelectedItemVisible();
 
-	private void replaceElement()
-	{
-		Metadata.Element oldElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
-		Metadata.Element newElement = m_elementEditor.getMetadataElement();
+				// HACK: We have to set the item selected again to
+				// really make sure it is visible because of this bug:
+				// http://code.google.com/p/google-web-toolkit/issues/detail?id=1783
+				m_elementsTree.setSelectedItem(m_selectedElement, true);
+			}
+			else
+			{
+				// User is editing an existing element.  Replace old element with
+				// new element in parent.
+				Metadata.DocumentElement docParent = oldElement.getParent();
+				docParent.replaceChild(oldElement, newElement);
+				
+				if (oldElement instanceof Metadata.DocumentElement && !(newElement instanceof Metadata.DocumentElement))
+				{
+					// Old element was a document and new one isn't.  Remove all
+					// child tree items from the current item.
+					m_selectedElement.removeItems();
+				}
+			}
 
-		// Replace old element with new element in parent.
-		Metadata.DocumentElement docParent = oldElement.getParent();
-
-		docParent.replaceChild(oldElement, newElement);
-
-		m_selectedElement.setUserObject(newElement);
-		m_selectedElement.setText(newElement.getName());
-		m_elementsTree.setSelectedItem(m_selectedElement, true);
-		
-		if (oldElement instanceof Metadata.DocumentElement && !(newElement instanceof Metadata.DocumentElement))
-		{
-			// Old element was a document and new one isn't.  Remove all
-			// tree children that exist.
-			m_selectedElement.removeItems();
+			// Update the tree item and select the element.
+			m_selectedElement.setUserObject(newElement);
+			m_selectedElement.setText(newElement.getName());
+			m_elementsTree.setSelectedItem(m_selectedElement, true);
 		}
 	}
 	
@@ -490,8 +491,22 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		Metadata.Element oldElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
 		Metadata.Element newElement = m_elementEditor.getMetadataElement();
 		String newName = newElement.getName();
-		Metadata.DocumentElement parent = oldElement.getParent();
-		
+		Metadata.DocumentElement parent = null;
+		if (m_addNewElement)
+		{
+			// Adding a new element so we check either the current selection
+			// or the root element for duplicates.
+			parent = (oldElement != null && oldElement instanceof Metadata.DocumentElement) ? (Metadata.DocumentElement)oldElement : m_metadata.getRootElement();
+
+			// There is no old element if we're adding a new element.
+			oldElement = null;
+		}
+		else
+		{
+			// Editing an existing item so we check the parent of the item.
+			parent = oldElement.getParent();
+		}
+
 		// Check the parent's children for any similarly named elements.
 		int numChildren = parent.getNumChildren();
 		for (int i = 0; i < numChildren; i++)
