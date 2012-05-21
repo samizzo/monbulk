@@ -50,8 +50,6 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 	@UiField
 	PushButton btnNext;
 	
-	@UiField
-	PushButton btnPrev;
 	
 	@UiField
 	HTMLPanel FormDetails;
@@ -125,6 +123,8 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 			//We need to check if this is a new or old stack - FormName is unique
 			//Window.alert("Widget Count:" + this.MethodNavigationStack.getWidgetCount() + "Step COunt" + this.StepIndex );
 			//NB: STep count drops back to 0!!!
+			//this.CurrentSteps.get(IndexName).
+			//this.MethodNavigationStack.showWidget(child)
 			this.MethodNavigationStack.showWidget(this.CurrentSteps.get(IndexName).getIndex()+1);
 		}
 	}

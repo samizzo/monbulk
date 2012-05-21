@@ -50,7 +50,7 @@
 											
 										</g:ScrollPanel>
 										<g:HorizontalPanel width="513px" styleName="FormNav">
-											<g:PushButton ui:field="btnPrev" styleName="btnDefault" text="Prev"/><g:PushButton ui:field="btnNext" styleName="btnDefault" text="Next"/>
+											<g:PushButton ui:field="btnNext" styleName="btnDefault" text="Next"/>
 										</g:HorizontalPanel>
 									</g:VerticalPanel>
 									</g:west>

@@ -10,8 +10,25 @@
 				<g:customCell styleName="LabelCell">
 					<g:Label ui:field="Name" styleName="mdItemLabel" text="Test"/>
 				</g:customCell>
-				<g:customCell styleName="ButtonCell">
-					<g:PushButton ui:field="Add" styleName="AddButton ActiveAdd"></g:PushButton>
+			
+				<g:customCell styleName="isMandatoryText">
+				<g:Label styleName="mdItemLabel" text="Mandatory?"/>
+				</g:customCell>
+				<g:customCell styleName="isMandatory">
+					<g:CheckBox ui:field="_cbIsMandatory" styleName="checkBox" />
+						
+				</g:customCell>
+				<g:customCell styleName="isPublicText">
+					<g:Label styleName="mdItemLabel" text="Public?"/>
+				</g:customCell>
+				<g:customCell styleName="isPublicCB">
+					<g:CheckBox ui:field="_cbIsPublic" styleName="checkBox"/>
+				</g:customCell>
+					<g:customCell>
+					<g:PushButton ui:field="Add" styleName="btnAdd-Blue"></g:PushButton>
+				</g:customCell>
+				<g:customCell>
+					<g:PushButton ui:field="_btnExpand" styleName="btnExpand-Blue"></g:PushButton>
 				</g:customCell>
 			</g:row>
 		</g:Grid>

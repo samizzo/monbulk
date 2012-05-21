@@ -55,7 +55,12 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 		//super.MetaDatatable
 		//Modality.
 	}
-
+	@Override
+	public void ClearForm() {
+		super.ClearForm();
+		this.MetaDatatable.clear();
+		this._StepMetaDataList.clear();
+	}
 	@Override
 	public void LoadForm(FormBuilder someForm) {
 		super.LoadForm(someForm,true);

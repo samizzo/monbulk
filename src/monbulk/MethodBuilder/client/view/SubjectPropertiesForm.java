@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -63,6 +64,12 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 		}
 		
 	}
+	@Override
+	public void ClearForm() {
+		super.ClearForm();
+		this.MetaDatatable.clear();
+		
+	}
 	public void setMetaDataLocation(int locationIndex)
 	{
 		this._formItems.insert(this.MetaDatatable, locationIndex);
@@ -72,6 +79,7 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 		final FormWidget tmpWidg2 = this.getFormWidgetForName(FieldName);
 		PushButton tmpButton = (PushButton)tmpWidg2.getFormWidget();
 		final FormPresenter p = this.Presenter;
+		final String fieldName = FieldName;
 		tmpButton.addClickHandler(new ClickHandler(){
 
 			@Override
@@ -91,8 +99,8 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 					public void onOkCancelClicked(Event eventType) {
 						if(eventType==Event.Ok)
 						{
-							AddMDRow(ms.getSelectedMetadataName(),table);
-							p.FireDragEvent(new DragEvent("AddMetaData","true",0,new pojoMetaData(ms.getSelectedMetadataName())));
+							AddMDRow(ms.getSelectedMetadataName(),table,fieldName);
+							p.FireDragEvent(new DragEvent(pojoMetaData.FormName,fieldName,0,new pojoMetaData(ms.getSelectedMetadataName())));
 							
 						}
 						else
@@ -114,7 +122,7 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 			
 		});
 	}
-	public final void AddMDRow(String MDName, FlexTable mdTable)
+	public final void AddMDRow(String MDName, FlexTable mdTable,final String FieldName)
 	{
 		Label tmpLabel = new Label();
 		tmpLabel.setText(MDName);
@@ -122,32 +130,40 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 		pojoMetaData tmpItem = new pojoMetaData(MDName);
 		tmpItem.setFieldVale(pojoMetaData.MetaDataNameField, MDName);
 		
-		this.DroptItem(tmpItem,mdTable);
+		this.DroptItem(tmpItem,mdTable,FieldName);
 		
 		//mdTable.setWidget(MetaDatatable.getRowCount(), 0, tmpLabel);
 			//this._formItems.insert(tmpPanel, 12);
 		
 	}
-	private int getListIndexForName(String Name)
+	private int getListIndexForName(String Name, Widget FromList)
 	{
-		Iterator<Widget> i = this.MetaDatatable.iterator();
-		while(i.hasNext())
+		try
 		{
-			DraggableCellWidget tmpItem = (DraggableCellWidget)i.next();
-			if(tmpItem.getName().equals(Name))
+			FlexTable table = 	(FlexTable)FromList;
+			Iterator<Widget> i = table.iterator();
+			while(i.hasNext())
 			{
-				return tmpItem.getID();
+				DraggableCellWidget tmpItem = (DraggableCellWidget)i.next();
+				if(tmpItem.getName().equals(Name))
+				{
+					return tmpItem.getID();
+				}
 			}
+			return 0;
 		}
-		return 0;
+		catch(Exception ex)
+		{
+			return 0;
+		}
 	}
 	@Override
-	public Boolean DragItem(IPojo someItem,Widget fromList) {
-		int Index = this.getListIndexForName(someItem.getFieldVale(pojoMetaData.MetaDataNameField));
+	public final Boolean DragItem(IPojo someItem,Widget fromList) {
+		int Index = this.getListIndexForName(someItem.getFieldVale(pojoMetaData.MetaDataNameField),fromList);
 		try
 		{
 			FlexTable tmpTable =(FlexTable) fromList; 
-		
+			
 			if(Index==0)
 			{
 				return false;
@@ -172,12 +188,27 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 	}
 
 	@Override
-	public Boolean DroptItem(IPojo someItem,Widget fromList) {
+	public Boolean DroptItem(IPojo someItem,Widget fromList,final String FieldName) {
 		// TODO Auto-generated method stub
 		DraggableCellWidget tmpWidget = new DraggableCellWidget(AddedRowIndex,false,someItem);  
-		tmpWidget.setName(someItem.getFieldVale(pojoMetaData.MetaDataNameField));
+		tmpWidget.enableExpand(false);
+		final FormPresenter p = this.Presenter;
+		//tmpWidget.setName(someItem.getFieldVale(pojoMetaData.MetaDataNameField));
 		tmpWidget.setPresenter((IPresenter) Presenter);
-		tmpWidget.setWidth("180px");
+		final pojoMetaData tmpData =(pojoMetaData)someItem;
+		final Widget fromWidget = fromList;
+		ClickHandler handleRemove = new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event) {
+				p.FireDragEvent(new DragEvent(pojoMetaData.FormName,FieldName,1,tmpData));
+				DragItem(tmpData, fromWidget);
+			}
+			
+		};
+	
+		tmpWidget.AttachToggleHandler(handleRemove);
 		try
 		{
 			FlexTable tmpTable = (FlexTable)fromList;
@@ -186,6 +217,7 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 			//this.MetaDataTable.setWidget(AddedRowIndex, 1, tmpWidget);
 			//this.MetaDataTable.add(tmpWidget);
 			AddedRowIndex ++;
+			
 			return true;
 		}
 		catch(Exception ex)

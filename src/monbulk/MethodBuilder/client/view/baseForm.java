@@ -97,13 +97,14 @@ public class baseForm extends VerticalPanel implements IFormView {
 	@Override
 	public void ClearForm() {
 		
-		Iterator<FormWidget> i = this.allFormItems.iterator();
+		/*Iterator<FormWidget> i = this.allFormItems.iterator();
 		
 		while(i.hasNext())
 		{
 			FormWidget tmpWidg = i.next();
 			tmpWidg.clear();
-		}
+		}*/
+		this._formItems.clear();
 	}
 	protected FormWidget getFormWidgetForName(String Name)
 	{

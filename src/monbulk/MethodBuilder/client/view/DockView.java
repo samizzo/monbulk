@@ -201,7 +201,7 @@ public class DockView extends Composite implements IDockView, IDraggable {
 	}
 
 	@Override
-	public Boolean DroptItem(IPojo someItem,Widget inList) {
+	public Boolean DroptItem(IPojo someItem,Widget inList, String FieldName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
