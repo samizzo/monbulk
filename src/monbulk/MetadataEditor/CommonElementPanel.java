@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.dom.client.Style;
@@ -31,10 +32,12 @@ public class CommonElementPanel extends ElementPanel
 	@UiField TextBox m_minOccurs;
 	@UiField TextBox m_maxOccurs;
 	@UiField Label m_maxOccursLabel;
+	@UiField Label m_minOccursLabel;
 	@UiField LayoutPanel m_layout;
 	@UiField HTMLPanel m_maxOccursPanel;
 	@UiField Label m_typeLabel;
 	@UiField HTMLPanel m_typePanel;
+	CheckBox m_required = new CheckBox("Required");
 	
 	ChangeTypeHandler m_changeTypeHandler = null;
 
@@ -72,11 +75,16 @@ public class CommonElementPanel extends ElementPanel
 		element.setSetting("name", m_name.getText());
 		element.setDescription(m_description.getText());
 		
-		String minOccurs = m_minOccurs.getValue();
-		element.setSetting("min-occurs", minOccurs);
-		
-		if (!element.getIsAttribute())
+		if (element.getIsAttribute())
 		{
+			// On attributes, min-occurs is either 0 or 1.
+			element.setSetting("min-occurs", m_required.getValue() ? "1" : "0");
+		}
+		else
+		{
+			String minOccurs = m_minOccurs.getValue();
+			element.setSetting("min-occurs", minOccurs);
+
 			// max-occurs doesn't exist on attributes.
 			String maxOccurs = m_maxOccurs.getValue();
 			element.setSetting("max-occurs", maxOccurs);
@@ -117,7 +125,6 @@ public class CommonElementPanel extends ElementPanel
 		}
 		
 		String minOccurs = element.getSetting("min-occurs", "1");
-		m_minOccurs.setValue(minOccurs);
 
 		if (element.getIsAttribute())
 		{
@@ -132,10 +139,27 @@ public class CommonElementPanel extends ElementPanel
 			m_layout.setWidgetTopHeight(m_typeLabel, 92, Style.Unit.PX, 24, Style.Unit.PX);
 			m_layout.setWidgetTopHeight(m_typePanel, 90, Style.Unit.PX, 22, Style.Unit.PX);
 			m_layout.setHeight("126px");
+			
+			// Remove min-occurrences and replace with a "required"
+			// checkbox because min-occurs is limited to 0..1 for
+			// attributes.
+			m_minOccursLabel.removeFromParent();
+			m_minOccurs.removeFromParent();
+			if (m_required.getParent() == null)
+			{
+				m_layout.add(m_required);
+			}
+
+			m_layout.setWidgetTopHeight(m_required, 62, Style.Unit.PX, 24, Style.Unit.PX);
+			m_layout.setWidgetLeftWidth(m_required, 0, Style.Unit.PX, 250, Style.Unit.PX);
+			
+			assert(minOccurs != null);
+			m_required.setValue(minOccurs.equals("1"));
 		}
 		else
 		{
-			// max-occurs doesn't exist on attributes.
+			m_minOccurs.setValue(minOccurs);
+
 			String maxOccurs = element.getSetting("max-occurs", "");
 			m_maxOccurs.setValue(maxOccurs);
 		}
@@ -149,6 +173,7 @@ public class CommonElementPanel extends ElementPanel
 		m_minOccurs.setEnabled(!readOnly);
 		m_maxOccurs.setEnabled(!readOnly);
 		m_type.setEnabled(!readOnly);
+		m_required.setEnabled(!readOnly);
 	}
 	
 	@UiHandler("m_type")
