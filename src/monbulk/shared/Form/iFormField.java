@@ -36,4 +36,5 @@ public interface iFormField {
 		public boolean isValueValid(String value);
 		public String getInvalidReason();
 	}
+	
 }

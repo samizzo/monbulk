@@ -53,6 +53,10 @@ public class FormBuilder {
 			//this.
 		}
 	}
+	public void deleteFormItems()
+	{
+		this.FieldList.clear();
+	}
 	public void addField(iFormField item)
 	{
 		this.FieldList.add(item);

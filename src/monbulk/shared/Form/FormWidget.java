@@ -2,6 +2,8 @@ package monbulk.shared.Form;
 
 import java.util.HashMap;
 
+import monbulk.shared.util.GWTLogger;
+
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
@@ -64,8 +66,15 @@ public class FormWidget extends HorizontalPanel{
 	}
 	public void clear()
 	{
-		HasValue<Object> item = (HasValue<Object>)WidgetList.get(FORM_WIDGET);
-		item.setValue(null);
+		try
+		{
+			HasValue<Object> item = (HasValue<Object>)WidgetList.get(FORM_WIDGET);
+			item.setValue(null);
+		}
+		catch(Exception ex)
+		{
+			GWTLogger.Log("Have you been trying to cast incorrectly?", "FormWidget", "clear", "76");
+		}
 		
 	}
 	public void disable()
