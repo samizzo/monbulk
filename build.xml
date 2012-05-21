@@ -150,6 +150,8 @@
 		<zip filesonly="true" destfile="${dist}/${pkg.file}">
 			<fileset file="${build}/www.zip" />
 			<fileset file="${pkg}/__install.tcl" />
+			<fileset file="${pkg}/dictionary.tcl" />
+			<fileset file="${pkg}/monbulk-config.tcl" />
 			<fileset file="${pkg}/__uninstall.tcl" />
 			<fileset file="${build}/requireServerVersion.tcl" />
 			<fileset file="${build}/__manifest.xml" />

@@ -53,3 +53,9 @@ if { [xvalue exists [http.processor.exists :url ${url}]] == "true" } {
 }
 puts "Installing package ${package} -- Creating http processor: url=${url}"
 http.processor.create :app monbulk :url ${url} :type asset :translate ${namespace} :authentication < :domain $domain :user $user > :entry-point $entryPoint
+
+#
+# Monbulk config setup
+#
+source monbulk-config.tcl
+
