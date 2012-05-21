@@ -118,7 +118,7 @@ public class StepDetailsModel implements iMBModel, IDraggable{
 	}
 
 	@Override
-	public Boolean DroptItem(IPojo someItem,Widget inList) {
+	public Boolean DroptItem(IPojo someItem,Widget inList,String FieldName) {
 		// TODO Auto-generated method stub
 		return null;
 	}

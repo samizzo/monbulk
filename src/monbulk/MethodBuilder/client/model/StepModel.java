@@ -259,9 +259,9 @@ public class StepModel implements iMBModel,IDraggable {
 		return allSteps.get(CurrentStepIndex).DragItem(someItem,inList);
 	}
 	@Override
-	public Boolean DroptItem(IPojo someItem,Widget inList) {
+	public Boolean DroptItem(IPojo someItem,Widget inList,String FieldName) {
 		// TODO Auto-generated method stub
-		return allSteps.get(CurrentStepIndex).DroptItem(someItem,inList);
+		return allSteps.get(CurrentStepIndex).DroptItem(someItem,inList,FieldName);
 	}
 	@Override
 	public void Update(FormBuilder formData) {

@@ -77,7 +77,7 @@ public class MetaDataModel implements iModel,iListModel,IDraggable {
 	}
 
 	
-	public Boolean DroptItem(IPojo someItem,Widget someTable) {
+	public Boolean DroptItem(IPojo someItem,Widget someTable,String FieldName) {
 		// If the item Contains name X = then traverse list until we find name and set enabled
 		String MDName =someItem.getFieldVale(pojoMetaData.MetaDataNameField);
 		if(MDName.contains("animal"))

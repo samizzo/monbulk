@@ -145,7 +145,7 @@ public class SubjectPropertiesModel implements iMBModel,IDraggable{
 		return null;
 	}
 	@Override
-	public Boolean DroptItem(IPojo someItem,Widget inList) {
+	public Boolean DroptItem(IPojo someItem,Widget inList,String FieldName) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -13,9 +13,11 @@ import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Form.FormWidget;
 import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.pojo.pojoMetaData;
 import monbulk.shared.Model.pojo.pojoMethod;
 import monbulk.shared.Model.pojo.pojoMethodComplete;
 import monbulk.shared.Model.pojo.pojoStepDetails;
+import monbulk.shared.Model.pojo.pojoStudy;
 import monbulk.shared.Model.pojo.pojoSubjectProperties;
 import monbulk.shared.Services.MethodService;
 import monbulk.shared.Services.ServiceRegistry;
@@ -33,7 +35,8 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 	
 	private Boolean isLoaded;
 	private int StepCount;
-	private int CurrentStep;
+	private String CurrentStep;
+	private String FirstStep;
 	public MethodCompleteModel()
 	{
 		isLoaded = false;
@@ -42,46 +45,12 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 		this.CompleteModel = new pojoMethodComplete();
 		super.formData = this.CompleteModel.getFormStructure();
 		isLoaded = false;
-		CurrentStep=0;
+		CurrentStep=pojoStepDetails.FormName + "0";
+		FirstStep = CurrentStep;
 		StepCount=0;
 	
 		
 		
-	}
-	public void removeStep(String StepFormName)
-	{
-		String strFormIndex = StepFormName.replace(pojoStepDetails.FormName, "");
-		if(strFormIndex.length()>0)
-		{
-			int FormIndex = Integer.parseInt(strFormIndex);
-			
-			if(FormIndex < this.StepCount)
-			{
-				this.CompleteModel.removeStep(FormIndex);
-				this.StepCount++;
-				this.CurrentStep = 0;
-				
-			}
-			else
-			{
-				this.CompleteModel.removeStep(this.CurrentStep);
-				this.StepCount++;
-				this.CurrentStep = 0;
-			}
-		}
-		
-		
-	}
-	public void addStep()
-	{
-		this.CompleteModel.addStep(new pojoStepDetails(this.StepCount));
-		
-		this.StepCount++;
-	}
-	public void addStep(pojoStepDetails stepIn)
-	{
-		this.CompleteModel.addStep(stepIn);
-		this.StepCount++;
 	}
 	public MethodCompleteModel(String ID, FormPresenter presenter)
 	{
@@ -90,6 +59,73 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 		this.loadData(ID);
 	
 	}
+	public void removeStep(String StepFormName)
+	{
+		
+		this.CompleteModel.removeStep(StepFormName);
+		this.CurrentStep="";
+		this.StepCount = this.CompleteModel.getStepCount();
+		
+	}
+	public void addStep()
+	{
+		this.CompleteModel.addStep();
+		
+		this.StepCount++;
+	}
+	public pojoStepDetails getFirstStep()
+	{
+		if(this.CompleteModel.getStepCount() > 0)
+		{
+			return this.CompleteModel.getSteps().get(FirstStep);
+		}
+		else
+		{
+			this.addStep();
+			return this.CompleteModel.getSteps().get(FirstStep);
+		}
+	}
+	public pojoStepDetails getStep(String StepFormName)
+	{
+		if(this.CompleteModel.getSteps().get(StepFormName)!=null)
+		{
+			return this.CompleteModel.getSteps().get(StepFormName); 
+		}
+		else
+		{
+			return null;
+		}
+	}
+	public pojoStepDetails getNextStep(String StepFormName)
+	{
+		
+			if(this.CompleteModel.getSteps().get(StepFormName)!=null)
+			{
+				int index = this.CompleteModel.getSteps().get(StepFormName).getFormIndex();
+				index++;
+				String newFormName = pojoStepDetails.FormName + index;
+				if(this.CompleteModel.getSteps().get(newFormName)==null)
+				{
+					this.addStep();
+					return this.CompleteModel.getSteps().get(newFormName);
+				}
+				else
+				{
+					return this.CompleteModel.getSteps().get(newFormName);
+				}
+			}
+			else
+			{
+				return null;
+			}
+		
+	}
+	public void addStep(pojoStepDetails stepIn)
+	{
+		this.CompleteModel.addStep(stepIn,stepIn.FormName);
+		this.StepCount++;
+	}
+	
 	public Boolean isLoaded()
 	{
 		return this.isLoaded;
@@ -157,40 +193,15 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 		else if(FormName.contains(pojoStepDetails.FormName))
 		{
 			//return this.CompleteModel.`.getFormStructure();
-			String strFormIndex = FormName.replace(pojoStepDetails.FormName, "");
-			GWT.log("Get here" + strFormIndex);
-			if(strFormIndex.length()>0)
+			pojoStepDetails returnStep= this.CompleteModel.getSteps().get(FormName);
+			if(returnStep!=null)
 			{
-				int FormIndex = Integer.parseInt(strFormIndex);
-				
-				if(FormIndex < this.StepCount)
-				{
-					GWT.log("FormIndex" + FormIndex);
-					this.CurrentStep = FormIndex;
-					return this.CompleteModel.getSteps().get(FormIndex).getFormStructure();
-					
-				}
-				else
-				{
-					GWT.log("FormIndex" + FormIndex + FormName);
-					return this.CompleteModel.getSteps().get(this.CurrentStep).getFormStructure();
-				}
+				return returnStep.getFormStructure();
 			}
 			else
 			{
-				pojoStepDetails tmpStep = this.CompleteModel.getSteps().get(this.CurrentStep);
-				if(tmpStep!=null)
-				{
-					GWT.log("Any details" +tmpStep.toString());
-					return tmpStep.getFormStructure();
-				}
-				else
-				{
-					pojoStepDetails tmpItem = new pojoStepDetails(this.StepCount);
-					this.addStep(tmpItem);
-					GWT.log("Step Path B");
-					return tmpItem.getFormStructure();
-				}
+				Window.alert("We could not find that Step");
+				return new FormBuilder();
 			}
 		}
 		else
@@ -265,8 +276,43 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 		
 		return this.CompleteModel.writeOutput(Format);
 	}
-	
-	
+	public void loadMetaData(String FieldName, pojoMetaData metaDataItem)
+	{
+		if(FieldName.contains(pojoSubjectProperties.SubjectMetaDataField))
+		{
+			//this.CompleteModel.getSubjectProperties().setFieldVale(FieldName, metaDataItem);
+			this.CompleteModel.getSubjectProperties().UpdateMetaData(metaDataItem, true);
+		}
+		if(FieldName.contains(pojoStepDetails.SubjectMetaDataField))
+		{
+			this.CompleteModel.getSteps().get(this.CurrentStep).UpdateMetaData(metaDataItem, true, FieldName);
+			//this.CompleteModel.getSubjectProperties().setFieldVale(FieldName, metaDataItem);
+		}
+		if(FieldName.contains(pojoStudy.STUDY_METADATA))
+		{
+			this.CompleteModel.getSteps().get(this.CurrentStep).UpdateMetaData(metaDataItem, true, FieldName);
+			//this.CompleteModel.getSubjectProperties().setFieldVale(FieldName, metaDataItem);
+		}
+	}
+	public void removeMetaData(String FieldName, pojoMetaData metaDataItem)
+	{
+		if(FieldName.contains(pojoSubjectProperties.SubjectMetaDataField))
+		{
+			//this.CompleteModel.getSubjectProperties().setFieldVale(FieldName, metaDataItem);
+			this.CompleteModel.getSubjectProperties().UpdateMetaData(metaDataItem, false);
+			
+		}
+		else if(FieldName.contains(pojoStepDetails.SubjectMetaDataField))
+		{
+			this.CompleteModel.getSteps().get(this.CurrentStep).UpdateMetaData(metaDataItem, false, FieldName);
+			//this.CompleteModel.getSubjectProperties().setFieldVale(FieldName, metaDataItem);
+		}
+		else if(FieldName.contains(pojoStudy.STUDY_METADATA))
+		{
+			this.CompleteModel.getSteps().get(this.CurrentStep).UpdateMetaData(metaDataItem, false, FieldName);
+			//this.CompleteModel.getSubjectProperties().setFieldVale(FieldName, metaDataItem);
+		}
+	}
 	
 
 }
