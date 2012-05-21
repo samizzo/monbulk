@@ -24,7 +24,6 @@ import com.google.gwt.user.client.ui.Widget;
 import monbulk.client.desktop.Desktop;
 import monbulk.shared.Services.Metadata;
 import monbulk.shared.Services.MetadataService;
-import monbulk.shared.Services.Metadata.ElementTypes;
 import monbulk.shared.Services.MetadataService.GetMetadataHandler;
 import monbulk.shared.widgets.Window.OkCancelWindow.*;
 import monbulk.shared.widgets.Window.WindowSettings;
