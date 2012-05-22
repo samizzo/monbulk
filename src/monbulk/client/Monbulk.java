@@ -25,6 +25,13 @@ import monbulk.MethodBuilder.client.PreviewWindow;
  */
 public class Monbulk implements EntryPoint
 {
+	private static Settings s_settings = null;
+
+	public static Settings getSettings()
+	{
+		return s_settings;
+	}
+	
 	public void onModuleLoad()
 	{
 		String hostName = Window.Location.getHostName();
@@ -69,6 +76,38 @@ public class Monbulk implements EntryPoint
 		initialise();
 	}
 	
+	private void initDesktop()
+	{
+		try
+		{
+			Desktop d = new Desktop(RootPanel.get());
+
+			// Register our window instances.
+			MetadataEditor me = new MetadataEditor();
+			d.registerWindow(me);
+
+			MetadataSelectWindow ms = new MetadataSelectWindow();
+			d.registerWindow(ms);
+
+			MethodBuilder mb = new MethodBuilder(d.getEventBus());
+			d.registerWindow(mb);
+			
+			PreviewWindow mp  = new PreviewWindow();
+			d.registerWindow(mp);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			String msg = e.toString();
+			if (e.getCause() != null)
+			{
+				msg = e.getCause().toString();
+			}
+			
+			Window.alert("Monbulk desktop: " + msg);
+		}
+	}
+
 	private void initialise()
 	{
 		Session.initialize(new SessionHandler()
@@ -77,39 +116,21 @@ public class Monbulk implements EntryPoint
 			public void sessionCreated(boolean initial)
 			{
 				MediaFluxServices.registerMediaFluxServices();
+
 				// HACK: Remove the arc root panel because it gets in the way
 				// of our own panels.
 				ContainerWidget c = arc.gui.gwt.widget.panel.RootPanel.container();
 				RootPanel.get().remove(c);
-				
-				try
+
+				s_settings = new Settings(new Settings.ReadSettingsHandler()
 				{
-					Desktop d = new Desktop(RootPanel.get());
-
-					// Register our window instances.
-					MetadataEditor me = new MetadataEditor();
-					d.registerWindow(me);
-
-					MetadataSelectWindow ms = new MetadataSelectWindow();
-					d.registerWindow(ms);
-
-					MethodBuilder mb = new MethodBuilder(d.getEventBus());
-					d.registerWindow(mb);
-					
-					PreviewWindow mp  = new PreviewWindow();
-					d.registerWindow(mp);
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-					String msg = e.toString();
-					if (e.getCause() != null)
+					public void onReadSettings()
 					{
-						msg = e.getCause().toString();
+						// FIXME: If we never read the settings the
+						// desktop will never load.
+						initDesktop();
 					}
-					
-					Window.alert("Monbulk desktop: " + msg);
-				}
+				});
 			}
 
 			@Override
