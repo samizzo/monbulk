@@ -803,7 +803,11 @@ public class Metadata
 				attributes[index++] = getReferenceName();
 				attributes[index++] = "type";
 				attributes[index++] = getReferenceType().toString().toLowerCase();
-				w.add("reference", attributes, getReferenceValue());
+				w.push("reference", attributes);
+				{
+					w.add("value", getReferenceValue());
+				}
+				w.pop();
 			}
 			
 			if (m_children != null && m_children.size() > 0)
