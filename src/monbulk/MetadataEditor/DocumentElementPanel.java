@@ -14,6 +14,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 
 import monbulk.client.desktop.Desktop;
 import monbulk.shared.Services.Metadata;
+import monbulk.shared.Services.Metadata.DocumentElement;
 import monbulk.shared.widgets.Window.OkCancelWindow.*;
 
 public class DocumentElementPanel extends ElementPanel implements ValueChangeHandler<Boolean>
@@ -63,6 +64,7 @@ public class DocumentElementPanel extends ElementPanel implements ValueChangeHan
 		docElement.setIsReference(m_isReference.getValue());
 		docElement.setReferenceValue(m_reference.getValue());
 		docElement.setReferenceName(m_referenceName.getValue());
+		docElement.setReferenceType(DocumentElement.ReferenceType.Document);
 	}
 	
 	public Metadata.ElementTypes getType()
