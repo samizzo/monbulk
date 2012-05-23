@@ -120,10 +120,9 @@ public class ListField extends FormField implements iFormListField  {
 	public void SetFieldValue(String FieldValue) {
 		
 		
-		if(Values.contains(FieldValue))
-		{
+		
 			this.FieldValue = FieldValue;
-		}
+		this.hasValue = true;
 		
 	}
 

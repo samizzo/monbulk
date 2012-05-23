@@ -19,16 +19,16 @@ public class DictionaryFormField extends ListField implements GetDictionaryHandl
 	
 	public DictionaryFormField(String FormName,String DictionaryName) {
 		super(FormName,"Not Selected");
-		GWTLogger.Log("Running", "DictionaryFormField", "getFormStructure", "21");
+		
 		ArrayList<String> items = new ArrayList<String>();
-		items .add("Not Selected");
-		GWTLogger.Log("Running", "DictionaryFormField", "getFormStructure", "23");
+		items.add("Not Selected");
+		
 		super.loadList(items, "Not Selected");
-		GWTLogger.Log("Running", "DictionaryFormField", "getFormStructure", "25");
+		
 		this.FieldType="Dictionary";
-		GWTLogger.Log("Running", "DictionaryFormField", "getFormStructure", "27");
+		
 		DictionaryService service = DictionaryService.get();
-		GWTLogger.Log("Running", "DictionaryFormField", "getFormStructure", "29");
+		
 		isSummaryField = false;
 		isTitleField = false;
 		if (service != null)
@@ -51,6 +51,7 @@ public class DictionaryFormField extends ListField implements GetDictionaryHandl
 			{
 				Entry item = i.next();
 				tmpBox.addItem(item.getTerm());
+				this.Values.add(item.getTerm());
 			}
 		}
 		

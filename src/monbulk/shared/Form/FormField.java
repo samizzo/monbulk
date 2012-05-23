@@ -53,12 +53,13 @@ import monbulk.shared.util.GWTLogger;
 		public FormField(String FormName,String objectType)
 		{
 			//
-			
+			this.FieldValue="";
 			this.FieldName = FormName;
 			this.FieldType = objectType;
 			setFieldWidget();
 			isSummaryField = false;
 			isTitleField = false;
+			hasValue = false;
 			
 		}
 		public FormField(String FormName,String objectType,Boolean shouldLoad)
@@ -68,17 +69,20 @@ import monbulk.shared.util.GWTLogger;
 			{
 				this.FieldName = FormName;
 				this.FieldType = objectType;
-			
+				this.FieldValue="";
 				isSummaryField = false;
 				isTitleField = false;
+				hasValue = false;
 			}
 		}
 		public FormField(String FormName,String objectType, Object Value)
 		{
+			this.FieldValue="";
 			this.FieldName = FormName;
 			this.FieldType = objectType;
 			this.FieldValue = Value;
 			setFieldWidget();
+			this.FieldValue = Value;
 			this.FieldWidget="Label";
 			this.fieldValidator = null;
 			isSummaryField = false;
@@ -127,7 +131,7 @@ import monbulk.shared.util.GWTLogger;
 			if(FieldType=="String")
 			{
 				this.FieldWidget="TextBox";
-				this.FieldValue="";
+				
 				this._FieldVaLueWidget = new TextBox();
 				//this._FieldVaLueWidget.add
 				
@@ -147,7 +151,7 @@ import monbulk.shared.util.GWTLogger;
 			else if(FieldType=="Description")
 			{
 				this.FieldWidget="TextArea";
-				this.FieldValue="";
+			
 				this.fieldValidator = new TextFieldValidation(this.FieldName);
 				this._FieldVaLueWidget = new TextArea();
 				this._FieldVaLueWidget.setHeight("100px");
