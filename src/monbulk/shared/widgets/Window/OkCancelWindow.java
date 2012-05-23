@@ -4,13 +4,16 @@ import monbulk.client.desktop.Desktop;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
 
 /**
  * A Monbulk window with a panel for adding content and "ok" and "cancel"
@@ -165,5 +168,16 @@ public class OkCancelWindow extends Composite implements IWindow, IWindow.HideHa
 	 */
 	public void onShow()
 	{
-	}	
+	}
+	
+	public void onPreviewNativeEvent(NativePreviewEvent event)
+	{
+		if (event.getTypeInt() == Event.ONKEYDOWN)
+		{
+			if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE)
+			{
+				onCancelClicked(null);
+			}
+		}
+	}
 }

@@ -3,10 +3,13 @@ package monbulk.shared.widgets.Window;
 import monbulk.client.event.WindowEvent;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.DialogBox;
 import monbulk.client.desktop.Desktop;
@@ -163,4 +166,14 @@ public class appletWindow extends DialogBox
     	
     	return null;
     }
+    
+	protected void onPreviewNativeEvent(NativePreviewEvent event)
+	{
+		Widget widget = getWidget();
+		if (widget instanceof IWindow)
+		{
+			IWindow window = (IWindow)widget;
+			window.onPreviewNativeEvent(event);
+		}
+	}
 }

@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -228,5 +229,8 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+	public void onPreviewNativeEvent(NativePreviewEvent event)
+	{
+	}
 }
