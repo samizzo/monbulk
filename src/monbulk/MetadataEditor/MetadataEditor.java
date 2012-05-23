@@ -211,7 +211,8 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 				name = name.substring(9);
 			}
 
-			// Reconstruct the full namespace.
+			// Reconstruct the full namespace (it may have changed, e.g.
+			// if we are saving a metadata as a template).
 			String ns = defaultNs + (template || isTemplate ? ".template." : ".");
 			name = ns + name;
 
