@@ -5,12 +5,9 @@ import java.util.ArrayList;
 
 import monbulk.client.Monbulk;
 import monbulk.client.Settings;
-import monbulk.shared.Services.Metadata;
 import monbulk.shared.Services.MetadataService;
-import monbulk.shared.Services.MetadataService.CreateMetadataHandler;
 import monbulk.shared.Services.MetadataService.DestroyMetadataHandler;
 import monbulk.shared.Services.MetadataService.GetMetadataTypesHandler;
-import monbulk.shared.Services.MetadataService.MetadataExistsHandler;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
@@ -37,6 +34,13 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 {
 	public interface Handler
 	{
+		public enum NewType
+		{
+			New,
+			Clone,
+			FromTemplate,
+		};
+
 		/**
 		 * Callback for a selection on the list.  This is the new selection.
 		 * Note that calling getSelectedMetadataName will return the previous
@@ -47,7 +51,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 		public boolean onMetadataSelected(String metadataName);
 		public void onRefreshList();
 		public void onRemoveMetadata(String metadataName);
-		public void onNewMetadata();
+		public void onNewMetadata(NewType type);
 	};
 
 	private static MetadataListUiBinder uiBinder = GWT.create(MetadataListUiBinder.class);
@@ -55,14 +59,14 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 
 	protected List<String> m_metadataTypes = null;
 	private Handler m_handler = null;
-	private String m_newMetadataName = null;
-	private Boolean m_newMetadataExists = false;
 	private String m_selected;
 
 	@UiField HTMLPanel m_buttonsPanel;
 	@UiField Button m_refreshList;
 	@UiField Button m_removeMetadata;
 	@UiField Button m_newMetadata;
+	@UiField Button m_fromTemplate;
+	@UiField Button m_cloneMetadata;
 	@UiField ListBox m_metadataListBox;
 	@UiField TextBox m_filterTextBox;
 
@@ -108,6 +112,25 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	public void setShowNew(boolean showNew)
 	{
 		m_newMetadata.setVisible(showNew);
+	}
+	
+	/**
+	 * If 'showFromTemplate' is true the from template button
+	 * will be visible.
+	 * @param showFromTemplate
+	 */
+	public void setShowFromTemplate(boolean showFromTemplate)
+	{
+		m_fromTemplate.setVisible(showFromTemplate);
+	}
+	
+	/**
+	 * If 'showClone' is true the clone button will be visible.
+	 * @param showClone
+	 */
+	public void setShowClone(boolean showClone)
+	{
+		m_cloneMetadata.setVisible(showClone);
 	}
 
 	/**
@@ -194,6 +217,32 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	{
 		m_metadataListBox.setSelectedIndex(-1);
 		m_selected = "";
+		m_fromTemplate.setEnabled(false);
+	}
+	
+	/**
+	 * Adds a dummy item called <new metadata>.
+	 */
+	public void addDummyItem()
+	{
+		m_metadataListBox.addItem("<new metadata>");
+		setSelectedMetadata("<new metadata>");
+	}
+	
+	/**
+	 * Removes the dummy item.
+	 */
+	public void removeDummyItem()
+	{
+		int index = m_metadataListBox.getItemCount() - 1;
+		if (index >= 0)
+		{
+			String item = m_metadataListBox.getItemText(index);
+			if (item.equals("<new metadata>"))
+			{
+				m_metadataListBox.removeItem(index);
+			}
+		}
 	}
 
 	public void onKeyDown(KeyDownEvent event)
@@ -307,7 +356,14 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 
 		m_itemToSelect = "";
 	}
-	
+
+	private void setButtonState()
+	{
+		Settings settings = Monbulk.getSettings();
+		String ns = settings.getDefaultNamespace() + ".template.";
+		m_fromTemplate.setEnabled(m_selected.startsWith(ns));
+	}
+
 	/**
 	 * Sets the selected metadata in the list box without firing any events.
 	 * @param metadata
@@ -326,8 +382,9 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 
 		m_metadataListBox.setSelectedIndex(index);
 		m_selected = metadata;
+		setButtonState();
 	}
-	
+
 	@UiHandler("m_metadataListBox")
 	protected void onMetadataSelected(ChangeEvent event)
 	{
@@ -350,6 +407,8 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 			// Handler cancelled the selection so select the previous metadata.
 			setSelectedMetadata(m_selected);
 		}
+
+		setButtonState();
 	}
 	
 	@UiHandler("m_refreshList")
@@ -394,61 +453,26 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 			}
 		}
 	}
-	
-	@UiHandler("m_newMetadata")
+
+	@UiHandler({ "m_newMetadata", "m_cloneMetadata", "m_fromTemplate" })
 	protected void onNewMetadata(ClickEvent event)
 	{
 		if (m_handler != null)
 		{
-			m_handler.onNewMetadata();
-		}
-		else
-		{
-			String msg = m_newMetadataExists ? "Metadata already exists!  Please enter a new name" : "Please enter a name";
-			m_newMetadataName = Window.prompt(msg, "new metadata");
-	
-			if (m_newMetadataName != null && m_newMetadataName.length() > 0)
+			Handler.NewType type = Handler.NewType.New;
+			if (event.getSource() == m_cloneMetadata)
 			{
-				// Check if this metadata name exists.
-				final MetadataService service = MetadataService.get();
-				if (service != null)
-				{
-					service.metadataExists(m_newMetadataName, new MetadataExistsHandler()
-					{
-						// Callback for reading a specific metadata object.
-						public void onMetadataExists(String metadataName, boolean exists)
-						{
-							if (exists)
-							{
-								// New metadata name already exists.  Ask the user to try again.
-								m_newMetadataExists = true;
-								onNewMetadata(null);
-							}
-							else
-							{
-								// New metadata name doesn't already exist.
-								m_newMetadataExists = false;
-								createNewMetadata(metadataName);
-							}
-						}
-					});
-				}
+				type = Handler.NewType.Clone;
 			}
+			else if (event.getSource() == m_fromTemplate)
+			{
+				type = Handler.NewType.FromTemplate;
+			}
+
+			m_handler.onNewMetadata(type);
 		}
 	}
 	
-	private void createNewMetadata(String name)
-	{
-		MetadataService service = MetadataService.get();
-		service.createMetadata(name, new CreateMetadataHandler()
-		{
-			public void onCreateMetadata(Metadata metadata, boolean success)
-			{
-				// Refresh list and select the new metadata.
-				refresh(metadata.getName());
-			}
-		});
-	}
 	/**
 	 * Added by aglenn
 	 * @param shouldHide

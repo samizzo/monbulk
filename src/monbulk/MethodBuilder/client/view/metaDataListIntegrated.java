@@ -37,6 +37,8 @@ public class metaDataListIntegrated extends MetadataList implements IDockView {
 		super.hideListBox(true);
 		super.setShowRemove(false);
 		super.setShowNew(true);
+		super.setShowClone(true);
+		super.setShowFromTemplate(true);
 		_extendedMetaDataList = new FlexTable();
 		_extendedMetaDataList.setStyleName("method-mdList");
 		_extendedMetaDataList.setHeight("400px");

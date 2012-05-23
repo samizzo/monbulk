@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 
+import monbulk.MetadataEditor.MetadataList.Handler;
 import monbulk.client.Monbulk;
 import monbulk.client.Settings;
 import monbulk.shared.Services.*;
@@ -31,6 +32,8 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 		WaitingForRefresh,
 		WaitingForSelect,
 		WaitingForNew,
+		WaitingForClone,
+		WaitingForFromTemplate,
 	};
 
 	private boolean m_cancelSelect = false;
@@ -72,9 +75,29 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 				m_metadataProperties.clear();
 			}
 			
-			public void onNewMetadata()
+			public void onNewMetadata(Handler.NewType type)
 			{
-				m_state = State.WaitingForNew;
+				switch (type)
+				{
+					case Clone:
+					{
+						m_state = State.WaitingForClone;
+						break;
+					}
+					
+					case New:
+					{
+						m_state = State.WaitingForNew;
+						break;
+					}
+					
+					case FromTemplate:
+					{
+						m_state = State.WaitingForFromTemplate;
+						break;
+					}
+				}
+				
 				checkModified();
 			}
 		});
@@ -138,17 +161,33 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 	
 	private void performAction()
 	{
+		m_metadataList.removeDummyItem();
+
 		if (m_state == State.WaitingForRefresh)
 		{
 			m_metadataProperties.clear();
 		}
-		else if (m_state == State.WaitingForNew)
+		else if (m_state == State.WaitingForNew || m_state == State.WaitingForClone || m_state == State.WaitingForFromTemplate)
 		{
 			// Create a new, empty metadata object.
+			Metadata m = (m_state == State.WaitingForClone || m_state == State.WaitingForFromTemplate) ? m_metadataProperties.getMetadata() : new Metadata("", "", "");
+			if (m_state == State.WaitingForFromTemplate)
+			{
+				String name = m.getName();
+
+				// Strip off ".template."
+				int index = name.indexOf(".template.");
+				assert(index >= 0);
+				name = name.substring(0, index) + name.substring(index + 9);
+				m.setName(name);
+			}
+
+			m.clearModified();
 			m_metadataProperties.clear();
-			m_metadataProperties.setMetadata(new Metadata("", "", ""));
+			m_metadataProperties.setMetadata(m);
 			m_metadataProperties.setNameFocus();
 			m_metadataList.clearSelection();
+			m_metadataList.addDummyItem();
 		}
 		else if (m_state == State.WaitingForSelect)
 		{
@@ -255,7 +294,7 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 						else
 						{
 							// New name doesn't exist.
-							if (template || oldName.length() == 0)
+							if (template || oldName.length() == 0 || oldName.equals("<new metadata>"))
 							{
 								// Saving existing metadata as a template, or
 								// it's a new metadata, so just update, don't

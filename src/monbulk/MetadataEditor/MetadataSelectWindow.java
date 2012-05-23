@@ -15,6 +15,8 @@ public class MetadataSelectWindow extends OkCancelWindow
 		m_metadataList.setWidth("400px");
 		m_metadataList.setHeight("400px");
 		m_metadataList.setShowNew(false);
+		m_metadataList.setShowFromTemplate(false);
+		m_metadataList.setShowClone(false);
 		m_metadataList.setShowRefresh(true);
 		m_metadataList.setShowRemove(false);
 		m_contentPanel.add(m_metadataList);
@@ -38,7 +40,7 @@ public class MetadataSelectWindow extends OkCancelWindow
 				// Remove button is hidden.
 			}
 			
-			public void onNewMetadata()
+			public void onNewMetadata(MetadataList.Handler.NewType type)
 			{
 				// New button is hidden.
 			}
