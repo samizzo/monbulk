@@ -17,7 +17,6 @@ public class Settings
 	{
 		m_handler = handler;
 		m_dictionary = new Dictionary("monbulk.settings");
-		m_dictionary.addEntry("default_namespace");
 
 		final DictionaryService service = DictionaryService.get();
 		service.dictionaryExists("monbulk.settings", new DictionaryService.DictionaryExistsHandler()
@@ -53,7 +52,11 @@ public class Settings
 	{
 		return m_dictionary.getDefinition(name, defaultValue);
 	}
-	
+
+	/**
+	 * Convenience function to return the default namespace.
+	 * @return
+	 */
 	public String getDefaultNamespace()
 	{
 		String namespace = get("default_namespace", "monbulk");
