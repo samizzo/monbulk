@@ -1,6 +1,7 @@
 package monbulk.shared.Architecture;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
@@ -8,6 +9,8 @@ import monbulk.shared.Form.FormField;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.StackedCategories;
+import monbulk.shared.Model.pojo.pojoMetaData;
+import monbulk.shared.util.MonbulkEnums;
 
 
 
@@ -34,13 +37,14 @@ public interface IView {
 		 public void ClearForm();
 		 public void LoadForm(FormBuilder someForm);
 		 public FormBuilder getFormData();
-		 
+		 public MonbulkEnums.viewTypes getViewType();
 		 public void setPresenter(monbulk.shared.Architecture.IPresenter.FormPresenter presenter);
 	 }
 	 public interface IDraggable
 	 {
 			public Boolean DragItem(IPojo someItem,Widget fromList);
 			public Boolean DroptItem(IPojo someItem,Widget toList,String FieldName);
+			public void BuildList(HashMap<String,pojoMetaData> someList,String FieldName);
 	 }
 	 
 
