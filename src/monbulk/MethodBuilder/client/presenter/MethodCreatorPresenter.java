@@ -6,59 +6,45 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 
-import arc.gui.gwt.widget.panel.AbsolutePanel;
-import arc.gui.gwt.widget.window.Window;
-import arc.gui.gwt.widget.window.WindowManager;
-import arc.gui.window.WindowProperties;
+
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.event.shared.HandlerManager;
-
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
 
-import monbulk.MetadataEditor.MetadataList;
-import monbulk.MetadataEditor.MetadataSelectWindow;
 import monbulk.MethodBuilder.client.PreviewWindow;
 import monbulk.MethodBuilder.client.PreviewWindow.SupportedFormats;
 import monbulk.MethodBuilder.client.event.ChangeWindowEvent;
 import monbulk.MethodBuilder.client.event.ChangeWindowEventHandler;
 import monbulk.MethodBuilder.client.model.MethodCompleteModel;
-import monbulk.MethodBuilder.client.model.MethodModel;
-import monbulk.MethodBuilder.client.model.StepModel;
-import monbulk.MethodBuilder.client.model.SubjectPropertiesModel;
 import monbulk.MethodBuilder.client.view.AppletStateNavigation;
-import monbulk.MethodBuilder.client.view.DockView;
 import monbulk.MethodBuilder.client.view.MethodDetailsView;
 import monbulk.MethodBuilder.client.view.MethodForm;
 import monbulk.MethodBuilder.client.view.StepForm;
 import monbulk.MethodBuilder.client.view.SubjectPropertiesForm;
-import monbulk.MethodBuilder.client.view.metaDataListIntegrated;
+
 import monbulk.client.desktop.Desktop;
 import monbulk.client.event.WindowEvent;
+
 import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Architecture.IView;
 import monbulk.shared.Architecture.IView.IDockView;
+import monbulk.shared.Architecture.IView.IDraggable;
 import monbulk.shared.Architecture.IView.IFormView;
 import monbulk.shared.Events.DragEvent;
 import monbulk.shared.Form.FormBuilder;
-import monbulk.shared.Form.FormField;
-import monbulk.shared.Form.iFormField;
-import monbulk.shared.Form.iFormField.iFormFieldValidation;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.pojo.pojoMetaData;
 import monbulk.shared.Model.pojo.pojoMethod;
-import monbulk.shared.Model.pojo.pojoMethodComplete;
 import monbulk.shared.Model.pojo.pojoStepDetails;
+import monbulk.shared.Model.pojo.pojoStudy;
 import monbulk.shared.Model.pojo.pojoSubjectProperties;
-import monbulk.shared.Services.MethodService;
-import monbulk.shared.Services.MethodService.MethodServiceHandler;
-import monbulk.shared.Services.ServiceRegistry;
 import monbulk.shared.util.HtmlFormatter;
 import monbulk.shared.util.MonbulkEnums;
+import monbulk.shared.util.MonbulkEnums.viewTypes;
 import monbulk.shared.widgets.Window.OkCancelWindow.OkCancelHandler;
 import monbulk.shared.widgets.Window.appletWindow;
+
 import monbulk.MethodBuilder.shared.IMethodsView;
 import monbulk.MethodBuilder.shared.iMBModel;
 
@@ -279,7 +265,11 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		{
 		//	com.google.gwt.user.client.Window.alert("Unable to Save Form.");
 			GWT.log("Next and CurrentState is:" + CurrentState + "New State is: " + FormName);
-			String Validation = tmpModel.ValidateForm(FormName);
+			
+			//FIX: Validation fails for some formFields
+			//String Validation = tmpModel.ValidateForm(FormName);
+			
+			
 			//FIX: For SOme reason the StepDetails form is loading too many items - need to check
 			/*if(!Validation.equals(""))
 			{
@@ -320,7 +310,7 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 			}
 			else if(FormName.contains(pojoStepDetails.FormName))
 			{
-				//TODO Must ensure next, prev and complete states are submitted to any view/form
+				//com.google.gwt.user.client.Window.alert("New Step");
 				IFormView tmpView = this._AllStates.get(MethodCreatorStates.STEP_DETAILS);
 				this.ImplementedMethodView.clearChild();
 				pojoStepDetails tmpPojo = this.mainModel.getNextStep(FormName); 
@@ -360,9 +350,7 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		else if(Command=="AddAnother")
 		{
 			//Current Form Reset
-			StepModel revisedModel =(StepModel)tmpModel;
-			
-			revisedModel.AddNewStep();
+			//revisedModel.AddNewStep();
 			currentView.ClearForm();
 			//Current Model - Set New Step
 		}
@@ -384,6 +372,13 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 						GWT.log("State change 3");			
 						//this.ImplementedMethodView.setData(tmpForm);
 						tmpView.LoadForm(tmpForm);
+						if(tmpView.getViewType()==MonbulkEnums.viewTypes.DRAGDROP)
+						{
+							IDraggable vw = (IDraggable)tmpView;
+							
+							vw.BuildList(tmpPojo.getMetaData(pojoStepDetails.SubjectMetaDataField), pojoStepDetails.SubjectMetaDataField);
+							vw.BuildList(tmpPojo.getMetaData(pojoStudy.STUDY_METADATA), pojoStudy.STUDY_METADATA);
+						}
 						this.ImplementedMethodView.setData(tmpForm);						
 						this.ImplementedMethodView.setChild(tmpView.asWidget());
 					}
@@ -415,11 +410,6 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 			this.ImplementedMethodView.RemoveListItem(FormName);
 			this.ImplementedMethodView.clearChild();
 			this.ChangeState(MethodCreatorStates.SUBJECT_PROPERTIES);
-		}
-		else if(Command=="NewMethod")
-		{
-			this.mainModel.loadData("");
-			this.ImplementedMethodView.clearChild();
 		}
 		else if(Command=="Save")
 		{
@@ -513,22 +503,45 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		{
 			
 			Iterator<Entry<MethodCreatorStates,IFormView>> i = this._AllStates.entrySet().iterator();
+			
 			while(i.hasNext())
 			{
 				Entry<MethodCreatorStates, IFormView> tmpView = i.next();
-				
+				String formName = tmpView.getKey().toString();
 				if(tmpView!=null)
 				{
 					
-					FormBuilder tmpBuilder = this.mainModel.getFormData(tmpView.getKey().toString());
-					
-					
-					if(tmpView!=null)
+					if(tmpView.getKey().toString().contains(pojoStepDetails.FormName))
 					{
-						
-						this.ImplementedMethodView.setData(tmpBuilder);
-						tmpView.getValue().LoadForm(tmpBuilder);
-						
+						int j=0;
+						while(j<this.mainModel.getStepCount())
+						{
+							String tmpformName = tmpView.getKey().toString() + j;
+							
+							FormBuilder tmpBuilder = this.mainModel.getFormData(tmpformName);
+							if(tmpBuilder!=null)
+							{
+								this.ImplementedMethodView.setData(tmpBuilder);
+							}
+							j++;
+						}
+					}
+					else
+					{
+						FormBuilder tmpBuilder = this.mainModel.getFormData(formName);
+						if(tmpView!=null)
+						{
+							
+							this.ImplementedMethodView.setData(tmpBuilder);
+							tmpView.getValue().LoadForm(tmpBuilder);
+							if(tmpView.getValue().getViewType()==viewTypes.DRAGDROP)
+							{
+								IDraggable vw = (IDraggable)tmpView.getValue();
+								
+								vw.BuildList(this.mainModel.getMetaDataList(pojoSubjectProperties.SubjectMetaDataField), pojoSubjectProperties.SubjectMetaDataField);
+							}
+							
+						}
 					}
 				}
 			}
@@ -539,6 +552,7 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 	@Override
 	public String UpdateValue(FormBuilder someFormData) {
 		
+		this.mainModel.Update(someFormData);
 		FormBuilder tmpBuilder = this.mainModel.getFormData(this.CurrentState.toString());
 		//GWT.log(someFormDa)
 		IFormView tmpView = this._AllStates.get(this.CurrentState);
@@ -548,6 +562,8 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 			GWT.log("Not null");
 			this.ImplementedMethodView.setData(someFormData);
 			//tmpView.LoadForm(tmpBuilder);
+			
+			//FIX: Not updating model
 			
 		}
 		else
