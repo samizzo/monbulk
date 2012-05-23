@@ -96,6 +96,7 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 			return null;
 		}
 	}
+	
 	public pojoStepDetails getNextStep(String StepFormName)
 	{
 		
@@ -268,7 +269,22 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 	}
 	@Override
 	public void Update(FormBuilder formData) {
-		// TODO Auto-generated method stub
+		String FieldName = formData.getFormName();
+		if(FieldName.contains(pojoSubjectProperties.FormName))
+		{
+			//this.CompleteModel.getSubjectProperties().setFieldVale(FieldName, metaDataItem);
+			this.CompleteModel.getSubjectProperties().saveForm(formData);
+		}
+		else if(FieldName.contains(pojoStepDetails.FormName))
+		{
+			this.CompleteModel.getSteps().get(this.CurrentStep).saveForm(formData);
+			//this.CompleteModel.getSubjectProperties().setFieldVale(FieldName, metaDataItem);
+		}
+		else if(FieldName.contains(pojoMethod.FormName))
+		{
+			this.CompleteModel.getMethodDetails().saveForm(formData);
+			//this.CompleteModel.getSubjectProperties().setFieldVale(FieldName, metaDataItem);
+		}
 		
 	}
 	@Override
