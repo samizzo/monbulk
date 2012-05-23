@@ -2,6 +2,7 @@ package monbulk.MetadataEditor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
@@ -48,6 +49,8 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	@UiField CaptionPanel m_elements;
 	@UiField Label m_elementType;
 	@UiField Label m_elementDescription;
+	@UiField Button m_save;
+	@UiField Button m_saveAsTemplate;
 
 	private TreeItem m_selectedElement = null;
 	private Metadata m_metadata = null;
@@ -105,7 +108,15 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_elementEditor.setReadOnly(readOnly);
 	}
 
-	
+	/**
+	 * Adds a handler to the save button.
+	 * @param event
+	 */
+	public void addSaveHandler(ClickHandler handler)
+	{
+		m_save.addClickHandler(handler);
+	}
+
 	/**
 	 * Returns the current metadata object.
 	 * @return

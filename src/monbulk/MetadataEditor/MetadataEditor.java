@@ -77,7 +77,7 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 			}
 		});
 		
-		m_metadataList.addSaveHandler(new ClickHandler()
+		m_metadataProperties.addSaveHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event)
 			{

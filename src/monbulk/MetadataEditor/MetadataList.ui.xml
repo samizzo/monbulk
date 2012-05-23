@@ -32,7 +32,6 @@
 				<g:Button height="" text="Refresh" styleName="{style.Button}" ui:field="m_refreshList"/>
 				<g:Button height="" text="Remove" styleName="{style.Button}" ui:field="m_removeMetadata"/>
 				<g:Button height="" text="New" styleName="{style.Button}" ui:field="m_newMetadata" />
-				<g:Button height="" text="Save" styleName="{style.Button}" ui:field="m_saveMetadata" />
 			</g:HTMLPanel>
 		</g:layer>
 	</g:LayoutPanel>

@@ -17,7 +17,6 @@ public class MetadataSelectWindow extends OkCancelWindow
 		m_metadataList.setShowNew(false);
 		m_metadataList.setShowRefresh(true);
 		m_metadataList.setShowRemove(false);
-		m_metadataList.setShowSave(false);
 		m_contentPanel.add(m_metadataList);
 	
 		m_ok.setEnabled(false);

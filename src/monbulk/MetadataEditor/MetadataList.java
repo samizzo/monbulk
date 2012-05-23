@@ -32,7 +32,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 
 public class MetadataList extends Composite implements KeyUpHandler, KeyDownHandler
 {
@@ -64,7 +63,6 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	@UiField Button m_refreshList;
 	@UiField Button m_removeMetadata;
 	@UiField Button m_newMetadata;
-	@UiField Button m_saveMetadata;
 	@UiField ListBox m_metadataListBox;
 	@UiField TextBox m_filterTextBox;
 
@@ -112,15 +110,6 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 		m_newMetadata.setVisible(showNew);
 	}
 
-	/**
-	 * If 'showSave' is true the save button will be visible.
-	 * @param showSave
-	 */
-	public void setShowSave(boolean showSave)
-	{
-		m_saveMetadata.setVisible(showSave);
-	}
-	
 	/**
 	 * Sets the metadata list handler.
 	 * @param handler
@@ -205,15 +194,6 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	{
 		m_metadataListBox.setSelectedIndex(-1);
 		m_selected = "";
-	}
-	
-	/**
-	 * Adds a handler to the save button.
-	 * @param event
-	 */
-	public void addSaveHandler(ClickHandler handler)
-	{
-		m_saveMetadata.addClickHandler(handler);
 	}
 
 	public void onKeyDown(KeyDownEvent event)
