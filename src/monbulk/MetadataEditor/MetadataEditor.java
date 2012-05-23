@@ -9,6 +9,8 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 
+import monbulk.client.Monbulk;
+import monbulk.client.Settings;
 import monbulk.shared.Services.*;
 import monbulk.shared.Services.MetadataService.*;
 import monbulk.shared.widgets.Window.*;
@@ -81,21 +83,31 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 		{
 			public void onClick(ClickEvent event)
 			{
-				saveMetadata();
+				saveMetadata(false);
+			}
+		});
+		
+		m_metadataProperties.addSaveTemplateHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				saveMetadata(true);
 			}
 		});
 	}
 	
-	private void updateMetadata(final Metadata metadata, final boolean refresh)
+	private void updateMetadata(final Metadata metadata, final boolean refresh, final boolean template, final String name)
 	{
 		MetadataService service = MetadataService.get();
+		metadata.setName(name);
 		service.updateMetadata(metadata, new UpdateMetadataHandler()
 		{
 			public void onUpdateMetadata(Metadata m)
 			{
 				m.clearModified();
-				
-				Window.alert("The metadata '" + m.getName() + "' was saved.");
+
+				String msg = "The " + (template ? "template" : "metadata") + " '" + name + "' was saved."; 
+				Window.alert(msg);
 
 				// Refresh the list so it has the new name.
 				if (refresh)
@@ -167,35 +179,64 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 		m_state = State.None;
 	}
 
-	private void saveMetadata()
+	/**
+	 * Saves the current metadata.  If 'template' is true or
+	 * the name is in the template namespace, the metadata
+	 * will be saved as a template.
+	 * @param template
+	 */
+	private void saveMetadata(final boolean template)
 	{
 		final Metadata metadata = m_metadataProperties.getMetadata();
 		final MetadataService service = MetadataService.get();
 		if (service != null)
 		{
 			final String oldName = m_metadataList.getSelectedMetadataName();
-			final String newName = metadata.getName();
-			
-			if (newName.length() == 0)
+			String name = metadata.getName();
+
+			Settings settings = Monbulk.getSettings();
+			String defaultNs = settings.getDefaultNamespace();
+
+			// Strip off default namespace.
+			if (name.startsWith(defaultNs + "."))
+			{
+				name = name.substring(defaultNs.length() + 1);
+			}
+
+			final boolean isTemplate = name.startsWith("template.");
+
+			// Strip off template namespace.
+			if (isTemplate)
+			{
+				name = name.substring(9);
+			}
+
+			// Reconstruct the full namespace.
+			String ns = defaultNs + (template || isTemplate ? ".template." : ".");
+			name = ns + name;
+
+			final String newName = name;
+			final String type = template || isTemplate ? "template" : "metadata"; 
+
+			if (newName.length() == 0 || newName.equals(ns))
 			{
 				// No name given.
-				Window.alert("The metadata has no name.  Please enter a name for this metadata.");
+				Window.alert("The " + type + " has no name.  Please enter a name for this " + type + ".");
 				m_metadataProperties.setNameFocus();
 				m_cancelSelect = true;
 				return;
 			}
 
-			boolean nameIsSame = oldName.equals(newName);
-			if (oldName.length() == 0 || nameIsSame)
+			if (oldName.equals(newName))
 			{
-				// If the metadata name hasn't changed or it's a new metadata
-				// we can update immediately.
-				updateMetadata(metadata, !nameIsSame);
+				// If the metadata name hasn't changed we can update immediately.
+				updateMetadata(metadata, false, template || isTemplate, newName);
 			}
 			else
 			{
-				// The name has changed so we need to rename before
-				// updating.  First check if the new name already exists.
+				// The name has changed or it's a new metadata, so we may
+				// need to rename before updating.  First check if the new name
+				// already exists.
 				service.metadataExists(newName, new MetadataExistsHandler()
 				{
 					public void onMetadataExists(String metadataName, boolean exists)
@@ -203,7 +244,8 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 						if (exists)
 						{
 							// New metadata name already exists, so don't allow the user to save yet.
-							Window.alert("A metadata with the name '" + metadataName + "' already exists.  Please use a different name.");
+							String msg = "A " + type + " with the name '" + metadataName + "' already exists.  Please use a different name.";
+							Window.alert(msg);
 							m_metadataProperties.setNameFocus();
 							
 							// Ensure the metadata we are working with is selected.
@@ -211,14 +253,25 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 						}
 						else
 						{
-							// New name doesn't exist so rename the metadata.
-							service.renameMetadata(oldName, newName, new RenameMetadataHandler()
+							// New name doesn't exist.
+							if (template || oldName.length() == 0)
 							{
-								public void onRenameMetadata()
+								// Saving existing metadata as a template, or
+								// it's a new metadata, so just update, don't
+								// rename first.
+								updateMetadata(metadata, true, template, newName);
+							}
+							else
+							{
+								// Rename the metadata first before updating.
+								service.renameMetadata(oldName, newName, new RenameMetadataHandler()
 								{
-									updateMetadata(metadata, true);
-								}
-							});
+									public void onRenameMetadata()
+									{
+										updateMetadata(metadata, true, template || isTemplate, newName);
+									}
+								});
+							}
 						}
 					}
 				});
@@ -235,7 +288,7 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 		Metadata m = m_metadataProperties.getMetadata();
 		if (m != null && m.getIsModified() && Window.confirm("The metadata '" + m.getName() + "' has been modified.  Do you want to save it?"))
 		{
-			saveMetadata();
+			saveMetadata(false);
 		}
 		else
 		{

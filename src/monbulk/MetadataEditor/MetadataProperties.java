@@ -73,10 +73,6 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 		// Only allow upper and lower letters, full stop, and hyphen.
 		m_name.setValidCharRegex("[a-zA-Z.-]");
-		
-		Settings settings = Monbulk.getSettings();
-		String namespace = settings.getDefaultNamespace();
-		m_namespace.setText(namespace);
 	}
 
 	/**
@@ -115,6 +111,15 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	public void addSaveHandler(ClickHandler handler)
 	{
 		m_save.addClickHandler(handler);
+	}
+	
+	/**
+	 * Adds a handler to the save as template button.
+	 * @param event
+	 */
+	public void addSaveTemplateHandler(ClickHandler handler)
+	{
+		m_saveAsTemplate.addClickHandler(handler);
 	}
 
 	/**
@@ -160,14 +165,26 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 		String name = metadata.getName();
 		
-		// If there is a namespace at the start, strip it off.
 		Settings settings = Monbulk.getSettings();
-		String namespace = settings.getDefaultNamespace() + ".";
+		String defaultNs = settings.getDefaultNamespace();
+		String namespace = defaultNs + ".";
+		String ns = defaultNs;
+
 		if (name.startsWith(namespace))
 		{
+			// There is a namespace at the start, so strip it off.
+			ns = settings.getDefaultNamespace();
 			name = name.substring(namespace.length());
 		}
 
+		if (name.startsWith("template."))
+		{
+			// It's a template, so remove from the name.
+			ns = ns + ".template";
+			name = name.substring(9);
+		}
+		
+		m_namespace.setText(ns);
 		m_name.setText(name);
 		m_label.setText(metadata.getLabel());
 		m_description.setText(metadata.getDescription());
@@ -486,16 +503,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	{
 		if (m_metadata != null)
 		{
-			String name = m_name.getText();
-
-			// Prefix the name with the namespace (unless user has already done it).
-			Settings settings = Monbulk.getSettings();
-			String namespace = settings.getDefaultNamespace() + ".";
-			if (!name.startsWith(namespace))
-			{
-				name = namespace + name;
-			}
-
+			String name = m_namespace.getText() + "." + m_name.getText();
 			m_metadata.setName(name);
 			m_metadata.setLabel(m_label.getText());
 			m_metadata.setDescription(m_description.getText());
