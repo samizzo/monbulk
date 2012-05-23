@@ -40,6 +40,8 @@ import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Form.FormWidget;
 import monbulk.shared.Form.iFormField;
 import monbulk.shared.util.GWTLogger;
+import monbulk.shared.util.MonbulkEnums;
+import monbulk.shared.util.MonbulkEnums.viewTypes;
 
 /**
  * This is the baseForm widget which takes a FormBuilder data structure and renders it in order
@@ -254,7 +256,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 								});
 						if(item.getFieldTypeName()=="Boolean")
 						{
-							if(item.GetFieldValue()=="true")
+							if(item.GetFieldValue().toString().contains("true"))
 							{
 								tmpWidg.setFormValue(true);
 							}
@@ -414,6 +416,11 @@ public class baseForm extends VerticalPanel implements IFormView {
 		// TODO Auto-generated method stub
 		return this.allFormItems.remove(child);
 		//return false;
+	}
+
+	@Override
+	public viewTypes getViewType() {
+		 return MonbulkEnums.viewTypes.FORM;
 	}
 
 }

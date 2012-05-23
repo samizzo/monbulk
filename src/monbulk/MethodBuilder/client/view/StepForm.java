@@ -2,6 +2,7 @@ package monbulk.MethodBuilder.client.view;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 
 
@@ -31,6 +32,7 @@ import monbulk.shared.Architecture.IView.IDraggable;
 import monbulk.shared.Events.DragEvent;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Form.FormWidget;
+import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.pojo.pojoMetaData;
 import monbulk.shared.Model.pojo.pojoStepDetails;
 import monbulk.shared.Model.pojo.pojoStudy;
@@ -69,10 +71,25 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 		
 		this.setMetaDataLocation(requiredIndex+1); //we want this after the spacing row
 		this._formItems.add(_StepMetaDataList);
+		//IMPORTANT: NB the field name will link to the Button field and needs to be compatible with the loading/deleting/adding methods in the related pojo
 		this.linkMetaDataEditor(pojoStepDetails.SubjectMetaDataField, this.MetaDatatable);
 		
 		FormWidget tmpWidg = this.getFormWidgetForName(pojoStepDetails.HasStudyField);
-		hideStudyDetails();
+		if(tmpWidg.getValue()!=null)
+		{
+			if((Boolean)tmpWidg.getValue())
+			{
+				showStudyDetails();
+			}
+			else
+			{
+				hideStudyDetails();
+			}
+		}
+		else
+		{
+			hideStudyDetails();
+		}
 		if(tmpWidg !=null)
 		{
 			tmpWidg.getFormWidget().addHandler(new ValueChangeHandler<Boolean>()
@@ -166,6 +183,19 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 		catch(Exception ex)
 		{
 			Window.alert("Exception caught @ StepForm.onGEeDictionary" + ex.getMessage());
+		}
+		
+	}
+	@Override
+	public void BuildList(HashMap<String, pojoMetaData> someList,final String FieldName) {
+		if(FieldName==pojoStudy.STUDY_METADATA)
+		{
+			this._StepMetaDataList.clear();
+			this.BuildTable(this._StepMetaDataList,someList,FieldName);
+		}
+		else
+		{
+			super.BuildList(someList, FieldName);
 		}
 		
 	}

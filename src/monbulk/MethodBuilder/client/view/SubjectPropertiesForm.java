@@ -1,6 +1,8 @@
 package monbulk.MethodBuilder.client.view;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -20,6 +22,7 @@ import monbulk.shared.Model.pojo.pojoMetaData;
 import monbulk.shared.Model.pojo.pojoStepDetails;
 import monbulk.shared.Model.pojo.pojoSubjectProperties;
 import monbulk.shared.util.GWTLogger;
+import monbulk.shared.util.MonbulkEnums;
 import monbulk.shared.widgets.Window.OkCancelWindow;
 import monbulk.shared.widgets.Window.OkCancelWindow.OkCancelHandler.Event;
 import monbulk.MetadataEditor.MetadataSelectWindow;
@@ -42,7 +45,7 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 		super(presenter);
 		MetaDatatable = new FlexTable();
 		
-		AddedRowIndex= 1;
+		AddedRowIndex= 0;
 		
 	}
 	@Override
@@ -215,7 +218,7 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 			tmpTable.setWidget(AddedRowIndex, 0, tmpWidget);
 			
 			//this.MetaDataTable.setWidget(AddedRowIndex, 1, tmpWidget);
-			//this.MetaDataTable.add(tmpWidget);
+			//this.MetaDataTable.add(tmpWidget)is;
 			AddedRowIndex ++;
 			
 			return true;
@@ -225,5 +228,28 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 			GWTLogger.Log("Casting error", "SubjectPropertiesForm", "DragItem", "167");
 			return false;
 		}
+	}
+	public void BuildTable(Widget Table,HashMap<String, pojoMetaData> someList, final String FieldName)
+	{
+		Iterator<Entry<String, pojoMetaData>> iEntry = someList.entrySet().iterator();
+		
+		while(iEntry.hasNext())
+		{
+			Entry<String, pojoMetaData> tmpEntry = iEntry.next();
+			
+			this.DroptItem(tmpEntry.getValue(), Table, FieldName);
+			
+		}
+	}
+	@Override
+	public void BuildList(HashMap<String, pojoMetaData> someList,final String FieldName) {
+		MetaDatatable.clear();
+		this.BuildTable(MetaDatatable,someList,FieldName);
+		
+	}
+	@Override
+	public MonbulkEnums.viewTypes getViewType() {
+		// TODO Auto-generated method stub
+		return MonbulkEnums.viewTypes.DRAGDROP;
 	}
 }

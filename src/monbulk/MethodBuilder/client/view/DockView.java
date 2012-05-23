@@ -2,6 +2,7 @@ package monbulk.MethodBuilder.client.view;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import com.google.gwt.core.client.GWT;
@@ -204,6 +205,12 @@ public class DockView extends Composite implements IDockView, IDraggable {
 	public Boolean DroptItem(IPojo someItem,Widget inList, String FieldName) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void BuildList(HashMap<String, pojoMetaData> someList, String FieldName) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
