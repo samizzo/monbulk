@@ -19,4 +19,7 @@ public class MonbulkEnums {
 	public enum WindowTypes{
 		DEFAULT, STATIC, THEMED, MODAL 
 	}
+	public enum viewTypes{
+		DRAGDROP, DOCKABLE, FORM, WIDGET
+	}
 }
