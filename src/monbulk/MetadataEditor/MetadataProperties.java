@@ -21,6 +21,8 @@ import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Widget;
 
+import monbulk.client.Monbulk;
+import monbulk.client.Settings;
 import monbulk.client.desktop.Desktop;
 import monbulk.shared.Services.Metadata;
 import monbulk.shared.Services.MetadataService;
@@ -34,6 +36,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	private static MetadataPropertiesUiBinder uiBinder = GWT.create(MetadataPropertiesUiBinder.class);
 	interface MetadataPropertiesUiBinder extends UiBinder<Widget, MetadataProperties> { }
 
+	@UiField Label m_namespace;
 	@UiField TextBoxEx m_name;
 	@UiField TextBox m_label;
 	@UiField TextBox m_description;
@@ -67,6 +70,10 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 		// Only allow upper and lower letters, full stop, and hyphen.
 		m_name.setValidCharRegex("[a-zA-Z.-]");
+		
+		Settings settings = Monbulk.getSettings();
+		String namespace = settings.getDefaultNamespace();
+		m_namespace.setText(namespace);
 	}
 
 	/**
@@ -139,7 +146,18 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		clear();
 		m_metadata = metadata;
 		m_addElement.setEnabled(true);
-		m_name.setText(metadata.getName());
+
+		String name = metadata.getName();
+		
+		// If there is a namespace at the start, strip it off.
+		Settings settings = Monbulk.getSettings();
+		String namespace = settings.getDefaultNamespace() + ".";
+		if (name.startsWith(namespace))
+		{
+			name = name.substring(namespace.length());
+		}
+
+		m_name.setText(name);
 		m_label.setText(metadata.getLabel());
 		m_description.setText(metadata.getDescription());
 		populateElementTree(null, metadata.getRootElement());
@@ -457,7 +475,17 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	{
 		if (m_metadata != null)
 		{
-			m_metadata.setName(m_name.getText());
+			String name = m_name.getText();
+
+			// Prefix the name with the namespace (unless user has already done it).
+			Settings settings = Monbulk.getSettings();
+			String namespace = settings.getDefaultNamespace() + ".";
+			if (!name.startsWith(namespace))
+			{
+				name = namespace + name;
+			}
+
+			m_metadata.setName(name);
 			m_metadata.setLabel(m_label.getText());
 			m_metadata.setDescription(m_description.getText());
 		}

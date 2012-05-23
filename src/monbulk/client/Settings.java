@@ -53,4 +53,10 @@ public class Settings
 	{
 		return m_dictionary.getDefinition(name, defaultValue);
 	}
+	
+	public String getDefaultNamespace()
+	{
+		String namespace = get("default_namespace", "monbulk");
+		return namespace;
+	}
 }

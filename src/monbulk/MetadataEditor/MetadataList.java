@@ -1,7 +1,10 @@
 package monbulk.MetadataEditor;
 
 import java.util.List;
+import java.util.ArrayList;
 
+import monbulk.client.Monbulk;
+import monbulk.client.Settings;
 import monbulk.shared.Services.Metadata;
 import monbulk.shared.Services.MetadataService;
 import monbulk.shared.Services.MetadataService.CreateMetadataHandler;
@@ -270,23 +273,37 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 				// Callback for reading a list of metadata.
 				public void onGetMetadataTypes(List<String> types)
 				{
-					m_metadataTypes = types;
+					m_metadataTypes = new ArrayList<String>();
 					
 					if (types != null)
 					{
 						// Select the first item by default.
-						int selectionIndex = types.size() > 0 ? 0 : -1;
+						int selectionIndex = -1;
 
-						// Add all items.						
+						Settings settings = Monbulk.getSettings();
+						String namespace = settings.getDefaultNamespace() + ".";
+						
+						// Add all items.
 						for (int i = 0; i < types.size(); i++)
 						{
 							String name = types.get(i);
-							m_metadataListBox.addItem(name);
-							if (name.equals(m_itemToSelect))
+							if (name.startsWith(namespace))
 							{
-								// We've found the item we need to select.
-								selectionIndex = i;
+								m_metadataTypes.add(name);
+								m_metadataListBox.addItem(name);
+								if (name.equals(m_itemToSelect))
+								{
+									// We've found the item we need to select.
+									selectionIndex = m_metadataTypes.size() - 1;
+								}
 							}
+						}
+
+						// If nothing was selected but there are metadata items
+						// then select the first one by default.
+						if (selectionIndex == -1 && m_metadataTypes.size() > 0)
+						{
+							selectionIndex = 0;
 						}
 						
 						if (selectionIndex != -1)
@@ -302,8 +319,12 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 
 	private void selectMetadata(int index)
 	{
-		m_metadataListBox.setSelectedIndex(index);
-		onMetadataSelected(null);
+		if (index >= 0 && index < m_metadataListBox.getItemCount())
+		{
+			m_metadataListBox.setSelectedIndex(index);
+			onMetadataSelected(null);
+		}
+
 		m_itemToSelect = "";
 	}
 	
@@ -341,10 +362,12 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 		
 		if (allowSelect)
 		{
+			// Handler allows the selection.
 			m_selected = selected;
 		}
 		else
 		{
+			// Handler cancelled the selection so select the previous metadata.
 			setSelectedMetadata(m_selected);
 		}
 	}
