@@ -1,6 +1,7 @@
 package monbulk.MethodBuilder.client.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import com.google.gwt.core.client.GWT;
@@ -52,6 +53,10 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 		
 		
 	}
+	public int getStepCount()
+	{
+		return this.CompleteModel.getStepCount();
+	}
 	public MethodCompleteModel(String ID, FormPresenter presenter)
 	{
 		isLoaded = true;
@@ -75,13 +80,16 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 	}
 	public pojoStepDetails getFirstStep()
 	{
+		
 		if(this.CompleteModel.getStepCount() > 0)
 		{
+			this.CurrentStep = FirstStep;
 			return this.CompleteModel.getSteps().get(FirstStep);
 		}
 		else
 		{
 			this.addStep();
+			this.CurrentStep = FirstStep;
 			return this.CompleteModel.getSteps().get(FirstStep);
 		}
 	}
@@ -89,6 +97,7 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 	{
 		if(this.CompleteModel.getSteps().get(StepFormName)!=null)
 		{
+			this.CurrentStep=StepFormName;
 			return this.CompleteModel.getSteps().get(StepFormName); 
 		}
 		else
@@ -108,6 +117,7 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 				if(this.CompleteModel.getSteps().get(newFormName)==null)
 				{
 					this.addStep();
+					this.CurrentStep=newFormName;
 					return this.CompleteModel.getSteps().get(newFormName);
 				}
 				else
@@ -328,6 +338,27 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 			this.CompleteModel.getSteps().get(this.CurrentStep).UpdateMetaData(metaDataItem, false, FieldName);
 			//this.CompleteModel.getSubjectProperties().setFieldVale(FieldName, metaDataItem);
 		}
+	}
+	public HashMap<String,pojoMetaData> getMetaDataList(String FieldName)
+	{
+		if(FieldName.contains(pojoStudy.STUDY_METADATA))
+		{
+			//this.CompleteModel.getSubjectProperties().setFieldVale(FieldName, metaDataItem);
+			return this.CompleteModel.getSteps().get(this.CurrentStep).getMetaData(FieldName);
+			
+			
+		}
+		else if(FieldName.contains(pojoStepDetails.SubjectMetaDataField))
+		{
+			return this.CompleteModel.getSteps().get(this.CurrentStep).getMetaData(FieldName);
+			//this.CompleteModel.getSubjectProperties().setFieldVale(FieldName, metaDataItem);
+		}
+		else if(FieldName.contains(pojoSubjectProperties.SubjectMetaDataField))
+		{
+			return this.CompleteModel.getSubjectProperties().getMetaData(FieldName);
+			//this.CompleteModel.getSubjectProperties().setFieldVale(FieldName, metaDataItem);
+		}
+		return null;
 	}
 	
 
