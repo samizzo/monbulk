@@ -11,6 +11,7 @@ import monbulk.shared.Form.ButtonField;
 import monbulk.shared.Form.DictionaryFormField;
 import monbulk.shared.Form.DraggableFormField;
 import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.IPojo;
 
 import monbulk.shared.util.GWTLogger;
@@ -75,7 +76,7 @@ public class pojoStepDetails implements IPojo{
 		}
 		else
 		{
-			if(inList.get(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField))==null)
+			if(inList.get(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField))!=null)
 			{
 				inList.remove(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField));
 			}
@@ -130,7 +131,29 @@ public class pojoStepDetails implements IPojo{
 	@Override
 	public void saveForm(FormBuilder input) {
 		
+		this.StepDetailsForm = input;
+		Iterator<iFormField> i = input.getFormDetails().iterator();
+		//BUG HERE
+		while(i.hasNext())
+		{
+			iFormField tmpItem = i.next();
+			
+			//BUG: hasValue not set !!
+			if(tmpItem.hasValue())
+			{
+				String FieldName = tmpItem.GetFieldName(); 
+				if(tmpItem.GetFieldName().contains(input.getFormName()))
+				{
+					FieldName = FieldName.replace(input.getFormName() + ".", "");
+					
+				}
+				setFieldVale(FieldName,tmpItem.GetFieldValue() + "");
+				
+			}
+		}
 		
+		//FormBuilder -> pojo Converter
+		//FormBuilder->XML converter
 	}
 
 	@Override
@@ -138,13 +161,18 @@ public class pojoStepDetails implements IPojo{
 		// TODO Auto-generated method stub
 //		StepDetailsForm = new FormBuilder();
 		//String FormName = FormName + FormIndex;
-		//StepDetailsForm.
+		if(StepDetailsForm.getFormDetails().size() > 2)
+		{
+			
+			return StepDetailsForm;
+		}//StepDetailsForm.
 		try
 		{
 			GWTLogger.Log("Running @ pojoStepDetails.getFormStructure:", "pojoStepDetails", "getFormStructure", "111");
 		//StepDetailsForm.SetFormName(FormName + FormIndex);
 
 		StepDetailsForm.SetFormName(FormName+this.FormIndex);
+		//Window.alert("StepName" + StepName);
 		if(this.StepName==null)
 		{
 			StepDetailsForm.AddTitleItem(StepNameField,"String","");
@@ -242,7 +270,7 @@ public class pojoStepDetails implements IPojo{
 	}
 	@Override
 	public void setFieldVale(String FieldName, Object FieldValue) {
-		Window.alert("FieldName:" + FieldName + "Field Value:" + FieldValue);
+		//Window.alert("FieldName:" + FieldName + "Field Value:" + FieldValue);
 		if(!FieldValue.equals(null))
 		{
 			if(FieldName == this.StepDescriptionField)
@@ -255,7 +283,14 @@ public class pojoStepDetails implements IPojo{
 			}
 			else if(FieldName == this.HasStudyField)
 			{
-				this.hasStudy = (Boolean) FieldValue;
+				if(FieldValue.toString().contains("true"))
+				{
+					this.hasStudy = true;
+				}
+				else
+				{
+					this.hasStudy = false;
+				}
 			}
 			
 		}
@@ -297,12 +332,34 @@ public class pojoStepDetails implements IPojo{
 				this.StepDescription = document.selectValue("/step/description");
 				//document.selectValue("/step") Gives Description?
 				//Window.alert(document.selectNode("/step/study").toString());
+				name.pehl.totoe.xml.client.Node studyNode = document.selectNode("/step/study");
+				if(studyNode!=null)
+				{
+					this.hasStudy=true;
+					this.relatedStudy.setDICOM(studyNode.selectValue("/study/type"));
+					this.relatedStudy.setStudyType(studyNode.selectValue("/study/dicom/modality"));
+				}
 			}
 			catch(Exception ex)
 			{
 				GWT.log("Exception caught @ pojoStepDetails.readInput(XML): " + ex.getMessage());
 			}
 			//java.util.List<name.pehl.totoe.xml.client.Node> subjectList = document.selectNodes("/study");
+		}
+	}
+	public HashMap<String,pojoMetaData> getMetaData(String ListName)
+	{
+		if(ListName == this.SubjectMetaDataField)
+		{
+			return this.attachedMetaData;
+		}
+		else if(ListName == this.relatedStudy.STUDY_METADATA)
+		{
+			return this.relatedStudy.getMetaDataList();
+		}
+		else
+		{
+			return null;
 		}
 	}
 

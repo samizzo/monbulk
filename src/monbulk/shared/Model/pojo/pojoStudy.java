@@ -11,8 +11,9 @@ import monbulk.shared.Model.IPojo;
 public class pojoStudy implements IPojo {
 	private HashMap<String,pojoMetaData> attachedMetaData;
 	//private ArrayList<pojoMetaData> attachedMetaData;
-	private pojoDictionary DicomModality;
-	private pojoDictionary StudyType;
+	private String DicomModality;
+	private String StudyType;
+	
 	
 	public static final String StudyTypeField = "Study Type";
 	public static final String DicomModalityField = "Dicom Modality";
@@ -23,14 +24,12 @@ public class pojoStudy implements IPojo {
 	
 	public pojoStudy()
 	{
-		DicomModality = new pojoDictionary("");
-		StudyType = new pojoDictionary("");
+		
 		attachedMetaData = new HashMap<String,pojoMetaData>(); 
 	}
 	public pojoStudy(pojoDictionary Dicom, pojoDictionary StudyTypes)
 	{
-		DicomModality = Dicom;
-		StudyType = StudyTypes;
+		
 		attachedMetaData = new HashMap<String,pojoMetaData>();
 	}
 	@Override
@@ -64,7 +63,10 @@ public class pojoStudy implements IPojo {
 		// TODO Auto-generated method stub
 		
 	}
-
+	public void setStudyType(String StudyType){this.StudyType = StudyType;	}
+	public void setDICOM(String DICOM){ this.DicomModality = DICOM;	}
+	public String getStudyType(){return this.StudyType;}
+	public String getDICOM(){return this.DicomModality;}
 	@Override
 	public void deserialiseFromList(String XML) {
 		// TODO Auto-generated method stub

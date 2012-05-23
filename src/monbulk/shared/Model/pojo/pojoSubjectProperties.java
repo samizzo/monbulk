@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import monbulk.shared.Form.ButtonField;
 import monbulk.shared.Form.DraggableFormField;
 import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.IPojo;
 
 public class pojoSubjectProperties implements IPojo {
@@ -25,14 +26,36 @@ public class pojoSubjectProperties implements IPojo {
 	private FormBuilder SubjectPropertiesForm;
 	@Override
 	public void saveForm(FormBuilder input) {
-		// TODO Auto-generated method stub
 		
+		Iterator<iFormField> i = input.getFormDetails().iterator();
+		//BUG HERE
+		while(i.hasNext())
+		{
+			iFormField tmpItem = i.next();
+			
+			//FIXED
+			if(tmpItem.hasValue())
+			{
+				String FieldName = tmpItem.GetFieldName(); 
+				if(tmpItem.GetFieldName().contains(input.getFormName()))
+				{
+					FieldName = FieldName.replace(input.getFormName() + ".", "");
+					
+				}
+				setFieldVale(FieldName,tmpItem.GetFieldValue() + "");
+				
+			}
+		}
 	}
 	public pojoSubjectProperties()
 	{
 		this.attachedMetaData = new HashMap<String,pojoMetaData>();
 		SubjectPropertiesForm = new FormBuilder();
 		BuildForm();
+	}
+	public HashMap<String,pojoMetaData> getMetaData(String ListName)
+	{
+			return this.attachedMetaData;
 	}
 	private void BuildForm()
 	{

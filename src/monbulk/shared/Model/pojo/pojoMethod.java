@@ -72,7 +72,7 @@ public class pojoMethod implements IPojo {
 
 	private void buildForm()
 	{
-
+		MethodForm.deleteFormItems();
 		MethodForm.SetFormName(FormName);
 		/*if(this.MethodID==null)
 		{
@@ -135,6 +135,7 @@ public class pojoMethod implements IPojo {
 		// if we haven't loaded a form - set defaults
 				
 		//MethodForm.AddItem("DataUsage", "String");
+		this.buildForm();
 		return MethodForm;
 	}
 
@@ -195,10 +196,12 @@ public class pojoMethod implements IPojo {
 	@Override
 	public void saveForm(FormBuilder input) {
 		Iterator<iFormField> i = input.getFormDetails().iterator();
-		
+		//BUG HERE
 		while(i.hasNext())
 		{
 			iFormField tmpItem = i.next();
+			
+			//BUG: hasValue not set !!
 			if(tmpItem.hasValue())
 			{
 				String FieldName = tmpItem.GetFieldName(); 
