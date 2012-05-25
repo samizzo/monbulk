@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+
+
+import monbulk.shared.util.HtmlFormatter;
+
 import monbulk.shared.Form.ButtonField;
 import monbulk.shared.Form.DraggableFormField;
 import monbulk.shared.Form.FormBuilder;
@@ -46,6 +52,41 @@ public class pojoSubjectProperties implements IPojo {
 				
 			}
 		}
+	}
+	public void AppendXML(Element xml,Document doc)
+	{
+		Element node1 = doc.createElement("project");
+		Element node2 = doc.createElement("public");
+		Element node3 = doc.createElement("private");
+		
+		
+		Iterator<Entry<String, pojoMetaData>> i = this.attachedMetaData.entrySet().iterator();
+		int index = 0;
+		while(i.hasNext())
+		{
+			Entry<String, pojoMetaData> tmpItem = i.next();
+			//SubjectPropertiesForm.MergeForm(tmpItem.getFormStructure());
+			pojoMetaData tmpPojo = tmpItem.getValue();
+			if(tmpPojo.getFieldVale(pojoMetaData.IsPublicField)=="true")
+			{
+				tmpPojo.AppendXML(node2, doc);
+			}
+			else
+			{
+				tmpPojo.AppendXML(node3, doc);
+			}
+		}
+		if(node2.hasChildNodes())
+		{
+			node1.appendChild(node2);
+		}
+		if(node3.hasChildNodes())
+		{
+			node1.appendChild(node3);
+		}
+		xml.appendChild(node1);
+		
+		//xml.appendChild(newChild)
 	}
 	public pojoSubjectProperties()
 	{
@@ -112,8 +153,34 @@ public class pojoSubjectProperties implements IPojo {
 
 	@Override
 	public String writeOutput(String Format) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sb = new StringBuilder();
+		
+		String Output ="";
+		
+		//String SubjectType= ":metadata < :definition -requirement mandatory hfi.pssd.subject :value < :type constant(" + this.SubjectType + " > >\\";
+		if(Format=="TCL")
+		{
+			if(this.attachedMetaData.size()>0)
+			{
+				String tclSubjectType="";
+				if(this.SubjectType!=null)
+				{
+					//To be handled as a metaData item with SubjectName and Type
+					tclSubjectType=HtmlFormatter.GetHTMLTabs(5) +  ":metadata < :definition -requirement mandatory hfi.pssd.subject :value < :type constant(" + this.SubjectType + ") > >\\" + HtmlFormatter.GetHTMLNewline(); 
+				}
+				
+				sb.append(HtmlFormatter.GetHTMLTabs(2) + ":subject < \\" + HtmlFormatter.GetHTMLNewline());
+				sb.append(HtmlFormatter.GetHTMLTabs(3)+ ":project < \\" + HtmlFormatter.GetHTMLNewline());
+				
+				//sb.append(tclSubjectType);
+				sb.append(HtmlFormatter.GetHTMLMetaDataList("tcl", this.attachedMetaData,5,true));
+				
+				sb.append(HtmlFormatter.GetHTMLTabs(4)+ ">\\" + HtmlFormatter.GetHTMLNewline());
+				sb.append(HtmlFormatter.GetHTMLTabs(3)+ ">\\" + HtmlFormatter.GetHTMLNewline());
+			}
+			
+		}
+		return sb.toString();
 	}
 	public void setSubjectName(String SubjectName)
 	{

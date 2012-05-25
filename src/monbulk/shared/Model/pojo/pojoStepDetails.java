@@ -6,6 +6,8 @@ import java.util.Map.Entry;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
 
 import monbulk.shared.Form.ButtonField;
 import monbulk.shared.Form.DictionaryFormField;
@@ -86,8 +88,8 @@ public class pojoStepDetails implements IPojo{
 		// TODO Auto-generated method stub
 		StringBuilder Output = new StringBuilder();
 		
-		String StepName = "";
-		String StepDescription = "";
+		String StepName = this.StepName;
+		String StepDescription = this.StepDescription;
 		String StepStudy = "";
 		String Modality = "";
 		
@@ -95,39 +97,73 @@ public class pojoStepDetails implements IPojo{
 		//String SubjectType= ":metadata < :definition -requirement mandatory hfi.pssd.subject :value < :type constant(" + this.SubjectType + " > >\\";
 		
 			Output.append(HtmlFormatter.GetHTMLTabs(2) + ":step < \\" + HtmlFormatter.GetHTMLNewline());
-			Output.append(HtmlFormatter.GetHTMLTabs(3)+ ":name \\\"" + StepName + "\\\"\\" + HtmlFormatter.GetHTMLNewline());
+			Output.append(HtmlFormatter.GetHTMLTabs(3)+ ":name \\\"" + StepName + "\\\" \\" + HtmlFormatter.GetHTMLNewline());
 			Output.append(HtmlFormatter.GetHTMLTabs(3)+ ":description \\\"" + StepDescription + "\\\" \\" + HtmlFormatter.GetHTMLNewline());
 			
 			
 			if(this.attachedMetaData.size() > 0)
 			{
 				Iterator<java.util.Map.Entry<String,pojoMetaData>> i = attachedMetaData.entrySet().iterator();
-				Output.append(HtmlFormatter.GetHTMLTabs(3) + ":subject -part p < \\" + HtmlFormatter.GetHTMLNewline());
+				Output.append(HtmlFormatter.GetHTMLTabs(3) + ":subject -part \"p\" < \\" + HtmlFormatter.GetHTMLNewline());
 				
 				while(i.hasNext())
 				{
 					java.util.Map.Entry<String,pojoMetaData> in =  i.next();
 					pojoMetaData tmpItem = in.getValue();
-					if(tmpItem.getFieldVale(pojoMetaData.MetaDataNameSpaceField) == "Subject")
-					{
-						Output.append(tmpItem.writeOutput("TCL"));
-					}
+					Output.append(HtmlFormatter.GetHTMLTabs(4)+tmpItem.writeOutput("TCL") + HtmlFormatter.GetHTMLNewline());
+					
 					//else add somewhere else
 				}
 				
 				//Output = Output + HtmlFormatter.GetHTMLMetaDataList("tcl", this.MetaDataAddedList, 4) + "> \\" + HtmlFormatter.GetHTMLNewline();
 			}
-			
-			if(hasStudy)
+			if(hasStudy!=null)
 			{
-				//Output = Output + HtmlFormatter.GetHTMLTabs(3) + ":study < :type \\\"" + StepStudy + "\\\" :dicom < :modality " + Modality + " > > \\" + HtmlFormatter.GetHTMLNewline();
-				Output.append(relatedStudy.writeOutput("TCL"));
+				if(hasStudy)
+				{
+					//Output = Output + HtmlFormatter.GetHTMLTabs(3) + ":study < :type \\\"" + StepStudy + "\\\" :dicom < :modality " + Modality + " > > \\" + HtmlFormatter.GetHTMLNewline();
+					Output.append(relatedStudy.writeOutput("TCL"));
+				}
 			}
 			Output.append(HtmlFormatter.GetHTMLTabs(2)+ "> \\" + HtmlFormatter.GetHTMLNewline());
 		
 		return Output.toString();
 	}
-
+	public void AppendXML(Element xml,Document doc)
+	{
+		Element description = doc.createElement("description");
+		description.appendChild(doc.createTextNode(this.StepDescription));
+		xml.appendChild(description);
+		Element name = doc.createElement("name");
+		name.appendChild(doc.createTextNode(this.StepName));
+		xml.appendChild(name);
+		if(hasStudy!=null)
+		{
+			if(hasStudy)
+			{
+				//Output = Output + HtmlFormatter.GetHTMLTabs(3) + ":study < :type \\\"" + StepStudy + "\\\" :dicom < :modality " + Modality + " > > \\" + HtmlFormatter.GetHTMLNewline();
+				Element study = doc.createElement("study");
+				this.relatedStudy.AppendXML(study, doc);
+				xml.appendChild(study);
+		}
+		}
+		if(this.attachedMetaData.size()>0)
+		{
+			Element subject = doc.createElement("subject");
+			subject.setAttribute("part","p");
+			Iterator<Entry<String, pojoMetaData>> i = this.attachedMetaData.entrySet().iterator();
+			int index = 0;
+			while(i.hasNext())
+			{
+				Entry<String, pojoMetaData> tmpItem = i.next();
+				//SubjectPropertiesForm.MergeForm(tmpItem.getFormStructure());
+				pojoMetaData tmpPojo = tmpItem.getValue();
+				tmpPojo.AppendXML(subject, doc);
+			}
+			xml.appendChild(subject);
+		}
+		
+	}
 	@Override
 	public void saveForm(FormBuilder input) {
 		
@@ -200,13 +236,20 @@ public class pojoStepDetails implements IPojo{
 		}
 				//StepDetailsForm.AddListItem(pojoStudy.DicomModalityField, new ArrayList<String>(), "Loading");
 		 
+		DictionaryFormField DICOMfield = new DictionaryFormField(pojoStudy.DicomModalityField,pojoStudy.DICOM_DICTIONARY);
+		DictionaryFormField stField = new DictionaryFormField(pojoStudy.StudyTypeField,pojoStudy.STUDYTYPE_DICTIONARY);
+		if(this.relatedStudy.getStudyType()!=null)
+		{	
+			stField.SetFieldValue(this.relatedStudy.getStudyType());
+			
+		}
+		StepDetailsForm.AddItem(stField);
+		if(this.relatedStudy.getDICOM()!=null)
+		{
+			DICOMfield.SetFieldValue(this.relatedStudy.getDICOM());
+		}
 		
-		
-		StepDetailsForm.AddItem(new DictionaryFormField(pojoStudy.DicomModalityField,pojoStudy.DICOM_DICTIONARY));
-		
-		
-		StepDetailsForm.AddItem(new DictionaryFormField(pojoStudy.StudyTypeField,pojoStudy.STUDYTYPE_DICTIONARY));
-		
+		StepDetailsForm.AddItem(DICOMfield);
 		
 		
 		StepDetailsForm.AddItem(new ButtonField(this.SubjectMetaDataField,"Add MetaData"));
@@ -219,7 +262,7 @@ public class pojoStepDetails implements IPojo{
 			{
 				Entry<String, pojoMetaData> tmpItem = i.next();
 				//SubjectPropertiesForm.MergeForm(tmpItem.getFormStructure());
-				StepDetailsForm.AddItem(new DraggableFormField(SubjectMetaDataField + index, index, false, tmpItem.getValue()));
+			//	StepDetailsForm.AddItem(new DraggableFormField(SubjectMetaDataField + index, index, false, tmpItem.getValue()));
 			}
 		}
 		
@@ -233,7 +276,7 @@ public class pojoStepDetails implements IPojo{
 			{
 				Entry<String, pojoMetaData> tmpItem = i.next();
 				//SubjectPropertiesForm.MergeForm(tmpItem.getFormStructure());
-				StepDetailsForm.AddItem(new DraggableFormField(SubjectMetaDataField + index, index, false, tmpItem.getValue()));
+				//StepDetailsForm.AddItem(new DraggableFormField(SubjectMetaDataField + index, index, false, tmpItem.getValue()));
 			}
 		}
 		
@@ -292,6 +335,15 @@ public class pojoStepDetails implements IPojo{
 					this.hasStudy = false;
 				}
 			}
+			else if(FieldName == pojoStudy.DicomModalityField)
+			{
+				this.relatedStudy.setDICOM(FieldValue.toString());
+			}
+			else if(FieldName == pojoStudy.StudyTypeField)
+			{
+				this.relatedStudy.setStudyType(FieldValue.toString());
+			}
+				
 			
 		}
 		
@@ -331,14 +383,72 @@ public class pojoStepDetails implements IPojo{
 				this.StepName = document.selectValue("/step/name");
 				this.StepDescription = document.selectValue("/step/description");
 				//document.selectValue("/step") Gives Description?
-				//Window.alert(document.selectNode("/step/study").toString());
-				name.pehl.totoe.xml.client.Node studyNode = document.selectNode("/step/study");
+				String describe = document.toString();
+				/*"<step id="1"><name>Anaesthetize</name><description>Mouse is anaesthetized</description><subject part="p"><metadata><definition requirement="mandatory">hfi.pssd.anaesthetic</definition><value><method>constant(inhalation)</method><induction><agent>constant(isoflurane)</agent><concentration>constant(3)</concentration></induction><maintenance><agent>constant(isoflurane)</agent><concentration><min>constant(0.5)</min><max>constant(1.0)</max></concentration></maintenance></value></metadata></subject></step>" (id=246)*/	
+
+				name.pehl.totoe.xml.client.Node studyNode = document.selectNode("/step/study/type");
 				if(studyNode!=null)
 				{
 					this.hasStudy=true;
-					this.relatedStudy.setDICOM(studyNode.selectValue("/study/type"));
-					this.relatedStudy.setStudyType(studyNode.selectValue("/study/dicom/modality"));
+					String studyType = document.selectValue("/step/study/type");
+					this.relatedStudy.setDICOM(document.selectValue("/step/study/dicom/modality"));
+					this.relatedStudy.setStudyType(document.selectValue("/step/study/type"));
 				}
+				java.util.List<name.pehl.totoe.xml.client.Node> subjectList = document.selectNodes("/step/subject/metadata");
+				if(subjectList!=null)
+				{
+					if(subjectList.size() > 0)
+					{
+					//	String firstNodeName = subjectList.get(0).getName();
+						Iterator<name.pehl.totoe.xml.client.Node> NodeIndex = subjectList.iterator();
+						while(NodeIndex.hasNext())
+						{
+							name.pehl.totoe.xml.client.Node tmpItem = NodeIndex.next();
+							String isMandatory = tmpItem.selectNode("definition/@requirement").toString();
+							String mdName = tmpItem.selectValue("definition").toString();
+							pojoMetaData tmpMD = new pojoMetaData(mdName);
+							tmpMD.setFieldVale(pojoMetaData.IsPublicField, true);
+							if(isMandatory.contains("mandatory"))
+							{
+								tmpMD.setFieldVale(pojoMetaData.IsMandatoryField, true);
+							}
+							else
+							{
+								tmpMD.setFieldVale(pojoMetaData.IsMandatoryField, false);
+							}
+							this.attachedMetaData.put(tmpMD.getFieldVale(tmpMD.MetaDataNameField), tmpMD);
+							//
+						}
+					}
+				}
+				java.util.List<name.pehl.totoe.xml.client.Node> studyList = document.selectNodes("/step/study/metadata");
+				if(studyList!=null)
+				{
+					if(studyList.size() > 0)
+					{
+					//	String firstNodeName = subjectList.get(0).getName();
+						Iterator<name.pehl.totoe.xml.client.Node> NodeIndex = studyList.iterator();
+						while(NodeIndex.hasNext())
+						{
+							name.pehl.totoe.xml.client.Node tmpItem = NodeIndex.next();
+							String isMandatory = tmpItem.selectNode("definition/@requirement").toString();
+							String mdName = tmpItem.selectValue("definition").toString();
+							pojoMetaData tmpMD = new pojoMetaData(mdName);
+							tmpMD.setFieldVale(pojoMetaData.IsPublicField, true);
+							if(isMandatory.contains("mandatory"))
+							{
+								tmpMD.setFieldVale(pojoMetaData.IsMandatoryField, true);
+							}
+							else
+							{
+								tmpMD.setFieldVale(pojoMetaData.IsMandatoryField, false);
+							}
+							this.relatedStudy.getMetaDataList().put(tmpMD.getFieldVale(tmpMD.MetaDataNameField), tmpMD);
+							//
+						}
+					}
+				}
+				//List<Elements> subjMDNode = document.findByName("subject");
 			}
 			catch(Exception ex)
 			{

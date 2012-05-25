@@ -19,7 +19,10 @@ import monbulk.shared.util.HtmlFormatter;
 
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.impl.DOMParseException;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.XMLParser;
+
 public class pojoMethodComplete implements IPojo{
 
 	private pojoMethod MethodDetails;
@@ -78,6 +81,62 @@ public class pojoMethodComplete implements IPojo{
 		this.allSteps.remove(StepFormName);  //.remove(StepIndex);
 		this.stepsDeleted++;
 	}
+	private Document generateXML()
+	{
+		 Document doc = XMLParser.createDocument();
+
+		 Element method = doc.createElement("method");
+		 
+		/* Element author = doc.createElement("author");
+		 author.appendChild(doc.createTextNode("Test Author"));
+		 //author.appendChild(doc.createTextNode("my value"));
+		 method.appendChild(author);
+		 */
+		 Element description = doc.createElement("description");
+		 description.appendChild(doc.createTextNode(this.MethodDetails.getFieldVale(pojoMethod.MethodDescriptionField)));
+		 method.appendChild(description);
+
+		 //Which means is Edit
+		 if(this.MethodID!=null)
+		 {
+			 Element id = doc.createElement("id");
+			 id.appendChild(doc.createTextNode(this.MethodID));
+			 id.setNodeValue(this.MethodID);
+			 method.appendChild(id);
+		 }
+		 
+		 //if Clone need to append name
+		 Element name = doc.createElement("name");
+		 //name.setNodeValue(this.MethodDetails.getMethodName());
+		 name.appendChild(doc.createTextNode(this.MethodDetails.getMethodName()));
+		 method.appendChild(name);
+		 
+		 Element namespace = doc.createElement("namespace");
+		 //Settings to get namespace
+		 namespace.appendChild(doc.createTextNode("/pssd/methods"));
+		 method.appendChild(namespace);
+		 
+		 Iterator<Entry<String,pojoStepDetails>> i = this.allSteps.entrySet().iterator();
+	 	 while(i.hasNext())
+	 	 {
+	 		 Entry<String,pojoStepDetails> entry = i.next();
+	 		 pojoStepDetails tmpStep =  entry.getValue();
+	 		 Element tmpEStep = doc.createElement("step");
+	 		 tmpStep.AppendXML(tmpEStep, doc);
+	 		 method.appendChild(tmpEStep);
+				
+		 }
+		 if(this.getSubjectProperties().getMetaData("").size()>0)
+		 {
+			 Element subject = doc.createElement("subject");
+			 this.getSubjectProperties().AppendXML(subject, doc);
+			 method.appendChild(subject);
+		 }
+		 doc.appendChild(method);
+		 String tmpDoc = doc.toString();
+		 
+		 return doc;
+	}
 	@Override
 	public String writeOutput(String Format) {
 		
@@ -86,8 +145,23 @@ public class pojoMethodComplete implements IPojo{
 		{
 			Output.append(this.MethodDetails.writeTCL());
 			Output.append(this.SubjectProperties.writeOutput("TCL"));
-			return this.MethodDetails.writeTCL();
+			Iterator<Entry<String,pojoStepDetails>> i = this.allSteps.entrySet().iterator();
+			while(i.hasNext())
+			{
+				Entry<String,pojoStepDetails> entry = i.next();
+				pojoStepDetails tmpStep =  entry.getValue();
+				Output.append(tmpStep.writeOutput("TCL"));
+				
+			}
+			Output.append(HtmlFormatter.GetHTMLTabs(2)+ "\"" + HtmlFormatter.GetHTMLNewline());
+			
+			//return this.MethodDetails.writeTCL();
+			return Output.toString();
 		}
+		if(Format=="XML")
+		{
+			return this.generateXML().toString();
+		}	
 		
 		return Output.toString();
 	}

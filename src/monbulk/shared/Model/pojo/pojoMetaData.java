@@ -3,6 +3,9 @@ package monbulk.shared.Model.pojo;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Form.FormField;
 import monbulk.shared.Form.iFormField;
@@ -133,6 +136,23 @@ public class pojoMetaData implements IPojo{
 			return "";
 		
 		}
+	}
+	public void AppendXML(Element xml,Document doc)
+	{
+		Element node1 = doc.createElement("metadata");
+		Element node2 = doc.createElement("definition");
+		if(isMandatory)
+		{
+			node2.setAttribute("requirement", "mandatory");
+		}
+		else
+		{
+			node2.setAttribute("requirement", "optional");
+		}
+		node2.appendChild(doc.createTextNode(this.MetaDataName));
+		//.setNodeValue(this.MetaDataName);
+		node1.appendChild(node2);
+		xml.appendChild(node1);
 	}
 	private String WriteTCL()
 	{

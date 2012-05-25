@@ -3,10 +3,15 @@ package monbulk.shared.Model.pojo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
+
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
 
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Form.ListField;
 import monbulk.shared.Model.IPojo;
+import monbulk.shared.util.HtmlFormatter;
 
 public class pojoStudy implements IPojo {
 	private HashMap<String,pojoMetaData> attachedMetaData;
@@ -75,10 +80,46 @@ public class pojoStudy implements IPojo {
 
 	@Override
 	public String writeOutput(String Format) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sb = new StringBuilder();
+		if(Format=="TCL")
+		{
+			sb.append(HtmlFormatter.GetHTMLTabs(3)+ ":study < " + HtmlFormatter.GetHTMLNewline());
+			sb.append(HtmlFormatter.GetHTMLTabs(4)+ ":type " + this.StudyType + " \\" +  HtmlFormatter.GetHTMLNewline());
+			if(this.DicomModality!=null)
+			{
+				sb.append(HtmlFormatter.GetHTMLTabs(4) +" :dicom < :modality " + this.DicomModality + "> \\" + HtmlFormatter.GetHTMLNewline());
+			}
+			sb.append(HtmlFormatter.GetHTMLMetaDataList("TCL", this.attachedMetaData, 4));
+			sb.append(HtmlFormatter.GetHTMLTabs(3)+ "> \\" +  HtmlFormatter.GetHTMLNewline());
+		}
+		return sb.toString();
 	}
-
+	public void AppendXML(Element xml,Document doc)
+	{
+		Element sType = doc.createElement("type");
+		sType.appendChild(doc.createTextNode(this.StudyType));
+		xml.appendChild(sType);
+		if(this.DicomModality!=null)
+		{
+			Element dicom = doc.createElement("dicom");
+			Element modality = doc.createElement("modality");
+			modality.appendChild(doc.createTextNode(this.DicomModality));
+			dicom.appendChild(modality);
+			xml.appendChild(dicom);
+		}
+		if(this.attachedMetaData.size()>0)
+		{
+			Iterator<Entry<String, pojoMetaData>> i = this.attachedMetaData.entrySet().iterator();
+			int index = 0;
+			while(i.hasNext())
+			{
+				Entry<String, pojoMetaData> tmpItem = i.next();
+				//SubjectPropertiesForm.MergeForm(tmpItem.getFormStructure());
+				pojoMetaData tmpPojo = tmpItem.getValue();
+				tmpPojo.AppendXML(xml, doc);
+			}
+		}
+	}
 	@Override
 	public void setFieldVale(String FieldName, Object FieldValue) {
 		// TODO Auto-generated method stub

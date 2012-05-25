@@ -52,7 +52,7 @@ public class pojoMethod implements IPojo {
 					
 					//Eventually will be xsd transform
 					
-						Output = Output +"proc " + MethodID + " { { action 0 } } {" + HtmlFormatter.GetHTMLNewline(); 
+						Output = Output + HtmlFormatter.GetHTMLTab() + "proc " + MethodID + " { { action 0 } } {" + HtmlFormatter.GetHTMLNewline(); 
 						Output = Output + HtmlFormatter.GetHTMLTab() + "set name \"" + MethodName + "\"" + HtmlFormatter.GetHTMLNewline();
 						Output = Output + HtmlFormatter.GetHTMLTab() + "set description \"" + MethodDescription + "\"" + HtmlFormatter.GetHTMLNewline();
 						Output = Output + HtmlFormatter.GetHTMLTab() + "set margs \"\"" + HtmlFormatter.GetHTMLNewline(); 	
@@ -219,8 +219,8 @@ public class pojoMethod implements IPojo {
 
 	@Override
 	public String writeOutput(String Format) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return "";
 	}
 
 
