@@ -413,15 +413,35 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		}
 		else if(Command=="Save")
 		{
-			
+			StringBuilder strTCL = new StringBuilder();
+			strTCL.append(this.mainModel.getStringRpresentation("XML"));
+		
+			//Should just launch a Window with a Pojo
+			Desktop d = Desktop.get();
+			final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
+			m.loadPreview(this.mainModel.getStringRpresentation("XML"), SupportedFormats.XML);
+			//d.
+			//_newWin.loadPreview(strTCL, SupportedFormats.TCL);
+		    //_newWin.setOkCancelHandler(this);
+		    d.show(m, true);
 		}
 		else if(Command=="Publish")
 		{
 			StringBuilder strTCL = new StringBuilder();
-			strTCL = strTCL.append(HtmlFormatter.GetHTMLUtilityScript("TCL"));
-			
-			strTCL = strTCL.append(this.mainModel.getStringRpresentation("TCL"));
-			
+			strTCL.append(HtmlFormatter.GetHTMLUtilityScript("TCL"));
+			strTCL.append(this.mainModel.getStringRpresentation("TCL"));
+			strTCL.append(HtmlFormatter.GetUtilityWriteScript());
+			/*
+			# Create/update the Method
+			set id2 [xvalue id [om.pssd.method.for.subject.update $args]]
+			if { $id2 == "" } {
+			   # An existng Method was updated
+			   return $id
+			} else {
+			   # A new Method was created
+			   return $id2
+			}
+			*/
 			//Should just launch a Window with a Pojo
 			Desktop d = Desktop.get();
 			final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
