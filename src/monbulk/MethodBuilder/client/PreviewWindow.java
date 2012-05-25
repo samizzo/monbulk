@@ -119,14 +119,18 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		Label _r_text = new Label();
 		if(response!=null)
 		{
-			_r_text.setText("Success: Your method has been created with ID: " + response);
-		}
-		else
-		{
 			if(response=="")
 			{
 				_r_text.setText("Success: Your method has been updated");
 			}
+			else
+			{
+				_r_text.setText("Success: Your method has been created with ID: " + response);
+			}
+		}
+		else
+		{
+			_r_text.setText("Success: Your method has been updated");
 		}
 		_w_response.add(_r_text);
 		this._PreviewPanel.clear();
