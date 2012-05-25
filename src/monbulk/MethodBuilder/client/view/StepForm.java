@@ -47,7 +47,8 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 
 	private int AddedRowIndex; 
 	protected final FlexTable _StepMetaDataList;
-	
+	private String DicomValue;
+	private String studyTypeValue;
 	
 	public StepForm(FormPresenter presenter) {
 		
@@ -66,6 +67,17 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 	@Override
 	public void LoadForm(FormBuilder someForm) {
 		super.LoadForm(someForm,true);
+		
+		String dicom = someForm.getFieldItemForName(pojoStudy.DicomModalityField).GetFieldValue().toString();
+		if(dicom!=null)
+		{
+			this.DicomValue = dicom;
+		}
+		String st = someForm.getFieldItemForName(pojoStudy.StudyTypeField).GetFieldValue().toString();
+		if(st!=null)
+		{
+			this.studyTypeValue=st;
+		}
 		
 		int requiredIndex = this.getWidgetIndexForName(pojoStepDetails.SubjectMetaDataField);
 		
@@ -161,11 +173,23 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 				ListBox tmpWidg = (ListBox)tmpForm.getFormWidget();
 				Collection<Entry> tmpList = dictionary.getEntries();
 				Iterator<Entry> i = tmpList.iterator();
+				int j=0;
 				while(i.hasNext())
 				{
+					
 					Entry item = i.next();
 					tmpWidg.addItem(item.getTerm());
+					if(this.DicomValue!=null)
+					{
+						if(item.getTerm().contains(this.DicomValue) && item.getTerm().length() == this.DicomValue.length())
+						{
+							tmpWidg.setSelectedIndex(j);
+						}
+					}
+					
+					j++;
 				}
+				
 			}
 			if(dictionary.getName()==pojoStudy.STUDYTYPE_DICTIONARY)
 			{
@@ -173,10 +197,21 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 				ListBox tmpWidg = (ListBox)tmpForm.getFormWidget();
 				Collection<Entry> tmpList = dictionary.getEntries();
 				Iterator<Entry> i = tmpList.iterator();
+				int k = 0;
 				while(i.hasNext())
 				{
 					Entry item = i.next();
 					tmpWidg.addItem(item.getTerm());
+					if(this.studyTypeValue!=null)
+					{
+						if(item.getTerm().contains(this.studyTypeValue)&& item.getTerm().length()==this.studyTypeValue.length())
+						{
+							tmpWidg.setSelectedIndex(k);
+						}
+					}
+					
+						k++;
+					
 				}
 			}
 		}

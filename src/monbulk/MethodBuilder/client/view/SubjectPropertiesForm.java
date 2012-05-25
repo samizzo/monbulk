@@ -145,19 +145,21 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 		{
 			FlexTable table = 	(FlexTable)FromList;
 			Iterator<Widget> i = table.iterator();
+			int j=0;
 			while(i.hasNext())
 			{
 				DraggableCellWidget tmpItem = (DraggableCellWidget)i.next();
 				if(tmpItem.getName().equals(Name))
 				{
-					return tmpItem.getID();
+					return j;
 				}
+				j++;
 			}
-			return 0;
+			return -1;
 		}
 		catch(Exception ex)
 		{
-			return 0;
+			return -1;
 		}
 	}
 	@Override
@@ -167,7 +169,7 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 		{
 			FlexTable tmpTable =(FlexTable) fromList; 
 			
-			if(Index==0)
+			if(Index==-1)
 			{
 				return false;
 			}

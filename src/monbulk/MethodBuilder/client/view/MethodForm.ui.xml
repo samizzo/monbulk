@@ -5,6 +5,7 @@
 		
 	</ui:style>
 	<g:HTMLPanel>
+	
 	<g:StackLayoutPanel height="426px" unit="PX" styleName="StandardStack" ui:field="MethodNavigationStack">
 			<g:stack>
 				<g:header size="41">Method Form</g:header>

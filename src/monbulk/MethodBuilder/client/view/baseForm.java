@@ -229,7 +229,10 @@ public class baseForm extends VerticalPanel implements IFormView {
 							}
 							
 						});
-						tmpWidg.setListValue(tmpBox.getSelectedIndex());
+						if(item.hasValue())
+						{
+							tmpWidg.setListValue(item.GetFieldValue().toString());
+						}
 					}
 					else if(item.getFieldTypeName()=="Button")
 					{
