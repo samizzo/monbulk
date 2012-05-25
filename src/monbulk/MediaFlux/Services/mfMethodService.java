@@ -34,13 +34,17 @@ public class mfMethodService extends MethodService {
 	{
 		private MethodServiceHandler m_handler = null;
 		private MethodRequest m_request;
-
+		private MethodUpdateHandler mu_handler;
 		public MethodResponseHandler(MethodServiceHandler handler, MethodRequest request)
 		{
 			m_handler = handler;
 			m_request = request;
 		}
-
+		public MethodResponseHandler(MethodUpdateHandler handler, MethodRequest request)
+		{
+			mu_handler = handler;
+			m_request = request;
+		}
 		public void processResponse(XmlElement xe, List<Output> outputs) throws Throwable
 		{
 			ArrayList<pojoMethod> methods = new ArrayList<pojoMethod>();
@@ -129,6 +133,15 @@ public class mfMethodService extends MethodService {
 					//m_handler.onReadMethod(pmc);
 					break;
 				case Create:
+					try
+					{
+						//Window.alert(xe.stringValue("id"));
+						mu_handler.onUpdateMethod(xe.stringValue("id"));
+					}
+					catch(Exception ex)
+					{
+						GWT.log("Exception caught at mfMethodService.onReadMethod" + ex.getMessage());
+					}
 					break;
 				default:
 					break;
@@ -167,6 +180,23 @@ public class mfMethodService extends MethodService {
 						0, 
 						new MethodResponseHandler(handler, MethodRequest.Describe), 
 						true);
+		
+	}
+
+
+	@Override
+	public void createOrUpdate(String xml, MethodUpdateHandler handler) {
+		Session.execute(
+						new ServiceContext("mfMethodService.update"),
+						"om.pssd.method.for.subject.update",
+						xml,
+						null,
+						0,
+						new MethodResponseHandler(handler, MethodRequest.Create), 
+						true);
+						
+						
+						
 		
 	}
 
