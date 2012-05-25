@@ -95,9 +95,21 @@ public class FormWidget extends HorizontalPanel{
 		HasValue<Object> item = (HasValue<Object>)WidgetList.get(FORM_WIDGET);
 		item.setValue(Value);
 	}
-	public void setListValue(int Value)
+	public void setListValue(String Value)
 	{
 		ListBox item = (ListBox)WidgetList.get(FORM_WIDGET);
-		item.setSelectedIndex( Value);
+		int i= 0; 
+		while(i<item.getItemCount())
+		{
+			//item.setSelectedIndex( Value);
+			String value = item.getValue(i);
+			if(value.contains(Value)&&value.length()==Value.length())
+			{
+				item.setSelectedIndex(i);
+				return;
+			}
+			i++;
+		}
+		
 	}
 }
