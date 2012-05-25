@@ -135,8 +135,16 @@ public class mfMethodService extends MethodService {
 				case Create:
 					try
 					{
-						//Window.alert(xe.stringValue("id"));
-						mu_handler.onUpdateMethod(xe.stringValue("id"));
+						//Window.alert(xe.stringValue("id"));'
+						
+						if(xe.hasElements())
+						{
+							mu_handler.onUpdateMethod(xe.stringValue("id"));
+						}
+						else
+						{
+							mu_handler.onUpdateMethod("");
+						}
 					}
 					catch(Exception ex)
 					{
