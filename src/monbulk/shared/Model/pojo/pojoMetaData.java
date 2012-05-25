@@ -141,13 +141,20 @@ public class pojoMetaData implements IPojo{
 	{
 		Element node1 = doc.createElement("metadata");
 		Element node2 = doc.createElement("definition");
-		if(isMandatory)
+		if(isMandatory!=null)
 		{
-			node2.setAttribute("requirement", "mandatory");
+			if(isMandatory)
+			{
+				node2.setAttribute("requirement", "mandatory");
+			}
+			else
+			{
+				node2.setAttribute("requirement", "optional");
+			}
 		}
 		else
 		{
-			node2.setAttribute("requirement", "optional");
+			node2.setAttribute("requirement", "mandatory");
 		}
 		node2.appendChild(doc.createTextNode(this.MetaDataName));
 		//.setNodeValue(this.MetaDataName);
