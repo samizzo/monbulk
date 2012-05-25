@@ -186,7 +186,9 @@ public class pojoMetaData implements IPojo{
 		}
 		else if(FieldName == IsPublicField)
 		{
-			this.isPublic = (Boolean) FieldValue;
+			
+			
+				this.isPublic = (Boolean) FieldValue;
 		}
 		else if(FieldName == IsMandatoryField)
 		{
@@ -212,11 +214,26 @@ public class pojoMetaData implements IPojo{
 		}
 		else if(FieldName == IsPublicField)
 		{
-			return this.isPublic.toString();
+			if(this.isPublic==null)
+			{
+				return "false";
+			}
+			else
+			{
+				return this.isPublic.toString();
+			}
 		}
 		else if(FieldName == IsMandatoryField)
 		{
-			return this.isMandatory.toString();
+			if(this.isPublic==null)
+			{
+				return "false";
+			}
+			else
+			{
+				return this.isMandatory.toString();
+			}
+			
 		}
 		else if(!this.MetaDataConstants.getFieldItemForName(FieldName).equals(null))
 		{
