@@ -33,13 +33,18 @@ public abstract class MethodService implements iService{
 	{
 		List,
 		Describe,
-		Create
+		Create,
+		Edit
 	}
 
 	public interface MethodServiceHandler
 	{
 		public void onReadMethodList(ArrayList<pojoMethod> arrMethods);
 		public void onReadMethod(pojoMethodComplete method);
+	}
+	public interface MethodUpdateHandler
+	{
+		public void onUpdateMethod(String response);
 	}
 	@Override
 	public ServiceNames getServiceType() {
@@ -50,13 +55,10 @@ public abstract class MethodService implements iService{
 
 	// Returns a list of all available Methods
 	public abstract void getMethodList(MethodServiceHandler handler);
-	{
-		
-	}
+	
 		
 	// Returns a specific Method type.
 	public abstract void getMethod(String ID, MethodServiceHandler handler);
-	{
-		
-	}
+	
+	public abstract void createOrUpdate(String xml, MethodUpdateHandler handler);
 }
