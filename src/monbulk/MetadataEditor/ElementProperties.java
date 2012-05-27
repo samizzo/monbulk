@@ -58,6 +58,12 @@ public class ElementProperties extends Composite
 		p.setNameFocus();
 	}
 	
+	public void setMinOccursFocus()
+	{
+		CommonElementPanel p = getCommonElementPanel();
+		p.setMinOccursFocus();
+	}
+	
 	public void addNameKeyUpHandler(KeyUpHandler handler)
 	{
 		CommonElementPanel p = getCommonElementPanel();

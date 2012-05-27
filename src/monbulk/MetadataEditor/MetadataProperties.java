@@ -547,6 +547,22 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			}
 		}
 
+		// Validate that min occurs is less than max occurs.
+		String minOccurs = newElement.getSetting("min-occurs", "1");
+		String maxOccurs = newElement.getSetting("max-occurs", "");
+
+		if (maxOccurs.length() > 0)
+		{
+			int min = Integer.parseInt(minOccurs);
+			int max = Integer.parseInt(maxOccurs);
+			if (min > max)
+			{
+				Window.alert("Minimum number of occurrences must be less than the maximum.");
+				m_elementEditor.setMinOccursFocus();
+				return false;
+			}
+		}
+		
 		return true;
 	}
 }

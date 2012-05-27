@@ -55,6 +55,12 @@ public class CommonElementPanel extends ElementPanel
 		m_name.selectAll();
 	}
 	
+	public void setMinOccursFocus()
+	{
+		m_minOccurs.setFocus(true);
+		m_minOccurs.selectAll();
+	}
+	
 	public void addNameKeyUpHandler(KeyUpHandler handler)
 	{
 		m_name.addKeyUpHandler(handler);
