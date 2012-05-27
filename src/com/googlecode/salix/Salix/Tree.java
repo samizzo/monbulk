@@ -1,4 +1,4 @@
-package com.googlecode.salix.client;
+package com.googlecode.salix.Salix;
 
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
@@ -35,7 +35,6 @@ public class Tree extends Composite implements HasSelectionHandlers<TreeItem> {
 	private TreeConfig treeConfig = TreeConfig.DEFAULT;
 
 	private boolean drawn;
-	private Comparator<TreeItem> itemComparator;
 
 	public Tree() {
 		root.setTree(this);
@@ -58,6 +57,22 @@ public class Tree extends Composite implements HasSelectionHandlers<TreeItem> {
 
 	public TreeItem getSelectedItem() {
 		return selected;
+	}
+	
+	public void clear()	{
+		root.removeItems();
+	}
+	
+	public TreeItem getItem(int index) {
+		return root.getChild(index);
+	}
+	
+	public int getItemCount() {
+		return root.getChildCount();
+	}
+	
+	public void removeItem(TreeItem item) {
+		item.remove();
 	}
 
 	public void setSelectedItem(TreeItem item) {

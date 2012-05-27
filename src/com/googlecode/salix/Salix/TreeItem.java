@@ -1,4 +1,4 @@
-package com.googlecode.salix.client;
+package com.googlecode.salix.Salix;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -46,6 +46,8 @@ public class TreeItem extends UIObject {
 	private HorizontalPanel connectorPictures = new HorizontalPanel();
 	private Comparator<TreeItem> itemComparator;
 	private boolean selected;
+	
+	private Object userObject = null;
 
 	public TreeItem(String name) {
 		this(new Label(name));
@@ -258,6 +260,10 @@ public class TreeItem extends UIObject {
 	public TreeItem getParent() {
 		return parent;
 	}
+	
+	public TreeItem getParentItem() {
+		return getParent();
+	}
 
 	void setParent(TreeItem parent) {
 		this.parent = parent;
@@ -379,10 +385,14 @@ public class TreeItem extends UIObject {
 		}
 		children.clear();
 		childrenPanel.clear();
-		if (selectParent) {
+		if (selectParent && parent != null) {
 			parent.select();
 		}
 		sortAndRedraw();
+	}
+	
+	public void removeItem(TreeItem item) {
+		item.remove();
 	}
 
 	/**
@@ -463,5 +473,29 @@ public class TreeItem extends UIObject {
 	 */
 	public boolean isSelected() {
 		return selected;
+	}
+	
+	public TreeItem getChild(int index) {
+		return children.get(index); 
+	}
+	
+	public int getChildCount() {
+		return children.size();
+	}
+	
+	public int getChildIndex(TreeItem treeItem)	{
+		return children.indexOf(treeItem);
+	}
+	
+	public void setUserObject(Object object) {
+		userObject = object;
+	}
+	
+	public Object getUserObject() {
+		return userObject;
+	}
+	
+	public void setText(String text) {
+		widget.setTitle(text);
 	}
 }

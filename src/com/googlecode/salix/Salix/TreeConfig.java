@@ -1,4 +1,4 @@
-package com.googlecode.salix.client;
+package com.googlecode.salix.Salix;
 
 import java.util.Comparator;
 

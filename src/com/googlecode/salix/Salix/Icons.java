@@ -1,4 +1,4 @@
-package com.googlecode.salix.client;
+package com.googlecode.salix.Salix;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
@@ -12,30 +12,30 @@ import com.google.gwt.resources.client.ImageResource;
 public interface Icons extends ClientBundle {
 	Icons INSTANCE = GWT.create(Icons.class);
 
-	@ClientBundle.Source("com/googlecode/salix/client/elbow-end-minus-nl.gif")
+	@Source("com/googlecode/salix/Salix/elbow-end-minus-nl.gif")
 	ImageResource collapse();
 
-	@ClientBundle.Source("com/googlecode/salix/client/elbow-end-plus-nl.gif")
+	@Source("com/googlecode/salix/Salix/elbow-end-plus-nl.gif")
 	ImageResource expand();
 
-	@ClientBundle.Source("com/googlecode/salix/client/elbow.gif")
+	@Source("com/googlecode/salix/Salix/elbow.gif")
 	ImageResource elbow();
 
-	@ClientBundle.Source("com/googlecode/salix/client/elbow-plus.gif")
+	@Source("com/googlecode/salix/Salix/elbow-plus.gif")
 	ImageResource elbowExpand();
 
-	@ClientBundle.Source("com/googlecode/salix/client/elbow-minus.gif")
+	@Source("com/googlecode/salix/Salix/elbow-minus.gif")
 	ImageResource elbowCollapse();
 
-	@ClientBundle.Source("com/googlecode/salix/client/elbow-end.gif")
+	@Source("com/googlecode/salix/Salix/elbow-end.gif")
 	ImageResource elbowEnd();
 
-	@ClientBundle.Source("com/googlecode/salix/client/elbow-end-plus.gif")
+	@Source("com/googlecode/salix/Salix/elbow-end-plus.gif")
 	ImageResource elbowEndExpand();
 
-	@ClientBundle.Source("com/googlecode/salix/client/elbow-end-minus.gif")
+	@Source("com/googlecode/salix/Salix/elbow-end-minus.gif")
 	ImageResource elbowEndCollapse();
 
-	@ClientBundle.Source("com/googlecode/salix/client/elbow-line.gif")
+	@Source("com/googlecode/salix/Salix/elbow-line.gif")
 	ImageResource elbowLine();
 }
