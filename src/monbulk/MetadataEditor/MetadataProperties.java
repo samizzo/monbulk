@@ -1,11 +1,16 @@
 package monbulk.MetadataEditor;
 
+import java.util.HashMap;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.text.shared.SimpleSafeHtmlRenderer;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -14,13 +19,18 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Tree;
-import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.cellview.client.CellTree;
+import com.google.gwt.view.client.TreeViewModel;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.Cell.Context;
+import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.gwt.view.client.SelectionChangeEvent;
 
 import monbulk.client.Monbulk;
 import monbulk.client.Settings;
@@ -32,7 +42,7 @@ import monbulk.shared.widgets.Window.OkCancelWindow.*;
 import monbulk.shared.widgets.Window.WindowSettings;
 import monbulk.shared.widgets.TextBoxEx;
 
-public class MetadataProperties extends Composite implements SelectionHandler<TreeItem>, CommonElementPanel.ChangeTypeHandler, OkCancelHandler, ValidateHandler
+public class MetadataProperties extends Composite implements CommonElementPanel.ChangeTypeHandler, OkCancelHandler, ValidateHandler, TreeViewModel, SelectionChangeEvent.Handler
 {
 	private static MetadataPropertiesUiBinder uiBinder = GWT.create(MetadataPropertiesUiBinder.class);
 	interface MetadataPropertiesUiBinder extends UiBinder<Widget, MetadataProperties> { }
@@ -41,7 +51,8 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	@UiField TextBoxEx m_name;
 	@UiField TextBox m_label;
 	@UiField TextBox m_description;
-	@UiField Tree m_elementsTree;
+	@UiField(provided = true) CellTree m_elementsTree = new CellTree(this, null);
+
 	@UiField Button m_addElement;
 	@UiField Button m_removeElement;
 	@UiField Button m_editElement;
@@ -52,15 +63,16 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	@UiField Button m_save;
 	@UiField Button m_saveAsTemplate;
 
-	private TreeItem m_selectedElement = null;
+	private Metadata.Element m_selectedElement = null;
 	private Metadata m_metadata = null;
 	private ElementEditor m_elementEditor;
 	private boolean m_addNewElement = false;
+	private SingleSelectionModel<Metadata.Element> m_selectionModel = new SingleSelectionModel<Metadata.Element>();
+	private ListDataProvider<Metadata.Element> m_rootDataProvider;
 	
 	public MetadataProperties() throws Exception
 	{
 		initWidget(uiBinder.createAndBindUi(this));
-		m_elementsTree.addSelectionHandler(this);
 
 		// Register our own element editor window.
 		m_elementEditor = new ElementEditor(true);
@@ -73,6 +85,11 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 		// Only allow upper and lower letters, full stop, and hyphen.
 		m_name.setValidCharRegex("[a-zA-Z.-]");
+		
+		m_selectionModel.addSelectionChangeHandler(this);
+		
+		m_rootDataProvider = new ListDataProvider<Metadata.Element>();
+		//m_rootDataProvider.addDataDisplay(m_elementsTree);
 	}
 
 	/**
@@ -188,13 +205,15 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_name.setText(name);
 		m_label.setText(metadata.getLabel());
 		m_description.setText(metadata.getDescription());
-		populateElementTree(null, metadata.getRootElement());
-		if (m_elementsTree.getItemCount() > 0)
+		//populateElementTree(null, metadata.getRootElement());
+		/*if (m_elementsTree.getItemCount() > 0)
 		{
 			// Select the first item in the tree automatically.
-			TreeItem treeItem = m_elementsTree.getItem(0);
+			FastTreeItem treeItem = m_elementsTree.getItem(0);
 			m_elementsTree.setSelectedItem(treeItem, true);
-		}
+		}*/
+
+		m_rootDataProvider.setList(m_metadata.getRootElement().getChildren());
 	}
 
 	/**
@@ -207,19 +226,19 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_name.setText("");
 		m_label.setText("");
 		m_description.setText("");
-		m_elementsTree.clear();
 		clearElements();
 	}
-	
-	private TreeItem createTreeItem(String name, Metadata.Element element, TreeItem root)
+/*
+	private FastTreeItem createTreeItem(String name, Metadata.Element element, FastTreeItem root)
 	{
-		TreeItem treeItem = new TreeItem(name);
+		FastTreeItem treeItem = new FastTreeItem(this);
+		treeItem.setText(name);
 		treeItem.addStyleName("itemHighlight");
 		if (root != null)
 		{
-			treeItem.addStyleName("noItemHighlight");
+			treeItem.addStyleName("childItem");
 		}
-		treeItem.setUserObject(element);
+		//treeItem.setUserObject(element);
 
 		// Add new item to tree.
 		if (root != null)
@@ -233,8 +252,8 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 		return treeItem;
 	}
-	
-	private void populateElementTree(TreeItem root, Metadata.DocumentElement rootElement)
+
+	private void populateElementTree(FastTreeItem root, Metadata.DocumentElement rootElement)
 	{
 		int numChildren = rootElement.getNumChildren();
 		for (int i = 0; i < numChildren; i++)
@@ -242,7 +261,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			Metadata.Element e = rootElement.getChild(i);
 			if (e.getType().isVisible())
 			{
-				TreeItem newItem = createTreeItem(e.getName(), e, root);
+				FastTreeItem newItem = createTreeItem(e.getName(), e, root);
 			
 				if (e instanceof Metadata.DocumentElement)
 				{
@@ -253,7 +272,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			}
 		}
 	}
-
+*/
 	// -------------------------------------------
 	// Button handlers
 	// -------------------------------------------
@@ -271,20 +290,20 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			GWT.log(e.toString());
 		}
 	}
-	
+
 	@UiHandler("m_removeElement")
 	public void onRemoveElementClicked(ClickEvent event)
 	{
 		// Remove the element.
-		Metadata.Element element = (Metadata.Element)m_selectedElement.getUserObject();
+		Metadata.Element element = m_selectionModel.getSelectedObject();
 		Metadata.DocumentElement parent = element.getParent();
 		parent.removeChild(element);
 
 		// Find the index of the item we are removing.
-		TreeItem parentItem = m_selectedElement.getParentItem();
-		int index = parentItem != null ? parentItem.getChildIndex(m_selectedElement) : getTreeItemIndex(m_selectedElement);
+		//FastTreeItem parentItem = m_selectedElement.getParentItem();
+		//int index = parentItem != null ? parentItem.getChildIndex(m_selectedElement) : getTreeItemIndex(m_selectedElement);
 
-		if (parentItem == null)
+		/*if (parentItem == null)
 		{
 			// Remove from the tree itself.
 			m_elementsTree.removeItem(m_selectedElement);
@@ -293,12 +312,15 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		{
 			// Remove from its parent.
 			parentItem.removeItem(m_selectedElement);
-		}
+		}*/
+		
+		// Remove from the user object map.
+		//removeUserObj(m_selectedElement, false);
 
 		clearElements();
 
 		// Select the next sibling or parent item.
-		if (index >= 0)
+		/*if (index >= 0)
 		{
 			if (parentItem == null)
 			{
@@ -312,7 +334,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 						index = count - 1;
 					}
 
-					TreeItem item = m_elementsTree.getItem(index);
+					FastTreeItem item = m_elementsTree.getItem(index);
 					m_elementsTree.setSelectedItem(item);
 				}
 			}
@@ -322,7 +344,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 				int count = parentItem.getChildCount();
 				
 				// If there are no more children we will select the parent.
-				TreeItem item = parentItem;
+				FastTreeItem item = parentItem;
 				if (count > 0)
 				{
 					// Clamp the index.
@@ -336,13 +358,13 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 				
 				m_elementsTree.setSelectedItem(item);
 			}
-		}
+		}*/
 	}
 	
 	@UiHandler("m_editElement")
 	void onEditElementClicked(ClickEvent event)
 	{
-		Metadata.Element selectedElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
+		Metadata.Element selectedElement = m_selectionModel.getSelectedObject();
 		if (selectedElement != null)
 		{
 			// We work with a clone so we can easily undo changes.
@@ -373,7 +395,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		setButtonState();
 	}
 
-	private int getTreeItemIndex(TreeItem item)
+	/*private int getTreeItemIndex(FastTreeItem item)
 	{
 		int count = m_elementsTree.getItemCount();
 		for (int i = 0; i < count; i++)
@@ -385,7 +407,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		}
 		
 		return -1;
-	}
+	}*/
 	
 	public void onChangeType(Metadata.Element element, String newType)
 	{
@@ -416,23 +438,25 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	/**
 	 *  Tree view selection handler.
 	 */
-	public void onSelection(SelectionEvent<TreeItem> event)
+	public void onSelectionChange(SelectionChangeEvent event)
 	{
+		Metadata.Element element = m_selectionModel.getSelectedObject();
+
 		// Update metadata from user settings and remove highlight from
 		// previously selected item.
-		if (m_selectedElement != null)
+		/*if (m_selectedElement != null)
 		{
 			m_selectedElement.removeStyleName("itemSelected");
-		}
+		}*/
 
 		// Add highlight to newly selected item.
-		TreeItem selectedItem = event.getSelectedItem();
-		selectedItem.addStyleName("itemSelected");
+		/*FastTreeItem selectedItem = item;
+		selectedItem.addStyleName("itemSelected");*/
 
-		m_selectedElement = selectedItem;
+		m_selectedElement = element; //selectedItem;
 		
 		// Update the element summary.
-		Metadata.Element element = (Metadata.Element)m_selectedElement.getUserObject();
+		//Metadata.Element element = m_userObjMap.get(m_selectedElement);
 		m_elementType.setText(element.getType().toString());
 		m_elementDescription.setText(element.getSetting("description", ""));
 		
@@ -441,7 +465,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	
 	private void setButtonState()
 	{
-		boolean hasSelection = m_elementsTree.getSelectedItem() != null;
+		boolean hasSelection = m_selectionModel.getSelectedObject() != null; //m_elementsTree.getSelectedItem() != null;
 		m_removeElement.setEnabled(hasSelection);
 		m_editElement.setEnabled(hasSelection);
 	}
@@ -450,7 +474,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	{
 		if (eventType == Event.Ok)
 		{
-			Metadata.Element oldElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
+			Metadata.Element oldElement = m_selectionModel.getSelectedObject(); //m_selectedElement != null ? m_userObjMap.get(m_selectedElement) : null;
 			Metadata.Element newElement = m_elementEditor.getMetadataElement();
 
 			if (m_addNewElement)
@@ -467,14 +491,14 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 				// Adding a new element so create a tree item for it.
 				// The parent of the tree item will be either the current
 				// selection or null (it will be added to root of the tree).
-				TreeItem newItem = createTreeItem(newElement.getName(), newElement, parent == oldElement ? m_selectedElement : null);
-				m_elementsTree.setSelectedItem(newItem, true);
-				m_elementsTree.ensureSelectedItemVisible();
+				//FastTreeItem newItem = createTreeItem(newElement.getName(), newElement, parent == oldElement ? m_selectedElement : null);
+				//m_elementsTree.setSelectedItem(newItem, true);
+				//m_elementsTree.ensureSelectedItemVisible();
 
 				// HACK: We have to set the item selected again to
 				// really make sure it is visible because of this bug:
 				// http://code.google.com/p/google-web-toolkit/issues/detail?id=1783
-				m_elementsTree.setSelectedItem(m_selectedElement, true);
+				//m_elementsTree.setSelectedItem(m_selectedElement, true);
 			}
 			else
 			{
@@ -487,14 +511,14 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 				{
 					// Old element was a document and new one isn't.  Remove all
 					// child tree items from the current item.
-					m_selectedElement.removeItems();
+					//removeUserObj(m_selectedElement, true);
 				}
 			}
 
 			// Update the tree item and select the element.
-			m_selectedElement.setUserObject(newElement);
-			m_selectedElement.setText(newElement.getName());
-			m_elementsTree.setSelectedItem(m_selectedElement, true);
+			//m_userObjMap.put(m_selectedElement, newElement);
+			//m_selectedElement.setText(newElement.getName());
+			//m_elementsTree.setSelectedItem(m_selectedElement, true);
 		}
 	}
 	
@@ -530,7 +554,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		// updating here won't cause any changes to be committed.
 		m_elementEditor.updateCurrentElement();
 
-		Metadata.Element oldElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
+		Metadata.Element oldElement = m_selectionModel.getSelectedObject();
 		Metadata.Element newElement = m_elementEditor.getMetadataElement();
 		String newName = newElement.getName();
 		Metadata.DocumentElement parent = null;
@@ -563,5 +587,50 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		}
 
 		return true;
+	}
+	
+	private static class ElementCell extends AbstractCell<Metadata.Element>
+	{
+		public void render(Context context, Metadata.Element element, SafeHtmlBuilder sb)
+		{
+			if (element != null)
+			{
+				sb.appendEscaped(element.getName());
+			}
+		}
+	}
+
+	public <T> NodeInfo<?> getNodeInfo(T value)
+	{
+		if (m_metadata == null)
+		{
+			return new DefaultNodeInfo<Metadata.Element>(new ListDataProvider<Metadata.Element>(), new ElementCell());
+		}
+
+		Metadata.DocumentElement docElement = m_metadata.getRootElement();
+		ListDataProvider<Metadata.Element> provider = null;
+
+		if (value == null)
+		{
+			provider = m_rootDataProvider;
+		}
+		else if (value instanceof Metadata.DocumentElement)
+		{
+			docElement = (Metadata.DocumentElement)value;
+			provider = new ListDataProvider<Metadata.Element>(docElement.getChildren());
+		}
+
+		return new DefaultNodeInfo<Metadata.Element>(provider, new ElementCell(), m_selectionModel, null);
+	}
+
+	public boolean isLeaf(Object value)
+	{
+		if (value == null)
+		{
+			return false;
+		}
+	
+		Metadata.Element element = (Metadata.Element)value;
+		return !(element instanceof Metadata.DocumentElement);
 	}
 }
