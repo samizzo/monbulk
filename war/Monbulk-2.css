@@ -879,28 +879,14 @@ MethodEditorDynamicFieldsPanel
 	cursor: nw-resize;
 }
 
-.gwt-Tree .gwt-TreeItem
+.gwt-TreeItem-selected
 {
-	padding-left: 1px;
-}
-
-.gwt-Tree .itemHighlight:hover
-{
-	padding-left: 0px;
-	background-color: #c3d9ff;
-	cursor: default;
-}
-
-.gwt-Tree .noItemHighlight
-{
-	background-color: #F9F9F9;
-}
-
-.gwt-Tree .itemSelected
-{
-	padding-left: 0px;
 	background-color: #90a6cc;
-	cursor: default;
+}
+
+.gwt-TreeItem:hover
+{
+	background-color: #c3d9ff;
 }
 
 /* HACK: This is for text boxes that are getting the end cut off because we are in strict/standards mode. */

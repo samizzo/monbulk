@@ -14,13 +14,13 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Tree;
-import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Widget;
+
+import com.googlecode.salix.Salix.*;
 
 import monbulk.client.Monbulk;
 import monbulk.client.Settings;
@@ -73,6 +73,8 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 		// Only allow upper and lower letters, full stop, and hyphen.
 		m_name.setValidCharRegex("[a-zA-Z.-]");
+		
+		m_elementsTree.draw();
 	}
 
 	/**
@@ -214,11 +216,6 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	private TreeItem createTreeItem(String name, Metadata.Element element, TreeItem root)
 	{
 		TreeItem treeItem = new TreeItem(name);
-		treeItem.addStyleName("itemHighlight");
-		if (root != null)
-		{
-			treeItem.addStyleName("noItemHighlight");
-		}
 		treeItem.setUserObject(element);
 
 		// Add new item to tree.
@@ -418,18 +415,8 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	 */
 	public void onSelection(SelectionEvent<TreeItem> event)
 	{
-		// Update metadata from user settings and remove highlight from
-		// previously selected item.
-		if (m_selectedElement != null)
-		{
-			m_selectedElement.removeStyleName("itemSelected");
-		}
-
 		// Add highlight to newly selected item.
-		TreeItem selectedItem = event.getSelectedItem();
-		selectedItem.addStyleName("itemSelected");
-
-		m_selectedElement = selectedItem;
+		m_selectedElement = event.getSelectedItem();
 		
 		// Update the element summary.
 		Metadata.Element element = (Metadata.Element)m_selectedElement.getUserObject();
@@ -468,13 +455,11 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 				// The parent of the tree item will be either the current
 				// selection or null (it will be added to root of the tree).
 				TreeItem newItem = createTreeItem(newElement.getName(), newElement, parent == oldElement ? m_selectedElement : null);
+				if (parent == oldElement)
+				{
+					m_selectedElement.expand();
+				}
 				m_elementsTree.setSelectedItem(newItem, true);
-				m_elementsTree.ensureSelectedItemVisible();
-
-				// HACK: We have to set the item selected again to
-				// really make sure it is visible because of this bug:
-				// http://code.google.com/p/google-web-toolkit/issues/detail?id=1783
-				m_elementsTree.setSelectedItem(m_selectedElement, true);
 			}
 			else
 			{
