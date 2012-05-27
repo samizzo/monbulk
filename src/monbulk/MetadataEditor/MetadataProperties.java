@@ -14,15 +14,13 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Label;
-//import com.google.gwt.user.client.ui.Tree;
-//import com.google.gwt.user.client.ui.TreeItem;
+import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Widget;
-
-import com.googlecode.salix.Salix.*;
 
 import monbulk.client.Monbulk;
 import monbulk.client.Settings;
@@ -75,8 +73,6 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 		// Only allow upper and lower letters, full stop, and hyphen.
 		m_name.setValidCharRegex("[a-zA-Z.-]");
-		
-		m_elementsTree.draw();
 	}
 
 	/**
@@ -218,10 +214,10 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	private TreeItem createTreeItem(String name, Metadata.Element element, TreeItem root)
 	{
 		TreeItem treeItem = new TreeItem(name);
-		//treeItem.addStyleName("itemHighlight");
+		treeItem.addStyleName("itemHighlight");
 		if (root != null)
 		{
-//			treeItem.addStyleName("noItemHighlight");
+			treeItem.addStyleName("noItemHighlight");
 		}
 		treeItem.setUserObject(element);
 
@@ -426,12 +422,12 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		// previously selected item.
 		if (m_selectedElement != null)
 		{
-			//m_selectedElement.removeStyleName("itemSelected");
+			m_selectedElement.removeStyleName("itemSelected");
 		}
 
 		// Add highlight to newly selected item.
 		TreeItem selectedItem = event.getSelectedItem();
-		//selectedItem.addStyleName("itemSelected");
+		selectedItem.addStyleName("itemSelected");
 
 		m_selectedElement = selectedItem;
 		
@@ -473,7 +469,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 				// selection or null (it will be added to root of the tree).
 				TreeItem newItem = createTreeItem(newElement.getName(), newElement, parent == oldElement ? m_selectedElement : null);
 				m_elementsTree.setSelectedItem(newItem, true);
-				//m_elementsTree.ensureSelectedItemVisible();
+				m_elementsTree.ensureSelectedItemVisible();
 
 				// HACK: We have to set the item selected again to
 				// really make sure it is visible because of this bug:
