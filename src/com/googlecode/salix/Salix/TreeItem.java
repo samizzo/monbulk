@@ -1,5 +1,7 @@
 package com.googlecode.salix.Salix;
 
+import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.*;
@@ -36,18 +38,18 @@ public class TreeItem extends UIObject {
 	 */
 	private FlowPanel mainPanel = new FlowPanel();
 	private FlexTable headerPanel = new FlexTable();
-	private SimplePanel buttonPannel = new SimplePanel();
 	private FlowPanel childrenPanel = new FlowPanel();
 	private Widget expandWidget;
 	private Widget collapseWidget;
 	private Tree tree;
 	private ArrayList<ClickHandler> clickHandlers;
 
-	private HorizontalPanel connectorPictures = new HorizontalPanel();
+	private HTMLPanel connectorPictures = new HTMLPanel("");
 	private Comparator<TreeItem> itemComparator;
 	private boolean selected;
 	
 	private Object userObject = null;
+	private Widget currentButtonWidget = null;
 
 	public TreeItem(String name) {
 		this(new Label(name));
@@ -90,11 +92,19 @@ public class TreeItem extends UIObject {
 
 		if (parent != null) {
 			level = getParent().level + 1;
+			int ofs = level;
 			if (tree.configuration().isShowConnectors()) {
 				connectorPictures.clear();
 				addParentConnectors(this);
+				if (currentButtonWidget != null) {
+					connectorPictures.add(currentButtonWidget);
+					ofs++;
+				}
+				ofs *= tree.configuration().getOffsetPx();
+				connectorPictures.getElement().getStyle().setWidth(ofs, Unit.PX);
 			} else {
-				headerPanel.getElement().getStyle().setPropertyPx("paddingLeft", level * tree.configuration().getOffsetPx());
+				ofs *= tree.configuration().getOffsetPx();
+				headerPanel.getElement().getStyle().setPropertyPx("paddingLeft", ofs);
 			}
 		}
 
@@ -110,15 +120,12 @@ public class TreeItem extends UIObject {
 				}
 			});
 
-			buttonPannel.setWidth("20px"); // width of an icon or more
-
 			headerPanel.addStyleName(tree.configuration().getClassTreeItem());
 			headerPanel.getColumnFormatter().setWidth(0, "1px");
 			headerPanel.setWidth("100%");
 			headerPanel.setHeight("18px"); // lines without icons should have the same height as those with icons
 			headerPanel.setCellSpacing(0);
 
-			connectorPictures.add(buttonPannel);
 			headerPanel.setWidget(0, 0, connectorPictures);
 			headerPanel.setWidget(0, 1, widget);
 			mainPanel.add(headerPanel);
@@ -147,6 +154,7 @@ public class TreeItem extends UIObject {
 	private Widget createEmptyPanel() {
 		SimplePanel result = new SimplePanel();
 		result.setWidth("16px"); //width of an icon
+		result.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
 		return result;
 	}
 
@@ -180,25 +188,35 @@ public class TreeItem extends UIObject {
 	public int getLevel() {
 		return level;
 	}
+	
+	private void replaceButtonWidget(Widget oldButtonWidget) {
+		if (oldButtonWidget != null) {
+			connectorPictures.remove(oldButtonWidget);
+		}
+		if (currentButtonWidget != null) {
+			connectorPictures.add(currentButtonWidget);
+		}
+	}
 
 	/**
 	 * Expands this tree item.
 	 */
 	public void expand() {
+		Widget oldButtonWidget = currentButtonWidget;
 		if (children.size() > 0) {
-			if (buttonPannel.getWidget() != collapseWidget) {
-				buttonPannel.clear();
+			if (currentButtonWidget != collapseWidget) {
 				if (tree.configuration().isShowConnectors()) {
 					((Image) collapseWidget).setResource(isLastChild() ? tree.configuration().getIcons().elbowEndCollapse() : tree.configuration().getIcons().elbowCollapse());
 				}
-				buttonPannel.add(collapseWidget);
+				currentButtonWidget = collapseWidget;
+				replaceButtonWidget(oldButtonWidget);
 			}
 			childrenPanel.setVisible(true);
 			state = true;
 		} else {
 			if (tree.configuration().isShowConnectors()) {
-				buttonPannel.clear();
-				buttonPannel.add(new Image(isLastChild() ? tree.configuration().getIcons().elbowEnd() : tree.configuration().getIcons().elbow()));
+				currentButtonWidget = createConnectorPicture();
+				replaceButtonWidget(oldButtonWidget);
 			}
 		}
 	}
@@ -207,18 +225,19 @@ public class TreeItem extends UIObject {
 	 * Collapses this tree item.
 	 */
 	public void collapse() {
+		Widget oldButtonWidget = currentButtonWidget;
 		if (children.size() > 0) {
-			if (buttonPannel.getWidget() != expandWidget) {
-				buttonPannel.clear();
+			if (currentButtonWidget != expandWidget) {
 				if (tree.configuration().isShowConnectors()) {
 					((Image) expandWidget).setResource(isLastChild() ? tree.configuration().getIcons().elbowEndExpand() : tree.configuration().getIcons().elbowExpand());
 				}
-				buttonPannel.add(expandWidget);
+				currentButtonWidget = expandWidget;
+				replaceButtonWidget(oldButtonWidget);
 			}
 		} else {
 			if (tree.configuration().isShowConnectors()) {
-				buttonPannel.clear();
-				buttonPannel.add(createConnectorPicture());
+				currentButtonWidget = createConnectorPicture();
+				replaceButtonWidget(oldButtonWidget);
 			}
 		}
 		childrenPanel.setVisible(false);
