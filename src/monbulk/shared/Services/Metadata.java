@@ -13,6 +13,11 @@ import com.google.gwt.core.client.GWT;
 
 public class Metadata
 {
+	public interface ModifiedHandler
+	{
+		public void onModified();
+	}
+	
 	public enum ElementTypes
 	{
 		// These types are unique classes.
@@ -181,12 +186,13 @@ public class Metadata
 		protected ArrayList<Element> m_attributes = new ArrayList<Element>();
 		
 		protected boolean m_modified = false;
+		protected Metadata m_metadata = null;
 
 		/**
 		 * Copy constructor.  Creates a new element from an existing element.
 		 * @param element
 		 */
-		public Element(Element element)
+		protected Element(Element element)
 		{
 			m_parent = element.m_parent;
 			m_type = element.m_type;
@@ -205,9 +211,11 @@ public class Metadata
 			{
 				m_attributes.add(e.clone());
 			}
+			
+			m_metadata = element.m_metadata;
 		}
 
-		public Element(ElementTypes type, String name, String description, boolean isAttribute)
+		protected Element(ElementTypes type, String name, String description, boolean isAttribute)
 		{
 			m_settings.put("name", name);
 			m_settings.put("description", description);
@@ -218,6 +226,18 @@ public class Metadata
 		public Element clone()
 		{
 			return new Element(this);
+		}
+
+		/**
+		 * Fires the modified event.
+		 */
+		protected void onModified()
+		{
+			m_modified = true;
+			if (m_metadata != null)
+			{
+				m_metadata.onModified();
+			}
 		}
 
 		/**
@@ -270,7 +290,7 @@ public class Metadata
 				m_restrictions.remove(name);
 			}
 			
-			m_modified = true;
+			onModified();
 		}
 		
 		/**
@@ -310,7 +330,7 @@ public class Metadata
 				m_settings.remove(name);
 			}
 			
-			m_modified = true;
+			onModified();
 		}
 
 		/**
@@ -393,7 +413,20 @@ public class Metadata
 		{
 			m_parent = parent;
 			parent.m_children.add(this);
-			m_modified = true;
+			onModified();
+		}
+		
+		/**
+		 * Sets the owner metadata for this element.
+		 * @param metadata
+		 */
+		public void setMetadata(Metadata metadata)
+		{
+			m_metadata = metadata;
+			if (m_modified)
+			{
+				m_metadata.onModified();
+			}
 		}
 		
 		/**
@@ -460,7 +493,7 @@ public class Metadata
 		public void removeAttribute(int index)
 		{
 			m_attributes.remove(index);
-			m_modified = true;
+			onModified();
 		}
 		
 		/**
@@ -470,7 +503,7 @@ public class Metadata
 		public void addAttribute(Element attribute)
 		{
 			m_attributes.add(attribute);
-			m_modified = true;
+			onModified();
 		}
 		
 		/**
@@ -484,7 +517,7 @@ public class Metadata
 			if (index >= 0)
 			{
 				m_attributes.set(index, newAttribute);
-				m_modified = true;
+				onModified();
 			}
 		}
 		
@@ -611,7 +644,7 @@ public class Metadata
 		 * Copy constructor.  Creates a new DocumentElement from an existing element.
 		 * @param element
 		 */
-		public DocumentElement(DocumentElement element)
+		protected DocumentElement(DocumentElement element)
 		{
 			super(element);
 			
@@ -628,7 +661,7 @@ public class Metadata
 			m_referenceValue = element.m_referenceValue;
 		}
 		
-		public DocumentElement(String name, String description)
+		protected DocumentElement(String name, String description)
 		{
 			super(ElementTypes.Document, name, description, false);
 		}
@@ -675,7 +708,7 @@ public class Metadata
 			{
 				m_children.set(index, newElement);
 				newElement.m_parent = this;
-				m_modified = true;
+				onModified();
 			}
 		}
 
@@ -705,7 +738,7 @@ public class Metadata
 		public void removeChild(Element element)
 		{
 			m_children.remove(element);
-			m_modified = true;
+			onModified();
 		}
 		
 		/**
@@ -745,7 +778,7 @@ public class Metadata
 		public void setIsReference(boolean isReference)
 		{
 			m_isReference = isReference;
-			m_modified = true;
+			onModified();
 		}
 		
 		public String getReferenceName()
@@ -756,7 +789,7 @@ public class Metadata
 		public void setReferenceName(String referenceName)
 		{
 			m_referenceName = referenceName;
-			m_modified = true;
+			onModified();
 		}
 		
 		public ReferenceType getReferenceType()
@@ -767,7 +800,7 @@ public class Metadata
 		public void setReferenceType(ReferenceType referenceType)
 		{
 			m_referenceType = referenceType;
-			m_modified = true;
+			onModified();
 		}
 		
 		public String getReferenceValue()
@@ -778,7 +811,7 @@ public class Metadata
 		public void setReferenceValue(String referenceValue)
 		{
 			m_referenceValue = referenceValue;
-			m_modified = true;
+			onModified();
 		}
 		
 		public Element clone()
@@ -835,7 +868,7 @@ public class Metadata
 		 * Copy constructor.  Creates a new EnumerationElement from an existing element.
 		 * @param element
 		 */
-		public EnumerationElement(EnumerationElement element)
+		protected EnumerationElement(EnumerationElement element)
 		{
 			super(element);
 			
@@ -844,7 +877,7 @@ public class Metadata
 			m_values = values;
 		}
 
-		public EnumerationElement(String name, String description, boolean isAttribute)
+		protected EnumerationElement(String name, String description, boolean isAttribute)
 		{
 			super(ElementTypes.Enumeration, name, description, isAttribute);
 
@@ -859,7 +892,7 @@ public class Metadata
 		public void addValue(String value)
 		{
 			m_values.add(value);
-			m_modified = true;
+			onModified();
 		}
 		
 		/**
@@ -869,7 +902,7 @@ public class Metadata
 		public void removeValue(String value)
 		{
 			m_values.remove(value);
-			m_modified = true;
+			onModified();
 		}
 		
 		/**
@@ -878,7 +911,7 @@ public class Metadata
 		public void clearValues()
 		{
 			m_values.clear();
-			m_modified = true;
+			onModified();
 		}
 		
 		/**
@@ -979,12 +1012,14 @@ public class Metadata
 	}
 	
 	private DocumentElement m_rootElement = new DocumentElement("root", "root");
+	private ModifiedHandler m_modifiedHandler = null;
 	
 	public Metadata(String name, String description, String label)
 	{
 		setName(name);
 		setDescription(description);
 		setLabel(label);
+		m_rootElement.setMetadata(this);
 	}
 
 	/**
@@ -1079,12 +1114,12 @@ public class Metadata
 	{
 		XmlElement type = element.element("type");
 		Metadata metadata = new Metadata(type.value("@name"), type.value("description"), type.value("label"));
-		parseMetadata(metadata.getRootElement(), type.elements("definition/element"));
+		parseMetadata(metadata.getRootElement(), type.elements("definition/element"), metadata);
 		metadata.clearModified();	// Some things during creation set the modified flag.
 		return metadata;
 	}
 	
-	private static void parseMetadata(Metadata.DocumentElement parent, List<XmlElement> xmlElements) throws Exception
+	private static void parseMetadata(Metadata.DocumentElement parent, List<XmlElement> xmlElements, Metadata metadata) throws Exception
 	{
 		if (xmlElements == null)
 		{
@@ -1095,10 +1130,11 @@ public class Metadata
 		{
 			Metadata.Element element = Metadata.createElement(e);
 			element.setParent(parent);
+			element.setMetadata(metadata);
 			if (element instanceof Metadata.DocumentElement)
 			{
 				Metadata.DocumentElement docElement = (Metadata.DocumentElement)element;
-				parseMetadata(docElement, e.elements("element"));
+				parseMetadata(docElement, e.elements("element"), metadata);
 			}
 		}
 	}
@@ -1139,5 +1175,22 @@ public class Metadata
 		x.pop();
 
 		return x.document();
+	}
+
+	/**
+	 * Sets the modified handler for this metadata object.
+	 * @param handler
+	 */
+	public void setModifiedHandler(ModifiedHandler handler)
+	{
+		m_modifiedHandler = handler;
+	}
+	
+	private void onModified()
+	{
+		if (m_modifiedHandler != null)
+		{
+			m_modifiedHandler.onModified();
+		}
 	}
 }

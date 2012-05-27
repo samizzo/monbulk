@@ -154,6 +154,8 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 
 					m_metadataList.refresh(select);
 				}
+				
+				m_metadataProperties.setSaveEnabled(false);
 
 				performAction();
 			}

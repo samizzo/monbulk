@@ -110,4 +110,9 @@ public class DocumentElementPanel extends ElementPanel implements ValueChangeHan
 
 		d.show(m, true);
 	}
+	
+	public void setReferenceFocus()
+	{
+		m_reference.setFocus(true);
+	}
 }

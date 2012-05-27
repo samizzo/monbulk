@@ -60,6 +60,11 @@ public class ElementEditor extends OkCancelWindow
 	{
 		m_elementProperties.setMinOccursFocus();
 	}
+	
+	public void setReferenceFocus()
+	{
+		m_elementProperties.setReferenceFocus();
+	}
 
 	public void setChangeTypeHandler(CommonElementPanel.ChangeTypeHandler handler)
 	{

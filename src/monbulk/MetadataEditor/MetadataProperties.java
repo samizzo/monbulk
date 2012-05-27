@@ -107,6 +107,15 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	}
 
 	/**
+	 * Sets the enabled state of the save button.
+	 * @param enabled
+	 */
+	public void setSaveEnabled(boolean enabled)
+	{
+		m_save.setEnabled(enabled);
+	}
+
+	/**
 	 * Adds a handler to the save button.
 	 * @param event
 	 */
@@ -163,6 +172,14 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	{
 		clear();
 		m_metadata = metadata;
+		m_metadata.setModifiedHandler(new Metadata.ModifiedHandler()
+		{
+			public void onModified()
+			{
+				m_save.setEnabled(true);
+			}
+		});
+		
 		m_addElement.setEnabled(true);
 
 		String name = metadata.getName();
@@ -204,6 +221,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	 */
 	public void clear()
 	{
+		m_save.setEnabled(false);
 		m_metadata = null;
 		m_addElement.setEnabled(false);
 		m_name.setText("");
@@ -450,6 +468,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 				// Parent is of type DocumentElement.
 				assert(parent instanceof Metadata.DocumentElement);
 				newElement.setParent((Metadata.DocumentElement)parent);
+				newElement.setMetadata(m_metadata);
 				
 				// Adding a new element so create a tree item for it.
 				// The parent of the tree item will be either the current
@@ -559,6 +578,18 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			{
 				Window.alert("Minimum number of occurrences must be less than the maximum.");
 				m_elementEditor.setMinOccursFocus();
+				return false;
+			}
+		}
+		
+		// Validate that a reference has been set if it is a reference document element.
+		if (newElement instanceof Metadata.DocumentElement)
+		{
+			Metadata.DocumentElement e = (Metadata.DocumentElement)newElement;
+			if (e.getIsReference() && e.getReferenceValue().length() == 0)
+			{
+				Window.alert("This element has been set as a reference element but no reference has been set.");
+				m_elementEditor.setReferenceFocus();
 				return false;
 			}
 		}
