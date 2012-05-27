@@ -106,6 +106,7 @@ public class TreeItem extends UIObject {
 				ofs *= tree.configuration().getOffsetPx();
 				headerPanel.getElement().getStyle().setPropertyPx("paddingLeft", ofs);
 			}
+			connectorPictures.getElement().getStyle().setHeight(tree.configuration().getIconHeight(), Unit.PX);
 		}
 
 		if (level > ROOT_LEVEL) { // not internal root
@@ -123,8 +124,9 @@ public class TreeItem extends UIObject {
 			headerPanel.addStyleName(tree.configuration().getClassTreeItem());
 			headerPanel.getColumnFormatter().setWidth(0, "1px");
 			headerPanel.setWidth("100%");
-			headerPanel.setHeight("18px"); // lines without icons should have the same height as those with icons
+			headerPanel.setHeight(tree.configuration().getIconHeight() + "px"); // lines without icons should have the same height as those with icons
 			headerPanel.setCellSpacing(0);
+			headerPanel.setCellPadding(0);
 
 			headerPanel.setWidget(0, 0, connectorPictures);
 			headerPanel.setWidget(0, 1, widget);

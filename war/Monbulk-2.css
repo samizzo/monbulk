@@ -889,6 +889,11 @@ MethodEditorDynamicFieldsPanel
 	background-color: #c3d9ff;
 }
 
+.gwt-TreeItem .gwt-Label
+{
+	padding-left: 4px;
+}
+
 /* HACK: This is for text boxes that are getting the end cut off because we are in strict/standards mode. */
 .textBoxPadding
 {

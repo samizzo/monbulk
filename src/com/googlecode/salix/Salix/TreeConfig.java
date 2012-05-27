@@ -18,6 +18,8 @@ public class TreeConfig {
 	 */
 	private int offsetPx = 16;
 
+	private int iconHeight = 22;
+
 	private String classTreeItem = "gwt-TreeItem";
 	private String classTreeItemSelected = "gwt-TreeItem-selected";
 	private boolean showConnectors = true;
@@ -44,6 +46,10 @@ public class TreeConfig {
 
 	public int getOffsetPx() {
 		return offsetPx;
+	}
+	
+	public int getIconHeight() {
+		return iconHeight;
 	}
 
 	public TreeConfig setOffsetPx(int offsetPx) {
