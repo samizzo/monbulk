@@ -14,6 +14,7 @@ public class MetadataSelectWindow extends OkCancelWindow
 		m_metadataList = new MetadataList();
 		m_metadataList.setWidth("400px");
 		m_metadataList.setHeight("400px");
+		m_metadataList.setShowTemplates(false);
 		m_metadataList.setShowNew(false);
 		m_metadataList.setShowFromTemplate(false);
 		m_metadataList.setShowClone(false);

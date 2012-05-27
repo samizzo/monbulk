@@ -60,6 +60,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	protected List<String> m_metadataTypes = null;
 	private Handler m_handler = null;
 	private String m_selected;
+	private boolean m_showTemplates = true;
 
 	@UiField HTMLPanel m_buttonsPanel;
 	@UiField Button m_refreshList;
@@ -131,6 +132,16 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	public void setShowClone(boolean showClone)
 	{
 		m_cloneMetadata.setVisible(showClone);
+	}
+	
+	/**
+	 * If 'showTemplates' is true templates will be shown,
+	 * otherwise they will be hidden.
+	 * @param showTemplates
+	 */
+	public void setShowTemplates(boolean showTemplates)
+	{
+		m_showTemplates = showTemplates;
 	}
 
 	/**
@@ -311,12 +322,15 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 
 						Settings settings = Monbulk.getSettings();
 						String namespace = settings.getDefaultNamespace() + ".";
+						String template = namespace + "template.";
 						
 						// Add all items.
 						for (int i = 0; i < types.size(); i++)
 						{
 							String name = types.get(i);
-							if (name.startsWith(namespace))
+							
+							// Filter out templates if we don't want to see them.
+							if (name.startsWith(namespace) && (m_showTemplates || !name.startsWith(template)))
 							{
 								m_metadataTypes.add(name);
 								m_metadataListBox.addItem(name);
