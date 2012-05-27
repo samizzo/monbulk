@@ -820,16 +820,6 @@ public class Metadata
 				}
 			}
 		}
-		
-		/**
-		 * Returns the list of children.  NOTE: Should not be used for editing
-		 * the children.
-		 * @return
-		 */
-		public List<Element> getChildren()
-		{
-			return m_children;
-		}
 	}
 	
 	/**
