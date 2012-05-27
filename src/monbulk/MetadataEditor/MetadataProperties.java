@@ -3,6 +3,8 @@ package monbulk.MetadataEditor;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
@@ -32,7 +34,7 @@ import monbulk.shared.widgets.Window.OkCancelWindow.*;
 import monbulk.shared.widgets.Window.WindowSettings;
 import monbulk.shared.widgets.TextBoxEx;
 
-public class MetadataProperties extends Composite implements SelectionHandler<TreeItem>, CommonElementPanel.ChangeTypeHandler, OkCancelHandler, ValidateHandler
+public class MetadataProperties extends Composite implements SelectionHandler<TreeItem>, CommonElementPanel.ChangeTypeHandler, OkCancelHandler, ValidateHandler, DoubleClickHandler
 {
 	private static MetadataPropertiesUiBinder uiBinder = GWT.create(MetadataPropertiesUiBinder.class);
 	interface MetadataPropertiesUiBinder extends UiBinder<Widget, MetadataProperties> { }
@@ -230,11 +232,19 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_elementsTree.clear();
 		clearElements();
 	}
+
+	public void onDoubleClick(DoubleClickEvent event)	
+	{
+		event.stopPropagation();
+		event.preventDefault();
+		onEditElementClicked(null);
+	}
 	
 	private TreeItem createTreeItem(String name, Metadata.Element element, TreeItem root)
 	{
 		TreeItem treeItem = new TreeItem(name);
 		treeItem.setUserObject(element);
+		treeItem.addDoubleClickHandler(this);
 
 		// Add new item to tree.
 		if (root != null)

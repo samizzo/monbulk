@@ -4,6 +4,7 @@ import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.client.ui.*;
 
 import java.util.ArrayList;
@@ -74,6 +75,10 @@ public class TreeItem extends UIObject {
 		});
 	}
 
+	public void addDoubleClickHandler(DoubleClickHandler handler) {
+		headerPanel.addDoubleClickHandler(handler);
+	}
+	
 	/**
 	 * Draws this tree item and its subtree. Called internally only.
 	 */
