@@ -26,11 +26,11 @@ public class Element
 
 		// These types are generic.
 		String("string", true, false, true),
-		Integer("integer", true, true, true),
 		Date("date", true, false, true),
-		Float("float", true, true, true),
-		Double("double", true, true, true),
-		Long("long", true, true, true),
+		IntegerOld("integer", false, true, true),
+		Integer("long", true, true, true),
+		FloatOld("float", false, true, true),
+		Float("double", true, true, true),
 		Boolean("boolean", true, false, false),
 		
 		// Special types that aren't visible or selectable by the user.
@@ -138,7 +138,21 @@ public class Element
 		String typeName = e.value("@type");
 		String name = e.value("@name");
 		String description = e.value("description");
-		Element.ElementTypes type = Element.ElementTypes.fromTypeName(typeName);
+		ElementTypes type = ElementTypes.fromTypeName(typeName);
+
+		// HACK: Integers and floats are saved as long and double MF types.
+		// When we load integer/float types we convert them internally to
+		// long/double.  If the user saves the metadata, they will be updated
+		// on the server, otherwise they will be converted each time on load.
+		if (type == ElementTypes.IntegerOld)
+		{
+			type = ElementTypes.Integer;
+		}
+		else if (type == ElementTypes.FloatOld)
+		{
+			type = ElementTypes.Float;
+		}
+
 		Element element = createElement(type, name, description, false);
 		element.setFromXmlElement(e);
 		return element;

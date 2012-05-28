@@ -31,7 +31,7 @@ public class NumberElementPanel extends ElementPanel
 	public void set(Element element)
 	{
 		Element.ElementTypes t = element.getType();
-		boolean floatType = (t == Element.ElementTypes.Double || t == Element.ElementTypes.Float);
+		boolean floatType = (t == Element.ElementTypes.Float);
 		m_minimum.setAllowDecimalPoint(floatType);
 		m_maximum.setAllowDecimalPoint(floatType);
 
