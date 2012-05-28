@@ -17,12 +17,11 @@ import monbulk.shared.Services.Metadata;
 import monbulk.shared.Services.Metadata.DocumentElement;
 import monbulk.shared.widgets.Window.OkCancelWindow.*;
 
-public class DocumentElementPanel extends ElementPanel implements ValueChangeHandler<Boolean>
+public class DocumentElementPanel extends ElementPanel
 {
 	private static DocumentElementPanelUiBinder uiBinder = GWT.create(DocumentElementPanelUiBinder.class);
 	interface DocumentElementPanelUiBinder extends UiBinder<Widget, DocumentElementPanel> { }
 
-	@UiField CheckBox m_isReference;
 	@UiField TextBox m_reference;
 	@UiField Button m_select;
 	@UiField TextBox m_referenceName;
@@ -30,8 +29,6 @@ public class DocumentElementPanel extends ElementPanel implements ValueChangeHan
 	public DocumentElementPanel()
 	{
 		initWidget(uiBinder.createAndBindUi(this));
-		m_isReference.addValueChangeHandler(this);
-		setButtonState();
 	}
 	
 	public void set(Metadata.Element element)
@@ -40,11 +37,8 @@ public class DocumentElementPanel extends ElementPanel implements ValueChangeHan
 		
 		Metadata.DocumentElement docElement = (Metadata.DocumentElement)element;
 		
-		// NOTE: We only support document references at the moment!
-		boolean isReference = docElement.getIsReference() && docElement.getReferenceType() == Metadata.DocumentElement.ReferenceType.Document;
-		m_isReference.setValue(isReference);
 		String referenceValue = docElement.getReferenceValue();
-		if (referenceValue != null && referenceValue.length() > 0 && isReference)
+		if (referenceValue != null && referenceValue.length() > 0)
 		{
 			m_reference.setValue(referenceValue);
 			m_referenceName.setValue(docElement.getReferenceName());
@@ -54,14 +48,11 @@ public class DocumentElementPanel extends ElementPanel implements ValueChangeHan
 			m_reference.setValue("");
 			m_referenceName.setValue("");
 		}
-		
-		setButtonState();
 	}
 	
 	public void update(Metadata.Element element)
 	{
 		Metadata.DocumentElement docElement = (Metadata.DocumentElement)element;
-		docElement.setIsReference(m_isReference.getValue());
 		docElement.setReferenceValue(m_reference.getValue());
 		docElement.setReferenceName(m_referenceName.getValue());
 		docElement.setReferenceType(DocumentElement.ReferenceType.Document);
@@ -69,20 +60,7 @@ public class DocumentElementPanel extends ElementPanel implements ValueChangeHan
 	
 	public Metadata.ElementTypes getType()
 	{
-		return Metadata.ElementTypes.Document;
-	}
-	
-	public void onValueChange(ValueChangeEvent<Boolean> event)
-	{
-		setButtonState();
-	}
-	
-	private void setButtonState()
-	{
-		boolean isReference = m_isReference.getValue();
-		m_reference.setEnabled(isReference);
-		m_select.setEnabled(isReference);
-		m_referenceName.setEnabled(isReference);
+		return Metadata.ElementTypes.Reference;
 	}
 	
 	@UiHandler("m_select")
@@ -109,10 +87,5 @@ public class DocumentElementPanel extends ElementPanel implements ValueChangeHan
 		});
 
 		d.show(m, true);
-	}
-	
-	public void setReferenceFocus()
-	{
-		m_reference.setFocus(true);
 	}
 }

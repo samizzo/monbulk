@@ -140,7 +140,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler, Co
 	{
 		try
 		{
-			Metadata.Element element = Metadata.createElement("String", "attribute", "An attribute", true);
+			Metadata.Element element = Metadata.createElement(Metadata.ElementTypes.String, "attribute", "An attribute", true);
 			showEditor(element, true);
 		}
 		catch (Exception e)
@@ -210,7 +210,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler, Co
 			m_elementEditor.updateCurrentElement();
 
 			Metadata.ElementTypes t = Metadata.ElementTypes.valueOf(newType);
-			Metadata.Element newAttribute = Metadata.createElement(t.getTypeName(), element.getName(), element.getDescription(), true);
+			Metadata.Element newAttribute = Metadata.createElement(t, element.getName(), element.getDescription(), true);
 			
 			// Pass along any settings that are common to all element types. 
 			newAttribute.setSetting("min-occurs", element.getSetting("min-occurs", ""));

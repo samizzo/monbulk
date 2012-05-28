@@ -23,6 +23,7 @@ public class Metadata
 		// These types are unique classes.
 		Document("document", true, false, false),
 		Enumeration("enumeration", true, false, true),
+		Reference("document", true, false, false),
 
 		// These types are generic.
 		String("string", true, false, true),
@@ -138,7 +139,8 @@ public class Metadata
 		String typeName = e.value("@type");
 		String name = e.value("@name");
 		String description = e.value("description");
-		Metadata.Element element = createElement(typeName, name, description, false);
+		ElementTypes type = ElementTypes.fromTypeName(typeName);
+		Metadata.Element element = createElement(type, name, description, false);
 		element.setFromXmlElement(e);
 		return element;
 	}
@@ -152,13 +154,11 @@ public class Metadata
 	 * @return
 	 * @throws Exception
 	 */
-	public static Metadata.Element createElement(String typeName, String name, String description, boolean isAttribute) throws Exception
+	public static Metadata.Element createElement(ElementTypes type, String name, String description, boolean isAttribute) throws Exception
 	{
-		ElementTypes type = ElementTypes.fromTypeName(typeName);
-
-		if (type == ElementTypes.Document)
+		if (type == ElementTypes.Document || type == ElementTypes.Reference)
 		{
-			return new DocumentElement(name, description);
+			return new DocumentElement(name, description, type);
 		}
 		else if (type == ElementTypes.Enumeration)
 		{
@@ -661,9 +661,9 @@ public class Metadata
 			m_referenceValue = element.m_referenceValue;
 		}
 		
-		protected DocumentElement(String name, String description)
+		protected DocumentElement(String name, String description, ElementTypes type)
 		{
-			super(ElementTypes.Document, name, description, false);
+			super(type, name, description, false);
 		}
 
 		/**
@@ -762,23 +762,15 @@ public class Metadata
 					m_referenceName = reference.value("@name");
 					m_referenceValue = reference.value("value");
 					m_isReference = true;
+
+					// It's a DocumentElement but it's a reference so we override the type. 
+					m_type = ElementTypes.Reference;
 				}
 				catch (Exception e)
 				{
 					GWT.log("Bad reference: " + e.toString());
 				}
 			}
-		}
-		
-		public boolean getIsReference()
-		{
-			return m_isReference;
-		}
-		
-		public void setIsReference(boolean isReference)
-		{
-			m_isReference = isReference;
-			onModified();
 		}
 		
 		public String getReferenceName()
@@ -827,7 +819,7 @@ public class Metadata
 		{
 			super.addXml(w);
 
-			if (getIsReference())
+			if (m_type == ElementTypes.Reference)
 			{
 				// Add reference info.
 				String[] attributes = new String[4];
@@ -1011,7 +1003,7 @@ public class Metadata
 		}
 	}
 	
-	private DocumentElement m_rootElement = new DocumentElement("root", "root");
+	private DocumentElement m_rootElement = new DocumentElement("root", "root", ElementTypes.Document);
 	private ModifiedHandler m_modifiedHandler = null;
 	
 	public Metadata(String name, String description, String label)

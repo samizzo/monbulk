@@ -288,7 +288,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	{
 		try
 		{
-			Metadata.Element newElement = Metadata.createElement("string", "New element", "New element description", false);
+			Metadata.Element newElement = Metadata.createElement(Metadata.ElementTypes.String, "New element", "New element description", false);
 			showEditor(newElement, true);
 		}
 		catch (Exception e)
@@ -423,7 +423,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 			// Create new element from old.
 			Metadata.ElementTypes t = Metadata.ElementTypes.valueOf(newType);
-			Metadata.Element newElement = Metadata.createElement(t.getTypeName(), element.getName(), element.getDescription(), false);
+			Metadata.Element newElement = Metadata.createElement(t, element.getName(), element.getDescription(), false);
 
 			// Pass along any settings that are common to all element types. 
 			newElement.setSetting("min-occurs", element.getSetting("min-occurs", ""));
@@ -596,10 +596,9 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		if (newElement instanceof Metadata.DocumentElement)
 		{
 			Metadata.DocumentElement e = (Metadata.DocumentElement)newElement;
-			if (e.getIsReference() && e.getReferenceValue().length() == 0)
+			if (e.getType() == Metadata.ElementTypes.Reference && e.getReferenceValue().length() == 0)
 			{
-				Window.alert("This element has been set as a reference element but no reference has been set.");
-				m_elementEditor.setReferenceFocus();
+				Window.alert("This element's type is 'reference' but no reference has been set.  Please specify a metadata reference.");
 				return false;
 			}
 		}

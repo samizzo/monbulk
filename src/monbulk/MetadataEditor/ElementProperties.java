@@ -63,20 +63,7 @@ public class ElementProperties extends Composite
 		CommonElementPanel p = getCommonElementPanel();
 		p.setMinOccursFocus();
 	}
-	
-	public void setReferenceFocus()
-	{
-		for (ElementPanel p : m_availablePanels)
-		{
-			if (p instanceof DocumentElementPanel)
-			{
-				DocumentElementPanel panel = (DocumentElementPanel)p;
-				panel.setReferenceFocus();
-				break;
-			}
-		}
-	}
-	
+
 	public void addNameKeyUpHandler(KeyUpHandler handler)
 	{
 		CommonElementPanel p = getCommonElementPanel();
