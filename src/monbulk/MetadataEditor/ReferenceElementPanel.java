@@ -14,16 +14,16 @@ import monbulk.shared.Services.Metadata;
 import monbulk.shared.Services.Metadata.DocumentElement;
 import monbulk.shared.widgets.Window.OkCancelWindow.*;
 
-public class DocumentElementPanel extends ElementPanel
+public class ReferenceElementPanel extends ElementPanel
 {
-	private static DocumentElementPanelUiBinder uiBinder = GWT.create(DocumentElementPanelUiBinder.class);
-	interface DocumentElementPanelUiBinder extends UiBinder<Widget, DocumentElementPanel> { }
+	private static ReferenceElementPanelUiBinder uiBinder = GWT.create(ReferenceElementPanelUiBinder.class);
+	interface ReferenceElementPanelUiBinder extends UiBinder<Widget, ReferenceElementPanel> { }
 
 	@UiField TextBox m_reference;
 	@UiField Button m_select;
 	@UiField TextBox m_referenceName;
 
-	public DocumentElementPanel()
+	public ReferenceElementPanel()
 	{
 		initWidget(uiBinder.createAndBindUi(this));
 	}

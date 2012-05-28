@@ -33,7 +33,7 @@ public class ElementProperties extends Composite
 		{
 			m_availablePanels.add(new AttributesPanel());
 		}
-		m_availablePanels.add(new DocumentElementPanel());
+		m_availablePanels.add(new ReferenceElementPanel());
 
 		initWidget(uiBinder.createAndBindUi(this));
 	}
