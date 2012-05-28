@@ -16,6 +16,7 @@
 		{
 			width: 70px;
 			float: left;
+			margin-left: 4px;
 		}
 		
 		.Buttons
