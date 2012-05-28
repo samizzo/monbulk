@@ -522,6 +522,9 @@ public class TreeItem extends UIObject {
 	}
 	
 	public void setText(String text) {
-		widget.setTitle(text);
+		if (widget instanceof Label) {
+			Label label = (Label)widget;
+			label.setText(text);
+		}
 	}
 }
