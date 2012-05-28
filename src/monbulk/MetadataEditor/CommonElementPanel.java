@@ -21,7 +21,7 @@ public class CommonElementPanel extends ElementPanel
 {
 	public interface ChangeTypeHandler
 	{
-		public void onChangeType(Metadata.Element element, String newType);
+		public void onChangeType(Element element, String newType);
 	}
 
 	private static ElementPanelUiBinder uiBinder = GWT.create(ElementPanelUiBinder.class);
@@ -76,7 +76,7 @@ public class CommonElementPanel extends ElementPanel
 		m_changeTypeHandler = handler;
 	}
 	
-	public void update(Metadata.Element element)
+	public void update(Element element)
 	{
 		element.setSetting("name", m_name.getText());
 		element.setDescription(m_description.getText());
@@ -97,7 +97,7 @@ public class CommonElementPanel extends ElementPanel
 		}
 	}
 
-	public void set(Metadata.Element element)
+	public void set(Element element)
 	{
 		super.set(element);
 
@@ -106,7 +106,7 @@ public class CommonElementPanel extends ElementPanel
 		// attributes.
 		boolean isAttribute = element.getIsAttribute();
 		m_type.clear();
-		for (Metadata.ElementTypes e : Metadata.ElementTypes.values())
+		for (Element.ElementTypes e : Element.ElementTypes.values())
 		{
 			if (e.isVisible() && (!isAttribute || e.isUseInAttributes()))
 			{
@@ -193,8 +193,8 @@ public class CommonElementPanel extends ElementPanel
 		}
 	}
 	
-	public Metadata.ElementTypes getType()
+	public Element.ElementTypes getType()
 	{
-		return Metadata.ElementTypes.All;
+		return Element.ElementTypes.All;
 	}
 }

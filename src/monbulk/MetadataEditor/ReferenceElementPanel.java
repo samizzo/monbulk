@@ -10,8 +10,8 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.event.dom.client.ClickEvent;
 
 import monbulk.client.desktop.Desktop;
-import monbulk.shared.Services.Metadata;
-import monbulk.shared.Services.Metadata.DocumentElement;
+import monbulk.shared.Services.Element;
+import monbulk.shared.Services.DocumentElement;
 import monbulk.shared.widgets.Window.OkCancelWindow.*;
 
 public class ReferenceElementPanel extends ElementPanel
@@ -28,11 +28,11 @@ public class ReferenceElementPanel extends ElementPanel
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
-	public void set(Metadata.Element element)
+	public void set(Element element)
 	{
 		super.set(element);
 		
-		Metadata.DocumentElement docElement = (Metadata.DocumentElement)element;
+		DocumentElement docElement = (DocumentElement)element;
 		
 		String referenceValue = docElement.getReferenceValue();
 		if (referenceValue != null && referenceValue.length() > 0)
@@ -47,17 +47,17 @@ public class ReferenceElementPanel extends ElementPanel
 		}
 	}
 	
-	public void update(Metadata.Element element)
+	public void update(Element element)
 	{
-		Metadata.DocumentElement docElement = (Metadata.DocumentElement)element;
+		DocumentElement docElement = (DocumentElement)element;
 		docElement.setReferenceValue(m_reference.getValue());
 		docElement.setReferenceName(m_referenceName.getValue());
 		docElement.setReferenceType(DocumentElement.ReferenceType.Document);
 	}
 	
-	public Metadata.ElementTypes getType()
+	public Element.ElementTypes getType()
 	{
-		return Metadata.ElementTypes.Reference;
+		return Element.ElementTypes.Reference;
 	}
 	
 	@UiHandler("m_select")

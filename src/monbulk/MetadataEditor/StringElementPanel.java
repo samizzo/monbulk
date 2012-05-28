@@ -19,21 +19,21 @@ public class StringElementPanel extends ElementPanel
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-	public void update(Metadata.Element element)
+	public void update(Element element)
 	{
 		String maxLength = m_maxLength.getText();
 		element.setRestriction("max-length", maxLength);
 	}
 	
-	public void set(Metadata.Element element)
+	public void set(Element element)
 	{
 		String maxLength = element.getRestriction("max-length", "");
 		m_maxLength.setText(maxLength);
 	}
 	
-	public Metadata.ElementTypes getType()
+	public Element.ElementTypes getType()
 	{
-		return Metadata.ElementTypes.String;
+		return Element.ElementTypes.String;
 	}
 	
 	public void setReadOnly(boolean readOnly)

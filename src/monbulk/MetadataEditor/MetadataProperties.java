@@ -28,6 +28,8 @@ import monbulk.client.Monbulk;
 import monbulk.client.Settings;
 import monbulk.client.desktop.Desktop;
 import monbulk.shared.Services.Metadata;
+import monbulk.shared.Services.Element;
+import monbulk.shared.Services.DocumentElement;
 import monbulk.shared.Services.MetadataService;
 import monbulk.shared.Services.MetadataService.GetMetadataHandler;
 import monbulk.shared.widgets.Window.OkCancelWindow.*;
@@ -240,7 +242,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		onEditElementClicked(null);
 	}
 	
-	private TreeItem createTreeItem(String name, Metadata.Element element, TreeItem root)
+	private TreeItem createTreeItem(String name, Element element, TreeItem root)
 	{
 		TreeItem treeItem = new TreeItem(name);
 		treeItem.setUserObject(element);
@@ -259,20 +261,20 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		return treeItem;
 	}
 	
-	private void populateElementTree(TreeItem root, Metadata.DocumentElement rootElement)
+	private void populateElementTree(TreeItem root, DocumentElement rootElement)
 	{
 		int numChildren = rootElement.getNumChildren();
 		for (int i = 0; i < numChildren; i++)
 		{
-			Metadata.Element e = rootElement.getChild(i);
+			Element e = rootElement.getChild(i);
 			if (e.getType().isVisible())
 			{
 				TreeItem newItem = createTreeItem(e.getName(), e, root);
 			
-				if (e instanceof Metadata.DocumentElement)
+				if (e instanceof DocumentElement)
 				{
 					// Recurse into DocumentElements.
-					Metadata.DocumentElement doc = (Metadata.DocumentElement)e;
+					DocumentElement doc = (DocumentElement)e;
 					populateElementTree(newItem, doc);
 				}
 			}
@@ -288,7 +290,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	{
 		try
 		{
-			Metadata.Element newElement = Metadata.createElement(Metadata.ElementTypes.String, "New element", "New element description", false);
+			Element newElement = Element.createElement(Element.ElementTypes.String, "New element", "New element description", false);
 			showEditor(newElement, true);
 		}
 		catch (Exception e)
@@ -301,8 +303,8 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	public void onRemoveElementClicked(ClickEvent event)
 	{
 		// Remove the element.
-		Metadata.Element element = (Metadata.Element)m_selectedElement.getUserObject();
-		Metadata.DocumentElement parent = element.getParent();
+		Element element = (Element)m_selectedElement.getUserObject();
+		DocumentElement parent = element.getParent();
 		parent.removeChild(element);
 
 		// Find the index of the item we are removing.
@@ -367,16 +369,16 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	@UiHandler("m_editElement")
 	void onEditElementClicked(ClickEvent event)
 	{
-		Metadata.Element selectedElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
+		Element selectedElement = m_selectedElement != null ? (Element)m_selectedElement.getUserObject() : null;
 		if (selectedElement != null)
 		{
 			// We work with a clone so we can easily undo changes.
-			Metadata.Element element = selectedElement.clone();
+			Element element = selectedElement.clone();
 			showEditor(element, false);
 		}
 	}
 	
-	private void showEditor(Metadata.Element element, boolean addNewElement)
+	private void showEditor(Element element, boolean addNewElement)
 	{
 		m_addNewElement = addNewElement;
 		m_elementEditor.setMetadataElement(element);
@@ -412,7 +414,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		return -1;
 	}
 	
-	public void onChangeType(Metadata.Element element, String newType)
+	public void onChangeType(Element element, String newType)
 	{
 		// User has changed the type of this element.
 
@@ -422,8 +424,8 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			m_elementEditor.updateCurrentElement();
 
 			// Create new element from old.
-			Metadata.ElementTypes t = Metadata.ElementTypes.valueOf(newType);
-			Metadata.Element newElement = Metadata.createElement(t, element.getName(), element.getDescription(), false);
+			Element.ElementTypes t = Element.ElementTypes.valueOf(newType);
+			Element newElement = Element.createElement(t, element.getName(), element.getDescription(), false);
 
 			// Pass along any settings that are common to all element types. 
 			newElement.setSetting("min-occurs", element.getSetting("min-occurs", ""));
@@ -447,7 +449,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_selectedElement = event.getSelectedItem();
 		
 		// Update the element summary.
-		Metadata.Element element = (Metadata.Element)m_selectedElement.getUserObject();
+		Element element = (Element)m_selectedElement.getUserObject();
 		m_elementType.setText(element.getType().toString());
 		m_elementDescription.setText(element.getSetting("description", ""));
 		
@@ -465,19 +467,19 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	{
 		if (eventType == Event.Ok)
 		{
-			Metadata.Element oldElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
-			Metadata.Element newElement = m_elementEditor.getMetadataElement();
+			Element oldElement = m_selectedElement != null ? (Element)m_selectedElement.getUserObject() : null;
+			Element newElement = m_elementEditor.getMetadataElement();
 
 			if (m_addNewElement)
 			{
 				// User is adding a new element.  If the currently selected
 				// element is not a DocumentElement fall back to the root
 				// metadata element.
-				Metadata.Element parent = oldElement != null && oldElement instanceof Metadata.DocumentElement ? (Metadata.DocumentElement)oldElement : m_metadata.getRootElement();
+				Element parent = oldElement != null && oldElement instanceof DocumentElement ? (DocumentElement)oldElement : m_metadata.getRootElement();
 				
 				// Parent is of type DocumentElement.
-				assert(parent instanceof Metadata.DocumentElement);
-				newElement.setParent((Metadata.DocumentElement)parent);
+				assert(parent instanceof DocumentElement);
+				((DocumentElement)parent).addChild(newElement);
 				newElement.setMetadata(m_metadata);
 				
 				// Adding a new element so create a tree item for it.
@@ -494,10 +496,10 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			{
 				// User is editing an existing element.  Replace old element with
 				// new element in parent.
-				Metadata.DocumentElement docParent = oldElement.getParent();
+				DocumentElement docParent = oldElement.getParent();
 				docParent.replaceChild(oldElement, newElement);
 				
-				if (oldElement instanceof Metadata.DocumentElement && !(newElement instanceof Metadata.DocumentElement))
+				if (oldElement instanceof DocumentElement && !(newElement instanceof DocumentElement))
 				{
 					// Old element was a document and new one isn't.  Remove all
 					// child tree items from the current item.
@@ -544,15 +546,15 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		// updating here won't cause any changes to be committed.
 		m_elementEditor.updateCurrentElement();
 
-		Metadata.Element oldElement = m_selectedElement != null ? (Metadata.Element)m_selectedElement.getUserObject() : null;
-		Metadata.Element newElement = m_elementEditor.getMetadataElement();
+		Element oldElement = m_selectedElement != null ? (Element)m_selectedElement.getUserObject() : null;
+		Element newElement = m_elementEditor.getMetadataElement();
 		String newName = newElement.getName();
-		Metadata.DocumentElement parent = null;
+		DocumentElement parent = null;
 		if (m_addNewElement)
 		{
 			// Adding a new element so we check either the current selection
 			// or the root element for duplicates.
-			parent = (oldElement != null && oldElement instanceof Metadata.DocumentElement) ? (Metadata.DocumentElement)oldElement : m_metadata.getRootElement();
+			parent = (oldElement != null && oldElement instanceof DocumentElement) ? (DocumentElement)oldElement : m_metadata.getRootElement();
 
 			// There is no old element if we're adding a new element.
 			oldElement = null;
@@ -567,7 +569,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		int numChildren = parent.getNumChildren();
 		for (int i = 0; i < numChildren; i++)
 		{
-			Metadata.Element child = parent.getChild(i);
+			Element child = parent.getChild(i);
 			if (child != oldElement && child.getName().equalsIgnoreCase(newName))
 			{
 				Window.alert("There is already an element with the name '" + newName + "'.  Please enter a new name.");
@@ -593,10 +595,10 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		}
 		
 		// Validate that a reference has been set if it is a reference document element.
-		if (newElement instanceof Metadata.DocumentElement)
+		if (newElement instanceof DocumentElement)
 		{
-			Metadata.DocumentElement e = (Metadata.DocumentElement)newElement;
-			if (e.getType() == Metadata.ElementTypes.Reference && e.getReferenceValue().length() == 0)
+			DocumentElement e = (DocumentElement)newElement;
+			if (e.getType() == Element.ElementTypes.Reference && e.getReferenceValue().length() == 0)
 			{
 				Window.alert("This element's type is 'reference' but no reference has been set.  Please specify a metadata reference.");
 				return false;

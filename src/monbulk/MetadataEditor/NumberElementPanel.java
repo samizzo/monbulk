@@ -20,7 +20,7 @@ public class NumberElementPanel extends ElementPanel
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-	public void update(Metadata.Element element)
+	public void update(Element element)
 	{
 		String min = m_minimum.getText();
 		element.setRestriction("minimum", min);
@@ -28,10 +28,10 @@ public class NumberElementPanel extends ElementPanel
 		element.setRestriction("maximum", max);
 	}
 	
-	public void set(Metadata.Element element)
+	public void set(Element element)
 	{
-		Metadata.ElementTypes t = element.getType();
-		boolean floatType = (t == Metadata.ElementTypes.Double || t == Metadata.ElementTypes.Float);
+		Element.ElementTypes t = element.getType();
+		boolean floatType = (t == Element.ElementTypes.Double || t == Element.ElementTypes.Float);
 		m_minimum.setAllowDecimalPoint(floatType);
 		m_maximum.setAllowDecimalPoint(floatType);
 
@@ -41,9 +41,9 @@ public class NumberElementPanel extends ElementPanel
 		m_maximum.setText(max);
 	}
 	
-	public Metadata.ElementTypes getType()
+	public Element.ElementTypes getType()
 	{
-		return Metadata.ElementTypes.Number;
+		return Element.ElementTypes.Number;
 	}
 	
 	public void setReadOnly(boolean readOnly)

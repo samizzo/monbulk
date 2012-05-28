@@ -4,7 +4,7 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 
 import monbulk.shared.widgets.Window.*;
-import monbulk.shared.Services.Metadata;
+import monbulk.shared.Services.Element;
 
 public class ElementEditor extends OkCancelWindow
 {
@@ -71,13 +71,13 @@ public class ElementEditor extends OkCancelWindow
 		m_elementProperties.setMetadataElement(null, false);
 	}
 
-	public void setMetadataElement(Metadata.Element element)
+	public void setMetadataElement(Element element)
 	{
 		m_elementProperties.setMetadataElement(element, false);
 		setButtonState();
 	}
 	
-	public Metadata.Element getMetadataElement()
+	public Element getMetadataElement()
 	{
 		return m_elementProperties.getMetadataElement();
 	}

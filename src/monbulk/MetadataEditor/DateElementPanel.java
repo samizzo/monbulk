@@ -6,7 +6,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.CheckBox;
 
-import monbulk.shared.Services.Metadata;
+import monbulk.shared.Services.Element;
 
 public class DateElementPanel extends ElementPanel
 {
@@ -20,20 +20,20 @@ public class DateElementPanel extends ElementPanel
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
-	public void update(Metadata.Element element)
+	public void update(Element element)
 	{
 		element.setRestriction("time", m_includeTime.getValue().toString());
 	}
 	
-	public void set(Metadata.Element element)
+	public void set(Element element)
 	{
 		String time = element.getRestriction("time", "true");
 		m_includeTime.setValue(Boolean.valueOf(time));
 	}
 	
-	public Metadata.ElementTypes getType()
+	public Element.ElementTypes getType()
 	{
-		return Metadata.ElementTypes.Date;
+		return Element.ElementTypes.Date;
 	}
 	
 	public void setReadOnly(boolean readOnly)

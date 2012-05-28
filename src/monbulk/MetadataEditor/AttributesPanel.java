@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 
-import monbulk.shared.Services.Metadata;
+import monbulk.shared.Services.Element;
 import monbulk.shared.widgets.Window.WindowSettings;
 import monbulk.shared.widgets.Window.OkCancelWindow.*;
 import monbulk.client.desktop.Desktop;
@@ -31,8 +31,8 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler, Co
 	@UiField Button m_remove;
 	@UiField Button m_edit;
 	
-	private Metadata.Element m_editAttribute;
-	private Metadata.Element m_newAttribute;
+	private Element m_editAttribute;
+	private Element m_newAttribute;
 	private boolean m_addNewElement = false;
 	private boolean m_typeChanged = false;
 	private ElementEditor m_elementEditor;
@@ -51,7 +51,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler, Co
 		Desktop.get().registerWindow(m_elementEditor);
 	}
 
-	public void set(Metadata.Element element)
+	public void set(Element element)
 	{
 		super.set(element);
 		m_attributes.clear();
@@ -59,7 +59,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler, Co
 		int numAttributes = element.getNumAttributes();
 		for (int i = 0; i < numAttributes; i++)
 		{
-			Metadata.Element attribute = element.getAttribute(i);
+			Element attribute = element.getAttribute(i);
 			String name = attribute.getName();
 			if (name.length() > 0)
 			{
@@ -70,13 +70,13 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler, Co
 		setButtonState(false);
 	}
 
-	public void update(Metadata.Element element)
+	public void update(Element element)
 	{
 	}
 
-	public Metadata.ElementTypes getType()
+	public Element.ElementTypes getType()
 	{
-		return Metadata.ElementTypes.Attribute;
+		return Element.ElementTypes.Attribute;
 	}
 	
 	@UiHandler("m_attributes")
@@ -85,7 +85,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler, Co
 		setButtonState(true);
 	}
 	
-	private void showEditor(Metadata.Element element, boolean addNewElement)
+	private void showEditor(Element element, boolean addNewElement)
 	{
 		// Show the attributes editor.
 		
@@ -108,7 +108,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler, Co
 		if (index >= 0 && index < numAttributes) 
 		{
 			// Show the editor and set the element to edit.
-			Metadata.Element element = m_element.getAttribute(index);
+			Element element = m_element.getAttribute(index);
 			showEditor(element, false);
 		}
 	}
@@ -140,7 +140,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler, Co
 	{
 		try
 		{
-			Metadata.Element element = Metadata.createElement(Metadata.ElementTypes.String, "attribute", "An attribute", true);
+			Element element = Element.createElement(Element.ElementTypes.String, "attribute", "An attribute", true);
 			showEditor(element, true);
 		}
 		catch (Exception e)
@@ -201,7 +201,7 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler, Co
 	// We need to process a change of type event by creating a new element
 	// and giving it to the owning metadata.
 	// FIXME: This should be in the attributes editor not here.
-	public void onChangeType(Metadata.Element element, String newType)
+	public void onChangeType(Element element, String newType)
 	{
 		// Create new element from old and give it to the editor.
 		try
@@ -209,8 +209,8 @@ public class AttributesPanel extends ElementPanel implements OkCancelHandler, Co
 			// Ensure the current attribute is up to date.
 			m_elementEditor.updateCurrentElement();
 
-			Metadata.ElementTypes t = Metadata.ElementTypes.valueOf(newType);
-			Metadata.Element newAttribute = Metadata.createElement(t, element.getName(), element.getDescription(), true);
+			Element.ElementTypes t = Element.ElementTypes.valueOf(newType);
+			Element newAttribute = Element.createElement(t, element.getName(), element.getDescription(), true);
 			
 			// Pass along any settings that are common to all element types. 
 			newAttribute.setSetting("min-occurs", element.getSetting("min-occurs", ""));

@@ -74,11 +74,11 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 	}
 
 	// Update the specified metadata element.
-	public void update(Metadata.Element element)
+	public void update(Element element)
 	{
-		if (element instanceof Metadata.EnumerationElement)
+		if (element instanceof EnumerationElement)
 		{
-			Metadata.EnumerationElement e = (Metadata.EnumerationElement)element;
+			EnumerationElement e = (EnumerationElement)element;
 
 			if (m_fromDictionary.getValue())
 			{
@@ -101,14 +101,14 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 		}
 	}
 
-	public void set(Metadata.Element element)
+	public void set(Element element)
 	{
 		super.set(element);
 
 		m_values.clear();
 		m_remove.setEnabled(false);
 
-		Metadata.EnumerationElement e = (Metadata.EnumerationElement)element;
+		EnumerationElement e = (EnumerationElement)element;
 		if (e.isUsingDictionary())
 		{
 			// Make sure the dictionary item is selected.
@@ -139,7 +139,7 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 		m_fromDictionary.setEnabled(!readOnly);
 	}
 	
-	private void populateValues(Metadata.EnumerationElement element)
+	private void populateValues(EnumerationElement element)
 	{
 		m_values.clear();
 		m_remove.setEnabled(false);
@@ -247,7 +247,7 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 				// Refresh combo.
 				refreshDictionaryCombo();
 				m_fromDictionary.setValue(true);
-				Metadata.EnumerationElement element = (Metadata.EnumerationElement)m_element;
+				EnumerationElement element = (EnumerationElement)m_element;
 				element.setDictionaryName(dictionary.getName());
 				setDictionary();
 			}
@@ -299,7 +299,7 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 		else
 		{
 			m_pendingSetDictionary = false;
-			Metadata.EnumerationElement e = (Metadata.EnumerationElement)m_element;
+			EnumerationElement e = (EnumerationElement)m_element;
 			String dictionaryName = e.getDictionaryName();
 			for (int i = 0; i < count; i++)
 			{
@@ -344,7 +344,7 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 				{
 					// Doesn't exist so set the checkbox to false.
 					m_fromDictionary.setValue(false, false);
-					Metadata.EnumerationElement e = (Metadata.EnumerationElement)m_element;
+					EnumerationElement e = (EnumerationElement)m_element;
 					populateValues(e);
 					setButtonState();
 				}
@@ -371,7 +371,7 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 		{
 			// User has unchecked the dictionary box, so restore
 			// the enum values from the element itself.
-			Metadata.EnumerationElement e = (Metadata.EnumerationElement)m_element;
+			EnumerationElement e = (EnumerationElement)m_element;
 			populateValues(e);
 		}
 
@@ -396,8 +396,8 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 		}
 	}
 	
-	public Metadata.ElementTypes getType()
+	public Element.ElementTypes getType()
 	{
-		return Metadata.ElementTypes.Enumeration;
+		return Element.ElementTypes.Enumeration;
 	}
 }

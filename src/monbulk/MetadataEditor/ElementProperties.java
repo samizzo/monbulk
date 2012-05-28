@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import monbulk.shared.Services.Metadata;
+import monbulk.shared.Services.Element;
 
 public class ElementProperties extends Composite
 {
@@ -17,7 +17,7 @@ public class ElementProperties extends Composite
 
 	@UiField VerticalPanel m_properties;
 	
-	private Metadata.Element m_element;
+	private Element m_element;
 	private ArrayList<ElementPanel> m_availablePanels = new ArrayList<ElementPanel>();
 	private ArrayList<ElementPanel> m_elementPanels = new ArrayList<ElementPanel>();
 	
@@ -85,12 +85,12 @@ public class ElementProperties extends Composite
 		}
 	}
 
-	public Metadata.Element getMetadataElement()
+	public Element getMetadataElement()
 	{
 		return m_element;
 	}
 	
-	public void setMetadataElement(Metadata.Element element, boolean updateCurrent)
+	public void setMetadataElement(Element element, boolean updateCurrent)
 	{
 		clear(updateCurrent);
 
@@ -101,9 +101,9 @@ public class ElementProperties extends Composite
 			// Add the appropriate panels for this element.
 			for (ElementPanel e : m_availablePanels)
 			{
-				if (e.getType() == Metadata.ElementTypes.All ||
+				if (e.getType() == Element.ElementTypes.All ||
 					e.getType().isSame(element.getType()) ||
-					(e.getType() == Metadata.ElementTypes.Attribute && element.canHaveAttributes()))
+					(e.getType() == Element.ElementTypes.Attribute && element.canHaveAttributes()))
 				{
 					addElementPanel(e);
 				}
