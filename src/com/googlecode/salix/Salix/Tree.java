@@ -61,6 +61,7 @@ public class Tree extends Composite implements HasSelectionHandlers<TreeItem> {
 	
 	public void clear()	{
 		root.removeItems();
+		selected = null;
 	}
 	
 	public TreeItem getItem(int index) {
