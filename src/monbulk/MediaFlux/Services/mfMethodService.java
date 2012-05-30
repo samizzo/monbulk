@@ -5,28 +5,16 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.xml.client.XMLParser;
-
 
 import arc.mf.client.Output;
 import arc.mf.client.ServiceContext;
-import arc.mf.client.ServiceRequest;
 import arc.mf.client.xml.XmlElement;
 import arc.mf.session.ServiceResponseHandler;
 import arc.mf.session.Session;
 
-
-import monbulk.shared.Architecture.IPresenter;
-import monbulk.shared.Architecture.iModel;
-import monbulk.shared.Form.iFormField;
-import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.pojo.pojoMethod;
 import monbulk.shared.Model.pojo.pojoMethodComplete;
 import monbulk.shared.Services.MethodService;
-
-
-import monbulk.shared.util.MonbulkEnums.ServiceActions;
 
 public class mfMethodService extends MethodService {
 
@@ -158,14 +146,6 @@ public class mfMethodService extends MethodService {
 	}
 	
 	
-	private String generateXML(String ID)
-	{
-		
-		return ID;
-		
-	}
-	
-
 	@Override
 	public void getMethodList(MethodServiceHandler handler) {
 		Session.execute(new ServiceContext("mfMethodService.getMethodList"), 
