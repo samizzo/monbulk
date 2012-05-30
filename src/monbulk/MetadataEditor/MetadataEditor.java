@@ -343,9 +343,40 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 	private void checkModified()
 	{
 		Metadata m = m_metadataProperties.getMetadata();
-		if (m != null && m.getIsModified() && Window.confirm("The metadata '" + m.getName() + "' has been modified.  Do you want to save it?"))
+
+		if (m != null)
 		{
-			saveMetadata(false);
+			String msg = "The metadata '" + m.getName() + "' has been modified.  Do you want to save it?";
+			String name = m.getName();
+			Settings settings = Monbulk.getSettings();
+			String defaultNs = settings.getDefaultNamespace() + ".";
+			String templateNs = defaultNs + "template.";
+			boolean save = true;
+			if (name.equals(defaultNs) || name.equals(templateNs))
+			{
+				// Name only contains namespace or namespace.template
+				// so the user hasn't entered a name or has deleted the
+				// name.  Ask them a different question.
+				msg = "The metadata has been modified but it has no name.  Do you want to throw away changes to the metadata?";
+				save = false;
+			}
+
+			if (m.getIsModified() && Window.confirm(msg) == save)
+			{
+				if (save)
+				{
+					saveMetadata(false);
+				}
+				else
+				{
+					m_metadataProperties.setNameFocus();
+					m_cancelSelect = true;
+				}
+			}
+			else
+			{
+				performAction();
+			}
 		}
 		else
 		{
