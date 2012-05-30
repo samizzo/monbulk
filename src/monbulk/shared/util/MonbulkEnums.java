@@ -6,7 +6,8 @@ public class MonbulkEnums
 	{
 		Methods,
 		MetaData,
-		Dictionary  
+		Dictionary,
+		User,
 	};
 
 	public enum viewTypes{

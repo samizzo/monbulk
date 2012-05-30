@@ -3,8 +3,6 @@ package monbulk.client.desktop;
 import java.util.Date;
 import java.util.HashMap;
 
-import arc.mf.client.RemoteServer;
-
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
@@ -28,9 +26,11 @@ import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.dom.client.Node;
 
+import monbulk.client.Monbulk;
 import monbulk.client.event.WindowEvent;
 import monbulk.client.event.WindowEventHandler;
 import monbulk.shared.widgets.Window.*;
+import monbulk.shared.Services.User;
 
 public class Desktop extends Composite implements WindowEventHandler, NativePreviewHandler
 {
@@ -185,9 +185,9 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 		},
 		1000);
 		
-		String domain = RemoteServer.domain();
-		String user = RemoteServer.user() + ((domain != null && domain.length() > 0) ? (" / " + domain) : "");
-		m_username.setText(user);
+		User user = Monbulk.getUser();
+		String msg = user.getName() + " / " + user.getDomain();
+		m_username.setText(msg);
 	}
 
 	// Returns the Desktop instance.

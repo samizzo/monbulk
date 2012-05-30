@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 
 import monbulk.MetadataEditor.MetadataList.Handler;
 import monbulk.client.Monbulk;
+import monbulk.client.Roles;
 import monbulk.client.Settings;
 import monbulk.shared.Services.*;
 import monbulk.shared.Services.MetadataService.*;
@@ -54,6 +55,19 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 		Widget widget = s_uiBinder.createAndBindUi(this);
 		initWidget(widget);
 
+		User user = Monbulk.getUser();
+		
+		// Only user with CREATE or ADMIN roles can create/clone and edit.
+		boolean canCreate = user.hasRole(Roles.MetadataEditor.CREATE) || user.hasRole(Roles.MetadataEditor.ADMIN);
+		m_metadataList.setShowNew(canCreate);
+		m_metadataList.setShowClone(canCreate);
+		m_metadataList.setShowFromTemplate(canCreate);
+		m_metadataProperties.setReadOnly(!canCreate);
+
+		// Only user with ADMIN role can remove.
+		boolean canRemove = user.hasRole(Roles.MetadataEditor.ADMIN);
+		m_metadataList.setShowRemove(canRemove);
+		
 		m_metadataList.setHandler(new MetadataList.Handler()
 		{
 			public void onRefreshList()

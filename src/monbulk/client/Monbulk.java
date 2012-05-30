@@ -19,17 +19,25 @@ import monbulk.MetadataEditor.MetadataEditor;
 import monbulk.MetadataEditor.MetadataSelectWindow;
 import monbulk.MethodBuilder.client.MethodBuilder;
 import monbulk.MethodBuilder.client.PreviewWindow;
+import monbulk.shared.Services.User;
+import monbulk.shared.Services.UserService;
 
 /**
  * Monbulk entry point.
  */
 public class Monbulk implements EntryPoint
 {
+	private static User s_user = null;
 	private static Settings s_settings = null;
 
 	public static Settings getSettings()
 	{
 		return s_settings;
+	}
+	
+	public static User getUser()
+	{
+		return s_user;
 	}
 	
 	public void onModuleLoad()
@@ -83,14 +91,28 @@ public class Monbulk implements EntryPoint
 			Desktop d = new Desktop(RootPanel.get());
 
 			// Register our window instances.
-			MetadataEditor me = new MetadataEditor();
-			d.registerWindow(me);
+			if (s_user.hasRole(Roles.MetadataEditor.READONLY) ||
+				s_user.hasRole(Roles.MetadataEditor.ADMIN) ||
+				s_user.hasRole(Roles.MetadataEditor.CREATE))
+			{
+				// Only user with metadata roles can access the
+				// metadata editor.
+				MetadataEditor me = new MetadataEditor();
+				d.registerWindow(me);
+			}
 
 			MetadataSelectWindow ms = new MetadataSelectWindow();
 			d.registerWindow(ms);
 
-			MethodBuilder mb = new MethodBuilder(d.getEventBus());
-			d.registerWindow(mb);
+			if (s_user.hasRole(Roles.MetadataEditor.READONLY) ||
+				s_user.hasRole(Roles.MetadataEditor.ADMIN) ||
+				s_user.hasRole(Roles.MetadataEditor.CREATE))
+			{
+				// Only user with method builder roles can access
+				// the method builder.
+				MethodBuilder mb = new MethodBuilder(d.getEventBus());
+				d.registerWindow(mb);
+			}
 			
 			PreviewWindow mp  = new PreviewWindow();
 			d.registerWindow(mp);
@@ -126,9 +148,21 @@ public class Monbulk implements EntryPoint
 				{
 					public void onReadSettings()
 					{
-						// FIXME: If we never read the settings the
-						// desktop will never load.
-						initDesktop();
+						// Read the logged in user details.
+						UserService service = UserService.get();
+						String name = RemoteServer.user();
+						String domain = RemoteServer.domain();
+						service.getUser(name, domain, new UserService.GetUserHandler()
+						{
+							public void onGetUser(User user)
+							{
+								s_user = user;
+
+								// FIXME: If we never read the settings or the
+								// user account info, the desktop will never load.
+								initDesktop();
+							}
+						});
 					}
 				});
 			}

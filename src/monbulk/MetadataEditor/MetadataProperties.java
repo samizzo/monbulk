@@ -100,14 +100,14 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		if (readOnly)
 		{
 			m_addRemovePanel.removeFromParent();
-			LayoutPanel p = (LayoutPanel)getWidget();
-			p.setWidgetTopBottom(m_elements, 126, Unit.PX, 0, Unit.PX);
 		}
 		
 		m_name.setEnabled(!readOnly);
 		m_label.setEnabled(!readOnly);
 		m_description.setEnabled(!readOnly);
 		m_elementEditor.setReadOnly(readOnly);
+		m_save.setVisible(!readOnly);
+		m_saveAsTemplate.setVisible(!readOnly);
 	}
 
 	/**

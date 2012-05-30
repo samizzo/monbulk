@@ -19,5 +19,6 @@ public class MediaFluxServices
 		ServiceRegistry.registerService(new MediaFluxMetadataService(testMode));
 		ServiceRegistry.registerService(new MediaFluxDictionaryService());
 		ServiceRegistry.registerService(new mfMethodService());
+		ServiceRegistry.registerService(new MediaFluxUserService());
 	}
 }
