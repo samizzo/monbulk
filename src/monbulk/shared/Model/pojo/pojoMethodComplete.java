@@ -99,10 +99,13 @@ public class pojoMethodComplete implements IPojo{
 		 //Which means is Edit
 		 if(this.MethodID!=null)
 		 {
-			 Element id = doc.createElement("id");
-			 id.appendChild(doc.createTextNode(this.MethodID));
-			 id.setNodeValue(this.MethodID);
-			 method.appendChild(id);
+			 if(this.MethodID!="")
+			 {
+				 Element id = doc.createElement("id");
+				 id.appendChild(doc.createTextNode(this.MethodID));
+				 id.setNodeValue(this.MethodID);
+				 method.appendChild(id);
+			 }
 		 }
 		 
 		 //if Clone need to append name
@@ -230,14 +233,18 @@ public class pojoMethodComplete implements IPojo{
 	{
 		return this.allSteps;
 	}
-	public int getStepCount()
-	{
-		return allSteps.size();
-	}
-	public String getMethodID()
-	{
-		return this.MethodID;
-	}
+	/**
+	 * 
+	 * @return
+	 */
+	public int getStepCount(){return allSteps.size();}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getMethodID(){return this.MethodID;}
+	public void setMethodID(String ID){this.MethodID = ID;}
 	
 	@Override
 	public void readInput(String Format, Object Input) {
