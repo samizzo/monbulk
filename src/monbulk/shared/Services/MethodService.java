@@ -29,7 +29,9 @@ public abstract class MethodService implements iService{
 		List,
 		Describe,
 		Create,
-		Edit
+		Edit,
+		Find,
+		CheckExists
 	}
 
 	public interface MethodServiceHandler
@@ -40,6 +42,7 @@ public abstract class MethodService implements iService{
 	public interface MethodUpdateHandler
 	{
 		public void onUpdateMethod(String response);
+		public void checkExists(Boolean response);
 	}
 	@Override
 	public ServiceNames getServiceType() {
@@ -54,6 +57,8 @@ public abstract class MethodService implements iService{
 		
 	// Returns a specific Method type.
 	public abstract void getMethod(String ID, MethodServiceHandler handler);
+	
+	public abstract void checkExists(String Name, MethodUpdateHandler handler);
 	
 	public abstract void createOrUpdate(String xml, MethodUpdateHandler handler);
 }
