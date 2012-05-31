@@ -114,7 +114,7 @@ public class Monbulk implements EntryPoint
 				d.registerWindow(mb);
 			}
 			
-			PreviewWindow mp  = new PreviewWindow();
+			PreviewWindow mp  = new PreviewWindow(d.getEventBus());
 			d.registerWindow(mp);
 		}
 		catch (Exception e)
