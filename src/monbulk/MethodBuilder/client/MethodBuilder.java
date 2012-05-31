@@ -93,6 +93,15 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 					this.CurrentPresenter.go(getBodyContainer(),getDockContainer(),getNavigationContainer());
 			
 			}
+			else if(initState.equals("Refresh"))
+			{
+				//HACK
+				MethodList tmpMenu = (MethodList) this.AppletMenu;
+				tmpMenu.refreshList();
+				this.CurrentState="Create Method";
+				this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
+				this.CurrentPresenter.go(getBodyContainer(),getDockContainer(),getNavigationContainer());
+			}
 			else if(initState.equals("NewMethod"))
 			{
 				///Basically we need to provide Panels for adding widgets to

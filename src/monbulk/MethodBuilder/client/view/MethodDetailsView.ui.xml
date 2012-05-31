@@ -18,17 +18,17 @@
 											<g:Label>Method Components</g:Label>	
 										</g:customCell>
 										<g:customCell styleName="FormTitleDefault" >
-											<g:Label>Form</g:Label>	
+											<g:Label ui:field="_formName">Form</g:Label>	
 										</g:customCell>
 									</g:row>
 									
 								</g:Grid>
 							</g:north>	
-			 	 			<g:south size="530" unit="px" styleName="{style.Scroll}">
-			 	 			<g:DockLayoutPanel unit="PX"  height="530px">
+			 	 			<g:south size="535" unit="px" styleName="{style.Scroll}">
+			 	 			<g:DockLayoutPanel unit="PX"  height="535px">
 			 	 				<g:west size="287" unit="px" >
-				 	 			<g:ScrollPanel width="287px" height="530px" styleName="{style.Scroll}" >
-					 	 			<g:StackLayoutPanel width="274px" height="531px" unit="PX" styleName="StandardStack" ui:field="MethodNavigationStack">
+				 	 			<g:ScrollPanel width="287px" height="535px" styleName="{style.Scroll}" >
+					 	 			<g:StackLayoutPanel width="274px" height="537px" unit="PX" styleName="StandardStack" ui:field="MethodNavigationStack">
 										<g:stack>
 											<g:header size="41" ui:field="MethodTitle">Method Details</g:header>
 											<g:HTML ui:field="MethodDetailsSummary" />
@@ -43,7 +43,7 @@
 							
 								</g:west>
 								
-								<g:west unit="px" size="510">							
+								<g:west unit="px" size="535">							
 									<g:VerticalPanel>
 										<g:ScrollPanel width="510px" height="480px" styleName="{style.Scroll}" >
 												<g:HTMLPanel ui:field="FormDetails" />

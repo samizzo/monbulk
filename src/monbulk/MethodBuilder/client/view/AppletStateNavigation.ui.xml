@@ -11,6 +11,9 @@
 					<g:PushButton ui:field="btnSave" styleName="btnDefault" text="SAVE"/>
 				</g:customCell>
 				<g:customCell>
+					<g:PushButton ui:field="btnClone" styleName="btnDefault" text="CLONE"/>
+				</g:customCell>
+				<g:customCell>
 					<g:PushButton ui:field="btnPublish" styleName="btnDefault" text="PREVIEW"/>
 				</g:customCell>
 				<g:customCell>

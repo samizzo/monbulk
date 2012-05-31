@@ -53,6 +53,7 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 		
 		
 	}
+	public String getMethodName(){return this.CompleteModel.getMethodDetails().getMethodName();}
 	public int getStepCount()
 	{
 		return this.CompleteModel.getStepCount();
@@ -296,6 +297,10 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 			//this.CompleteModel.getSubjectProperties().setFieldVale(FieldName, metaDataItem);
 		}
 		
+	}
+	public void setAsClone()
+	{
+		this.CompleteModel.setMethodID("");
 	}
 	@Override
 	public String getStringRpresentation(String Format) {

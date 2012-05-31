@@ -2,17 +2,24 @@ package monbulk.MethodBuilder.client;
 
 
 
+
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
 
+import monbulk.MethodBuilder.client.event.MenuChangeEvent;
+import monbulk.client.desktop.Desktop;
 import monbulk.shared.Services.MethodService;
 import monbulk.shared.Services.ServiceRegistry;
 import monbulk.shared.Services.MethodService.MethodUpdateHandler;
@@ -29,7 +36,14 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 	
 	protected ScrollPanel _framingPanel;
 	protected HTMLPanel _PreviewPanel;
-	public PreviewWindow() {
+	protected ClickHandler handleSave; 
+	protected HandlerRegistration registration;
+	private String oldMethodName;
+	private String newMethodName;
+	protected Label _Guide;
+	private final HandlerManager eventBus;
+	
+	public PreviewWindow(HandlerManager eventBus) {
 		super("MethodPreviewWindow", "Preview Method Data");
 		this.setWidth("600px");
 		this.m_windowSettings.resizable=true;
@@ -42,7 +56,8 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		m_contentPanel.add(_framingPanel);
 		_PreviewPanel = new HTMLPanel("");
 		_framingPanel.add(_PreviewPanel);
-		
+		_Guide= new Label();
+		this.eventBus= eventBus;
 		
 	}
 	public void loadPreview(StringBuilder tmpList,PreviewWindow.SupportedFormats inputFormat)
@@ -61,24 +76,36 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		
 		
 	}
-	public void loadPreview(String tmpList,PreviewWindow.SupportedFormats inputFormat)
+	/**
+	 * 
+	 * @param tmpList
+	 * @param inputFormat
+	 */
+	public void cloneMethod(String tmpList,PreviewWindow.SupportedFormats inputFormat,final String oldaName)
 	{
-		
+		this.setWidth("400px");
+		this.m_windowSettings.resizable=true;
+		this.m_windowSettings.minWidth=200;
+		this.m_windowSettings.minHeight=200;
+		this.setHeight("250px");
+		formattedText = new StringBuilder();
 		selectedFormat = inputFormat;
 		_PreviewPanel.clear();
-		
-		Button tmpButton = new Button();
-		tmpButton.setText("SAVE");
+		oldMethodName = oldaName;
 		final TextArea tmpArea = new TextArea();
-		tmpArea.setHeight("600px");
-		tmpArea.setWidth("600px");
+		tmpArea.setHeight("40px");
+		tmpArea.setWidth("200px");
 		//HTML output = new HTML();
 		//output.setHTML(tmpList.toString());
 		tmpList = tmpList.replace("<method>", "");
 		tmpList = tmpList.replace("</method>", "");
-		tmpArea.setText(tmpList);
+		//tmpList = tmpList.replace("(<id>)(.*)(</id>)","");
+		
+		this.formattedText.append(tmpList);
+		final String xml = tmpList;
+		tmpArea.setText("");
 		final MethodUpdateHandler tmpHandle = this;
-		tmpButton.addClickHandler(new ClickHandler(){
+		handleSave = new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
@@ -87,7 +114,10 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 					MethodService tmpSvc = MethodService.get();
 					if(tmpSvc != null)
 					{
-						tmpSvc.createOrUpdate(tmpArea.getText(), tmpHandle);
+						
+						newMethodName = tmpArea.getText();
+						//formattedText.append(tmpList);
+						tmpSvc.checkExists(tmpArea.getText(), tmpHandle);
 							
 					}
 					else
@@ -102,12 +132,66 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 				
 			}
 			
-		});
+		};
+		registration = this.m_ok.addClickHandler(handleSave);
 		
-		Label Guide = new Label();
-		Guide.setText("You can append the xml of the method below. Click save to upload the method.");
-		_PreviewPanel.add(Guide);
-		_PreviewPanel.add(tmpButton);
+		_Guide.setText("Please Select a new name for the method.");
+		_PreviewPanel.add(_Guide);
+		_PreviewPanel.add(tmpArea);
+	}
+	/**
+	 * 
+	 * @param tmpList
+	 * @param inputFormat
+	 */
+	public void loadPreview(String tmpList,PreviewWindow.SupportedFormats inputFormat)
+	{
+		
+		selectedFormat = inputFormat;
+		_PreviewPanel.clear();
+		
+		
+		
+		final TextArea tmpArea = new TextArea();
+		tmpArea.setHeight("600px");
+		tmpArea.setWidth("600px");
+		//HTML output = new HTML();
+		//output.setHTML(tmpList.toString());
+		tmpList = tmpList.replace("<method>", "");
+		tmpList = tmpList.replace("</method>", "");
+		tmpArea.setText(tmpList);
+		final MethodUpdateHandler tmpHandle = this;
+		
+		handleSave = new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				try
+				{
+					MethodService tmpSvc = MethodService.get();
+					if(tmpSvc != null)
+					{
+						tmpSvc.createOrUpdate(tmpArea.getText(), tmpHandle);
+						
+						
+							
+					}
+					else
+					{
+						throw new ServiceRegistry.ServiceNotFoundException(ServiceNames.Methods);
+					}
+				}
+				catch (ServiceRegistry.ServiceNotFoundException e)
+				{
+					GWT.log("Couldn't find Method service");
+				}
+				
+			}
+			
+		};
+		registration = this.m_ok.addClickHandler(handleSave);
+		_Guide.setText("You can append the xml of the method below. Click OK to save the method.");
+		_PreviewPanel.add(_Guide);
 		_PreviewPanel.add(tmpArea);
 		
 		
@@ -122,6 +206,9 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 			if(response=="")
 			{
 				_r_text.setText("Success: Your method has been updated");
+				
+				
+				
 			}
 			else
 			{
@@ -132,9 +219,42 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		{
 			_r_text.setText("Success: Your method has been updated");
 		}
-		_w_response.add(_r_text);
 		this._PreviewPanel.clear();
+		_w_response.add(_r_text);
 		this._PreviewPanel.add(_w_response);
+		this.setHeight("200px");
+		this.m_windowSettings.windowTitle = "METHOD SAVED";
+		Desktop d = Desktop.get();		
+		d.setSize("200px", "200px");
+		registration.removeHandler();
+		//this.m_ok.(handleSave);
+		d.show("MethodPreviewWindow",true);
+		
+		this.eventBus.fireEvent(new MenuChangeEvent("Refresh"));
+		
+	}
+	@Override
+	public void checkExists(Boolean exists) {
+		if(!exists)
+		{
+			MethodService tmpSvc = MethodService.get();
+			if(tmpSvc != null)
+			{
+				
+				//Replace Old Name with new Name
+				
+				String fullXML = this.formattedText.toString().replace(this.oldMethodName, this.newMethodName);
+				tmpSvc.createOrUpdate(fullXML, this);
+					
+			}
+		}
+		else
+		{
+			this._Guide.setText("That method name is already in use, please try another");
+			Desktop d = Desktop.get();		
+			//this.m_ok.(handleSave);
+			d.show("MethodPreviewWindow",true);
+		}
 		
 	}
 

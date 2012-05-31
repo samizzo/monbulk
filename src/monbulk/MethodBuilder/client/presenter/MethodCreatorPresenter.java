@@ -213,7 +213,7 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		
 	}
 	
-	///TODO We have to bind custom events for Changing local state
+	
 	private void bind()
 	{
 		 eventBus.addHandler(ChangeWindowEvent.TYPE, 
@@ -268,14 +268,6 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 			
 			//FIX: Validation fails for some formFields
 			//String Validation = tmpModel.ValidateForm(FormName);
-			
-			
-			//FIX: For SOme reason the StepDetails form is loading too many items - need to check
-			/*if(!Validation.equals(""))
-			{
-				com.google.gwt.user.client.Window.alert("Unable to Save Form." + Validation);
-				return;
-			}*/
 			
 			if(FormName==pojoMethod.FormName)
 			{
@@ -425,6 +417,22 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		    //_newWin.setOkCancelHandler(this);
 		    d.show(m, true);
 		}
+		else if(Command=="Clone")
+		{
+			StringBuilder strTCL = new StringBuilder();
+			this.mainModel.setAsClone();
+			strTCL.append(this.mainModel.getStringRpresentation("XML"));
+			
+			//Should just launch a Window with a Pojo
+			Desktop d = Desktop.get();
+			final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
+			m.cloneMethod(this.mainModel.getStringRpresentation("XML"), SupportedFormats.XML,this.mainModel.getMethodName());
+			//d.
+			//_newWin.loadPreview(strTCL, SupportedFormats.TCL);
+		    //_newWin.setOkCancelHandler(this);
+		    d.show(m, true);
+		    
+		}
 		else if(Command=="Publish")
 		{
 			StringBuilder strTCL = new StringBuilder();
@@ -567,6 +575,7 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 			}
 			//this.getCurrentPresenterState().getView().LoadForm(this.mainModel.getFormData(this.getCurrentPresenterState().presenterState.toString()));
 			GWT.log("We get here...MU");
+			this.ChangeState(MethodCreatorStates.METHOD_DETAILS);
 		}
 	}
 	@Override

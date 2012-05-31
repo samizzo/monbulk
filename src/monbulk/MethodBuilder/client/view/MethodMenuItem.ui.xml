@@ -15,5 +15,7 @@
 		<g:Image></g:Image>
 		<g:PushButton ui:field="btnMenuEditMethod" styleName="menuEditMethod" text="E" />
 		<g:PushButton ui:field="btnMenuCloneMethod" styleName="menuCloneMethod" text="C" />
+		<g:PushButton ui:field="btnMenuViewMethod" styleName="menuViewMethod" text="V" />
+		<g:PushButton ui:field="btnMenuDeleteMethod" styleName="menuDeleteMethod" text="V" />
 		</g:HorizontalPanel>
 </ui:UiBinder> 

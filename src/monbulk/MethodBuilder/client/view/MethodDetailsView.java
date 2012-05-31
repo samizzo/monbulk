@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -35,24 +36,13 @@ import monbulk.shared.util.GWTLogger;
 
 public class MethodDetailsView extends Composite implements IMethodsView {
 
-	@UiField
-	DockLayoutPanel LayoutPanel;
-	
-	@UiField
-	HTML MethodDetailsSummary;
-	
-	@UiField
-	HTML SubjectPropertiesSummary;
-	
-	@UiField
-	StackLayoutPanel MethodNavigationStack;
-	
-	@UiField
-	PushButton btnNext;
-	
-	
-	@UiField
-	HTMLPanel FormDetails;
+	@UiField DockLayoutPanel LayoutPanel;
+	@UiField HTML MethodDetailsSummary;
+	@UiField HTML SubjectPropertiesSummary;
+	@UiField StackLayoutPanel MethodNavigationStack;
+	@UiField PushButton btnNext;
+	@UiField HTMLPanel FormDetails;
+	@UiField Label _formName;
 	//@UiField
 	public class CustomTab
 	{
@@ -107,6 +97,8 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 	public void SetMenuIndex(String IndexName)
 	{
 		currentForm = IndexName;
+		this._formName.setText(currentForm);
+		this._formName.setStyleName(currentForm);
 		if(IndexName == pojoMethod.FormName)
 		{
 			this.MethodNavigationStack.showWidget(0,false);
@@ -120,6 +112,7 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 		}
 		else if(IndexName.contains(pojoStepDetails.FormName))
 		{
+			this._formName.setStyleName(pojoStepDetails.FormName);
 			//We need to check if this is a new or old stack - FormName is unique
 			//Window.alert("Widget Count:" + this.MethodNavigationStack.getWidgetCount() + "Step COunt" + this.StepIndex );
 			//NB: STep count drops back to 0!!!

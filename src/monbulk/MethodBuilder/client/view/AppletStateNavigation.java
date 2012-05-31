@@ -29,14 +29,10 @@ public class AppletStateNavigation extends Composite implements IView {
 	}
 	FormPresenter Presenter;
 	
-	@UiField
-	PushButton btnSave;
-	
-	@UiField
-	PushButton btnPublish;
-	
-	@UiField
-	PushButton btnCancel;
+	@UiField PushButton btnSave;
+	@UiField PushButton btnPublish;
+	@UiField PushButton btnCancel;
+	@UiField PushButton btnClone;
 	
 	public AppletStateNavigation() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -53,6 +49,10 @@ public class AppletStateNavigation extends Composite implements IView {
 		// TODO Auto-generated method stub
 		
 	}
+	public void setStates(String Role)
+	{
+		
+	}
 	@UiHandler("btnSave")
 	public void onClick(ClickEvent e)
 	{
@@ -67,6 +67,11 @@ public class AppletStateNavigation extends Composite implements IView {
 	public void onClick2(ClickEvent e)
 	{
 		this.Presenter.FormComplete("Navigation", "Publish");
+	}
+	@UiHandler("btnClone")
+	public void onClick3(ClickEvent e)
+	{
+		this.Presenter.FormComplete("Navigation", "Clone");
 	}
 	
 

@@ -85,8 +85,8 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	@UiField
 	FlexTable _MenuStack;
 	
-	@UiField
-	PushButton _Newbutton;
+	@UiField PushButton _Newbutton;
+	@UiField PushButton _Refresh;
 	
 	@UiField
 	HorizontalPanel _searchPanel;
@@ -141,6 +141,21 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 		
 		
 	}
+	public void refreshList()
+	{
+		
+		try
+		{
+			MethodService service = (MethodService)ServiceRegistry.getService(MonbulkEnums.ServiceNames.Methods);
+			this._searchPanel.clear();
+			this._MenuStack.clear();
+			service.getMethodList(this);
+		}
+		catch (ServiceRegistry.ServiceNotFoundException e)
+		{
+			GWT.log("Couldn't find Method service");
+		}
+	}
 	/**
 	 * If we Click "Add New" We fire a drag Event in the presenter with no attached data 
 	 * 
@@ -151,7 +166,11 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 		//FIXChange to MenuChangeEvent("NewMethod")
 		eventBus.fireEvent(new DragEvent("NewMethod","NewMethod",0,null));
 	}
-
+	@UiHandler("_Refresh")
+	void onClick1(ClickEvent e) {
+		//FIXChange to MenuChangeEvent("NewMethod")
+		eventBus.fireEvent(new MenuChangeEvent("Refresh"));
+	}
 	
 	public void setText(String text) {
 		_Newbutton.setText(text);
@@ -206,14 +225,14 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 			{
 				_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 2px #345484;font-weight:bold;color:#345484;");
 				_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;background-color:#345484;");
-				_MenuStack.getFlexCellFormatter().getElement(i, 2).setAttribute("style", "background-color:#345484;");
+			//d	_MenuStack.getFlexCellFormatter().getElement(i, 2).setAttribute("style", "background-color:#345484;");
 				GWT.log("ItemFound:" + activeItem);
 			}
 			else
 			{
 				_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 1px #ccc;");
 				_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
-				_MenuStack.getFlexCellFormatter().getElement(i, 2).setAttribute("style", "");	
+				//_MenuStack.getFlexCellFormatter().getElement(i, 2).setAttribute("style", "");	
 			}
 			//tmpItem.setActive(activeItem);
 			i++;
@@ -247,19 +266,19 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 				titleLabel.addStyleName("menuMethodName");
 				//titleLabel.setWidth("150px");
 				
-				PushButton _clone = new PushButton();
-				_clone.setStyleName("btnCloneMethod");
-				_clone.addClickHandler(new ClickHandler()
-				{
+			//	PushButton _clone = new PushButton();
+			//	_clone.setStyleName("btnCloneMethod");
+			//	_clone.addClickHandler(new ClickHandler()
+			//	{
 
-					@Override
-					public void onClick(ClickEvent event) {
-						setActiveMenu(titleLabel.getText());
-						eventBus.fireEvent(new DragEvent(titleLabel.getText(),"CloneMethod",index,(IPojo)tmpMethod));
-						
-					}
-					
-				});
+			//		@Override
+			//		public void onClick(ClickEvent event) {
+			//			setActiveMenu(titleLabel.getText());
+			//			eventBus.fireEvent(new DragEvent(titleLabel.getText(),"CloneMethod",index,(IPojo)tmpMethod));
+			//			
+			//		}
+			//		
+			//	});
 				
 				PushButton _edit = new PushButton();
 				_edit.setStyleName("btnEditMethod");
@@ -280,7 +299,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 				//this._MenuStack.setWidget(i,0,tmpItem.asWidget());
 				this._MenuStack.setWidget(i,0,titleLabel);
 				this._MenuStack.setWidget(i,1,_edit);
-				this._MenuStack.setWidget(i,2,_clone);
+			//	this._MenuStack.setWidget(i,2,_clone);
 				_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 1px #ccc;");
 				_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
 				i++;
