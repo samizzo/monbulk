@@ -139,6 +139,24 @@ public class mfMethodService extends MethodService {
 						GWT.log("Exception caught at mfMethodService.onReadMethod" + ex.getMessage());
 					}
 					break;
+				case CheckExists:
+					try
+					{
+						if(xe.elements()!=null)
+						{
+							
+								mu_handler.checkExists(true);
+						}
+						else
+						{
+							mu_handler.checkExists(false);
+						}
+						
+					}
+					catch(Exception ex)
+					{
+						GWT.log("Exception caught at mfMethodService.onReadMethod" + ex.getMessage());
+					}
 				default:
 					break;
 			}
@@ -182,9 +200,20 @@ public class mfMethodService extends MethodService {
 						0,
 						new MethodResponseHandler(handler, MethodRequest.Create), 
 						true);
-						
-						
-						
+		
+	}
+
+
+	@Override
+	public void checkExists(String Name, MethodUpdateHandler handler) {
+		Session.execute(
+				new ServiceContext("mfMethodService.update"),
+				"om.pssd.method.find",
+				"<name>" + Name + "</name>",
+				null,
+				0,
+				new MethodResponseHandler(handler, MethodRequest.CheckExists), 
+				true);
 		
 	}
 
