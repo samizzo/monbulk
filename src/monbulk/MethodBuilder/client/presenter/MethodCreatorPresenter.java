@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 import monbulk.MethodBuilder.client.PreviewWindow;
@@ -162,25 +163,20 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 					{	
 						this.ImplementedMethodView.clearChild();
 						GWT.log("State change 1");
-						if(!this.mainModel.isLoaded())
+						FormBuilder tmpForm = this.mainModel.getFormData(newState.toString());
+						if(tmpForm!=null)
 						{
-								GWT.log("State change 2");
-								FormBuilder tmpForm = this.mainModel.getFormData(newState.toString());
-								if(tmpForm!=null)
-								{
-									GWT.log("State change 3");			
+							GWT.log("State change 3");			
 									//this.ImplementedMethodView.setData(tmpForm);
-									tmpView.LoadForm(tmpForm);
-									
-								}
-								else
-								{
-									GWT.log("@MethodCreatorPresenter.ChangeState: Could not find a form for:" + newState);
-								}
+							tmpView.ClearForm();
+							tmpView.LoadForm(tmpForm);
 							
-							//countLoads++;
-							GWT.log("Loaded:" + newState);
 						}
+						else
+						{
+								GWT.log("@MethodCreatorPresenter.ChangeState: Could not find a form for:" + newState);
+						}
+						
 						
 						//GWT.log("Pre-SetChild" + this.CurrentState);
 						this.ImplementedMethodView.setChild(tmpView.asWidget());
@@ -261,65 +257,92 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 	public void FormComplete(String FormName,String Command) {
 		IFormView currentView =this._AllStates.get(CurrentState);
 		iMBModel tmpModel = this.mainModel;
+		if(FormName==null)
+		{
+			Window.alert("This form is not valid, Please enter some details");
+			return;
+		}
 		if(Command=="Next")
 		{
 		//	com.google.gwt.user.client.Window.alert("Unable to Save Form.");
 			GWT.log("Next and CurrentState is:" + CurrentState + "New State is: " + FormName);
 			
 			//FIX: Validation fails for some formFields
-			//String Validation = tmpModel.ValidateForm(FormName);
+			String Validation = tmpModel.ValidateForm(FormName);
 			
 			if(FormName==pojoMethod.FormName)
 			{
-				//TODO Must ensure next, prev and complete states are submitted to any view/form
 				
-				this.ChangeState(MethodCreatorStates.SUBJECT_PROPERTIES);
-		
-				this.ImplementedMethodView.SetMenuIndex(MethodCreatorStates.SUBJECT_PROPERTIES.toString());
-				GWT.log("complete Load");
+				if(Validation!="")
+				{
+					Window.alert("The Method Details form is not valid:" + Validation);
+					return;				
+				}
+				else
+				{
+					this.ChangeState(MethodCreatorStates.SUBJECT_PROPERTIES);
+					this.ImplementedMethodView.SetMenuIndex(MethodCreatorStates.SUBJECT_PROPERTIES.toString());
+					GWT.log("complete Load");
+				}
 			}
 			else if(FormName==pojoSubjectProperties.FormName)
 			{
-				IFormView tmpView = this._AllStates.get(MethodCreatorStates.STEP_DETAILS);
-				this.ImplementedMethodView.clearChild();
-				pojoStepDetails tmpPojo1 = this.mainModel.getFirstStep();
-				if(tmpPojo1!=null)
+				if(Validation!="")
 				{
-					FormBuilder tmpForm  = tmpPojo1.getFormStructure();
-					if(tmpForm!=null)
+					Window.alert("The Subject form is not valid:" + Validation);
+					return;
+				}
+				else
+				{
+					IFormView tmpView = this._AllStates.get(MethodCreatorStates.STEP_DETAILS);
+					this.ImplementedMethodView.clearChild();
+					pojoStepDetails tmpPojo1 = this.mainModel.getFirstStep();
+					if(tmpPojo1!=null)
 					{
-						GWT.log("State change 3");			
-						//this.ImplementedMethodView.setData(tmpForm);
-						tmpView.LoadForm(tmpForm);
-						this.ImplementedMethodView.setData(tmpForm);
-						this.ImplementedMethodView.setChild(tmpView.asWidget());
+						FormBuilder tmpForm  = tmpPojo1.getFormStructure();
+						if(tmpForm!=null)
+						{
+							GWT.log("State change 3");			
+							//this.ImplementedMethodView.setData(tmpForm);
+							tmpView.LoadForm(tmpForm);
+							this.ImplementedMethodView.setData(tmpForm);
+							this.ImplementedMethodView.setChild(tmpView.asWidget());
+						}
 					}
 				}
-				
 				
 				//this.ImplementedMethodView.setData(this.mainModel.getFormData(this.mainModel.get);
 			
 			}
 			else if(FormName.contains(pojoStepDetails.FormName))
 			{
-				//com.google.gwt.user.client.Window.alert("New Step");
-				IFormView tmpView = this._AllStates.get(MethodCreatorStates.STEP_DETAILS);
-				this.ImplementedMethodView.clearChild();
-				pojoStepDetails tmpPojo = this.mainModel.getNextStep(FormName); 
-				tmpView.ClearForm();
-				if(tmpPojo!=null)
+				if(Validation!="")
 				{
-					FormBuilder tmpForm  = tmpPojo.getFormStructure();
-					if(tmpForm!=null)
-					{
-						GWT.log("State change 3");			
-						//this.ImplementedMethodView.setData(tmpForm);
-						tmpView.LoadForm(tmpForm);
-						this.ImplementedMethodView.setData(tmpForm);
-						
-						this.ImplementedMethodView.setChild(tmpView.asWidget());
-					}
+					Window.alert("The Step Details form is not valid:" + Validation);
+					return;
 				}
+				else
+				{//com.google.gwt.user.client.Window.alert("New Step");
+					IFormView tmpView = this._AllStates.get(MethodCreatorStates.STEP_DETAILS);
+					this.ImplementedMethodView.clearChild();
+					pojoStepDetails tmpPojo = this.mainModel.getNextStep(FormName); 
+					tmpView.ClearForm();
+					if(tmpPojo!=null)
+					{
+						FormBuilder tmpForm  = tmpPojo.getFormStructure();
+						if(tmpForm!=null)
+						{
+							GWT.log("State change 3");			
+							//this.ImplementedMethodView.setData(tmpForm);
+							tmpView.LoadForm(tmpForm);
+							this.ImplementedMethodView.setData(tmpForm);
+							
+							this.ImplementedMethodView.setChild(tmpView.asWidget());
+						}
+					}
+					
+				}
+				
 				//this.ImplementedMethodView.clearChild();
 		
 			}
@@ -383,7 +406,10 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 				GWT.log("Editing" + this.stateSelector.get(FormName));
 				FormBuilder tmpForm = this.mainModel.getFormData(FormName);
 				this.ImplementedMethodView.clearChild();
+				
 				IFormView tmpView = this._AllStates.get(this.stateSelector.get(FormName));
+				tmpView.ClearForm();
+				tmpView.LoadForm(tmpForm);
 				//tmpView.LoadForm(tmpForm);				
 				//GWT.log("Pre-SetChild" + this.CurrentState);
 				this.ImplementedMethodView.setChild(tmpView.asWidget());

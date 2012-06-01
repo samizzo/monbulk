@@ -102,16 +102,18 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 		if(IndexName == pojoMethod.FormName)
 		{
 			this.MethodNavigationStack.showWidget(0,false);
-			
+			this.btnNext.setText("> Add Subject");
 			
 		}
 		else if(IndexName == pojoSubjectProperties.FormName)
 		{
 			this.MethodNavigationStack.showWidget(1,false);
+			this.btnNext.setText("> Add Step");
 			
 		}
 		else if(IndexName.contains(pojoStepDetails.FormName))
 		{
+			this.btnNext.setText("> Add Another");
 			this._formName.setStyleName(pojoStepDetails.FormName);
 			//We need to check if this is a new or old stack - FormName is unique
 			//Window.alert("Widget Count:" + this.MethodNavigationStack.getWidgetCount() + "Step COunt" + this.StepIndex );
@@ -167,6 +169,7 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 		//Window.alert("Setting the following:" + this.currentForm);
 		if(anyBuilder.getFormName().contains(pojoStepDetails.FormName))
 		{
+			this.btnNext.setText("> Add Another");
 			GWT.log("Step Path C");
 			if(StepExists(anyBuilder.getFormName())!=null)
 			{
@@ -243,6 +246,7 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 		if(anyBuilder.getFormName().contains(pojoMethod.FormName))
 		{
 			this.MethodNavigationStack.showWidget(0);
+			this.btnNext.setText("> Add Subject");
 			MethodDetailsSummary.setHTML(html);
 			
 		}
@@ -250,6 +254,7 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 		{
 			this.MethodNavigationStack.showWidget(1);
 			SubjectPropertiesSummary.setHTML(html);
+			this.btnNext.setText("> Add Step");
 		}
 		else if(anyBuilder.getFormName().contains(pojoStepDetails.FormName))
 		{
@@ -318,21 +323,28 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 		
 		if(this.MethodNavigationStack.getVisibleIndex() == 0)
 		{
+			this.currentForm=pojoMethod.FormName;
+			this.btnNext.setText("Add Subject");
 			this.thisPresenter.FormComplete(pojoMethod.FormName, "Edit");
 		}
 		else if(this.MethodNavigationStack.getVisibleIndex() == 1)
 		{
+			this.currentForm=pojoSubjectProperties.FormName;
+			this.btnNext.setText("Add Step");
 			this.thisPresenter.FormComplete(pojoSubjectProperties.FormName, "Edit");
 		}
 		else
 		{
 			//Trigger Nothing - should be controlled by Edit Button
-	//		CustomStackHeader tmpHeader = (CustomStackHeader)this.MethodNavigationStack.getHeaderWidget(e.getSelectedItem());			
-		//	this.thisPresenter.FormComplete(tmpHeader.getCommandArgument(),"Edit");
+			this.btnNext.setText("Add another Step");
+			CustomStackHeader tmpHeader = (CustomStackHeader)this.MethodNavigationStack.getHeaderWidget(e.getSelectedItem());			
+			this.currentForm = tmpHeader.getCommandArgument();
+			this.thisPresenter.FormComplete(tmpHeader.getCommandArgument(),"Edit");
 			
 			//Should show the selected edit state of ICON
 			
 		}
+		_formName.setText(this.currentForm);
 		//this.Presenter.FormComplete("StepDetails", "AddAnother");
 	}
 	@Override

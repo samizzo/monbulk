@@ -50,9 +50,12 @@ public abstract class baseModel implements iFormModel{
 		while(i.hasNext())
 		{
 			iFormField tmpItem = i.next();
-			if(!tmpItem.hasValue())
+			if(tmpItem.getFieldTypeName()=="String" || tmpItem.getFieldTypeName()=="Description")
 			{
-				return "Validation Fails: No Value specified for Field:" + tmpItem.GetFieldName();
+				if(!tmpItem.hasValue())
+				{
+					return "Validation Fails: No Value specified for Field:" + tmpItem.GetFieldName();
+				}
 			}
 		}
 		return "";

@@ -41,6 +41,7 @@ public class CustomStackHeader extends Composite implements IView {
 		this.Title= Title;
 		this.CommandArgument = Argument;
 		this.btnEdit.setStyleName("btnEditing");
+		this.btnEdit.setVisible(false);
 		//this.btnDelete.setStyleName("Delete");
 		this.PanelTitle.setText(Title);
 	}

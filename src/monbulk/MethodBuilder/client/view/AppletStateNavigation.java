@@ -14,9 +14,12 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 
+import monbulk.client.Monbulk;
+import monbulk.client.Roles;
 import monbulk.shared.Architecture.IPresenter;
 import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Architecture.IView;
+import monbulk.shared.Services.User;
 
 
 public class AppletStateNavigation extends Composite implements IView {
@@ -33,9 +36,31 @@ public class AppletStateNavigation extends Composite implements IView {
 	@UiField PushButton btnPublish;
 	@UiField PushButton btnCancel;
 	@UiField PushButton btnClone;
+	@UiField PushButton btnDelete;
 	
 	public AppletStateNavigation() {
 		initWidget(uiBinder.createAndBindUi(this));
+		User _user = Monbulk.getUser();
+		if(_user.hasRole(Roles.MethodBuilder.READONLY))
+		{
+			
+			this.btnSave.setVisible(false);
+			this.btnClone.setVisible(false);
+			this.btnDelete.setVisible(false);
+		}
+		else if(_user.hasRole(Roles.MethodBuilder.CREATE))
+		{
+			this.btnClone.setVisible(true);
+			this.btnSave.setVisible(false);
+			this.btnDelete.setVisible(false);
+		}
+		else
+		{
+			this.btnSave.setVisible(true);
+			this.btnClone.setVisible(true);
+			this.btnDelete.setVisible(true);
+		}
+	
 	}
 
 	@Override

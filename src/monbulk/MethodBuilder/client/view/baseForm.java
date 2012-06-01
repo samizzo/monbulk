@@ -379,17 +379,21 @@ public class baseForm extends VerticalPanel implements IFormView {
 			if(response == "")
 			{
 				tmpField.SetFieldValue(FieldValue.toString());
-				
+				if(this.Presenter!=null){
+					String finalOut = this.Presenter.UpdateValue(this.generalForm);
+					
+				}
 			}
 			else
 			{
 				this.ErrorSummary.add(response);
 				this._errors.setText(this._errors.getText() + response);
-			}
-			if(this.Presenter!=null){
-				String finalOut = this.Presenter.UpdateValue(this.generalForm);
 				
 			}
+			/*if(this.Presenter!=null){
+				String finalOut = this.Presenter.UpdateValue(this.generalForm);
+				
+			}*/
 		}
 		else
 		{

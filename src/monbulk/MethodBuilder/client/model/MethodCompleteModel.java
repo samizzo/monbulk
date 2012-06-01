@@ -47,7 +47,7 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 		super.formData = this.CompleteModel.getFormStructure();
 		isLoaded = false;
 		CurrentStep=pojoStepDetails.FormName + "0";
-		FirstStep = CurrentStep;
+		FirstStep = pojoStepDetails.FormName + "0";
 		StepCount=0;
 	
 		
@@ -63,6 +63,7 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 		isLoaded = true;
 		this.Presenter = presenter;
 		this.loadData(ID);
+		FirstStep = pojoStepDetails.FormName + "0";
 	
 	}
 	public void removeStep(String StepFormName)
