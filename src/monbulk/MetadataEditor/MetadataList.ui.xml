@@ -12,8 +12,7 @@
 
 		.Button
 		{
-			width: 65px;
-			margin-bottom: 4px;
+			width: 64px;
 		}
 		
 		.RefreshButton
@@ -39,10 +38,10 @@
 				</div>
 			</g:HTMLPanel>
 		</g:layer>
-		<g:layer top="30px" bottom="60px">
+		<g:layer top="30px" bottom="30px">
 			<g:ListBox visibleItemCount="15" width="100%" ui:field="m_metadataListBox" height="100%" />
 		</g:layer>
-		<g:layer bottom="6px" height="48px" left="0px" right="0px">
+		<g:layer bottom="-24px" height="48px" left="0px" right="0px">
 			<g:HTMLPanel width="100%" height="100%" ui:field="m_buttonsPanel">
 				<g:Button height="" text="Remove" styleName="{style.Button}" ui:field="m_removeMetadata"/>
 				<g:Button height="" text="New" styleName="{style.Button}" ui:field="m_newMetadata" />
