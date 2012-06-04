@@ -181,13 +181,19 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	 */
 	public void setMetadata(Metadata metadata)
 	{
+		Settings settings = Monbulk.getSettings();
+		String defaultNs = settings.getDefaultNamespace();
+		final String namespace = defaultNs + ".";
+
 		clear();
 		m_metadata = metadata;
 		m_metadata.setModifiedHandler(new Metadata.ModifiedHandler()
 		{
 			public void onModified()
 			{
-				m_save.setEnabled(true);
+				String name = m_metadata.getName();
+				boolean hasName = name != null && name.length() > 0 && !name.equals(namespace) && !name.equals(namespace + "template.");
+				m_save.setEnabled(hasName);
 			}
 		});
 		
@@ -195,9 +201,6 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 		String name = metadata.getName();
 		
-		Settings settings = Monbulk.getSettings();
-		String defaultNs = settings.getDefaultNamespace();
-		String namespace = defaultNs + ".";
 		String ns = defaultNs;
 
 		if (name.startsWith(namespace))

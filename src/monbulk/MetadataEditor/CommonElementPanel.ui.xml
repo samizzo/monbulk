@@ -23,6 +23,9 @@
 				</div>
 			</g:HTMLPanel>
 		</g:layer>
+		<g:layer left="492px" right="0px" top="3px" height="24px">
+			<g:Label text="*" styleName="RedStar" />
+		</g:layer>
 
 		<!-- Description elements -->
 		<g:layer top="32px" height="24px" left="0px" width="82px">
