@@ -17,6 +17,8 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 
 import monbulk.shared.Services.*;
+import monbulk.client.Monbulk;
+import monbulk.client.Settings;
 
 public class EnumerationElementPanel extends ElementPanel implements ValueChangeHandler<Boolean>
 {
@@ -61,7 +63,12 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 					m_dictionaryComboPopulated = true;
 					for (String d : dictionaries)
 					{
-						m_dictionaryCombo.addItem(d);
+						Settings settings = Monbulk.getSettings();
+						String ns = settings.getDefaultNamespace() + ".";
+						if (d.startsWith(ns))
+						{
+							m_dictionaryCombo.addItem(d);
+						}
 					}
 					
 					if (m_pendingSetDictionary)
@@ -155,7 +162,7 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 	void onAddClicked(ClickEvent event)
 	{
 		// User has added an enum value.
-		String newValue = Window.prompt("Enter new value:", "");
+		String newValue = Window.prompt("Enter new value", "");
 		if (newValue != null && newValue.length() > 0)
 		{
 			m_values.addItem(newValue);
@@ -188,10 +195,17 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 	void onSaveAsDictionaryClicked(ClickEvent event)
 	{
 		// Save the current enum set to a new dictionary.
-		final String dictName = Window.prompt("Enter a name for the dictionary:", "");
+		String dictName = Window.prompt("Enter a name for the dictionary (namespace will be automatically prefixed)", "");
 		if (dictName != null && dictName.length() > 0)
 		{
 			// Create a new dictionary object.
+			Settings settings = Monbulk.getSettings();
+			String ns = settings.getDefaultNamespace() + ".";
+			if (!dictName.startsWith(ns))
+			{
+				dictName = ns + dictName;
+			}
+
 			final Dictionary d = new Dictionary(dictName);
 			int count = m_values.getItemCount();
 			for (int i = 0; i < count; i++)
@@ -290,7 +304,7 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 	private void setDictionary()
 	{
 		int count = m_dictionaryCombo.getItemCount();
-		if (count == 0)
+		if (count == 0 && !m_dictionaryComboPopulated)
 		{
 			// Can't set the dictionary yet because the combo
 			// is still being initialised.
@@ -364,8 +378,19 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 		{
 			// User has checked "From dictionary", so populate
 			// the listbox with the dictionary entries.
-			String name = m_dictionaryCombo.getItemText(m_dictionaryCombo.getSelectedIndex());
-			populateValuesFromDictionary(name);
+			int index = m_dictionaryCombo.getSelectedIndex();
+			int count = m_dictionaryCombo.getItemCount();
+			if (index == -1 && count > 0)
+			{
+				m_dictionaryCombo.setSelectedIndex(0);
+				index = 0;
+			}
+
+			if (count > 0)
+			{
+				String name = m_dictionaryCombo.getItemText(index);
+				populateValuesFromDictionary(name);
+			}
 		}
 		else
 		{
