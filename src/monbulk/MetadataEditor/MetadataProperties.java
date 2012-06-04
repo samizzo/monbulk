@@ -116,6 +116,15 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	{
 		m_save.setEnabled(enabled);
 	}
+	
+	/**
+	 * Sets the save as template button visibility.
+	 * @param visible
+	 */
+	public void setShowSaveTemplate(boolean visible)
+	{
+		m_saveAsTemplate.setVisible(visible);
+	}
 
 	/**
 	 * Adds a handler to the save button.

@@ -64,9 +64,10 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 		m_metadataList.setShowFromTemplate(canCreate);
 		m_metadataProperties.setReadOnly(!canCreate);
 
-		// Only user with ADMIN role can remove.
-		boolean canRemove = user.hasRole(Roles.MetadataEditor.ADMIN);
-		m_metadataList.setShowRemove(canRemove);
+		// Only user with ADMIN role can remove or save as template.
+		boolean isAdmin = user.hasRole(Roles.MetadataEditor.ADMIN);
+		m_metadataList.setShowRemove(isAdmin);
+		m_metadataProperties.setShowSaveTemplate(isAdmin);
 		
 		m_metadataList.setHandler(new MetadataList.Handler()
 		{
