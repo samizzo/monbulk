@@ -45,6 +45,8 @@ public class Monbulk implements EntryPoint
 		String hostName = Window.Location.getHostName();
 		if (hostName.equals("127.0.0.1") || hostName.equals("localhost"))
 		{
+			// If running on localhost, use the debug logon which will
+			// automatically log in without prompting.
 			debugLogon();
 			String user = Window.Location.getParameter("user");
 			GWTLogger.isDebug = user == null || !user.equals("izzo");
@@ -70,6 +72,10 @@ public class Monbulk implements EntryPoint
 	{
 		// HACK: I (sam) want to use medimage's MF instance because
 		// I don't have MF installed locally.
+		
+		// NOTE: SVC_URL is usually constant but in the VeRSI copy
+		// of the MF client libraries I have hacked it so I can
+		// override the URL.
 		String user = Window.Location.getParameter("user");
 		if (user != null && user.equals("izzo"))
 		{
