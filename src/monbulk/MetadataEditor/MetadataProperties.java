@@ -51,6 +51,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	@UiField CaptionPanel m_elements;
 	@UiField Label m_elementType;
 	@UiField Label m_elementDescription;
+	@UiField Label m_elementAttributes;
 	@UiField Button m_save;
 	@UiField Button m_saveAsTemplate;
 
@@ -462,6 +463,27 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		Element element = (Element)m_selectedElement.getUserObject();
 		m_elementType.setText(element.getType().toString());
 		m_elementDescription.setText(element.getSetting("description", ""));
+
+		if (element.canHaveAttributes() && element.getNumAttributes() > 0)
+		{
+			String attributes = "";
+			int numAttr = element.getNumAttributes();
+			for (int i = 0; i < numAttr; i++)
+			{
+				Element a = element.getAttribute(i);
+				attributes += a.getName();
+				if (i < numAttr - 1)
+				{
+					attributes += ", ";
+				}
+			}
+
+			m_elementAttributes.setText(attributes);
+		}
+		else
+		{
+			m_elementAttributes.setText("");
+		}
 		
 		setButtonState();
 	}

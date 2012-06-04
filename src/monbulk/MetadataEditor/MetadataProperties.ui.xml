@@ -56,7 +56,7 @@
 							</div>
 						</g:HTMLPanel>
 					</g:layer>
-					<g:layer left="654px" right="0px" top="4px" height="23px">
+					<g:layer width="8px" right="0px" top="4px" height="23px">
 						<g:Label text="*" styleName="RedStar" />
 					</g:layer>
 
@@ -87,7 +87,7 @@
 			</g:CaptionPanel>
 		</g:layer>
 
-		<g:layer top="102px" left="3px" right="3px" bottom="132px">
+		<g:layer top="102px" left="3px" right="3px" bottom="162px">
 			<g:CaptionPanel captionText="Elements" ui:field="m_elements">
 				<g:ScrollPanel width="100%" height="100%">
 					<s:Tree width="100%" height="100%" ui:field="m_elementsTree"/>
@@ -95,7 +95,7 @@
 			</g:CaptionPanel>
 		</g:layer>
 
-		<g:layer bottom="36px" height="90px" left="3px" right="3px">
+		<g:layer bottom="36px" height="120px" left="3px" right="3px">
 			<g:CaptionPanel captionText="Element summary">
 				<g:LayoutPanel>
 					<g:layer left="0px" top="2px" width="90px" height="24px">
@@ -110,6 +110,13 @@
 					</g:layer>
 					<g:layer left="90px" top="32px" right="10px" height="24px">
 						<g:Label text="" ui:field="m_elementDescription" height="24px" styleName="{style.Ellipsis}" />
+					</g:layer>
+					
+					<g:layer left="0px" top="63px" width="90px" height="24px">
+						<g:Label text="Attributes:" />
+					</g:layer>
+					<g:layer left="90px" top="63px" right="10px" height="24px">
+						<g:Label text="" ui:field="m_elementAttributes" height="24px" styleName="{style.Ellipsis}" />
 					</g:layer>
 				</g:LayoutPanel>
 			</g:CaptionPanel>
