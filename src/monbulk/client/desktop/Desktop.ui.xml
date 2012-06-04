@@ -7,7 +7,7 @@
 	<g:HTMLPanel styleName="Container">
 		<g:HTMLPanel width="100%" styleName="TopNav noise" ui:field="m_topNav">
 			<g:Label styleName="Versi" />
-			<g:Label styleName="AppTitle" text="Versi Monbulk" />
+			<g:Label styleName="AppTitle" text="VeRSI Monbulk" />
 			<g:Label styleName="Time" ui:field="m_time" text="" />
 			<g:Label styleName="Username" ui:field="m_username" text="" />
 		</g:HTMLPanel>
