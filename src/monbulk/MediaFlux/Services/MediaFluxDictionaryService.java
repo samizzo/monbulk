@@ -159,7 +159,7 @@ public class MediaFluxDictionaryService extends DictionaryService
 		Session.execute(
 				new ServiceContext("MediaFluxDictionaryService.createDictionary"),
 				"dictionary.create",
-				"<name>" + name + "</name>",
+				"<name>" + name + "</name><case-sensitive>true</case-sensitive>",
 				null,
 				0,
 				h,
