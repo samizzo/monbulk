@@ -41,7 +41,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 
 	@UiField Label m_namespace;
 	@UiField TextBoxEx m_name;
-	@UiField TextBox m_label;
+	//@UiField TextBox m_label;
 	@UiField TextBox m_description;
 	@UiField Tree m_elementsTree;
 	@UiField Button m_addElement;
@@ -101,7 +101,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		}
 		
 		m_name.setEnabled(!readOnly);
-		m_label.setEnabled(!readOnly);
+		//m_label.setEnabled(!readOnly);
 		m_description.setEnabled(!readOnly);
 		m_elementEditor.setReadOnly(readOnly);
 		m_save.setVisible(!readOnly);
@@ -216,7 +216,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		
 		m_namespace.setText(ns);
 		m_name.setText(name);
-		m_label.setText(metadata.getLabel());
+		//m_label.setText(metadata.getLabel());
 		m_description.setText(metadata.getDescription());
 		populateElementTree(null, metadata.getRootElement());
 		if (m_elementsTree.getItemCount() > 0)
@@ -236,7 +236,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_metadata = null;
 		m_addElement.setEnabled(false);
 		m_name.setText("");
-		m_label.setText("");
+		//m_label.setText("");
 		m_description.setText("");
 		m_elementsTree.clear();
 		clearElements();
@@ -521,14 +521,14 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		}
 	}
 	
-	@UiHandler({"m_name", "m_label", "m_description"})
+	@UiHandler({"m_name", "m_description"})
 	void onKeyUp(KeyUpEvent event)
 	{
 		if (m_metadata != null)
 		{
 			String name = m_namespace.getText() + "." + m_name.getText();
 			m_metadata.setName(name);
-			m_metadata.setLabel(m_label.getText());
+			//m_metadata.setLabel(m_label.getText());
 			m_metadata.setDescription(m_description.getText());
 		}
 	}
