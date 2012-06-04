@@ -446,24 +446,34 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 			String msg = "Are you sure you wish to remove the metadata '" + selected + "'?";
 			if (Window.confirm(msg))
 			{
-				if (m_handler != null)
+				msg = "The metadata '" + selected + "' will be removed.  Please type the word 'delete' below to confirm removal.";
+				String result = Window.prompt(msg, "");
+				if (result.equals("delete"))
 				{
-					m_handler.onRemoveMetadata(selected);
-				}
-
-				// Call service to destroy metadata.
-				MetadataService service = MetadataService.get();
-				service.destroyMetadata(selected, new DestroyMetadataHandler()
-				{
-					public void onDestroyMetadata(String name, boolean success)
+					if (m_handler != null)
 					{
-						if (success)
-						{
-							// Metadata was successfully destroyed, so refresh our list.
-							remove(name);
-						}
+						m_handler.onRemoveMetadata(selected);
 					}
-				});
+	
+					// Call service to destroy metadata.
+					MetadataService service = MetadataService.get();
+					service.destroyMetadata(selected, new DestroyMetadataHandler()
+					{
+						public void onDestroyMetadata(String name, boolean success)
+						{
+							if (success)
+							{
+								// Metadata was successfully destroyed, so refresh our list.
+								remove(name);
+								Window.alert("The metadata '" + name + "' was removed.");
+							}
+						}
+					});
+				}
+				else
+				{
+					Window.alert("The metadata '" + selected + "' will not be removed.");
+				}
 			}
 		}
 	}
