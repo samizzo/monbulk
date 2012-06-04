@@ -6,7 +6,6 @@ import java.util.Iterator;
 
 import com.google.gwt.user.client.ui.ListBox;
 
-import monbulk.shared.Model.pojo.pojoStudy;
 import monbulk.shared.Services.Dictionary;
 import monbulk.shared.Services.DictionaryService;
 import monbulk.shared.Services.Dictionary.Entry;

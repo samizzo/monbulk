@@ -5,10 +5,7 @@ import java.util.Iterator;
 
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 
-import monbulk.shared.Form.iFormField.iFormFieldValidation;
 import monbulk.shared.Form.iFormField.iFormListField;
 
 public class ListField extends FormField implements iFormListField  {
@@ -77,17 +74,10 @@ public class ListField extends FormField implements iFormListField  {
 		this.Values = inList;
 		ListBox fields = new ListBox();
 		Iterator<String> i = inList.iterator();
-		int SelectedIndex = 0;
-		int index = 0;
 		while(i.hasNext())
 		{
 			String item = i.next();
-			if(item == DefaultValue)
-			{
-				SelectedIndex = index;
-			}
 			fields.addItem(item);
-			index++;
 		}
 		
 		this._FieldVaLueWidget = fields;

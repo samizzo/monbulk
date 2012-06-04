@@ -1,6 +1,5 @@
 package monbulk.shared.Model.pojo;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.google.gwt.xml.client.Document;

@@ -1,10 +1,8 @@
 package monbulk.shared.util;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
-import arc.mf.client.xml.*;
 
 public class XmlHelper
 {

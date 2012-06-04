@@ -8,31 +8,19 @@ import java.util.Iterator;
 
 
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PushButton;
 
 
 
-import monbulk.MetadataEditor.MetadataEditor;
-import monbulk.MetadataEditor.MetadataSelectWindow;
-import monbulk.MethodBuilder.client.PreviewWindow;
-import monbulk.MethodBuilder.client.PreviewWindow.SupportedFormats;
-import monbulk.client.desktop.Desktop;
 import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Architecture.IView.IFormView;
 import monbulk.shared.Architecture.IView.IDraggable;
-import monbulk.shared.Events.DragEvent;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Form.FormWidget;
-import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.pojo.pojoMetaData;
 import monbulk.shared.Model.pojo.pojoStepDetails;
 import monbulk.shared.Model.pojo.pojoStudy;
@@ -40,12 +28,11 @@ import monbulk.shared.Services.Dictionary;
 import monbulk.shared.Services.Dictionary.Entry;
 import monbulk.shared.Services.DictionaryService;
 import monbulk.shared.Services.DictionaryService.GetDictionaryHandler;
-import monbulk.shared.widgets.Window.OkCancelWindow;
 
 
 public class StepForm extends SubjectPropertiesForm implements IFormView,IDraggable,GetDictionaryHandler {
 
-	private int AddedRowIndex; 
+
 	protected final FlexTable _StepMetaDataList;
 	private String DicomValue;
 	private String studyTypeValue;

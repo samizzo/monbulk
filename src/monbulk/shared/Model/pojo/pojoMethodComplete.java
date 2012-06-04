@@ -1,27 +1,21 @@
 package monbulk.shared.Model.pojo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map.Entry;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
 
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Model.IPojo;
-import monbulk.shared.Services.MethodService;
 import monbulk.shared.util.HtmlFormatter;
 
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.XMLParser;
 
 public class pojoMethodComplete implements IPojo{
 
@@ -71,9 +65,9 @@ public class pojoMethodComplete implements IPojo{
 	 */
 	public void sortSteps()
 	{
-		HashMap<String,pojoStepDetails> sortedMap = new HashMap<String,pojoStepDetails>();
-		Iterator<java.util.Map.Entry<String,pojoStepDetails>> i = allSteps.entrySet().iterator();
-		int index=0;
+		//HashMap<String,pojoStepDetails> sortedMap = new HashMap<String,pojoStepDetails>();
+		//Iterator<java.util.Map.Entry<String,pojoStepDetails>> i = allSteps.entrySet().iterator();
+		//int index=0;
 		//find a sorting algorithm - selsort?
 	}
 	public void removeStep(String StepFormName)
@@ -252,8 +246,8 @@ public class pojoMethodComplete implements IPojo{
 		try
 		{
 			Document tmpXML = XMLParser.parse(Input.toString()); 
-			name.pehl.totoe.xml.client.XmlParser tmpParser = new name.pehl.totoe.xml.client.XmlParser(); 
-			name.pehl.totoe.xml.client.Document document = new name.pehl.totoe.xml.client.XmlParser().parse(Input.toString());
+			//name.pehl.totoe.xml.client.XmlParser tmpParser = new name.pehl.totoe.xml.client.XmlParser(); 
+			//name.pehl.totoe.xml.client.Document document = new name.pehl.totoe.xml.client.XmlParser().parse(Input.toString());
 
 			
 			if(tmpXML!=null)

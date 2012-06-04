@@ -6,9 +6,7 @@ import java.util.Map.Entry;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
@@ -19,12 +17,10 @@ import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Architecture.IView.IFormView;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.pojo.pojoMetaData;
-import monbulk.shared.Model.pojo.pojoStepDetails;
 import monbulk.shared.Model.pojo.pojoSubjectProperties;
 import monbulk.shared.util.GWTLogger;
 import monbulk.shared.util.MonbulkEnums;
 import monbulk.shared.widgets.Window.OkCancelWindow;
-import monbulk.shared.widgets.Window.OkCancelWindow.OkCancelHandler.Event;
 import monbulk.MetadataEditor.MetadataSelectWindow;
 import monbulk.MethodBuilder.client.view.DraggableCellWidget;
 import monbulk.shared.Architecture.IView.IDraggable;
@@ -88,13 +84,11 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 			@Override
 			public void onClick(ClickEvent event) {
 				
-				String FieldName = tmpWidg2.getWidgetName();
 				//MetadataEditor tmpEditor = new MetadataEditor();
 				Desktop d = Desktop.get();
 				
 				final MetadataSelectWindow ms = (MetadataSelectWindow)d.getWindow("MetadataSelectWindow");
 				
-				final String SelectedMD = "";
 				//m.loadPreview(strTCL, SupportedFormats.TCL);
 				OkCancelWindow.OkCancelHandler thisHandler = new OkCancelWindow.OkCancelHandler(){
 

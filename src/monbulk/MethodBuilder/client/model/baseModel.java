@@ -2,12 +2,9 @@ package monbulk.MethodBuilder.client.model;
 
 import java.util.Iterator;
 
-import monbulk.MethodBuilder.shared.iModelAllowMetaData.iModelHasHelpExtendsMetaData;
 import monbulk.shared.Architecture.IPresenter.FormPresenter;
-import monbulk.shared.Architecture.iModel;
 import monbulk.shared.Architecture.iModel.iFormModel;
 import monbulk.shared.Form.FormBuilder;
-import monbulk.shared.Form.FormField;
 import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.IPojo;
 

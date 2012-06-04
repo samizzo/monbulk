@@ -5,13 +5,11 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 
 import monbulk.shared.Form.ButtonField;
 import monbulk.shared.Form.DictionaryFormField;
-import monbulk.shared.Form.DraggableFormField;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.IPojo;
@@ -90,8 +88,8 @@ public class pojoStepDetails implements IPojo{
 		
 		String StepName = this.StepName;
 		String StepDescription = this.StepDescription;
-		String StepStudy = "";
-		String Modality = "";
+		//String StepStudy = "";
+		//String Modality = "";
 		
 	
 		//String SubjectType= ":metadata < :definition -requirement mandatory hfi.pssd.subject :value < :type constant(" + this.SubjectType + " > >\\";

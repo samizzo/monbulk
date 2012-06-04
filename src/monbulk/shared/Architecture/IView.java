@@ -3,9 +3,7 @@ package monbulk.shared.Architecture;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
-import monbulk.shared.Form.FormField;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.StackedCategories;

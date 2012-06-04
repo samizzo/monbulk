@@ -5,12 +5,10 @@ import java.util.List;
 
 import arc.gui.gwt.widget.label.Label;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.PushButton;
@@ -19,10 +17,8 @@ import monbulk.MetadataEditor.MetadataList;
 import monbulk.shared.Architecture.IPresenter;
 import monbulk.shared.Architecture.IPresenter.DockedPresenter;
 import monbulk.shared.Architecture.IView.IDockView;
-import monbulk.shared.Events.DragEvent;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.StackedCategories;
-import monbulk.shared.Model.pojo.pojoMetaData;
 import monbulk.shared.Services.MetadataService;
 import monbulk.shared.Services.MetadataService.GetMetadataTypesHandler;
 

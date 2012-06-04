@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import name.pehl.totoe.xml.client.Document;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -23,8 +22,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import monbulk.shared.Events.DragEvent;
-import monbulk.shared.Form.FormWidget;
-import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.pojo.pojoMetaData;
 import monbulk.shared.util.GWTLogger;

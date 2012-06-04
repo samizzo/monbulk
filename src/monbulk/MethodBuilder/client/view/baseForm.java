@@ -7,14 +7,6 @@ import java.util.Iterator;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.event.dom.client.FocusHandler;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 
@@ -24,10 +16,8 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -242,6 +232,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 					}
 					else
 					{
+						@SuppressWarnings("unchecked")
 						HasValue<Object> tmpWidget = (HasValue<Object>)tmpWidg.getFormWidget();
 						tmpWidget.addValueChangeHandler(new ValueChangeHandler<Object>()
 								{
@@ -249,7 +240,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 											@Override
 											public void onValueChange(ValueChangeEvent<Object> event) {
 												// TODO Auto-generated method stub
-												Widget source = (Widget)event.getSource();
+												//Widget source = (Widget)event.getSource();
 												String FieldName = tmpWidg.getWidgetName();
 												//String FieldName = source.getTitle();
 												UpdateValue(FieldName, event.getValue());
@@ -318,19 +309,18 @@ public class baseForm extends VerticalPanel implements IFormView {
 			Window.alert("Could not render the form, for reference: Exception is" + ex.getMessage() + "Location is baseForm.RenderForm");
 		}
 	}
-	private final void completeForm(String State)
+	/*private final void completeForm(String State)
 	{
 		if(this.Presenter!=null)
 		{
 			this.Presenter.FormComplete(this.generalForm.getFormName(), State);
 		}
-	}
+	}*/
 	@Override
 	public void LoadForm(FormBuilder someForm) {
 		try
 		{
 			
-			GWTLogger.Log("Which form is loading" + someForm.getFormName(), "baseForm", "loadForm", "267");
 			if(someForm==null)
 			{
 				GWTLogger.Log("Form Expected @ baseForm.LoadForm(someForm):No form provided", "baseForm", "loadForm", "270");
@@ -339,6 +329,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 				renderForm();
 				return;
 			}
+			GWTLogger.Log("Which form is loading" + someForm.getFormName(), "baseForm", "loadForm", "267");
 			generalForm = someForm;
 			allFormItems.clear();
 			Iterator<iFormField> i = generalForm.getFormDetails().iterator();
@@ -380,7 +371,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 			{
 				tmpField.SetFieldValue(FieldValue.toString());
 				if(this.Presenter!=null){
-					String finalOut = this.Presenter.UpdateValue(this.generalForm);
+					this.Presenter.UpdateValue(this.generalForm);
 					
 				}
 			}

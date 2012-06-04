@@ -608,7 +608,7 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 	public String UpdateValue(FormBuilder someFormData) {
 		
 		this.mainModel.Update(someFormData);
-		FormBuilder tmpBuilder = this.mainModel.getFormData(this.CurrentState.toString());
+		//FormBuilder tmpBuilder = this.mainModel.getFormData(this.CurrentState.toString());
 		//GWT.log(someFormDa)
 		IFormView tmpView = this._AllStates.get(this.CurrentState);
 		

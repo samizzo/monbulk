@@ -4,16 +4,9 @@ import java.util.HashMap;
 
 import monbulk.shared.util.GWTLogger;
 
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class FormWidget extends HorizontalPanel{
@@ -61,6 +54,7 @@ public class FormWidget extends HorizontalPanel{
 	}
 	public Object getValue()
 	{
+		@SuppressWarnings("unchecked")
 		HasValue<Object> item = (HasValue<Object>)WidgetList.get(FORM_WIDGET);
 		return item.getValue();
 	}
@@ -68,6 +62,7 @@ public class FormWidget extends HorizontalPanel{
 	{
 		try
 		{
+			@SuppressWarnings("unchecked")
 			HasValue<Object> item = (HasValue<Object>)WidgetList.get(FORM_WIDGET);
 			item.setValue(null);
 		}
@@ -92,6 +87,7 @@ public class FormWidget extends HorizontalPanel{
 	}	
 	public void setFormValue(Object Value)
 	{
+		@SuppressWarnings("unchecked")
 		HasValue<Object> item = (HasValue<Object>)WidgetList.get(FORM_WIDGET);
 		item.setValue(Value);
 	}

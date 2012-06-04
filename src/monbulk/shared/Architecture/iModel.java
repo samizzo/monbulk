@@ -5,8 +5,6 @@ import java.util.ArrayList;
 
 import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Form.FormBuilder;
-import monbulk.shared.Form.FormField;
-import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.StackedCategories;
 import monbulk.shared.view.IResult;

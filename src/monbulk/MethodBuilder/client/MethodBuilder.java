@@ -20,7 +20,6 @@ import monbulk.shared.Events.DragEvent;
 import monbulk.shared.Events.DragEventHandler;
 import monbulk.shared.Model.pojo.pojoMethod;
 import monbulk.shared.Services.Dictionary;
-import monbulk.shared.Services.DictionaryService;
 import monbulk.shared.Services.DictionaryService.GetDictionaryHandler;
 import monbulk.shared.util.GWTLogger;
 import monbulk.shared.view.iMenuWidget;
@@ -186,11 +185,6 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 	    
    }
 
-	private void doMenuTransition(String ID)
-	{
-		//AppletMenu.setActiveMenu(ID);
-	}
-	
 	public void setMenu()
 	{
 		try

@@ -1,6 +1,5 @@
 package monbulk.shared.Model.pojo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;

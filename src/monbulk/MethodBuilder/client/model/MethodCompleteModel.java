@@ -2,17 +2,13 @@ package monbulk.MethodBuilder.client.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 
 import monbulk.MethodBuilder.shared.iMBModel;
 import monbulk.shared.Architecture.IPresenter.FormPresenter;
-import monbulk.shared.Architecture.iModel.iFormModel;
 import monbulk.shared.Form.FormBuilder;
-import monbulk.shared.Form.FormWidget;
-import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.Model.pojo.pojoMetaData;
 import monbulk.shared.Model.pojo.pojoMethod;
@@ -22,8 +18,6 @@ import monbulk.shared.Model.pojo.pojoStudy;
 import monbulk.shared.Model.pojo.pojoSubjectProperties;
 import monbulk.shared.Services.MethodService;
 import monbulk.shared.Services.ServiceRegistry;
-import monbulk.shared.Services.MethodService.MethodServiceHandler;
-import monbulk.shared.util.MonbulkEnums;
 import monbulk.shared.util.MonbulkEnums.ServiceNames;
 import monbulk.shared.view.IResult;
 import monbulk.shared.view.ISearchFilter;

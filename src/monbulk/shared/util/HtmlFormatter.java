@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import com.google.gwt.regexp.shared.RegExp;
-
 import monbulk.shared.Model.pojo.pojoMetaData;
 
 public class HtmlFormatter {
