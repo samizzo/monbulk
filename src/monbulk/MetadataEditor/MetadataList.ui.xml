@@ -16,6 +16,14 @@
 			margin-bottom: 4px;
 		}
 		
+		.RefreshButton
+		{
+			width: 65px;
+			margin-top: 2px;
+			margin-left: 4px;
+			float: right;
+		}
+		
 		.TemplateButton
 		{
 			width: 98px;
@@ -25,7 +33,8 @@
 	<g:LayoutPanel width="100%" height="100%" ui:field="m_LayoutPanel">
 		<g:layer top="0px" height="30px" left="0px" right="0px">
 			<g:HTMLPanel>
-				<div class="textBoxPadding">
+				<g:Button height="" text="Refresh" styleName="{style.RefreshButton}" ui:field="m_refreshList"/>
+				<div class="textBoxPadding" style="overflow: hidden;">
 					<w:TextBoxEx width="100%" ui:field="m_filterTextBox" alignment="LEFT" visibleLength="30" hintText="(enter search text)" hintTextStyle="{style.GreyTextBox}" />
 				</div>
 			</g:HTMLPanel>
@@ -35,7 +44,6 @@
 		</g:layer>
 		<g:layer bottom="6px" height="48px" left="0px" right="0px">
 			<g:HTMLPanel width="100%" height="100%" ui:field="m_buttonsPanel">
-				<g:Button height="" text="Refresh" styleName="{style.Button}" ui:field="m_refreshList"/>
 				<g:Button height="" text="Remove" styleName="{style.Button}" ui:field="m_removeMetadata"/>
 				<g:Button height="" text="New" styleName="{style.Button}" ui:field="m_newMetadata" />
 				<g:Button height="" text="From template" styleName="{style.TemplateButton}" ui:field="m_fromTemplate" />
