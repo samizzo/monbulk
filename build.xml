@@ -36,9 +36,6 @@
 		<attribute name="user" />
 		<attribute name="password" />
 		<sequential>
-			<!--
-			<input message="Please type the password for ${mf.auth.domain}:${mf.auth.user}:" addproperty="mf.auth.password" />
-			-->
 			<java classname="arc.mf.command.Execute" fork="true" failonerror="false" maxmemory="128m" outputproperty="mf.sid" resultproperty="mf.exit.code">
 				<jvmarg value="-Djava.net.preferIPv4Stack=true" />
 				<jvmarg value="-Dmf.host=@{host}" />
@@ -161,11 +158,42 @@
 		<delete file="${build}/www.zip" />
 	</target>
 	
-	<target name="deploy-localhost" depends="package" description="install the mediaflux package.">
+	<target name="deploy-localhost" depends="package" description="install the monbulk package.">
 		<mfcommand host="${localhost.host}" port="${localhost.port}" transport="${localhost.transport}" domain="${localhost.domain}" user="${localhost.user}" password="${localhost.password}" command="package.install :in file:${dist}/${pkg.file}" />
 	</target>
 
-	<target name="deploy-medimage" depends="package" description="install the mediaflux package.">
-			<mfcommand host="${medimage.host}" port="${medimage.port}" transport="${medimage.transport}" domain="${medimage.domain}" user="${medimage.user}" password="${medimage.password}" command="package.install :in file:${dist}/${pkg.file}" />
+	<target name="deploy-medimage"  description="install the monbulk package.">
+		<mfcommand host="${medimage.host}" port="${medimage.port}" transport="${medimage.transport}" domain="${medimage.domain}" user="${medimage.user}" password="${medimage.password}" command="package.install :in file:${dist}/${pkg.file}" />
+	</target>
+	
+	<macrodef name="promptAndValidate">
+		<attribute name="message" />
+		<attribute name="property" />
+		<attribute name="errorMessage" />
+		<attribute name="defaultValue" />
+		
+		<sequential>
+			<input message="@{message}" addproperty="@{property}" defaultvalue="@{defaultValue}" />
+			<fail message="@{errorMessage}">
+				<condition>
+					<equals arg1="${@{property}}" arg2="" trim="true" />
+				</condition>
+			</fail>
+		</sequential>
+	</macrodef>
+
+	<target name="deploy" depends="package" description="install the monbulk package.">
+		<echo message="Monbulk package installer" />
+		<echo message="-------------------------" />
+		<echo message="" />
+		<echo message="Please answer the following questions to deploy Monbulk." />
+		<promptAndValidate message="Hostname to deploy to?" property="host" defaultValue="" errorMessage="No hostname specified!" />
+		<promptAndValidate message="Port?" property="port" defaultValue="443" errorMessage="No port specified!" />
+		<promptAndValidate message="Transport?" property="transport" defaultValue="http" errorMessage="No transport specified!" />
+		<promptAndValidate message="Domain?" property="domain" defaultValue="" errorMessage="No domain specified!" />
+		<promptAndValidate message="User?" property="user" defaultValue="" errorMessage="No user specified!" />
+		<promptAndValidate message="Password?" property="password" defaultValue="" errorMessage="No password specified!" />
+		<echo message="Deploying to MediaFlux instance on ${host}:${port}.." />
+		<mfcommand host="${host}" port="${port}" transport="${transport}" domain="${domain}" user="${user}" password="${password}" command="package.install :in file:${dist}/${pkg.file}" />
 	</target>
 </project>
