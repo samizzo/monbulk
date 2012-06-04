@@ -31,32 +31,32 @@
 			text-overflow: ellipsis;
 			overflow: hidden;
 		}
+		
+		.Namespace
+		{
+			float: left;
+			padding-top: 2px;
+			padding-right: 4px;
+		}
 	</ui:style>
 
 	<g:LayoutPanel width="100%" height="100%">
-		<g:layer top="0px" height="116px" left="3px" right="3px">
+		<g:layer top="0px" height="96px" left="3px" right="3px">
 			<g:CaptionPanel captionText="Metadata" width="" height="">
-				<g:LayoutPanel width="100%" height="150px">
-					<!-- Namespace -->
-					<g:layer top="0px" height="31px" left="0px" width="100px">
-						<g:Label text="Namespace:" height="" />
-					</g:layer>
-					<g:layer left="104px" right="10px" top="0px" height="23px">
-						<g:Label text="" ui:field="m_namespace" />
-					</g:layer>
-
+				<g:LayoutPanel width="100%" height="120px">
 					<!-- Name -->
-					<g:layer top="33px" height="29px" left="0px" width="48px">
+					<g:layer top="2px" height="29px" left="0px" width="48px">
 						<g:Label text="Name:" height="" />
 					</g:layer>
-					<g:layer left="104px" right="10px" top="31px" height="23px">
+					<g:layer left="104px" right="10px" top="0px" height="23px">
 						<g:HTMLPanel>
-							<div class="textBoxPadding">
+							<g:Label text="" ui:field="m_namespace" styleName="{style.Namespace}" />
+							<div class="textBoxPadding" style="overflow: hidden;">
 								<w:TextBoxEx ui:field="m_name" width="100%" />
 							</div>
 						</g:HTMLPanel>
 					</g:layer>
-					<g:layer left="654px" right="0px" top="34px" height="23px">
+					<g:layer left="654px" right="0px" top="4px" height="23px">
 						<g:Label text="*" styleName="RedStar" />
 					</g:layer>
 
@@ -73,10 +73,10 @@
 					</g:layer>-->
 
 					<!-- Description -->
-					<g:layer left="0px" width="98px" top="62px" height="29px">
+					<g:layer left="0px" width="98px" top="33px" height="29px">
 						<g:Label height="" text="Description:"/>
 					</g:layer>
-					<g:layer top="60px" height="23px" left="104px" right="10px">
+					<g:layer top="31px" height="23px" left="104px" right="10px">
 						<g:HTMLPanel>
 							<div class="textBoxPadding">
 								<g:TextBox ui:field="m_description" width="100%" />
@@ -87,7 +87,7 @@
 			</g:CaptionPanel>
 		</g:layer>
 
-		<g:layer top="122px" left="3px" right="3px" bottom="132px">
+		<g:layer top="102px" left="3px" right="3px" bottom="132px">
 			<g:CaptionPanel captionText="Elements" ui:field="m_elements">
 				<g:ScrollPanel width="100%" height="100%">
 					<s:Tree width="100%" height="100%" ui:field="m_elementsTree"/>

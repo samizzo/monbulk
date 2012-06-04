@@ -217,7 +217,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			name = name.substring(9);
 		}
 		
-		m_namespace.setText(ns);
+		m_namespace.setText(ns + ".");
 		m_name.setText(name);
 		//m_label.setText(metadata.getLabel());
 		m_description.setText(metadata.getDescription());
