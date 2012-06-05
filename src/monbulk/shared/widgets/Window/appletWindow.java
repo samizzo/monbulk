@@ -76,10 +76,13 @@ public class appletWindow extends DialogBox
 		// FIXME: This causes an ActivateWindow event to be fired
 		// when we are closing the window, which means we do a
 		// bringToFront just before closing, which means m_zindex
-		// in Desktop is out of sync. 
+		// in Desktop is out of sync (i.e. will increase continually).
     	m_eventBus.fireEvent(new WindowEvent(getId(), WindowEvent.EventType.ActivateWindow));
     }
     
+    /**
+     * Resizes this window to fill the available space in the desktop.
+     */
     public void maximise()
     {
     	int newWidth, newHeight;
@@ -115,7 +118,12 @@ public class appletWindow extends DialogBox
 		m_isMaximised = !wasMaximised;
     }
     
-    // Returns true if we actually resized the height.
+    /**
+     * Resizes the height of the window.  Returns true if we actually resized
+     * the height.
+     * @param deltay
+     * @return
+     */
     public boolean resizeHeight(int deltay)
     {
     	int newHeight = getOffsetHeight() + deltay;
@@ -134,7 +142,12 @@ public class appletWindow extends DialogBox
     	return false;
     }
     
-    // Returns true if we actually resized the width.
+    /**
+     * Resizes the width of the window.  Returns true if we actually resized
+     * the width.
+     * @param deltax
+     * @return
+     */
     public boolean resizeWidth(int deltax)
     {
 		int newWidth = getOffsetWidth() + deltax;
