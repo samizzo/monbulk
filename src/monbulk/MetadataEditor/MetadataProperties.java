@@ -551,7 +551,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	{
 		if (m_metadata != null)
 		{
-			String name = m_namespace.getText() + "." + m_name.getText();
+			String name = m_namespace.getText() + m_name.getText();
 			m_metadata.setName(name);
 			//m_metadata.setLabel(m_label.getText());
 			m_metadata.setDescription(m_description.getText());
