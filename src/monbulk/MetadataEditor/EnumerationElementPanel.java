@@ -61,10 +61,10 @@ public class EnumerationElementPanel extends ElementPanel implements ValueChange
 				public void onGetDictionaryList(ArrayList<String> dictionaries)
 				{
 					m_dictionaryComboPopulated = true;
+					Settings settings = Monbulk.getSettings();
+					String ns = settings.getDefaultNamespace() + "."; 
 					for (String d : dictionaries)
 					{
-						Settings settings = Monbulk.getSettings();
-						String ns = settings.getDefaultNamespace() + ".";
 						if (d.startsWith(ns))
 						{
 							m_dictionaryCombo.addItem(d);
