@@ -68,6 +68,7 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 		boolean isAdmin = user.hasRole(Roles.MetadataEditor.ADMIN);
 		m_metadataList.setShowRemove(isAdmin);
 		m_metadataProperties.setShowSaveTemplate(isAdmin);
+		m_metadataProperties.clear();
 		
 		m_metadataList.setHandler(new MetadataList.Handler()
 		{
@@ -200,9 +201,10 @@ public class MetadataEditor extends ResizeComposite implements IWindow
 				m.setName(name);
 			}
 
-			m.clearModified();
 			m_metadataProperties.clear();
 			m_metadataProperties.setMetadata(m);
+			m.clearModified();
+			m.onModified();	// Trigger modified handlers so UI state is up to date.
 			m_metadataProperties.setNameFocus();
 			m_metadataList.clearSelection();
 			m_metadataList.addDummyItem();

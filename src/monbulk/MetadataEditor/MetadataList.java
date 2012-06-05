@@ -59,7 +59,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 
 	protected List<String> m_metadataTypes = null;
 	private Handler m_handler = null;
-	private String m_selected;
+	private String m_selected = "";
 	private boolean m_showTemplates = true;
 
 	@UiField HTMLPanel m_buttonsPanel;
@@ -238,6 +238,12 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	{
 		m_metadataListBox.addItem("<new metadata>");
 		setSelectedMetadata("<new metadata>");
+
+		// Can't do anything until no longer creating new metadata.
+		m_removeMetadata.setEnabled(false);
+		m_newMetadata.setEnabled(false);
+		m_fromTemplate.setEnabled(false);
+		m_cloneMetadata.setEnabled(false);
 	}
 	
 	/**
@@ -254,6 +260,9 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 				m_metadataListBox.removeItem(index);
 			}
 		}
+
+		// Update button state.
+		setButtonState();
 	}
 
 	public void onKeyDown(KeyDownEvent event)
@@ -304,6 +313,7 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 	public void populateListBox()
 	{
 		m_metadataListBox.clear();
+		setButtonState();
 
 		MetadataService service = MetadataService.get();
 		if (service != null)
@@ -355,6 +365,8 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 							setFocus(true);
 						}
 					}
+					
+					setButtonState();
 				}
 			});
 		}
@@ -376,6 +388,9 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 		Settings settings = Monbulk.getSettings();
 		String ns = settings.getDefaultNamespace() + ".template.";
 		m_fromTemplate.setEnabled(m_selected.startsWith(ns));
+		m_removeMetadata.setEnabled(m_selected.length() > 0);
+		m_cloneMetadata.setEnabled(m_selected.length() > 0);
+		m_newMetadata.setEnabled(true);
 	}
 
 	/**

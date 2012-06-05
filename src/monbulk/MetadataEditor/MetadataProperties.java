@@ -59,6 +59,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	private Metadata m_metadata = null;
 	private ElementEditor m_elementEditor;
 	private boolean m_addNewElement = false;
+	private boolean m_readOnly = false;
 	
 	public MetadataProperties() throws Exception
 	{
@@ -107,6 +108,8 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_elementEditor.setReadOnly(readOnly);
 		m_save.setVisible(!readOnly);
 		m_saveAsTemplate.setVisible(!readOnly);
+		
+		m_readOnly = readOnly;
 	}
 
 	/**
@@ -193,8 +196,11 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			public void onModified()
 			{
 				String name = m_metadata.getName();
-				boolean hasName = name != null && name.length() > 0 && !name.equals(namespace) && !name.equals(namespace + "template.");
+				String template = namespace + "template.";
+				boolean hasName = name != null && name.length() > 0 && !name.equals(namespace) && !name.equals(template);
 				m_save.setEnabled(hasName);
+				boolean isTemplate = name != null && name.startsWith(template);
+				m_saveAsTemplate.setEnabled(hasName && !isTemplate);
 			}
 		});
 		
@@ -229,6 +235,9 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			TreeItem treeItem = m_elementsTree.getItem(0);
 			m_elementsTree.setSelectedItem(treeItem, true);
 		}
+		
+		m_name.setEnabled(!m_readOnly);
+		m_description.setEnabled(!m_readOnly);
 	}
 
 	/**
@@ -237,6 +246,7 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 	public void clear()
 	{
 		m_save.setEnabled(false);
+		m_saveAsTemplate.setEnabled(false);
 		m_metadata = null;
 		m_addElement.setEnabled(false);
 		m_name.setText("");
@@ -244,6 +254,13 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		m_description.setText("");
 		m_elementsTree.clear();
 		clearElements();
+
+		Settings settings = Monbulk.getSettings();
+		String defaultNs = settings.getDefaultNamespace(); 
+		m_namespace.setText(defaultNs + ".");
+		
+		m_name.setEnabled(false);
+		m_description.setEnabled(false);
 	}
 
 	public void onDoubleClick(DoubleClickEvent event)	
