@@ -199,8 +199,6 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 				String template = namespace + "template.";
 				boolean hasName = name != null && name.length() > 0 && !name.equals(namespace) && !name.equals(template);
 				m_save.setEnabled(hasName);
-				boolean isTemplate = name != null && name.startsWith(template);
-				m_saveAsTemplate.setEnabled(hasName && !isTemplate);
 			}
 		});
 		
@@ -217,11 +215,13 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 			name = name.substring(namespace.length());
 		}
 
+		boolean isTemplate = false;
 		if (name.startsWith("template."))
 		{
 			// It's a template, so remove from the name.
 			ns = ns + ".template";
 			name = name.substring(9);
+			isTemplate = true;
 		}
 		
 		m_namespace.setText(ns + ".");
@@ -238,6 +238,8 @@ public class MetadataProperties extends Composite implements SelectionHandler<Tr
 		
 		m_name.setEnabled(!m_readOnly);
 		m_description.setEnabled(!m_readOnly);
+		
+		m_saveAsTemplate.setEnabled(!isTemplate);
 	}
 
 	/**
