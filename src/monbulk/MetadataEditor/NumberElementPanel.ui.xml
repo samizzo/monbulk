@@ -16,7 +16,7 @@
 		<g:layer top="2px" height="24px" left="0px" width="90px">
 			<g:Label text="Range:" />
 		</g:layer>
-		<g:layer top="0px" height="22px" left="100px" width="60px">
+		<g:layer top="0px" height="24px" left="100px" width="60px">
 			<g:HTMLPanel>
 				<div class="textBoxPadding">
 					<u:TextBoxEx width="100%" ui:field="m_minimum" hintText="-infinity" hintTextStyle="{style.HintText}" onlyNumbers="true" allowNegative="true" />
@@ -28,7 +28,7 @@
 		<g:layer top="2px" height="24px" left="166px" width="32px">
 			<g:Label text="to" />
 		</g:layer>
-		<g:layer top="0px" height="22px" left="186px" width="60px">
+		<g:layer top="0px" height="24px" left="186px" width="60px">
 			<g:HTMLPanel>
 				<div class="textBoxPadding">
 					<u:TextBoxEx width="100%" ui:field="m_maximum" hintText="infinity" hintTextStyle="{style.HintText}" onlyNumbers="true" allowNegative="true" />

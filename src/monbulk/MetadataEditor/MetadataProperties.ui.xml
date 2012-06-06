@@ -19,7 +19,7 @@
 		
 		.SaveTemplateButton
 		{
-			width: 120px;
+			width: 133px;
 			float: right;
 			margin-left: 4px;
 			margin-right: 8px;
@@ -48,7 +48,7 @@
 					<g:layer top="2px" height="29px" left="0px" width="48px">
 						<g:Label text="Name:" height="" />
 					</g:layer>
-					<g:layer left="104px" right="10px" top="0px" height="23px">
+					<g:layer left="104px" right="10px" top="0px" height="24px">
 						<g:HTMLPanel>
 							<g:Label text="" ui:field="m_namespace" styleName="{style.Namespace}" />
 							<div class="textBoxPadding" style="overflow: hidden;">
@@ -56,7 +56,7 @@
 							</div>
 						</g:HTMLPanel>
 					</g:layer>
-					<g:layer width="8px" right="0px" top="4px" height="23px">
+					<g:layer width="8px" right="0px" top="4px" height="24px">
 						<g:Label text="*" styleName="RedStar" />
 					</g:layer>
 
@@ -64,7 +64,7 @@
 					<!--<g:layer top="62px" height="29px" left="0px" width="50px">
 						<g:Label height="" text="Label:"/>
 					</g:layer>
-					<g:layer left="104px" right="10px" top="60px" height="23px">
+					<g:layer left="104px" right="10px" top="60px" height="24px">
 						<g:HTMLPanel>
 							<div class="textBoxPadding">
 								<g:TextBox ui:field="m_label" width="100%" />
@@ -76,7 +76,7 @@
 					<g:layer left="0px" width="98px" top="33px" height="29px">
 						<g:Label height="" text="Description:"/>
 					</g:layer>
-					<g:layer top="31px" height="23px" left="104px" right="10px">
+					<g:layer top="31px" height="24px" left="104px" right="10px">
 						<g:HTMLPanel>
 							<div class="textBoxPadding">
 								<g:TextBox ui:field="m_description" width="100%" />

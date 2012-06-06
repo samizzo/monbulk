@@ -15,7 +15,7 @@
 		<g:layer top="2px" height="24px" left="0px" width="130px">
 			<g:Label text="Maximum length:" />
 		</g:layer>
-		<g:layer top="0px" height="22px" left="130px" width="60px">
+		<g:layer top="0px" height="24px" left="130px" width="60px">
 			<g:HTMLPanel>
 				<div class="textBoxPadding">
 					<u:TextBoxEx width="100%" ui:field="m_maxLength" hintText="infinite" hintTextStyle="{style.HintText}" onlyNumbers="true" />

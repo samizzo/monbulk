@@ -25,7 +25,6 @@
 		
 		.TemplateButton
 		{
-			width: 98px;
 		}
 	</ui:style>
 
