@@ -167,13 +167,13 @@ public class mfMethodService extends MethodService {
 						if(xe.elements()!=null)
 						{
 							String useCount = xe.stringValue("methods");
-							if(useCount=="0")
+							if(useCount.contains("0") && useCount.length()==1)
 							{
-								mu_handler.checkExists(false);
+								m_handler.onMethodInUse(false);
 							}
 							else
 							{
-								mu_handler.checkExists(true);
+								m_handler.onMethodInUse(true);
 							}
 						}
 						else

@@ -9,6 +9,7 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
 
+import monbulk.client.Monbulk;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Model.IPojo;
 import monbulk.shared.util.HtmlFormatter;
@@ -110,7 +111,14 @@ public class pojoMethodComplete implements IPojo{
 		 
 		 Element namespace = doc.createElement("namespace");
 		 //Settings to get namespace
-		 namespace.appendChild(doc.createTextNode("/pssd/methods"));
+		 if(Monbulk.getSettings().getDefaultNamespace()!=null)
+		 {
+			 namespace.appendChild(doc.createTextNode(Monbulk.getSettings().getDefaultNamespace()));
+		 }
+		 else
+		 {
+			 namespace.appendChild(doc.createTextNode("/pssd/methods"));
+		 }
 		 method.appendChild(namespace);
 		 
 		 Iterator<Entry<String,pojoStepDetails>> i = this.allSteps.entrySet().iterator();

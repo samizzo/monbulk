@@ -597,18 +597,19 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 					}
 				}
 			}
-			if(ServiceName=="CheckUse")
-			{
-				if(this.mainModel.checkInUse())
-				{
-					ArrayList<String> tmpList = new ArrayList<String>();
-					tmpList.add("InUse");
-					this.NavigationView.setData(tmpList);
-				}
-			}
+			
 			//this.getCurrentPresenterState().getView().LoadForm(this.mainModel.getFormData(this.getCurrentPresenterState().presenterState.toString()));
 			GWT.log("We get here...MU");
 			this.ChangeState(MethodCreatorStates.METHOD_DETAILS);
+		}
+		if(ServiceName=="CheckUse")
+		{
+			if(this.mainModel.checkInUse())
+			{
+				ArrayList<String> tmpList = new ArrayList<String>();
+				tmpList.add("InUse");
+				this.NavigationView.setData(tmpList);
+			}
 		}
 	}
 	@Override
