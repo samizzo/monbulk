@@ -31,18 +31,22 @@ public abstract class MethodService implements iService{
 		Create,
 		Edit,
 		Find,
-		CheckExists
+		CheckExists,
+		Delete,
+		InUse
 	}
 
 	public interface MethodServiceHandler
 	{
 		public void onReadMethodList(ArrayList<pojoMethod> arrMethods);
 		public void onReadMethod(pojoMethodComplete method);
+		public void onMethodInUse(Boolean isInUse);
 	}
 	public interface MethodUpdateHandler
 	{
 		public void onUpdateMethod(String response);
 		public void checkExists(Boolean response);
+		public void onDelete(String Response);
 	}
 	@Override
 	public ServiceNames getServiceType() {
@@ -51,14 +55,27 @@ public abstract class MethodService implements iService{
 		
 	}
 
-	// Returns a list of all available Methods
+	
+	/**
+	 * Returns a list of all available Methods
+	 * @param handler
+	 */
 	public abstract void getMethodList(MethodServiceHandler handler);
 	
 		
-	// Returns a specific Method type.
+	
+	/**
+	 * Returns a specific Method type
+	 * @param ID
+	 * @param handler
+	 */
 	public abstract void getMethod(String ID, MethodServiceHandler handler);
 	
 	public abstract void checkExists(String Name, MethodUpdateHandler handler);
 	
 	public abstract void createOrUpdate(String xml, MethodUpdateHandler handler);
+	
+	public abstract void deleteMethod(String ID, MethodUpdateHandler handler);
+	
+	public abstract void checkUsage(String ID,MethodServiceHandler handler);
 }
