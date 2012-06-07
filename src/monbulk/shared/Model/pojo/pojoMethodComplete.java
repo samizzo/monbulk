@@ -57,7 +57,7 @@ public class pojoMethodComplete implements IPojo{
 	public void addStep()
 	{
 		String formName = pojoStepDetails.FormName+ this.getStepCount();
-		pojoStepDetails tmpStep = new pojoStepDetails(this.stepsAdded);
+		pojoStepDetails tmpStep = new pojoStepDetails(this.getStepCount());
 		this.allSteps.put(formName,tmpStep); //.add(StepFormName,tmpStep);
 		this.stepsAdded++;
 	}
