@@ -157,6 +157,36 @@ public class mfMethodService extends MethodService {
 					{
 						GWT.log("Exception caught at mfMethodService.onReadMethod" + ex.getMessage());
 					}
+					break;
+				case Delete:
+						mu_handler.onDelete(xe.toString());
+						break;
+				case InUse:
+					try
+					{
+						if(xe.elements()!=null)
+						{
+							String useCount = xe.stringValue("methods");
+							if(useCount=="0")
+							{
+								mu_handler.checkExists(false);
+							}
+							else
+							{
+								mu_handler.checkExists(true);
+							}
+						}
+						else
+						{
+							m_handler.onMethodInUse(false);
+						}
+						
+					}
+					catch(Exception ex)
+					{
+						GWT.log("Exception caught at mfMethodService.onReadMethod" + ex.getMessage());
+					}
+						
 				default:
 					break;
 			}
@@ -207,12 +237,38 @@ public class mfMethodService extends MethodService {
 	@Override
 	public void checkExists(String Name, MethodUpdateHandler handler) {
 		Session.execute(
-				new ServiceContext("mfMethodService.update"),
+				new ServiceContext("mfMethodService.checkExists"),
 				"om.pssd.method.find",
 				"<name>" + Name + "</name>",
 				null,
 				0,
 				new MethodResponseHandler(handler, MethodRequest.CheckExists), 
+				true);
+		
+	}
+
+	@Override
+	public void deleteMethod(String ID, MethodUpdateHandler handler) {
+		Session.execute(
+				new ServiceContext("mfMethodService.delete"),
+				"om.pssd.method.destroy",
+				"<id>" + ID + "</id>",
+				null,
+				0,
+				new MethodResponseHandler(handler, MethodRequest.Delete), 
+				true);
+		
+	}
+
+	@Override
+	public void checkUsage(String ID, MethodServiceHandler handler) {
+		Session.execute(
+				new ServiceContext("mfMethodService.usage"),
+				"om.pssd.method.use.count",
+				"<id>" + ID + "</id>",
+				null,
+				0,
+				new MethodResponseHandler(handler, MethodRequest.InUse), 
 				true);
 		
 	}
