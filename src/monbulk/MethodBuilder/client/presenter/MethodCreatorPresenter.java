@@ -188,6 +188,14 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 								//GWT.log(tmpState.presenterState.toString());
 						GWT.log("cHILD wIDGET:" + tmpView.getClass());
 						GWT.log("cHILD wIDGET:" + tmpView.asWidget().toString());
+						
+						if(tmpView.getViewType()==MonbulkEnums.viewTypes.DRAGDROP)
+						{
+							IDraggable vw = (IDraggable)tmpView;
+							
+							vw.BuildList(this.mainModel.getMetaDataList(pojoSubjectProperties.SubjectMetaDataField),pojoSubjectProperties.SubjectMetaDataField);
+							
+						}
 						return;
 					}
 							
@@ -282,6 +290,7 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 				{
 					this.ChangeState(MethodCreatorStates.SUBJECT_PROPERTIES);
 					this.ImplementedMethodView.SetMenuIndex(MethodCreatorStates.SUBJECT_PROPERTIES.toString());
+					
 					GWT.log("complete Load");
 				}
 			}
@@ -410,12 +419,20 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 				IFormView tmpView = this._AllStates.get(this.stateSelector.get(FormName));
 				tmpView.ClearForm();
 				tmpView.LoadForm(tmpForm);
+				if(tmpView.getViewType()==MonbulkEnums.viewTypes.DRAGDROP)
+				{
+					IDraggable vw = (IDraggable)tmpView;
+					
+					vw.BuildList(this.mainModel.getMetaDataList(pojoSubjectProperties.SubjectMetaDataField),pojoSubjectProperties.SubjectMetaDataField);
+					
+				}
 				//tmpView.LoadForm(tmpForm);				
 				//GWT.log("Pre-SetChild" + this.CurrentState);
 				this.ImplementedMethodView.setChild(tmpView.asWidget());
 				//GWT.log("Post-SetChild" + newState);
 				this.ImplementedMethodView.setPresenter(this);
 				this.CurrentState=this.stateSelector.get(FormName);
+				
 			}
 				
 		}
@@ -532,7 +549,10 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 					//this.mainModel.loadMetaData(DataFieldName, relatedPOJO);
 				}
 			}
-		
+			if(Action==2)
+			{
+				this.mainModel.loadMetaData(DataFieldName, (pojoMetaData) relatedPOJO);
+			}
 		
 		//this.mainModel.
 		

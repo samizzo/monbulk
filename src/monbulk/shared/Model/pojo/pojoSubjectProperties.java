@@ -210,13 +210,19 @@ public class pojoSubjectProperties implements IPojo {
 			{
 				this.attachedMetaData.put(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField), selectedPOJO);
 			}
+			else
+			{
+				this.attachedMetaData.remove(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField));
+				this.attachedMetaData.put(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField), selectedPOJO);
+			}
 		}
 		else
 		{
-			if(this.attachedMetaData.get(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField))==null)
+			if(this.attachedMetaData.get(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField))!=null)
 			{
 				this.attachedMetaData.remove(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField));
 			}
+			
 		}
 	}
 	@Override
@@ -247,7 +253,7 @@ public class pojoSubjectProperties implements IPojo {
 						String mdName = tmpItem.selectValue("definition").toString();
 						pojoMetaData tmpMD = new pojoMetaData(mdName);
 						tmpMD.setFieldVale(pojoMetaData.IsPublicField, true);
-						if(isMandatory =="mandatory")
+						if(isMandatory.contains("mandatory"))
 						{
 							tmpMD.setFieldVale(pojoMetaData.IsMandatoryField, true);
 						}

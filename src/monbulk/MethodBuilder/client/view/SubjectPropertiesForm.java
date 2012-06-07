@@ -173,7 +173,8 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 			}
 			else
 			{
-				tmpTable.removeRow(Index);
+				tmpTable.removeCell(Index, 0);
+				tmpTable.removeRow(0);
 				
 			}
 		}
@@ -189,20 +190,23 @@ public class SubjectPropertiesForm extends baseForm implements IFormView,IDragga
 	@Override
 	public Boolean DroptItem(IPojo someItem,Widget fromList,final String FieldName) {
 		// TODO Auto-generated method stub
-		DraggableCellWidget tmpWidget = new DraggableCellWidget(AddedRowIndex,false,someItem);  
+		final DraggableCellWidget tmpWidget = new DraggableCellWidget(AddedRowIndex,false,someItem); 
+		tmpWidget.setFieldName(FieldName);
 		tmpWidget.enableExpand(false);
 		final FormPresenter p = this.Presenter;
 		//tmpWidget.setName(someItem.getFieldVale(pojoMetaData.MetaDataNameField));
 		tmpWidget.setPresenter((IPresenter) Presenter);
 		final pojoMetaData tmpData =(pojoMetaData)someItem;
-		final Widget fromWidget = fromList;
+		final FlexTable fromWidget = (FlexTable)fromList;
+		
 		ClickHandler handleRemove = new ClickHandler()
 		{
 
 			@Override
 			public void onClick(ClickEvent event) {
 				p.FireDragEvent(new DragEvent(pojoMetaData.FormName,FieldName,1,tmpData));
-				DragItem(tmpData, fromWidget);
+				fromWidget.remove(tmpWidget);
+				//DragItem(tmpData, fromWidget);
 			}
 			
 		};

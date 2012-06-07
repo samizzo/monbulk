@@ -66,12 +66,13 @@ public class DraggableCellWidget extends Composite implements IView,HasValue{
 	private Boolean canAdd;
 	private String OriginalName;
 	protected pojoMetaData  _DataObject;
-	
+	private String FieldName;
 	private VerticalPanel _ExpandedPanel;
 	
 	private name.pehl.totoe.xml.client.Document xmlDoc;
 	public DraggableCellWidget(int tmpID, Boolean isAdd, IPojo tmpData) {
 		initWidget(uiBinder.createAndBindUi(this));
+		this.FieldName = "";
 		ID = tmpID;
 		this.canAdd = isAdd;
 		//this._cbIsMandatory.setText(text)
@@ -89,6 +90,22 @@ public class DraggableCellWidget extends Composite implements IView,HasValue{
 		{
 			this.Add.setStyleName("RemoveButton");
 		}*/
+		if(this._DataObject.getFieldVale(pojoMetaData.IsMandatoryField)!=null)
+		{
+			if(this._DataObject.getFieldVale(pojoMetaData.IsMandatoryField)==Boolean.TRUE.toString())
+			{
+				this._cbIsMandatory.setValue(true);
+				this._cbIsMandatory.setFormValue("true");
+			}
+		}
+		if(this._DataObject.getFieldVale(pojoMetaData.IsPublicField)!=null)
+		{
+			if(this._DataObject.getFieldVale(pojoMetaData.IsPublicField)==Boolean.TRUE.toString())
+			{
+				this._cbIsPublic.setValue(true);
+				this._cbIsPublic.setFormValue("true");
+			}
+		}
 		
 	}
 	public void setName(String CellName)
@@ -96,7 +113,10 @@ public class DraggableCellWidget extends Composite implements IView,HasValue{
 		OriginalName = CellName;
 		this.Name.setText(OriginalName);
 	}
-	
+	public void setFieldName(String FieldName)
+	{
+		this.FieldName = FieldName;
+	}
 	public void enableExpand(Boolean canExpand)
 	{
 		this._btnExpand.setVisible(canExpand);
@@ -117,13 +137,15 @@ public class DraggableCellWidget extends Composite implements IView,HasValue{
 	public void onValueChange(ValueChangeEvent<Boolean> event)
 	{
 		this._DataObject.setFieldVale(pojoMetaData.IsMandatoryField, event.getValue());
-		presenter.FireDragEvent(new DragEvent(this.OriginalName, "Update", this.ID, this._DataObject));
+		this._DataObject.setFieldVale(pojoMetaData.IsPublicField, this._cbIsPublic.getValue());
+		presenter.FireDragEvent(new DragEvent(this.OriginalName, this.FieldName, 2, this._DataObject));
 	}
 	@UiHandler("_cbIsPublic")
 	public void onValueChange2(ValueChangeEvent<Boolean> event)
 	{
 		this._DataObject.setFieldVale(pojoMetaData.IsPublicField, event.getValue());
-		presenter.FireDragEvent(new DragEvent(this.OriginalName, "Update", this.ID, this._DataObject));
+		this._DataObject.setFieldVale(pojoMetaData.IsMandatoryField, this._cbIsMandatory.getValue());
+		presenter.FireDragEvent(new DragEvent(this.OriginalName, this.FieldName, 2, this._DataObject));
 	}
 	public void AttachToggleHandler(ClickHandler newHandler)
 	{

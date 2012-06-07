@@ -73,6 +73,11 @@ public class pojoStepDetails implements IPojo{
 			{
 				inList.put(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField), selectedPOJO);
 			}
+			else
+			{
+				inList.remove(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField));
+				inList.put(selectedPOJO.getFieldVale(pojoMetaData.MetaDataNameField), selectedPOJO);
+			}
 		}
 		else
 		{
