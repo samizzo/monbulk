@@ -231,10 +231,12 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 			else if(response=="Delete")
 			{
 				_r_text.setText("Success: Your method has been deleted");
+				registration.removeHandler();
 			}
 			else
 			{
 				_r_text.setText("Success: Your method has been created with ID: " + response);
+				registration.removeHandler();
 			}
 		}
 		else
@@ -248,7 +250,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		this.m_windowSettings.windowTitle = "METHOD SAVED";
 		Desktop d = Desktop.get();		
 		d.setSize("200px", "200px");
-		registration.removeHandler();
+		
 		//this.m_ok.(handleSave);
 		d.show("MethodPreviewWindow",true);
 		/*if(response=="Delete")
@@ -288,6 +290,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 	}
 	public void confirmDelete(final String MethodID)
 	{
+		_PreviewPanel.clear();
 		this._Guide.setText("Are you sure you want to delete the method with id: " + MethodID +"?");
 		final MethodUpdateHandler tmpHandle = this;
 		handleSave = new ClickHandler(){

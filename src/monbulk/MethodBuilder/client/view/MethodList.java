@@ -2,8 +2,10 @@ package monbulk.MethodBuilder.client.view;
 
 /*Java Util Imports */
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 /*GWT Miscellaneous Imports */
 import com.google.gwt.core.client.GWT;
@@ -73,7 +75,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	private final HandlerManager eventBus;
 	private String ActiveClassName;
 	private String PassiveClassName;
-	
+	private HashMap<String,pojoMethod> methodList;
 	
 	@UiField
 	FlexTable _MenuStack;
@@ -93,7 +95,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	public MethodList(HandlerManager eBus) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.eventBus = eBus;
-		
+		methodList = new HashMap<String,pojoMethod>();
 		try
 		{
 			MethodService service = (MethodService)ServiceRegistry.getService(MonbulkEnums.ServiceNames.Methods);
@@ -175,18 +177,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	@Override
 	public void Filter(String Name)
 	{
-		int count = this._MenuStack.getRowCount();
-		int i=0;
-		while(i<count)
-		{
-			MethodMenuItem tmpItem = (MethodMenuItem)this._MenuStack.getWidget(i, 0);
-			if(!tmpItem.getText().contains(Name))
-			{
-				tmpItem.setVisible(false);
-				//this._MenuStack.getHeaderWidget(i).setVisible(false);
-			}
-			i++;
-		}
+		this.BuildList(Name);
 	}
 	/*
 	 * (non-Javadoc)
@@ -236,7 +227,55 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 		
 		
 	}
+	private void BuildList(String Filter)
+	{
+		
+			Iterator<Entry<String,pojoMethod>> it = this.methodList.entrySet().iterator();
+			
+			int i=0;
+			this._MenuStack.clear();
+			while(it.hasNext())
+			{
+				//Use of final to allow access to it in the clickHandlers
+				final int index = i;  //This keeps track of which item we are looking at
+				Entry<String,pojoMethod> tmpEntry = it.next();
+				final pojoMethod tmpMethod = tmpEntry.getValue();
+				
+				if(tmpMethod.getMethodName().contains(Filter))
+				{
+					final Label titleLabel = new Label();
+					titleLabel.setText(tmpMethod.getMethodName());
+					titleLabel.addStyleName("menuMethodName");
+					PushButton _edit = new PushButton();
+					_edit.setStyleName("btnEditMethod");
+					_edit.addClickHandler(new ClickHandler()
+					{
 	
+						@Override
+						public void onClick(ClickEvent event) {
+							
+							//set selected style/should shuffle as well
+							setActiveMenu(titleLabel.getText());
+							eventBus.fireEvent(new DragEvent(titleLabel.getText(),"EditMethod",index,(IPojo)tmpMethod));
+							
+						}
+						
+					});
+					
+					//this._MenuStack.setWidget(i,0,tmpItem.asWidget());
+					this._MenuStack.setWidget(i,0,titleLabel);
+					this._MenuStack.setWidget(i,1,_edit);
+				//	this._MenuStack.setWidget(i,2,_clone);
+					_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 1px #ccc;");
+					_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
+					i++;
+				}
+			}
+			
+			_MenuStack.setCellPadding(0);
+			_MenuStack.setCellSpacing(0);
+		
+	}
 	/*
 	 * (non-Javadoc)
 	 * @see monbulk.shared.Services.MethodService.MethodServiceHandler#onReadMethodList(java.util.ArrayList)
@@ -255,7 +294,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 				//Use of final to allow access to it in the clickHandlers
 				final int index = i;  //This keeps track of which item we are looking at
 				final pojoMethod tmpMethod = it.next();
-			
+				this.methodList.put(tmpMethod.getMethodName(), tmpMethod);
 				
 				final Label titleLabel = new Label();
 				titleLabel.setText(tmpMethod.getMethodName());
