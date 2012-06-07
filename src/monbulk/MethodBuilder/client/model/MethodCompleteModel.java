@@ -29,6 +29,7 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 	private FormPresenter Presenter; 
 	
 	private Boolean isLoaded;
+	private Boolean isInUse;
 	private int StepCount;
 	private String CurrentStep;
 	private String FirstStep;
@@ -151,6 +152,7 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 	
 	@Override
 	public void loadData(String ID) {
+		//We also need to check if in use
 		if(ID!="")
 		{
 			try
@@ -159,6 +161,7 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 				if(tmpSvc != null)
 				{
 					tmpSvc.getMethod(ID, this);
+					tmpSvc.checkUsage(ID, this);
 						
 				}
 				else
@@ -253,6 +256,8 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 			
 		this.CompleteModel = method;
 		this.StepCount = this.CompleteModel.getStepCount(); 
+		MethodService tmpSvc = MethodService.get();
+		
 		//this.formCompleteModel = this.CompleteModel.getFormStructure();
 		//this.Presenter.ModelUpdate("GetMethod");
 		GWT.log("thus far A");
@@ -360,6 +365,29 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 		}
 		return null;
 	}
+	@Override
+	public void onMethodInUse(Boolean isInUse) {
+		this.isInUse = isInUse;
+		this.Presenter.ModelUpdate("CheckUse");
+		
+	}
+	public Boolean checkInUse()
+	{
+		if(this.isInUse!=null)
+		{
+			return this.isInUse;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	public String getMethodID()
+	{
+		return this.CompleteModel.getMethodID();
+	}
+	
+	
 	
 
 }

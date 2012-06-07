@@ -433,31 +433,29 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		{
 			StringBuilder strTCL = new StringBuilder();
 			strTCL.append(this.mainModel.getStringRpresentation("XML"));
-		
-			//Should just launch a Window with a Pojo
 			Desktop d = Desktop.get();
 			final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
 			m.loadPreview(this.mainModel.getStringRpresentation("XML"), SupportedFormats.XML);
-			//d.
-			//_newWin.loadPreview(strTCL, SupportedFormats.TCL);
-		    //_newWin.setOkCancelHandler(this);
-		    d.show(m, true);
+			d.show(m, true);
 		}
 		else if(Command=="Clone")
 		{
 			StringBuilder strTCL = new StringBuilder();
 			this.mainModel.setAsClone();
 			strTCL.append(this.mainModel.getStringRpresentation("XML"));
-			
-			//Should just launch a Window with a Pojo
 			Desktop d = Desktop.get();
 			final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
 			m.cloneMethod(this.mainModel.getStringRpresentation("XML"), SupportedFormats.XML,this.mainModel.getMethodName());
-			//d.
-			//_newWin.loadPreview(strTCL, SupportedFormats.TCL);
-		    //_newWin.setOkCancelHandler(this);
-		    d.show(m, true);
+			d.show(m, true);
 		    
+		}
+		else if(Command=="DeleteMethod")
+		{
+			Desktop d = Desktop.get();
+			final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
+			m.confirmDelete(this.mainModel.getMethodID());
+			d.show(m, true);
+			
 		}
 		else if(Command=="Publish")
 		{
@@ -597,6 +595,15 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 							
 						}
 					}
+				}
+			}
+			if(ServiceName=="CheckUse")
+			{
+				if(this.mainModel.checkInUse())
+				{
+					ArrayList<String> tmpList = new ArrayList<String>();
+					tmpList.add("InUse");
+					this.NavigationView.setData(tmpList);
 				}
 			}
 			//this.getCurrentPresenterState().getView().LoadForm(this.mainModel.getFormData(this.getCurrentPresenterState().presenterState.toString()));

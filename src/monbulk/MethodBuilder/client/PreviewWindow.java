@@ -1,9 +1,5 @@
 package monbulk.MethodBuilder.client;
 
-
-
-
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -24,6 +20,12 @@ import monbulk.shared.util.MonbulkEnums.ServiceNames;
 import monbulk.shared.widgets.Window.IWindow;
 import monbulk.shared.widgets.Window.OkCancelWindow;
 
+/**
+ * This is a popup window for performing a lot of the Method Service work and returning a confirmation to the user
+ * 
+ * @author Andrew Glenn
+ *
+ */
 public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpdateHandler {
 
 	private StringBuilder formattedText;
@@ -157,8 +159,8 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		tmpList = tmpList.replace("<method>", "");
 		tmpList = tmpList.replace("</method>", "");
 		tmpArea.setText(tmpList);
-		final MethodUpdateHandler tmpHandle = this;
-		
+		//final MethodUpdateHandler tmpHandle = this;
+		/*
 		handleSave = new ClickHandler(){
 
 			@Override
@@ -186,10 +188,31 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 			}
 			
 		};
+		
 		registration = this.m_ok.addClickHandler(handleSave);
-		_Guide.setText("You can append the xml of the method below. Click OK to save the method.");
+		*/
+		try
+		{
+			MethodService tmpSvc = MethodService.get();
+			if(tmpSvc != null)
+			{
+				tmpSvc.createOrUpdate(tmpArea.getText(), this);
+				
+				
+					
+			}
+			else
+			{
+				throw new ServiceRegistry.ServiceNotFoundException(ServiceNames.Methods);
+			}
+		}
+		catch (ServiceRegistry.ServiceNotFoundException e)
+		{
+			GWT.log("Couldn't find Method service");
+		}
+		_Guide.setText("Saving Methpd... Please wait.");
 		_PreviewPanel.add(_Guide);
-		_PreviewPanel.add(tmpArea);
+		//_PreviewPanel.add(tmpArea);
 		
 		
 		
@@ -204,8 +227,10 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 			{
 				_r_text.setText("Success: Your method has been updated");
 				
-				
-				
+			}
+			else if(response=="Delete")
+			{
+				_r_text.setText("Success: Your method has been deleted");
 			}
 			else
 			{
@@ -226,7 +251,14 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		registration.removeHandler();
 		//this.m_ok.(handleSave);
 		d.show("MethodPreviewWindow",true);
-		
+		/*if(response=="Delete")
+		{
+			this.eventBus.fireEvent(new MenuChangeEvent("Refresh-Restart"));
+		}	
+		else
+		{
+			this.eventBus.fireEvent(new MenuChangeEvent("Refresh"));
+		}*/
 		this.eventBus.fireEvent(new MenuChangeEvent("Refresh"));
 		
 	}
@@ -252,6 +284,43 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 			//this.m_ok.(handleSave);
 			d.show("MethodPreviewWindow",true);
 		}
+		
+	}
+	public void confirmDelete(final String MethodID)
+	{
+		this._Guide.setText("Are you sure you want to delete the method with id: " + MethodID +"?");
+		final MethodUpdateHandler tmpHandle = this;
+		handleSave = new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				try
+				{
+					MethodService tmpSvc = MethodService.get();
+					if(tmpSvc != null)
+					{
+						tmpSvc.deleteMethod(MethodID, tmpHandle);
+							
+					}
+					else
+					{
+						throw new ServiceRegistry.ServiceNotFoundException(ServiceNames.Methods);
+					}
+				}
+				catch (ServiceRegistry.ServiceNotFoundException e)
+				{
+					GWT.log("Couldn't find Method service");
+				}
+				
+			}
+			
+		};
+		registration = this.m_ok.addClickHandler(handleSave);
+		_PreviewPanel.add(_Guide);
+	}
+	@Override
+	public void onDelete(String Response) {
+		this.onUpdateMethod("Delete");
 		
 	}
 

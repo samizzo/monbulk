@@ -213,19 +213,22 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 		{
 			Label tmpItem = (Label)this._MenuStack.getWidget(i, 0);
 ///			GWT.log("ItemFound:" + tmpItem.getText() + activeItem + tmpItem.getText().length() + activeItem.length());
-			//Not sure why == doesn't work...
-			if(tmpItem.getText().contains(activeItem)&& tmpItem.getText().length()==activeItem.length())
+			
+			if(tmpItem!=null)
 			{
-				_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 2px #345484;font-weight:bold;color:#345484;");
-				_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;background-color:#345484;");
-			//d	_MenuStack.getFlexCellFormatter().getElement(i, 2).setAttribute("style", "background-color:#345484;");
-				GWT.log("ItemFound:" + activeItem);
-			}
-			else
-			{
-				_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 1px #ccc;");
-				_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
-				//_MenuStack.getFlexCellFormatter().getElement(i, 2).setAttribute("style", "");	
+				if(tmpItem.getText().contains(activeItem)&& tmpItem.getText().length()==activeItem.length())
+				{
+					_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 2px #345484;font-weight:bold;color:#345484;");
+					_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;background-color:#345484;");
+				//d	_MenuStack.getFlexCellFormatter().getElement(i, 2).setAttribute("style", "background-color:#345484;");
+					GWT.log("ItemFound:" + activeItem);
+				}
+				else
+				{
+					_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 1px #ccc;");
+					_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
+					//_MenuStack.getFlexCellFormatter().getElement(i, 2).setAttribute("style", "");	
+				}
 			}
 			//tmpItem.setActive(activeItem);
 			i++;
@@ -324,6 +327,11 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	@Override
 	public void populateItems(List<String> tmpArray) {
 		return;
+		
+	}
+	@Override
+	public void onMethodInUse(Boolean isInUse) {
+		// TODO Auto-generated method stub
 		
 	}
 

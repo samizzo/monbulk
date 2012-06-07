@@ -70,7 +70,14 @@ public class AppletStateNavigation extends Composite implements IView {
 
 	@Override
 	public void setData(ArrayList<String> someList) {
-		// TODO Auto-generated method stub
+		if(someList.size()>0)
+		{
+			if(someList.get(0)=="InUse")
+			{
+				this.btnSave.setVisible(false);
+				this.btnDelete.setVisible(false);
+			}
+		}
 		
 	}
 	public void setStates(String Role)
@@ -97,6 +104,12 @@ public class AppletStateNavigation extends Composite implements IView {
 	{
 		this.Presenter.FormComplete("Navigation", "Clone");
 	}
+	@UiHandler("btnDelete")
+	public void onClick4(ClickEvent e)
+	{
+		this.Presenter.FormComplete("Navigation", "DeleteMethod");
+	}
+	
 	
 
 }
