@@ -234,6 +234,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 			
 			int i=0;
 			this._MenuStack.clear();
+			
 			while(it.hasNext())
 			{
 				//Use of final to allow access to it in the clickHandlers
@@ -265,6 +266,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 					//this._MenuStack.setWidget(i,0,tmpItem.asWidget());
 					this._MenuStack.setWidget(i,0,titleLabel);
 					this._MenuStack.setWidget(i,1,_edit);
+					
 				//	this._MenuStack.setWidget(i,2,_clone);
 					_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 1px #ccc;");
 					_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");

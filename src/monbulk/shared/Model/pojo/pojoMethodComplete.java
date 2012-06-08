@@ -134,7 +134,9 @@ public class pojoMethodComplete implements IPojo{
 		 //Settings to get namespace
 		 if(Monbulk.getSettings().getDefaultNamespace()!=null)
 		 {
-			 namespace.appendChild(doc.createTextNode(Monbulk.getSettings().getDefaultNamespace()));
+			 //TODO Check permissions on mbi. namespace
+			 //namespace.appendChild(doc.createTextNode(Monbulk.getSettings().getDefaultNamespace()));
+			 namespace.appendChild(doc.createTextNode("/pssd/methods"));
 		 }
 		 else
 		 {

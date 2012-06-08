@@ -18,7 +18,7 @@
 											<g:Label>Method Components</g:Label>	
 										</g:customCell>
 										<g:customCell styleName="FormTitleDefault" >
-											<g:Label ui:field="_formName">Form</g:Label>	
+											<g:Label ui:field="_formName">Method Details</g:Label>	
 										</g:customCell>
 									</g:row>
 									
@@ -26,9 +26,9 @@
 							</g:north>	
 			 	 			<g:south size="535" unit="px" styleName="{style.Scroll}">
 			 	 			<g:DockLayoutPanel unit="PX"  height="535px">
-			 	 				<g:west size="287" unit="px" >
-				 	 			<g:ScrollPanel width="287px" height="535px" styleName="{style.Scroll}" >
-					 	 			<g:StackLayoutPanel width="274px" height="537px" unit="PX" styleName="StandardStack" ui:field="MethodNavigationStack">
+			 	 				<g:west size="285" unit="px" >
+				 	 			<g:ScrollPanel width="285px" height="535px" styleName="{style.Scroll}" >
+					 	 			<g:StackLayoutPanel width="285px" height="535px" unit="PX" styleName="StandardStack" ui:field="MethodNavigationStack">
 										<g:stack>
 											<g:header size="41" ui:field="MethodTitle">Method Details</g:header>
 											<g:HTML ui:field="MethodDetailsSummary" />

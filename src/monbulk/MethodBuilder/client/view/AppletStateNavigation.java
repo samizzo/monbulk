@@ -10,6 +10,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -36,6 +37,7 @@ public class AppletStateNavigation extends Composite implements IView {
 	@UiField PushButton btnCancel;
 	@UiField PushButton btnClone;
 	@UiField PushButton btnDelete;
+	@UiField Label lblInUse;
 	
 	public AppletStateNavigation() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -46,18 +48,21 @@ public class AppletStateNavigation extends Composite implements IView {
 			this.btnSave.setVisible(false);
 			this.btnClone.setVisible(false);
 			this.btnDelete.setVisible(false);
+			lblInUse.setVisible(false);
 		}
 		else if(_user.hasRole(Roles.MethodBuilder.CREATE))
 		{
 			this.btnClone.setVisible(true);
 			this.btnSave.setVisible(false);
 			this.btnDelete.setVisible(false);
+			lblInUse.setVisible(false);
 		}
 		else
 		{
 			this.btnSave.setVisible(true);
 			this.btnClone.setVisible(true);
 			this.btnDelete.setVisible(true);
+			lblInUse.setVisible(false);
 		}
 	
 	}
@@ -74,8 +79,17 @@ public class AppletStateNavigation extends Composite implements IView {
 		{
 			if(someList.get(0)=="InUse")
 			{
-				this.btnSave.setVisible(false);
-				this.btnDelete.setVisible(false);
+				this.btnSave.setEnabled(false);
+				
+				this.btnDelete.setEnabled(false);
+				lblInUse.setVisible(true);
+				lblInUse.setText("Method is already in use.");
+			}
+			else
+			{
+				
+				lblInUse.setVisible(false);
+				lblInUse.setText("Method is already in use.");
 			}
 		}
 		

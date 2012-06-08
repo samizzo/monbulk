@@ -5,6 +5,7 @@
 		
 	</ui:style>
 	<g:HTMLPanel>
+	<g:Label ui:field="lblInUse" styleName="lblInUse" />
 		<g:Grid styleName="AppletStateButtons">
 			<g:row >
 				<g:customCell>
