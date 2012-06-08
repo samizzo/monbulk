@@ -210,7 +210,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		{
 			GWT.log("Couldn't find Method service");
 		}
-		_Guide.setText("Saving Methpd... Please wait.");
+		_Guide.setText("Saving Method... Please wait.");
 		_PreviewPanel.add(_Guide);
 		//_PreviewPanel.add(tmpArea);
 		
@@ -323,8 +323,33 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 	}
 	@Override
 	public void onDelete(String Response) {
-		this.onUpdateMethod("Delete");
+		AbsolutePanel _w_response = new AbsolutePanel();
+		Label _r_text = new Label();
+		
+		_r_text.setText("Success: Your method has been deleted");
+		registration.removeHandler();
+		
+		this._PreviewPanel.clear();
+		_w_response.add(_r_text);
+		this._PreviewPanel.add(_w_response);
+		this.setHeight("200px");
+		this.m_windowSettings.windowTitle = "METHOD SAVED";
+		Desktop d = Desktop.get();		
+		//d.setSize("200px", "200px");
+		
+		//this.m_ok.(handleSave);
+		d.show("MethodPreviewWindow",true);
+		/*if(response=="Delete")
+		{
+			this.eventBus.fireEvent(new MenuChangeEvent("Refresh-Restart"));
+		}	
+		else
+		{
+			this.eventBus.fireEvent(new MenuChangeEvent("Refresh"));
+		}*/
+		this.eventBus.fireEvent(new MenuChangeEvent("Refresh"));
 		
 	}
+	
 
 }

@@ -1145,6 +1145,13 @@ MethodEditorDynamicFieldsPanel
 	height:100%;
 	float:right;
 }
+.FormNav td
+{
+	text-align:right;
+	width:100%;
+	height:100%;
+	float:right;
+}
 .formButtonAdd
 {
 background-image:url("images/SpriteSheetButtons.png");
@@ -1180,6 +1187,11 @@ background-image:url("images/SpriteSheetButtons.png");
 .btnDefault:Hover
 {
 	background-position:0px -60px;
+}
+.btnDefault-up-disabled
+{
+	text-decoration: line-through;
+	background-position:0px -25px;
 }
 .AppletStateButtons
 {

@@ -96,23 +96,24 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 	public void SetMenuIndex(String IndexName)
 	{
 		currentForm = IndexName;
-		this._formName.setText(currentForm);
-		this._formName.setStyleName(currentForm);
+		this.writeFriendlyFormName(currentForm);
+		
 		if(IndexName == pojoMethod.FormName)
 		{
 			this.MethodNavigationStack.showWidget(0,false);
-			this.btnNext.setText("> Add Subject");
+			
 			
 		}
 		else if(IndexName == pojoSubjectProperties.FormName)
 		{
 			this.MethodNavigationStack.showWidget(1,false);
-			this.btnNext.setText("> Add Step");
+			
 			
 		}
 		else if(IndexName.contains(pojoStepDetails.FormName))
 		{
-			this.btnNext.setText("> Add Another");
+			
+			
 			this._formName.setStyleName(pojoStepDetails.FormName);
 			//We need to check if this is a new or old stack - FormName is unique
 			//Window.alert("Widget Count:" + this.MethodNavigationStack.getWidgetCount() + "Step COunt" + this.StepIndex );
@@ -168,7 +169,7 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 		//Window.alert("Setting the following:" + this.currentForm);
 		if(anyBuilder.getFormName().contains(pojoStepDetails.FormName))
 		{
-			this.btnNext.setText("> Add Another");
+		
 			GWT.log("Step Path C");
 			if(StepExists(anyBuilder.getFormName())!=null)
 			{
@@ -247,7 +248,7 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 		if(anyBuilder.getFormName().contains(pojoMethod.FormName))
 		{
 			this.MethodNavigationStack.showWidget(0);
-			this.btnNext.setText("> Add Subject");
+			
 			MethodDetailsSummary.setHTML(html);
 			
 		}
@@ -255,7 +256,7 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 		{
 			this.MethodNavigationStack.showWidget(1);
 			SubjectPropertiesSummary.setHTML(html);
-			this.btnNext.setText("> Add Step");
+			
 		}
 		else if(anyBuilder.getFormName().contains(pojoStepDetails.FormName))
 		{
@@ -325,19 +326,19 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 		if(this.MethodNavigationStack.getVisibleIndex() == 0)
 		{
 			this.currentForm=pojoMethod.FormName;
-			this.btnNext.setText("Add Subject");
+			
 			this.thisPresenter.FormComplete(pojoMethod.FormName, "Edit");
 		}
 		else if(this.MethodNavigationStack.getVisibleIndex() == 1)
 		{
 			this.currentForm=pojoSubjectProperties.FormName;
-			this.btnNext.setText("Add Step");
+			
 			this.thisPresenter.FormComplete(pojoSubjectProperties.FormName, "Edit");
 		}
 		else
 		{
 			//Trigger Nothing - should be controlled by Edit Button
-			this.btnNext.setText("Add another Step");
+			
 			CustomStackHeader tmpHeader = (CustomStackHeader)this.MethodNavigationStack.getHeaderWidget(e.getSelectedItem());			
 			this.currentForm = tmpHeader.getCommandArgument();
 			this.thisPresenter.FormComplete(tmpHeader.getCommandArgument(),"Edit");
@@ -345,8 +346,64 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 			//Should show the selected edit state of ICON
 			
 		}
-		_formName.setText(this.currentForm);
+		this.writeFriendlyFormName(this.currentForm);
 		//this.Presenter.FormComplete("StepDetails", "AddAnother");
+	}
+	private void writeFriendlyFormName(String FormName)
+	{
+		String Text1 = this.btnNext.getDownHoveringFace().getText();
+		String Text2 = this.btnNext.getDownFace().getText();
+		String Text3 = this.btnNext.getText();
+		
+		this.btnNext.setText("");
+		this.btnNext.getDownHoveringFace().setText("");
+		this.btnNext.getDownFace().setText("");
+		
+		
+		if(FormName==pojoMethod.FormName)
+		{
+			_formName.setText("Method Details");
+			this.btnNext.setText("> Add Subject Properties");
+			this.btnNext.getDownHoveringFace().setText("> Add Subject Properties");
+			this.btnNext.getDownFace().setText("> Add Subject Properties");
+		}
+		else if(FormName==pojoSubjectProperties.FormName)
+		{
+			_formName.setText("Subject Properties");
+			if(CurrentSteps.size()>0)
+			{
+				this.btnNext.setText("> View Step");
+			}
+			else
+			{
+				this.btnNext.setText("> Add Step");
+			}
+		}
+		else if((FormName.contains(pojoStepDetails.FormName)))
+		{
+			String StepID = FormName.replace(pojoStepDetails.FormName, "");
+			try
+			{
+				int id = Integer.parseInt(StepID);
+				if(id>this.CurrentSteps.size())
+				{
+					this.btnNext.setText("> Add Step");
+				}
+				else
+				{
+					this.btnNext.setText("> Next Step");
+				}
+				id++;
+				String StepName = "Step " + id + ": Details";
+				_formName.setText(StepName);	
+				
+			}
+			catch(Exception ex)
+			{
+				_formName.setText("StepDetails");
+				this.btnNext.setText("Next");
+			}
+		}
 	}
 	@Override
 	public void RemoveListItem(String TabName)
