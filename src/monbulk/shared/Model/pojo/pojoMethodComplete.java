@@ -1,5 +1,4 @@
 package monbulk.shared.Model.pojo;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -73,7 +72,29 @@ public class pojoMethodComplete implements IPojo{
 	}
 	public void removeStep(String StepFormName)
 	{
+		pojoStepDetails tmpStep = this.allSteps.get(StepFormName);
+		int index = tmpStep.getFormIndex();
 		this.allSteps.remove(StepFormName);  //.remove(StepIndex);
+		Iterator<Entry<String,pojoStepDetails>> i = this.allSteps.entrySet().iterator();
+		HashMap<String,pojoStepDetails> transferList = new HashMap<String,pojoStepDetails>();
+		while(i.hasNext())
+		{
+			Entry<String,pojoStepDetails> item = i.next();
+			pojoStepDetails tmpPojo = item.getValue();
+			String oldKey = item.getKey();
+			if(tmpPojo.getFormIndex()>index)
+			{
+				int oldIndex = tmpPojo.getFormIndex();
+				oldIndex--;
+				tmpPojo.setFormIndex(oldIndex);
+				oldKey = pojoStepDetails.FormName + tmpPojo.getFormIndex();
+				
+				//this.allSteps.put(tmpPojo.getFormStructure().getFormName(), tmpPojo);
+				
+			}
+			transferList.put(oldKey, tmpPojo);
+		}
+		this.allSteps = transferList;
 		this.stepsDeleted++;
 	}
 	private Document generateXML()

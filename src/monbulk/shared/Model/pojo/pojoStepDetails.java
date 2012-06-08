@@ -202,7 +202,7 @@ public class pojoStepDetails implements IPojo{
 		//String FormName = FormName + FormIndex;
 		if(StepDetailsForm.getFormDetails().size() > 2)
 		{
-			
+			StepDetailsForm.SetFormName(FormName+this.FormIndex);
 			return StepDetailsForm;
 		}//StepDetailsForm.
 		try

@@ -62,6 +62,8 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 			int newTabIndex =TabIndex-1; 
 			this.setTitle(this.headerWidget.getTitle().replace("Step "+this.TabIndex, "Step " + newTabIndex));
 			this.TabIndex--;	
+			newTabIndex = TabIndex-1;
+			this.headerWidget.setCommandArgument(pojoStepDetails.FormName + newTabIndex);
 		}
 	}
 	private LinkedHashMap<String,CustomTab> CurrentSteps;
@@ -173,7 +175,7 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 				//if we have an Index, append to existing item
 				tmpHeader =  (CustomStackHeader) this.CurrentSteps.get(anyBuilder.getFormName()).getHeader();
 				tmpBody =  (HTML) this.CurrentSteps.get(anyBuilder.getFormName()).getBody();
-				
+				//this.StepIndex = this.CurrentSteps.get(anyBuilder.getFormName()).getIndex();	
 				//Widget tmpStack = this.MethodNavigationStack.getWidget(tmpStepIndex+ 2);
 				//this.MethodNavigationStack.getVisibleIndex(); MAY WORK as well
 				//this.StepIndex = this.CurrentSteps.get(anyBuilder.getFormName()).getIndex();
@@ -184,10 +186,12 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 				
 				//tmpHeader = new CustomStackHeader("New Step",anyBuilder.getFormName());
 				tmpBody = new HTML();
-				isNewStep = true;	
+				isNewStep = true;
+				
+				//StepIndex does not update on loaded - so we try to create a first step agaion
 				CustomTab tmpTab = new CustomTab(this.StepIndex,"New Step",anyBuilder.getFormName());
 				//If not initial Step
-				
+				//this.StepIndex++;
 				this.CurrentSteps.put(anyBuilder.getFormName(), tmpTab);
 				GWT.log(this.GetIndexList());
 				tmpHeader =  (CustomStackHeader) this.CurrentSteps.get(anyBuilder.getFormName()).getHeader();
@@ -362,7 +366,7 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 				this.MethodNavigationStack.showWidget(1,false);
 				this.MethodNavigationStack.remove(Index+1);
 				ShuffleIndices(Index);
-				this.StepIndex = 1;
+				this.StepIndex--;
 			}
 		}
 	}
@@ -370,14 +374,22 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 	private void ShuffleIndices(int RemovedIndex)
 	{
 		Iterator<Entry<String, CustomTab>> it = CurrentSteps.entrySet().iterator();
+		LinkedHashMap<String,CustomTab> transferList = new LinkedHashMap<String,CustomTab>();
 		while(it.hasNext())
 		{
-			CustomTab tmpStack = it.next().getValue();
+			Entry<String,CustomTab> tmpItem = it.next();
+			CustomTab tmpStack = tmpItem.getValue();
+			String Key = tmpItem.getKey();
 			if(tmpStack.getIndex() > RemovedIndex)
 			{
 				tmpStack.DecrementIndex();
+				int newIndex= tmpStack.getIndex()-1;
+				Key = pojoStepDetails.FormName + newIndex;
+				
 			}
+			transferList.put(Key, tmpStack);
 		}
+		this.CurrentSteps = transferList;
 	}
 	@UiHandler("btnNext")
 	public void onClick(ClickEvent e)

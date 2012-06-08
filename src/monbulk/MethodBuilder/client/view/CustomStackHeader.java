@@ -48,6 +48,7 @@ public class CustomStackHeader extends Composite implements IView {
 
 	public String getTitle(){return this.Title;}
 	public String getCommandArgument(){return this.CommandArgument;}
+	public void setCommandArgument(String Arg){this.CommandArgument=Arg;}
 	public void setTitle(String tmpTitle){ this.Title= tmpTitle;PanelTitle.setText(tmpTitle);}
 	@Override
 	public void setPresenter(IPresenter presenter) {
