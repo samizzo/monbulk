@@ -22,6 +22,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -202,12 +203,12 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 //		GWT.log("SetActiveMenu Called" + activeItem + count);
 		while(i<count)
 		{
-			Label tmpItem = (Label)this._MenuStack.getWidget(i, 0);
+			Hidden tmpItem = (Hidden)this._MenuStack.getWidget(i, 2);
 ///			GWT.log("ItemFound:" + tmpItem.getText() + activeItem + tmpItem.getText().length() + activeItem.length());
 			
 			if(tmpItem!=null)
 			{
-				if(tmpItem.getText().contains(activeItem)&& tmpItem.getText().length()==activeItem.length())
+				if(tmpItem.getValue().contains(activeItem)&& tmpItem.getValue().length()==activeItem.length())
 				{
 					_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 2px #345484;font-weight:bold;color:#345484;");
 					_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;background-color:#345484;");
@@ -234,15 +235,21 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 			
 			int i=0;
 			this._MenuStack.clear();
+			this._MenuStack.removeAllRows();
 			
+			//this._MenuStack.setHeight(height)
+			//We need to set Height of the parent panel dynamically based on the number of items
+			//We need to add a hidden field with a unique id
 			while(it.hasNext())
 			{
 				//Use of final to allow access to it in the clickHandlers
 				final int index = i;  //This keeps track of which item we are looking at
 				Entry<String,pojoMethod> tmpEntry = it.next();
 				final pojoMethod tmpMethod = tmpEntry.getValue();
-				
-				if(tmpMethod.getMethodName().contains(Filter))
+				//
+				String comp1 =tmpMethod.getMethodName().toLowerCase();
+				String comp2 = Filter.toLowerCase();
+				if(comp1.contains(comp2))
 				{
 					final Label titleLabel = new Label();
 					titleLabel.setText(tmpMethod.getMethodName());
@@ -266,8 +273,9 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 					//this._MenuStack.setWidget(i,0,tmpItem.asWidget());
 					this._MenuStack.setWidget(i,0,titleLabel);
 					this._MenuStack.setWidget(i,1,_edit);
-					
-				//	this._MenuStack.setWidget(i,2,_clone);
+					Hidden tmpHidden = new Hidden();
+					tmpHidden.setValue(tmpMethod.getMethodID());
+					this._MenuStack.setWidget(i,2,tmpHidden);
 					_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 1px #ccc;");
 					_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
 					i++;
@@ -276,6 +284,8 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 			
 			_MenuStack.setCellPadding(0);
 			_MenuStack.setCellSpacing(0);
+			int newHeight = _MenuStack.getRowCount() * 30;
+			this._MenuStack.setHeight(newHeight + "px");
 		
 	}
 	/*
@@ -326,7 +336,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 					public void onClick(ClickEvent event) {
 						
 						//set selected style/should shuffle as well
-						setActiveMenu(titleLabel.getText());
+						setActiveMenu(tmpMethod.getMethodID());
 						eventBus.fireEvent(new DragEvent(titleLabel.getText(),"EditMethod",index,(IPojo)tmpMethod));
 						
 					}
@@ -336,7 +346,9 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 				//this._MenuStack.setWidget(i,0,tmpItem.asWidget());
 				this._MenuStack.setWidget(i,0,titleLabel);
 				this._MenuStack.setWidget(i,1,_edit);
-			//	this._MenuStack.setWidget(i,2,_clone);
+				Hidden tmpHidden = new Hidden();
+				tmpHidden.setValue(tmpMethod.getMethodID());
+				this._MenuStack.setWidget(i,2,tmpHidden);
 				_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 1px #ccc;");
 				_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
 				i++;

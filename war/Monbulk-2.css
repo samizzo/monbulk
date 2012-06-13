@@ -1238,6 +1238,15 @@ background-position:-333px -918px;
 	height:26px;
 
 }
+.btnRefresh
+{
+			background-image:url(images/refresh.png);			
+			width:32px;
+			height:32px;
+			border:Solid 1px #345484;
+			position:relative;
+			left:5px;
+}
 .tbSearchBox
 {
 	height:20px;
@@ -1257,7 +1266,7 @@ background-position:-333px -918px;
 }
 .glassPanel
 {
-	background:rgba(0,0,0,0.4);
+	background:rgba(0,0,0,0.6);
 	width:2000px;
 	height:2000px;
 	
