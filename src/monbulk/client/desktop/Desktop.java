@@ -126,6 +126,10 @@ public class Desktop extends Composite implements WindowEventHandler, NativePrev
 			{
 				patchBottomRightElement(newWindow.getElement());
 			}
+			if(ws.setGlass)
+			{
+				newWindow.setGlass(true);
+			}
 			newWindow.setHeight("100%");
 			newWindow.setWidth("100%");
 			newWindow.setMinSize(ws.minWidth, ws.minHeight);

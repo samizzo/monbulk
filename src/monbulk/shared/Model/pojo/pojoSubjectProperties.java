@@ -8,9 +8,12 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 
 
+import monbulk.client.Monbulk;
+import monbulk.shared.util.GWTLogger;
 import monbulk.shared.util.HtmlFormatter;
 
 import monbulk.shared.Form.ButtonField;
+import monbulk.shared.Form.DictionaryFormField;
 import monbulk.shared.Form.DraggableFormField;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Form.iFormField;
@@ -20,15 +23,29 @@ public class pojoSubjectProperties implements IPojo {
 
 	private String SubjectName;
 	private String SubjectType;
-	
+	private String SubjectPropertiesDocType;
+	private String SubjectPropertiesDictionary;
 	//private ArrayList<pojoMetaData> attachedMetaData;
 	
 	private HashMap<String,pojoMetaData> attachedMetaData;
 	public  static final String FormName = "SUBJECT_PROPERTIES";
-	public static final String SubjectNameField = "SubjectName";
-	public static final String SubjectTypeField = "SubjectType";
+	public static final String SubjectNameField = "Subject Name";
+	public static final String SubjectTypeField = "Subject Type";
 	public static final String SubjectMetaDataField = "Add MetaData";
+	
+	public static final String STUDYTYPE_DICTIONARY = "pssd.study.types";
+	
+	
 	private FormBuilder SubjectPropertiesForm;
+	public pojoSubjectProperties()
+	{
+		this.SubjectPropertiesDocType = Monbulk.getSettings().get("subject_doctype", "mbi.subject.properties");
+		this.SubjectPropertiesDictionary = Monbulk.getSettings().get("subject_dictionary", "mbi.subjectTypes");
+		//"subject_dictionary" "mbi.subjectTypes"
+		this.attachedMetaData = new HashMap<String,pojoMetaData>();
+		SubjectPropertiesForm = new FormBuilder();
+		BuildForm();
+	}
 	@Override
 	public void saveForm(FormBuilder input) {
 		
@@ -60,6 +77,10 @@ public class pojoSubjectProperties implements IPojo {
 		
 		
 		Iterator<Entry<String, pojoMetaData>> i = this.attachedMetaData.entrySet().iterator();
+		pojoMetaData subjectMD = new pojoMetaData(this.SubjectPropertiesDocType);
+		subjectMD.addMetaDataField("subjectName", this.SubjectName);
+		subjectMD.addMetaDataField("subjectType", this.SubjectType);
+		subjectMD.AppendXML(node2, doc);
 		int index = 0;
 		while(i.hasNext())
 		{
@@ -87,12 +108,7 @@ public class pojoSubjectProperties implements IPojo {
 		
 		//xml.appendChild(newChild)
 	}
-	public pojoSubjectProperties()
-	{
-		this.attachedMetaData = new HashMap<String,pojoMetaData>();
-		SubjectPropertiesForm = new FormBuilder();
-		BuildForm();
-	}
+	
 	public HashMap<String,pojoMetaData> getMetaData(String ListName)
 	{
 			return this.attachedMetaData;
@@ -112,14 +128,15 @@ public class pojoSubjectProperties implements IPojo {
 		{
 			SubjectPropertiesForm.AddTitleItem(SubjectNameField,"String",SubjectName);
 		}
+		DictionaryFormField subjectTypeField = new DictionaryFormField(SubjectTypeField,this.SubjectPropertiesDictionary);
+		subjectTypeField.setAsSummaryField();
 		if(this.SubjectType == null)
 		{	
-			SubjectPropertiesForm.AddSummaryItem(SubjectTypeField, "String");	
+			subjectTypeField.SetFieldValue(SubjectType);
 		}
-		else
-		{
-			SubjectPropertiesForm.AddSummaryItem(SubjectTypeField, "String",SubjectType);
-		}
+		SubjectPropertiesForm.AddItem(subjectTypeField);
+		
+		
 		SubjectPropertiesForm.AddItem(new ButtonField(this.SubjectMetaDataField,"Add MetaData"));
 		Iterator<Entry<String, pojoMetaData>> i = this.attachedMetaData.entrySet().iterator();
 		int index = 0;
@@ -165,7 +182,7 @@ public class pojoSubjectProperties implements IPojo {
 				if(this.SubjectType!=null)
 				{
 					//To be handled as a metaData item with SubjectName and Type
-					tclSubjectType=HtmlFormatter.GetHTMLTabs(5) +  ":metadata < :definition -requirement mandatory hfi.pssd.subject :value < :type constant(" + this.SubjectType + ") > >\\" + HtmlFormatter.GetHTMLNewline(); 
+					tclSubjectType=HtmlFormatter.GetHTMLTabs(5) +  ":metadata < :definition -requirement mandatory " + this.SubjectPropertiesDocType + " :value < :subjectType constant(" + this.SubjectType + ") > >\\" + HtmlFormatter.GetHTMLNewline(); 
 				}
 				
 				sb.append(HtmlFormatter.GetHTMLTabs(2) + ":subject < \\" + HtmlFormatter.GetHTMLNewline());
@@ -193,8 +210,14 @@ public class pojoSubjectProperties implements IPojo {
 	}
 	@Override
 	public void setFieldVale(String FieldName, Object FieldValue) {
-		// TODO Auto-generated method stub
-		
+		if(FieldName==this.SubjectNameField)
+		{
+			this.setSubjectName(FieldValue.toString());
+		}
+		else if(FieldName==this.SubjectTypeField)
+		{
+			this.setSubjectType(FieldValue.toString());
+		}
 	}
 
 	@Override
@@ -233,8 +256,8 @@ public class pojoSubjectProperties implements IPojo {
 			name.pehl.totoe.xml.client.XmlParser tmpParser = new name.pehl.totoe.xml.client.XmlParser(); 
 			name.pehl.totoe.xml.client.Document document = new name.pehl.totoe.xml.client.XmlParser().parse(Input.toString());
 			
-			this.setSubjectName("Deprecated");
-			this.setSubjectType("Deprecated");
+			this.setSubjectName("Not Set");
+			this.setSubjectType("Not Set");
 		//	document.selectNodes("/response/method/subject/");
 			
 			java.util.List<name.pehl.totoe.xml.client.Node> subjectList = document.selectNodes("/response/method/subject/project/public/metadata");
@@ -251,17 +274,48 @@ public class pojoSubjectProperties implements IPojo {
 						name.pehl.totoe.xml.client.Node tmpItem = NodeIndex.next();
 						String isMandatory = tmpItem.selectNode("definition/@requirement").toString();
 						String mdName = tmpItem.selectValue("definition").toString();
-						pojoMetaData tmpMD = new pojoMetaData(mdName);
-						tmpMD.setFieldVale(pojoMetaData.IsPublicField, true);
-						if(isMandatory.contains("mandatory"))
+						//"subject_doctype" "mbi.subjectTypes"/
+						
+						if(mdName.contains(this.SubjectPropertiesDocType) && this.SubjectPropertiesDocType.length()==mdName.length())
 						{
-							tmpMD.setFieldVale(pojoMetaData.IsMandatoryField, true);
+							if(tmpItem.selectNode("value")!=null)
+							{
+								try
+								{
+									String value = tmpItem.selectValue("value/subjectType");
+									value = value.replace("constant(", "");
+									value = value.replace(")", "");
+									this.setSubjectType(value);		
+									String value2 = tmpItem.selectValue("value/subjectName");
+									value2 = value2.replace("constant(", "");
+									value2 = value2.replace(")", "");
+									this.setSubjectName(value2);
+								}
+								catch(Exception ex)
+								{
+									//do nothing - non-fatal
+									GWTLogger.Log("Couldn't find constants", "pojoSubjectProperties", "ReadInput", "271");
+								}
+								
+							}
+							
+							
+							
 						}
 						else
 						{
-							tmpMD.setFieldVale(pojoMetaData.IsMandatoryField, false);
+							pojoMetaData tmpMD = new pojoMetaData(mdName);
+							tmpMD.setFieldVale(pojoMetaData.IsPublicField, true);
+							if(isMandatory.contains("mandatory"))
+							{
+								tmpMD.setFieldVale(pojoMetaData.IsMandatoryField, true);
+							}
+							else
+							{
+								tmpMD.setFieldVale(pojoMetaData.IsMandatoryField, false);
+							}
+							this.attachedMetaData.put(tmpMD.getFieldVale(tmpMD.MetaDataNameField), tmpMD);
 						}
-						this.attachedMetaData.put(tmpMD.getFieldVale(tmpMD.MetaDataNameField), tmpMD);
 						//
 					}
 				}

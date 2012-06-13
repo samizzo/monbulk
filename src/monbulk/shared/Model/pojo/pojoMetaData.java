@@ -1,6 +1,9 @@
 package monbulk.shared.Model.pojo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
@@ -14,7 +17,7 @@ import monbulk.shared.Model.IPojo;
 public class pojoMetaData implements IPojo{
 
 	private String MetaDataName;
-	private FormBuilder MetaDataConstants;
+	private HashMap<String,String> MetaDataConstants;
 	private String MetaDataNameSpace;
 	private Boolean isPublic;
 	private Boolean isMandatory;
@@ -29,6 +32,7 @@ public class pojoMetaData implements IPojo{
 	public pojoMetaData(String MetaDataName)
 	{
 		this.MetaDataName = MetaDataName;
+		this.MetaDataConstants = new HashMap<String,String>();
 	}
 	public pojoMetaData(String MetaDataName,String NameSpace)
 	{
@@ -48,13 +52,13 @@ public class pojoMetaData implements IPojo{
 		}
 		
 	}
-	public void addMetaDataField(iFormField Field)
+	public void addMetaDataField(String FieldName, String FieldValue)
 	{
-		this.MetaDataConstants.addField(Field); 
+		this.MetaDataConstants.put(FieldName,FieldValue); 
 	}
-	public void removeMetaDataField(iFormField Field)
+	public void removeMetaDataField(String Fieldname)
 	{
-		this.MetaDataConstants.RemoveFormItem(Field.GetFieldName(),true); 
+		this.MetaDataConstants.remove(Fieldname); 
 	}
 	@Override
 	public FormBuilder getFormStructure() {
@@ -105,11 +109,11 @@ public class pojoMetaData implements IPojo{
 		}
 		MetaDataForm.addField(tmpField4);
 		
-		if(MetaDataConstants.getFormDetails().size() > 0)
+	/*	if(MetaDataConstants.getFormDetails().size() > 0)
 		{
 			MetaDataForm.MergeForm(MetaDataConstants);
 		}
-		
+		*/
 		return MetaDataForm;
 		
 	}
@@ -156,6 +160,22 @@ public class pojoMetaData implements IPojo{
 			node2.setAttribute("requirement", "mandatory");
 		}
 		node2.appendChild(doc.createTextNode(this.MetaDataName));
+		
+		Iterator<Entry<String,String>> i = this.MetaDataConstants.entrySet().iterator();
+		Element tmpNode = doc.createElement("value");
+		while(i.hasNext())
+		{
+			Entry<String,String> entry = i.next();
+			
+			Element tmpNode2 = doc.createElement(entry.getKey());
+			tmpNode2.appendChild(doc.createTextNode("constant("+entry.getValue() +")"));
+			tmpNode.appendChild(tmpNode2);
+			
+		}
+		if(this.MetaDataConstants.size()>0)
+		{
+			node1.appendChild(tmpNode);
+		}
 		//.setNodeValue(this.MetaDataName);
 		node1.appendChild(node2);
 		xml.appendChild(node1);
@@ -193,10 +213,10 @@ public class pojoMetaData implements IPojo{
 		{
 			this.isMandatory= (Boolean) FieldValue;
 		}
-		else if(!this.MetaDataConstants.getFieldItemForName(FieldName).equals(null))
+		/*else if(!this.MetaDataConstants.getFieldItemForName(FieldName).equals(null))
 		{
 			this.MetaDataConstants.getFieldItemForName(FieldName).SetFieldValue((String) FieldValue);
-		}
+		}*/
 		
 	}
 	
@@ -234,10 +254,10 @@ public class pojoMetaData implements IPojo{
 			}
 			
 		}
-		else if(!this.MetaDataConstants.getFieldItemForName(FieldName).equals(null))
+		/*else if(!this.MetaDataConstants.getFieldItemForName(FieldName).equals(null))
 		{
 			return this.MetaDataConstants.getFieldItemForName(FieldName).GetFieldValue().toString();
-		}
+		}*/
 		else
 		{
 			return "";

@@ -448,6 +448,8 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		}
 		else if(Command=="Save")
 		{
+			//Validate
+			
 			StringBuilder strTCL = new StringBuilder();
 			strTCL.append(this.mainModel.getStringRpresentation("XML"));
 			Desktop d = Desktop.get();
@@ -457,21 +459,36 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		}
 		else if(Command=="Clone")
 		{
-			StringBuilder strTCL = new StringBuilder();
-			this.mainModel.setAsClone();
-			strTCL.append(this.mainModel.getStringRpresentation("XML"));
-			Desktop d = Desktop.get();
-			final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
-			m.cloneMethod(this.mainModel.getStringRpresentation("XML"), SupportedFormats.XML,this.mainModel.getMethodName());
-			d.show(m, true);
+			if(this.mainModel.getMethodID()==null)
+			{
+				
+			}
+			else
+			{
+				StringBuilder strTCL = new StringBuilder();
+				this.mainModel.setAsClone();
+				strTCL.append(this.mainModel.getStringRpresentation("XML"));
+				Desktop d = Desktop.get();
+				final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
+				m.cloneMethod(this.mainModel.getStringRpresentation("XML"), SupportedFormats.XML,this.mainModel.getMethodName());
+				d.show(m, true);
+			}
+			
 		    
 		}
 		else if(Command=="DeleteMethod")
 		{
-			Desktop d = Desktop.get();
-			final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
-			m.confirmDelete(this.mainModel.getMethodID());
-			d.show(m, true);
+			if(this.mainModel.getMethodID()==null)
+			{
+				//Do nothing but maybe we will add a validator window
+			}
+			else
+			{
+				Desktop d = Desktop.get();
+				final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
+				m.confirmDelete(this.mainModel.getMethodID());
+				d.show(m, true);
+			}
 			
 		}
 		else if(Command=="Publish")

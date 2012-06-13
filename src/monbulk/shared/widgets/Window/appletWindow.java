@@ -42,7 +42,11 @@ public class appletWindow extends DialogBox
 		
 		c.setParentApplet(this);
 	}
-	
+	public void setGlass(Boolean setGlass)
+	{
+		this.setGlassEnabled(setGlass);
+		this.setGlassStyleName("glassPanel");
+	}
 	public void setTitle(String title)
 	{
 		appletWindowCaption c = (appletWindowCaption)getCaption();

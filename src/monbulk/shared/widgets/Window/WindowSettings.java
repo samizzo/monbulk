@@ -11,4 +11,5 @@ public class WindowSettings
 	public int minHeight = 1000;
 	public String windowId;
 	public String windowTitle;
+	public boolean setGlass = false;
 }

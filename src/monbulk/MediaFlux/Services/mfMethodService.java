@@ -136,7 +136,7 @@ public class mfMethodService extends MethodService {
 					}
 					catch(Exception ex)
 					{
-						GWT.log("Exception caught at mfMethodService.onReadMethod" + ex.getMessage());
+						GWT.log("Exception caught at mfMethodService.Create" + ex.getMessage());
 					}
 					break;
 				case CheckExists:
@@ -155,7 +155,7 @@ public class mfMethodService extends MethodService {
 					}
 					catch(Exception ex)
 					{
-						GWT.log("Exception caught at mfMethodService.onReadMethod" + ex.getMessage());
+						GWT.log("Exception caught at mfMethodService.checkExists" + ex.getMessage());
 					}
 					break;
 				case Delete:

@@ -149,6 +149,7 @@
 			<fileset file="${pkg}/__install.tcl" />
 			<fileset file="${pkg}/dictionary.tcl" />
 			<fileset file="${pkg}/roles.tcl" />
+			<fileset file="${pkg}/metadata.tcl" />
 			<fileset file="${pkg}/monbulk-config.tcl" />
 			<fileset file="${pkg}/__uninstall.tcl" />
 			<fileset file="${build}/requireServerVersion.tcl" />

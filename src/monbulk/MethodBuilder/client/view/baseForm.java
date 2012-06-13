@@ -221,7 +221,10 @@ public class baseForm extends VerticalPanel implements IFormView {
 						});
 						if(item.hasValue())
 						{
-							tmpWidg.setListValue(item.GetFieldValue().toString());
+							if(item.GetFieldValue()!=null)
+							{
+								tmpWidg.setListValue(item.GetFieldValue().toString());
+							}
 						}
 					}
 					else if(item.getFieldTypeName()=="Button")

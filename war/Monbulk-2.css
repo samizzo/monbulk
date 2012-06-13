@@ -1255,3 +1255,10 @@ background-position:-333px -918px;
 {
 	border:Solid 2px #345484;
 }
+.glassPanel
+{
+	background:rgba(0,0,0,0.4);
+	width:2000px;
+	height:2000px;
+	
+}

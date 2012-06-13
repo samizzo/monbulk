@@ -9,7 +9,8 @@ createDictionary monbulk.settings
 
 # Add default_namespace setting.
 addDictionaryEntry monbulk.settings "default_namespace" "mbi"
-addDictionaryEntry monbulk.settings "subject_doctype" "mbi.subjectTypes"
+addDictionaryEntry monbulk.settings "subject_doctype" "mbi.subject.properties"
+addDictionaryEntry monbulk.settings "subject_dictionary" "mbi.subjectTypes"
 
 #This is the subject Type dictionary item - this is used for furture constraints and searching
 createDictionary mbi.subjectTypes

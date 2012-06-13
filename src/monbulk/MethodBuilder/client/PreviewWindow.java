@@ -44,12 +44,17 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 	
 	public PreviewWindow(HandlerManager eventBus) {
 		super("MethodPreviewWindow", "Preview Method Data");
-		this.setWidth("600px");
-		this.m_windowSettings.resizable=true;
-		this.m_windowSettings.minWidth=300;
-		this.m_windowSettings.width=600;
-		this.m_windowSettings.minHeight=400;
-		this.m_windowSettings.height=600;
+		this.setWidth("400px");
+		this.setHeight("250px");
+		this.m_windowSettings.resizable=false;
+		this.m_windowSettings.width=400;
+		this.m_windowSettings.height=250;
+		this.m_windowSettings.setGlass=true;
+		this.m_windowSettings.minWidth=200;
+		this.m_windowSettings.minHeight=200;
+		this.m_cancel.setVisible(false);
+		
+		
 		_framingPanel = new ScrollPanel();
 		//this.setWidget(_framingPanel);
 		m_contentPanel.add(_framingPanel);
@@ -71,7 +76,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		//output.setHTML(tmpList.toString());
 		tmpArea.setText(formattedText.toString());
 		_PreviewPanel.add(tmpArea);
-		
+		this.m_cancel.setVisible(false);
 		
 		
 	}
@@ -82,11 +87,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 	 */
 	public void cloneMethod(String tmpList,PreviewWindow.SupportedFormats inputFormat,final String oldaName)
 	{
-		this.setWidth("400px");
-		this.m_windowSettings.resizable=true;
-		this.m_windowSettings.minWidth=200;
-		this.m_windowSettings.minHeight=200;
-		this.setHeight("250px");
+		this.m_cancel.setVisible(true);
 		formattedText = new StringBuilder();
 		selectedFormat = inputFormat;
 		_PreviewPanel.clear();
@@ -134,7 +135,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		};
 		registration = this.m_ok.addClickHandler(handleSave);
 		
-		_Guide.setText("Please Select a new name for the method.");
+		_Guide.setText("Name of new method:");
 		_PreviewPanel.add(_Guide);
 		_PreviewPanel.add(tmpArea);
 	}
@@ -145,12 +146,9 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 	 */
 	public void loadPreview(String tmpList,PreviewWindow.SupportedFormats inputFormat)
 	{
-		
+		this.m_cancel.setVisible(false);
 		selectedFormat = inputFormat;
 		_PreviewPanel.clear();
-		
-		
-		
 		final TextArea tmpArea = new TextArea();
 		tmpArea.setHeight("600px");
 		tmpArea.setWidth("600px");
@@ -159,38 +157,6 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		tmpList = tmpList.replace("<method>", "");
 		tmpList = tmpList.replace("</method>", "");
 		tmpArea.setText(tmpList);
-		//final MethodUpdateHandler tmpHandle = this;
-		/*
-		handleSave = new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				try
-				{
-					MethodService tmpSvc = MethodService.get();
-					if(tmpSvc != null)
-					{
-						tmpSvc.createOrUpdate(tmpArea.getText(), tmpHandle);
-						
-						
-							
-					}
-					else
-					{
-						throw new ServiceRegistry.ServiceNotFoundException(ServiceNames.Methods);
-					}
-				}
-				catch (ServiceRegistry.ServiceNotFoundException e)
-				{
-					GWT.log("Couldn't find Method service");
-				}
-				
-			}
-			
-		};
-		
-		registration = this.m_ok.addClickHandler(handleSave);
-		*/
 		try
 		{
 			MethodService tmpSvc = MethodService.get();
@@ -219,6 +185,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 	}
 	@Override
 	public void onUpdateMethod(String response) {
+		this.m_cancel.setVisible(false);
 		AbsolutePanel _w_response = new AbsolutePanel();
 		Label _r_text = new Label();
 		if(response!=null)
@@ -246,10 +213,9 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		this._PreviewPanel.clear();
 		_w_response.add(_r_text);
 		this._PreviewPanel.add(_w_response);
-		this.setHeight("200px");
+		
 		this.m_windowSettings.windowTitle = "METHOD SAVED";
 		Desktop d = Desktop.get();		
-		d.setSize("200px", "200px");
 		
 		//this.m_ok.(handleSave);
 		d.show("MethodPreviewWindow",true);
@@ -290,6 +256,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 	}
 	public void confirmDelete(final String MethodID)
 	{
+		this.m_cancel.setVisible(true);
 		_PreviewPanel.clear();
 		this._Guide.setText("Are you sure you want to delete the method with id: " + MethodID +"?");
 		final MethodUpdateHandler tmpHandle = this;
@@ -332,7 +299,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		this._PreviewPanel.clear();
 		_w_response.add(_r_text);
 		this._PreviewPanel.add(_w_response);
-		this.setHeight("200px");
+		
 		this.m_windowSettings.windowTitle = "METHOD SAVED";
 		Desktop d = Desktop.get();		
 		//d.setSize("200px", "200px");

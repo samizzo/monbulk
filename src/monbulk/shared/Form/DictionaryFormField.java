@@ -21,10 +21,11 @@ public class DictionaryFormField extends ListField implements GetDictionaryHandl
 		
 		ArrayList<String> items = new ArrayList<String>();
 		items.add("Not Selected");
-		
+		this.hasValue=false;
 		super.loadList(items, "Not Selected");
-		
+		this.DictionaryName = DictionaryName;
 		this.FieldType="Dictionary";
+		this.FieldValue="";
 		
 		DictionaryService service = DictionaryService.get();
 		

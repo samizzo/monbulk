@@ -154,12 +154,10 @@ public class pojoMethodComplete implements IPojo{
 	 		 method.appendChild(tmpEStep);
 				
 		 }
-		 if(this.getSubjectProperties().getMetaData("").size()>0)
-		 {
-			 Element subject = doc.createElement("subject");
-			 this.getSubjectProperties().AppendXML(subject, doc);
-			 method.appendChild(subject);
-		 }
+	 	 Element subject = doc.createElement("subject");
+		 this.getSubjectProperties().AppendXML(subject, doc);
+		 method.appendChild(subject);
+		 
 		 doc.appendChild(method);
 		 String tmpDoc = doc.toString();
 		 
