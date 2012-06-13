@@ -323,6 +323,8 @@ public class MetadataList extends Composite implements KeyUpHandler, KeyDownHand
 				// Callback for reading a list of metadata.
 				public void onGetMetadataTypes(List<String> types)
 				{
+					m_metadataListBox.clear();
+
 					m_metadataTypes = new ArrayList<String>();
 					
 					if (types != null)
