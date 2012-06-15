@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -41,6 +42,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 	private String newMethodName;
 	protected Label _Guide;
 	private final HandlerManager eventBus;
+	private String MethodID;
 	
 	public PreviewWindow(HandlerManager eventBus) {
 		super("MethodPreviewWindow", "Preview Method Data");
@@ -79,6 +81,19 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		this.m_cancel.setVisible(false);
 		
 		
+	}
+	public void showInvalid(String Reasons,String Action)
+	{
+		
+		
+		_PreviewPanel.clear();
+		_Guide.setText("Unable to " + Action);
+		_Guide.setStyleName("InValidWindowText");
+		HTML lblReasons = new HTML();
+		lblReasons.setHTML(Reasons);
+		_PreviewPanel.add(_Guide);
+		_PreviewPanel.add(lblReasons);
+		this.m_cancel.setVisible(false);
 	}
 	/**
 	 * 
@@ -144,8 +159,9 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 	 * @param tmpList
 	 * @param inputFormat
 	 */
-	public void loadPreview(String tmpList,PreviewWindow.SupportedFormats inputFormat)
+	public void loadPreview(String tmpList,PreviewWindow.SupportedFormats inputFormat, String ID)
 	{
+		this.MethodID = ID;
 		this.m_cancel.setVisible(false);
 		selectedFormat = inputFormat;
 		_PreviewPanel.clear();
@@ -193,17 +209,22 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 			if(response=="")
 			{
 				_r_text.setText("Success: Your method has been updated");
-				
+				this.eventBus.fireEvent(new MenuChangeEvent("Refresh",this.MethodID));
 			}
 			else if(response=="Delete")
 			{
 				_r_text.setText("Success: Your method has been deleted");
 				registration.removeHandler();
+				this.eventBus.fireEvent(new MenuChangeEvent("Refresh",""));
 			}
 			else
 			{
 				_r_text.setText("Success: Your method has been created with ID: " + response);
-				registration.removeHandler();
+				if(registration!=null)
+				{
+					registration.removeHandler();
+				}
+				this.eventBus.fireEvent(new MenuChangeEvent("Refresh",response));
 			}
 		}
 		else
@@ -227,7 +248,8 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		{
 			this.eventBus.fireEvent(new MenuChangeEvent("Refresh"));
 		}*/
-		this.eventBus.fireEvent(new MenuChangeEvent("Refresh"));
+		
+		
 		
 	}
 	@Override
@@ -314,7 +336,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		{
 			this.eventBus.fireEvent(new MenuChangeEvent("Refresh"));
 		}*/
-		this.eventBus.fireEvent(new MenuChangeEvent("Refresh"));
+		this.eventBus.fireEvent(new MenuChangeEvent("Refresh",""));
 		
 	}
 	

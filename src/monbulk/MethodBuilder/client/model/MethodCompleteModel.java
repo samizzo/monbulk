@@ -2,6 +2,8 @@ package monbulk.MethodBuilder.client.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
@@ -240,7 +242,14 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 	@Override
 	public String ValidateForm() {
 		//super.formData = this.formCompleteModel;
-		return super.ValidateForm();
+		String validation = this.ValidateForm(pojoMethod.FormName);
+		validation = validation + "<br/>" + this.ValidateForm(pojoSubjectProperties.FormName);
+		Iterator<Entry<String,pojoStepDetails>> i =  this.CompleteModel.getSteps().entrySet().iterator();
+		while(i.hasNext())
+		{
+			Entry<String,pojoStepDetails> entry = i.next();
+		}
+		return validation;
 	}
 	@Override
 	public String ValidateForm(String FormName) {

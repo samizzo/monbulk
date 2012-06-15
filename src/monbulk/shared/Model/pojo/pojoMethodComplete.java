@@ -114,7 +114,7 @@ public class pojoMethodComplete implements IPojo{
 		 method.appendChild(description);
 
 		 //Which means is Edit
-		 if(this.MethodID!=null)
+		 if(this.MethodID!=null && this.MethodID!="")
 		 {
 			 if(this.MethodID!="new method")
 			 {

@@ -1241,8 +1241,8 @@ background-position:-333px -918px;
 .btnRefresh
 {
 			background-image:url(images/refresh.png);			
-			width:32px;
-			height:32px;
+			width:24px;
+			height:24px;
 			border:Solid 1px #345484;
 			position:relative;
 			left:5px;
@@ -1273,6 +1273,8 @@ background-position:-333px -918px;
 }
 .Valid
 {
+	position:relative;
+	left:5px;
 	width:23px;
 	height:23px;
 	background-image:url(images/ICONS.png);
@@ -1280,6 +1282,8 @@ background-position:-333px -918px;
 }
 .InValid
 {
+	position:relative;
+	left:5px;
 	width:23px;
 	height:23px;
 	background-image:url(images/ICONS.png);
@@ -1291,8 +1295,13 @@ td.fieldName
 	font-weight:bold;
 	vertical-align:top;
 }
-td.fiedlValue
+td.fieldValue
 {
 	font-size:10px;
 	vertical-align:top;
+}
+.InValidWindowText
+{
+	color:Red;
+	font-weight:bold;
 }

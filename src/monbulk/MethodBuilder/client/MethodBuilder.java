@@ -96,11 +96,18 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 			}
 			else if(initState.equals("Refresh"))
 			{
-				//HACK
+				
 				MethodList tmpMenu = (MethodList) this.AppletMenu;
 				tmpMenu.refreshList();
 				this.CurrentState="Create Method";
-				this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
+				if(this.loadedMethodID=="")
+				{
+					this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
+				}
+				else
+				{
+					this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus,this.loadedMethodID);
+				}
 				this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
 			}
 			
@@ -163,6 +170,8 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 	    		new MenuChangeEventHandler(){
 	    			public void onMenuChange(MenuChangeEvent event)
 	    			{
+	    				
+	    				loadedMethodID = event.getNewID();
 	    				 ChangeAppletState(event.getId());
 	    			}
 	    		}

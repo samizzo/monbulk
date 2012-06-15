@@ -408,42 +408,56 @@ public class MethodCreatorPresenter implements FormPresenter{
 			strTCL.append(this.mainModel.getStringRpresentation("XML"));
 			Desktop d = Desktop.get();
 			final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
-			m.loadPreview(this.mainModel.getStringRpresentation("XML"), SupportedFormats.XML);
+			
+			String valid = this.mainModel.ValidateForm();
+			String valid2 = valid.replace("<br/>", "");
+			if(valid2.length()>0)
+			{	
+				m.showInvalid(valid, "Save Method");
+			}
+			else
+			{
+				m.loadPreview(this.mainModel.getStringRpresentation("XML"), SupportedFormats.XML,this.mainModel.getMethodID());
+			}
 			d.show(m, true);
 		}
 		else if(Command=="Clone")
 		{
+			
+			Desktop d = Desktop.get();
+			final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
 			if(this.mainModel.getMethodID()==null)
-			{
-				
+			{	
+				m.getWindowSettings().windowTitle = "ERROR";
+				m.showInvalid("No Method Selected", "Clone Method");
 			}
 			else
 			{
 				StringBuilder strTCL = new StringBuilder();
 				this.mainModel.setAsClone();
 				strTCL.append(this.mainModel.getStringRpresentation("XML"));
-				Desktop d = Desktop.get();
-				final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
 				m.cloneMethod(this.mainModel.getStringRpresentation("XML"), SupportedFormats.XML,this.mainModel.getMethodName());
-				d.show(m, true);
+				
 			}
-			
-		    
+			d.show(m, true);
 		}
 		else if(Command=="DeleteMethod")
 		{
-			if(this.mainModel.getMethodID()==null)
-			{
-				//Do nothing but maybe we will add a validator window
-			}
-			else
-			{
 				Desktop d = Desktop.get();
 				final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
-				m.confirmDelete(this.mainModel.getMethodID());
+				
+				if(this.mainModel.getMethodID()==null)
+				{
+					m.getWindowSettings().windowTitle = "ERROR";
+					
+					m.showInvalid("No Method Selected", "Delete Method");
+				}
+				else
+				{
+					m.getWindowSettings().windowTitle = "DELETE";
+					m.confirmDelete(this.mainModel.getMethodID());
+				}
 				d.show(m, true);
-			}
-			
 		}
 		else if(Command=="Publish")
 		{

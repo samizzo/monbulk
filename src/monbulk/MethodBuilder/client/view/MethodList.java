@@ -167,7 +167,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	@UiHandler("_Refresh")
 	void onClick1(ClickEvent e) {
 		//FIXChange to MenuChangeEvent("NewMethod")
-		eventBus.fireEvent(new MenuChangeEvent("Refresh"));
+		eventBus.fireEvent(new MenuChangeEvent("Refresh",""));
 	}
 	
 	public void setText(String text) {

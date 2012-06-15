@@ -16,7 +16,7 @@ public class MenuCommand implements Command{
 		public void execute() {
 			// TODO Auto-generated method stub
 			//eventBus.
-			eventBus.fireEvent(new MenuChangeEvent(CmdName));
+			eventBus.fireEvent(new MenuChangeEvent(CmdName,""));
 		}
 		
 }

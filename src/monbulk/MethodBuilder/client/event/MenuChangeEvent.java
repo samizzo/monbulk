@@ -9,9 +9,11 @@ public class MenuChangeEvent extends GwtEvent<MenuChangeEventHandler>{
 	
 	
 	private final String id;
-	public MenuChangeEvent(String tmpID)
+	private final String newID;
+	public MenuChangeEvent(String tmpID,String newID)
 	{
 		this.id = tmpID;
+		this.newID = newID;
 	}
 	@Override
 	public Type<MenuChangeEventHandler> getAssociatedType() {
@@ -20,7 +22,7 @@ public class MenuChangeEvent extends GwtEvent<MenuChangeEventHandler>{
 	}
 	
 	public String getId() { return id; }
-	
+	public String getNewID(){return newID;}
 	@Override
 	protected void dispatch(MenuChangeEventHandler handler) {
 		// TODO Auto-generated method stub

@@ -41,7 +41,7 @@
 		</g:ScrollPanel>
 		<g:HorizontalPanel><!--  -->
 			<g:PushButton ui:field="_Newbutton" styleName="btnDefault-NewMethod" text="Create Method">Create Method</g:PushButton>
-			<g:PushButton ui:field="_Refresh" styleName="btnRefresh" width="32px"></g:PushButton>
+			<g:PushButton ui:field="_Refresh" styleName="btnRefresh" height="24px" width="24px"></g:PushButton>
 		</g:HorizontalPanel>
 		</g:VerticalPanel>
 		
