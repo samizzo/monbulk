@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -30,6 +31,7 @@ import monbulk.shared.Model.pojo.pojoMethod;
 import monbulk.shared.Model.pojo.pojoStepDetails;
 import monbulk.shared.Model.pojo.pojoSubjectProperties;
 import monbulk.shared.util.GWTLogger;
+import monbulk.shared.util.HtmlFormatter;
 
 public class MethodDetailsView extends Composite implements IMethodsView {
 
@@ -40,6 +42,7 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 	@UiField PushButton btnNext;
 	@UiField HTMLPanel FormDetails;
 	@UiField Label _formName;
+	@UiField ScrollPanel _pnlScrollMethod;
 	//@UiField
 	public class CustomTab
 	{
@@ -80,7 +83,8 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 
 	public MethodDetailsView() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
+		GWTLogger.Log("MethdDetailsView Created", "MDV"	, "Construct", "85");
+		_pnlScrollMethod.setAlwaysShowScrollBars(true);
 		this.ChildContainerIndex = 0;
 		this.StepIndex = 1;
 		CurrentSteps = new LinkedHashMap<String,CustomTab>();
@@ -214,6 +218,15 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 					if(tmpField.getFieldTypeName()=="List" || tmpField.getFieldTypeName()=="Dictionary" || tmpField.getFieldTypeName()=="Button")
 					{
 						GWTLogger.Log("isSummary - should not hit", "MethodDetailsView", "setData", "221");
+						if(tmpField.getFieldTypeName()=="List" || tmpField.getFieldTypeName()=="Dictionary")
+						{
+							String FieldName = HtmlFormatter.stripFormFieldName(anyBuilder.getFormName(), tmpField.GetFieldName());
+							if(!tmpField.GetFieldValue().equals(""))
+							{
+								html = html + "<tr><td class='fieldName'>" + FieldName+ ":</td>";
+								html = html + "<td class='fieldValue'>" + (String)tmpField.GetFieldValue() + "</td></tr>";
+							}
+						}
 					}
 					else if(tmpField.hasValue())
 					{
@@ -351,32 +364,22 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 	}
 	private void writeFriendlyFormName(String FormName)
 	{
-		String Text1 = this.btnNext.getDownHoveringFace().getText();
-		String Text2 = this.btnNext.getDownFace().getText();
-		String Text3 = this.btnNext.getText();
-		
-		this.btnNext.setText("");
-		this.btnNext.getDownHoveringFace().setText("");
-		this.btnNext.getDownFace().setText("");
-		
-		
+		changeButtonFaceText("");
 		if(FormName==pojoMethod.FormName)
 		{
 			_formName.setText("Method Details");
-			this.btnNext.setText("> Add Subject Properties");
-			this.btnNext.getDownHoveringFace().setText("> Add Subject Properties");
-			this.btnNext.getDownFace().setText("> Add Subject Properties");
+			changeButtonFaceText("> Add Subject Properties");
 		}
 		else if(FormName==pojoSubjectProperties.FormName)
 		{
 			_formName.setText("Subject Properties");
 			if(CurrentSteps.size()>0)
 			{
-				this.btnNext.setText("> View Step");
+				changeButtonFaceText("> View Step");
 			}
 			else
 			{
-				this.btnNext.setText("> Add Step");
+				changeButtonFaceText("> Add Step");
 			}
 		}
 		else if((FormName.contains(pojoStepDetails.FormName)))
@@ -387,11 +390,11 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 				int id = Integer.parseInt(StepID);
 				if(id>this.CurrentSteps.size())
 				{
-					this.btnNext.setText("> Add Step");
+					changeButtonFaceText("> Add Step");
 				}
 				else
 				{
-					this.btnNext.setText("> Next Step");
+					changeButtonFaceText("> Next Step");
 				}
 				id++;
 				String StepName = "Step " + id + ": Details";
@@ -401,9 +404,18 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 			catch(Exception ex)
 			{
 				_formName.setText("StepDetails");
-				this.btnNext.setText("Next");
+				changeButtonFaceText("Next");
 			}
 		}
+	}
+	private void changeButtonFaceText(String Text)
+	{
+		this.btnNext.getUpFace().setText(Text);
+		this.btnNext.setText(Text);
+		this.btnNext.getDownHoveringFace().setText(Text);
+		this.btnNext.getDownFace().setText(Text);
+		this.btnNext.getUpHoveringFace().setText(Text);
+		
 	}
 	@Override
 	public void RemoveListItem(String TabName)

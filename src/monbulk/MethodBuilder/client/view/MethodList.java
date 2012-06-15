@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /*Monbulk Imports */
@@ -78,14 +79,11 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	private String PassiveClassName;
 	private HashMap<String,pojoMethod> methodList;
 	
-	@UiField
-	FlexTable _MenuStack;
-	
+	@UiField FlexTable _MenuStack;
+	@UiField ScrollPanel _pnlScroll; 
 	@UiField PushButton _Newbutton;
 	@UiField PushButton _Refresh;
-	
-	@UiField
-	HorizontalPanel _searchPanel;
+	@UiField HorizontalPanel _searchPanel;
 	 
 	private IPresenter _presenter;
 	/**
@@ -94,8 +92,11 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 	 * @throws ServiceNotFoundException		If the service has not been registered
 	 */
 	public MethodList(HandlerManager eBus) {
+		
 		initWidget(uiBinder.createAndBindUi(this));
 		this.eventBus = eBus;
+		this._pnlScroll.setAlwaysShowScrollBars(true);
+		
 		methodList = new HashMap<String,pojoMethod>();
 		try
 		{
@@ -145,6 +146,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 			MethodService service = (MethodService)ServiceRegistry.getService(MonbulkEnums.ServiceNames.Methods);
 			this._searchPanel.clear();
 			this._MenuStack.clear();
+			this._MenuStack.removeAllRows();
 			service.getMethodList(this);
 		}
 		catch (ServiceRegistry.ServiceNotFoundException e)

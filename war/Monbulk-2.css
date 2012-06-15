@@ -1271,3 +1271,28 @@ background-position:-333px -918px;
 	height:2000px;
 	
 }
+.Valid
+{
+	width:23px;
+	height:23px;
+	background-image:url(images/ICONS.png);
+	background-position:-375px -463px;
+}
+.InValid
+{
+	width:23px;
+	height:23px;
+	background-image:url(images/ICONS.png);
+	background-position:-325px -873px;
+}
+td.fieldName
+{
+	font-size:10px;
+	font-weight:bold;
+	vertical-align:top;
+}
+td.fiedlValue
+{
+	font-size:10px;
+	vertical-align:top;
+}

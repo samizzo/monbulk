@@ -40,6 +40,7 @@ import monbulk.shared.Model.pojo.pojoMethod;
 import monbulk.shared.Model.pojo.pojoStepDetails;
 import monbulk.shared.Model.pojo.pojoStudy;
 import monbulk.shared.Model.pojo.pojoSubjectProperties;
+import monbulk.shared.util.GWTLogger;
 import monbulk.shared.util.HtmlFormatter;
 import monbulk.shared.util.MonbulkEnums;
 import monbulk.shared.util.MonbulkEnums.viewTypes;
@@ -51,16 +52,13 @@ import monbulk.MethodBuilder.shared.iMBModel;
 
 ///I think we can change this just to a view state with a main model that can be queried on each state
 
-public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
+public class MethodCreatorPresenter implements FormPresenter{
 
 	private int countLoads;
-	//private IView vwMethodCreator;
-	//private IDockView vwDockPanel;
-	//private ArrayList<PresenterState> AllStates;
 	private MethodCreatorStates CurrentState;
-	private IDockView ImplementedDockView;
 	private IMethodsView ImplementedMethodView;
 	private IView NavigationView;
+	
 	public enum MethodCreatorStates{
 		METHOD_DETAILS,SUBJECT_PROPERTIES,STEP_DETAILS,COMPLETE, INIT
 	};
@@ -71,23 +69,35 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 	public final HashMap<String,MethodCreatorStates> stateSelector;
 	public final HashMap<MethodCreatorStates,IFormView> _AllStates;
 	private final MethodCompleteModel mainModel; 
-	//private MethodForm methodForm;
-	//private MethodModel MethodModel;
 	private final HandlerManager eventBus; 
-	//private SubjectPropertiesModel SubjectModel;
-	private appletWindow tclBox;
+	
+	
 	public MethodCreatorPresenter(HandlerManager evtBus)
 	{
+		GWTLogger.Log("MCP Construct", "MCP", "Construct", "82");
+		
 		stateSelector = new HashMap<String,MethodCreatorStates>();
 		_AllStates = new HashMap<MethodCreatorStates,IFormView>();
 		this.eventBus = evtBus;
 		mainModel = new MethodCompleteModel();
 		mainModel.setPresenter(this);
 		Construct("");
-	
 	}
+	
+	public MethodCreatorPresenter(HandlerManager evtBus, String ID)
+	{
+		GWTLogger.Log("MCP Construct with ID", "MCP", "Construct", "117");
+		//Load Method From ID;
+		stateSelector = new HashMap<String,MethodCreatorStates>();
+		_AllStates = new HashMap<MethodCreatorStates,IFormView>();
+		this.eventBus = evtBus;
+		mainModel = new MethodCompleteModel(ID,this);
+		mainModel.setPresenter(this);
+		Construct(ID);
+	}
+	/*Section Initializing */
 	/**
-	 * Generalised constructor
+	 * Generalized constructor
 	 * @param ID
 	 */
 	public void Construct(String ID)
@@ -98,32 +108,18 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		stateSelector.put("STEP_DETAILS", MethodCreatorStates.STEP_DETAILS);
 		stateSelector.put("COMPLETE", MethodCreatorStates.COMPLETE);
 		stateSelector.put("INIT", MethodCreatorStates.INIT);
-		this.ImplementedMethodView = new MethodDetailsView();		
-		
-		//Not supported
-		//this.ImplementedDockView = new metaDataListIntegrated();		
-		//this.ImplementedDockView.setPresenter(this);
+		this.ImplementedMethodView = new MethodDetailsView();
+		this.ImplementedMethodView.setPresenter(this);
+		this.NavigationView = new AppletStateNavigation();
+		this.NavigationView.setPresenter(this);
 		countLoads = 0;
-		//AllStates = new ArrayList<PresenterState>();
-		//tclBox = new appletWindow("TCL Viewer", "TCLViewer", this.eventBus, null);
-		
 		SetStates(ID);
 		bind();
 	}
-	public MethodCreatorPresenter(HandlerManager evtBus, String ID)
-	{
-		//Load Method From ID;
-		stateSelector = new HashMap<String,MethodCreatorStates>();
-		_AllStates = new HashMap<MethodCreatorStates,IFormView>();
-		this.eventBus = evtBus;
-		mainModel = new MethodCompleteModel(ID,this);
-		Construct(ID);
-	}
-	@Override
-	public ArrayList<String> GetDocks() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	/**
+	 * Sets up default states
+	 * @param ID
+	 */
 	private void SetStates(String ID)
 	{
 			try
@@ -148,7 +144,47 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		
 	}
 	/**
-	 * 
+	 * Binds local Events to this presenter
+	 * none implemented yet
+	 */
+	private void bind()
+	{
+		 eventBus.addHandler(ChangeWindowEvent.TYPE, 
+		    		new ChangeWindowEventHandler(){
+		    			public void onChangeWindow(ChangeWindowEvent event){
+		    				
+		    			}   	
+		    		});
+		return;
+	}
+	/**
+	 * go(HasWidgets Container) - loads a single panel
+	 */
+	@Override
+	public void go(HasWidgets container) {
+		
+		container.add(this.ImplementedMethodView.asWidget());
+	}
+	/**
+	 * Loads two panels
+	 * Navigation and Body
+	 * This is called by a parent class which loads panels into a layout 
+	 */
+	@Override
+	public void go(HasWidgets bodyContainer, HasWidgets navContainer) {
+		
+		bodyContainer.add(this.ImplementedMethodView.asWidget());
+		navContainer.clear();
+		navContainer.add(this.NavigationView.asWidget());
+		//Load initial state
+		this.CurrentState = MethodCreatorStates.INIT;
+		this.ChangeState(MethodCreatorStates.METHOD_DETAILS);
+		
+	}
+	
+	/*#Section State Changing */
+	/**
+	 * The base change State Function - possibly not necessary any more as state transition are no longer general
 	 * @param newState
 	 */
 	private void ChangeState(MethodCreatorStates newState)
@@ -162,12 +198,12 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 					if(tmpView!=null)
 					{	
 						this.ImplementedMethodView.clearChild();
-						GWT.log("State change 1");
+						GWT.log("State change 1 - loads a form");
+						
 						FormBuilder tmpForm = this.mainModel.getFormData(newState.toString());
 						if(tmpForm!=null)
 						{
 							GWT.log("State change 3");			
-									//this.ImplementedMethodView.setData(tmpForm);
 							tmpView.ClearForm();
 							tmpView.LoadForm(tmpForm);
 							
@@ -177,15 +213,9 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 								GWT.log("@MethodCreatorPresenter.ChangeState: Could not find a form for:" + newState);
 						}
 						
-						
-						//GWT.log("Pre-SetChild" + this.CurrentState);
 						this.ImplementedMethodView.setChild(tmpView.asWidget());
-						//GWT.log("Post-SetChild" + newState);
 						this.ImplementedMethodView.setPresenter(this);
 						this.CurrentState=newState;
-								//GWT.log("4");
-								//this.ImplementedDockView.setTabData(tmpState.getModel().getMetaDataCategories(), "MetaData");
-								//GWT.log(tmpState.presenterState.toString());
 						GWT.log("cHILD wIDGET:" + tmpView.getClass());
 						GWT.log("cHILD wIDGET:" + tmpView.asWidget().toString());
 						
@@ -198,85 +228,37 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 						}
 						return;
 					}
-							
-							
-						
-					}
-					catch(Exception ex)
-					{
-						GWT.log("Error Occurs @ MethodCreatorPresenter.ChangeState" + ex.getMessage());
-					}
-			
+				}
+				catch(Exception ex)
+				{
+					GWT.log("Error Occurs @ MethodCreatorPresenter.ChangeState" + ex.getMessage());
+				}
 		}
 		else
 		{
-			
 			this.CurrentState = MethodCreatorStates.INIT;
 			this.ChangeState(MethodCreatorStates.METHOD_DETAILS);
 		}
 		
 	}
-	
-	
-	private void bind()
-	{
-		 eventBus.addHandler(ChangeWindowEvent.TYPE, 
-		    		new ChangeWindowEventHandler(){
-		    			public void onChangeWindow(ChangeWindowEvent event){
-		    				doChangeWindow(event.getId(),event.getChange());
-		    			}   	
-		    		});
-		return;
-	}
-	private void doChangeWindow(String WindowName,String Change)
-	{
-		this.tclBox.hide();
-	}
 	/**
-	 * go(HasWidgets Container) - loads a single panel
+	 * The state transition logic
 	 */
-	@Override
-	public void go(HasWidgets container) {
-		// TODO Auto-generated method stub
-		container.add(this.ImplementedMethodView.asWidget());
-	}
-
-	/**
-	 * Loads two panels
-	 * NB: Dock Panel not currently supported
-	 * This is called by a parent class which loads panels into a layout 
-	 */
-	@Override
-	public void go(HasWidgets bodyContainer, HasWidgets dockContainer) {
-		// TODO Auto-generated method stub
-		
-		//Dock container not supported
-		//dockContainer.add(this.ImplementedDockView.asWidget());
-		bodyContainer.add(this.ImplementedMethodView.asWidget());
-
-		//Load initial state
-		this.CurrentState = MethodCreatorStates.INIT;
-		this.ChangeState(MethodCreatorStates.METHOD_DETAILS);
-		
-	}
-	
-
 	@Override
 	public void FormComplete(String FormName,String Command) {
+		GWTLogger.Log("Chasing the number of FormChanges", "MCP", "FormComplete", "246");
 		IFormView currentView =this._AllStates.get(CurrentState);
-		iMBModel tmpModel = this.mainModel;
 		if(FormName==null)
 		{
 			Window.alert("This form is not valid, Please enter some details");
 			return;
 		}
+		//Transition between states
 		if(Command=="Next")
 		{
-		//	com.google.gwt.user.client.Window.alert("Unable to Save Form.");
 			GWT.log("Next and CurrentState is:" + CurrentState + "New State is: " + FormName);
-			
 			//FIX: Validation fails for some formFields
-			String Validation = tmpModel.ValidateForm(FormName);
+			String Validation = this.mainModel.ValidateForm(FormName);
 			
 			if(FormName==pojoMethod.FormName)
 			{
@@ -312,16 +294,12 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 						if(tmpForm!=null)
 						{
 							GWT.log("State change 3");			
-							//this.ImplementedMethodView.setData(tmpForm);
 							tmpView.LoadForm(tmpForm);
 							this.ImplementedMethodView.setData(tmpForm);
 							this.ImplementedMethodView.setChild(tmpView.asWidget());
 						}
 					}
 				}
-				
-				//this.ImplementedMethodView.setData(this.mainModel.getFormData(this.mainModel.get);
-			
 			}
 			else if(FormName.contains(pojoStepDetails.FormName))
 			{
@@ -331,7 +309,7 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 					return;
 				}
 				else
-				{//com.google.gwt.user.client.Window.alert("New Step");
+				{
 					IFormView tmpView = this._AllStates.get(MethodCreatorStates.STEP_DETAILS);
 					this.ImplementedMethodView.clearChild();
 					pojoStepDetails tmpPojo = this.mainModel.getNextStep(FormName); 
@@ -351,33 +329,9 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 					}
 					
 				}
-				
-				//this.ImplementedMethodView.clearChild();
-		
 			}
 		}
-		else if(Command=="Prev")
-		{
-			if(FormName==pojoSubjectProperties.FormName)
-			{
-				//DONE Must ensure next, prev and complete states are submitted to any view/form
-				this.ChangeState(MethodCreatorStates.METHOD_DETAILS);
-				this.ImplementedMethodView.SetMenuIndex(MethodCreatorStates.METHOD_DETAILS.toString());
-			}	
-			else if(FormName.contains(pojoStepDetails.FormName))
-			{
-				//DONE Must ensure next, prev and complete states are submitted to any view/form
-				this.ChangeState(MethodCreatorStates.SUBJECT_PROPERTIES);
-				this.ImplementedMethodView.SetMenuIndex(MethodCreatorStates.SUBJECT_PROPERTIES.toString());
-			}	
-		}
-		else if(Command=="AddAnother")
-		{
-			//Current Form Reset
-			//revisedModel.AddNewStep();
-			currentView.ClearForm();
-			//Current Model - Set New Step
-		}
+		//Edits any form
 		else if(Command=="Edit")
 		{
 			if(FormName.contains(pojoStepDetails.FormName))
@@ -389,7 +343,7 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 				if(tmpPojo!=null)
 				{
 					FormBuilder tmpForm  = tmpPojo.getFormStructure();
-					//com.google.gwt.user.client.Window.alert(tmpPojo.getFormStructure().getFormDetails().toString() + tmpPojo.getFormStructure().getFormDetails().size());
+					//com.google.gwt.user.client.Window.alert(tmpPojo.getFormStructure().getFormDetails().toString() + tmpPojo.getFormStructure().Details().size());
 					//tmpPojo.getFormStructure().getFormDetails()
 					if(tmpForm!=null)
 					{
@@ -436,16 +390,16 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 			}
 				
 		}
+		//Delete a Step
 		else if(Command=="Delete")
 		{
-			//StepModel revisedModel =(StepModel)tmpModel;
-			//revisedModel.RemoveStepForFormName(FormName);
 			MethodCompleteModel delModel = this.mainModel;
 			delModel.removeStep(FormName);
 			this.ImplementedMethodView.RemoveListItem(FormName);
 			this.ImplementedMethodView.clearChild();
 			this.ChangeState(MethodCreatorStates.SUBJECT_PROPERTIES);
 		}
+		//Saves a Method into MFlux
 		else if(Command=="Save")
 		{
 			//Validate
@@ -497,38 +451,14 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 			strTCL.append(HtmlFormatter.GetHTMLUtilityScript("TCL"));
 			strTCL.append(this.mainModel.getStringRpresentation("TCL"));
 			strTCL.append(HtmlFormatter.GetUtilityWriteScript());
-			/*
-			# Create/update the Method
-			set id2 [xvalue id [om.pssd.method.for.subject.update $args]]
-			if { $id2 == "" } {
-			   # An existng Method was updated
-			   return $id
-			} else {
-			   # A new Method was created
-			   return $id2
-			}
-			*/
-			//Should just launch a Window with a Pojo
+		
 			Desktop d = Desktop.get();
 			final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
 			m.loadPreview(strTCL, SupportedFormats.TCL);
-			//d.
-			//_newWin.loadPreview(strTCL, SupportedFormats.TCL);
-		    //_newWin.setOkCancelHandler(this);
 		    d.show(m, true);
-		    //_newWin.
-				//WindowManager tmpManager = WindowManager.manager();
-			//	tmpManager.add(_win);
-				//tmpManager.setDefaultParentWidget(defaultPar)
-				//_win.show();
-				
-	
 		}
 		else if(Command=="Cancel")
 		{
-			// HACK: This shouldn't be specifying "MethodBuilder" here.  It should
-			// know what window it's in, or the type name should be a static that
-			// all windows implement.
 			eventBus.fireEvent(new WindowEvent("MethodBuilder", WindowEvent.EventType.CloseWindow));
 		}
 	
@@ -536,13 +466,6 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 	
 	@Override
 	public void FireDragEvent(DragEvent e) {
-		
-		
-		
-		
-		
-		//RelatedModel.
-		
 		String DataObjectType = e.getName();
 		String DataFieldName = e.getId();
 		int Action = e.getIndex();
@@ -575,19 +498,11 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		
 	}
 	
-	@Override
-	public void go(HasWidgets bodyContainer, HasWidgets dockContainer,HasWidgets navContainer) {
-			this.NavigationView = new AppletStateNavigation();
-			NavigationView.setPresenter(this);
-			navContainer.clear();
-			navContainer.add(this.NavigationView.asWidget());
-			this.go(bodyContainer, dockContainer);
-		
-	}
+	
 	@Override
 	public void ModelUpdate(String ServiceName) {
 		
-	//	Window.alert("Help");//
+		GWTLogger.Log("Model Updates", "MCP", "ModelUpdate", "594");
 		if(ServiceName=="GetMethod")
 		{
 			
@@ -638,6 +553,7 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 			//this.getCurrentPresenterState().getView().LoadForm(this.mainModel.getFormData(this.getCurrentPresenterState().presenterState.toString()));
 			GWT.log("We get here...MU");
 			this.ChangeState(MethodCreatorStates.METHOD_DETAILS);
+			this.ImplementedMethodView.SetMenuIndex(pojoMethod.FormName);
 		}
 		if(ServiceName=="CheckUse")
 		{
@@ -649,6 +565,9 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 			}
 		}
 	}
+	/**
+	 * Update the form when an individual item is modified	
+	 */
 	@Override
 	public String UpdateValue(FormBuilder someFormData) {
 		
@@ -661,9 +580,6 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		{
 			GWT.log("Not null");
 			this.ImplementedMethodView.setData(someFormData);
-			//tmpView.LoadForm(tmpBuilder);
-			
-			//FIX: Not updating model
 			
 		}
 		else
@@ -673,12 +589,5 @@ public class MethodCreatorPresenter implements FormPresenter,OkCancelHandler{
 		return "";
 		
 	}
-	@Override
-	public void onOkCancelClicked(Event eventType) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-
 }
 

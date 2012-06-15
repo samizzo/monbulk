@@ -122,11 +122,11 @@ public class pojoSubjectProperties implements IPojo {
 		
 		if(this.SubjectName ==null)
 		{
-			SubjectPropertiesForm.AddTitleItem(SubjectNameField,"String");
+			SubjectPropertiesForm.AddSummaryItem(SubjectNameField,"String");
 		}
 		else
 		{
-			SubjectPropertiesForm.AddTitleItem(SubjectNameField,"String",SubjectName);
+			SubjectPropertiesForm.AddSummaryItem(SubjectNameField,"String",SubjectName);
 		}
 		DictionaryFormField subjectTypeField = new DictionaryFormField(SubjectTypeField,this.SubjectPropertiesDictionary);
 		subjectTypeField.setAsSummaryField();
@@ -201,20 +201,23 @@ public class pojoSubjectProperties implements IPojo {
 	public void setSubjectName(String SubjectName)
 	{
 		this.SubjectName = SubjectName;
-		this.SubjectPropertiesForm.getFieldItemForName(SubjectNameField).SetFieldValue(SubjectName);
+		String FieldName = HtmlFormatter.stripFormFieldName(FormName, SubjectNameField);
+		this.SubjectPropertiesForm.getFieldItemForName(FieldName).SetFieldValue(SubjectName);
 	}
 	public void setSubjectType(String SubjectType)
 	{
 		this.SubjectType = SubjectType;
-		this.SubjectPropertiesForm.getFieldItemForName(SubjectTypeField).SetFieldValue(SubjectType);
+		String FieldName = HtmlFormatter.stripFormFieldName(FormName, SubjectTypeField);
+		this.SubjectPropertiesForm.getFieldItemForName(FieldName).SetFieldValue(SubjectType);
 	}
 	@Override
 	public void setFieldVale(String FieldName, Object FieldValue) {
-		if(FieldName==this.SubjectNameField)
+		FieldName = HtmlFormatter.stripFormFieldName(FormName, FieldName);
+		if(HtmlFormatter.compareStrings(FieldName,SubjectNameField))
 		{
 			this.setSubjectName(FieldValue.toString());
 		}
-		else if(FieldName==this.SubjectTypeField)
+		else if(HtmlFormatter.compareStrings(FieldName,SubjectTypeField))
 		{
 			this.setSubjectType(FieldValue.toString());
 		}

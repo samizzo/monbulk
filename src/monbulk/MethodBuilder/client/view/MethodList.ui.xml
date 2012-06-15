@@ -34,7 +34,7 @@
 	<g:HTMLPanel>
 		<g:VerticalPanel height="570px" width="218px" styleName="LeftMenuPanel" >
 		<g:HorizontalPanel width="218px" styleName="searchPanel" ui:field="_searchPanel"/>
-		<g:ScrollPanel height="510px" width="218px" styleName="{style.MenuScrolling}">
+		<g:ScrollPanel height="510px" width="218px" styleName="{style.MenuScrolling}" ui:field="_pnlScroll">
 		<!-- Have to be a list of widgets -->
 			<g:FlexTable height="510px" width="200px" addStyleNames="{style.menuStack}" ui:field="_MenuStack" />
 			

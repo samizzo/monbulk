@@ -7,8 +7,10 @@ import com.google.gwt.core.client.GWT;
 
 
 import monbulk.shared.Form.FormBuilder;
+import monbulk.shared.Form.FormField;
 import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.IPojo;
+import monbulk.shared.util.GWTLogger;
 import monbulk.shared.util.HtmlFormatter;
 
 public class pojoMethod implements IPojo {
@@ -30,14 +32,26 @@ public class pojoMethod implements IPojo {
 	public static final String MethodAuthorField = "Author";
 	public static final String MethodIDField = "ID";
 	
+	public int loadCount;
 	private FormBuilder MethodForm = new FormBuilder();
+	public Boolean isSummary;
 	public pojoMethod()
 	{
+		isSummary = false;
+		GWTLogger.Log("Construct", "pojoMethod", "Construct", "39");
+		loadCount=0;
 		this.MethodNameSpace ="pssd/methods";
 		MethodForm = new FormBuilder();
 		this.buildForm();
 	}
-	
+	public pojoMethod(Boolean isSummary)
+	{
+		this.isSummary = true;
+		GWTLogger.Log("Construct with Summary", "pojoMethod", "Construct", "47");
+		loadCount=0;
+		this.MethodNameSpace ="pssd/methods";
+		MethodForm = new FormBuilder();
+	}
 	public String writeTCL() {
 		this.saveForm(MethodForm);
 					String Output="";
@@ -71,16 +85,22 @@ public class pojoMethod implements IPojo {
 	{
 		MethodForm.deleteFormItems();
 		MethodForm.SetFormName(FormName);
-		/*if(this.MethodID==null)
+		GWTLogger.Log("Load Count" + loadCount, "pojo MEthod", "buildForm", "76");
+		loadCount++;
+		if(this.MethodID==null)
 		{
-			
-			MethodForm.AddItem(MethodIDField,"String","Test Value");
+			FormField tmpField = new FormField(MethodIDField,"String","new method");
+			tmpField.setAsSummaryField();
+			tmpField.setStatic(true);
+			MethodForm.addField(tmpField);
 		}
 		else
 		{
-			
-			MethodForm.AddItem(MethodIDField,"String",MethodID);
-		}*/
+			FormField tmpField = new FormField(MethodIDField,"String",MethodID);
+			tmpField.setAsSummaryField();
+			tmpField.setStatic(true);
+			MethodForm.addField(tmpField);
+		}
 		if(this.MethodName==null)
 		{
 			MethodForm.AddTitleItem(MethodNameField, "String");	
@@ -152,7 +172,10 @@ public class pojoMethod implements IPojo {
 	}
 	public void setMethodAuthor(String methodAuthor) {
 		MethodAuthor = methodAuthor;
-		this.MethodForm.getFieldItemForName(this.MethodAuthorField).SetFieldValue(methodAuthor);
+		if(!this.isSummary)
+		{	
+			this.MethodForm.getFieldItemForName(this.MethodAuthorField).SetFieldValue(methodAuthor);
+		}
 	}
 	public String getDateCreated() {
 		return DateCreated;
@@ -171,24 +194,17 @@ public class pojoMethod implements IPojo {
 	}
 	public void setMethodID(String methodID) {
 		MethodID = methodID;
-		try
-		{
-			if(this.MethodForm.getFieldItemForName(this.MethodIDField)!=null)
-			{
-			//	this.MethodForm.getFieldItemForName(this.MethodIDField).SetFieldValue(methodID);
-			}
-		}
-		catch(Exception ex)
-		{
-			GWT.log("Exception caught @ pojoMetod.setMethodId" + ex.getMessage() +ex.getCause());
-		}
+		
 	}
 	public String getMethodName() {
 		return MethodName;
 	}
 	public void setMethodName(String methodName) {
 		MethodName = methodName;
-		this.MethodForm.getFieldItemForName(this.MethodNameField).SetFieldValue(methodName);
+		if(!this.isSummary)
+		{
+			this.MethodForm.getFieldItemForName(this.MethodNameField).SetFieldValue(methodName);
+		}
 	}
 	@Override
 	public void saveForm(FormBuilder input) {

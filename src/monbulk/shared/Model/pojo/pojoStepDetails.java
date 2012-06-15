@@ -240,7 +240,9 @@ public class pojoStepDetails implements IPojo{
 				//StepDetailsForm.AddListItem(pojoStudy.DicomModalityField, new ArrayList<String>(), "Loading");
 		 
 		DictionaryFormField DICOMfield = new DictionaryFormField(pojoStudy.DicomModalityField,pojoStudy.DICOM_DICTIONARY);
+		DICOMfield.setAsSummaryField();
 		DictionaryFormField stField = new DictionaryFormField(pojoStudy.StudyTypeField,pojoStudy.STUDYTYPE_DICTIONARY);
+		stField.setAsSummaryField();
 		if(this.relatedStudy.getStudyType()!=null)
 		{	
 			stField.SetFieldValue(this.relatedStudy.getStudyType());
@@ -394,6 +396,7 @@ public class pojoStepDetails implements IPojo{
 				{
 					this.hasStudy=true;
 					String studyType = document.selectValue("/step/study/type");
+					String DM = document.selectValue("/step/study/dicom/modality");
 					this.relatedStudy.setDICOM(document.selectValue("/step/study/dicom/modality"));
 					this.relatedStudy.setStudyType(document.selectValue("/step/study/type"));
 				}

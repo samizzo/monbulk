@@ -27,8 +27,8 @@
 			 	 			<g:south size="535" unit="px" styleName="{style.Scroll}">
 			 	 			<g:DockLayoutPanel unit="PX"  height="535px">
 			 	 				<g:west size="285" unit="px" >
-				 	 			<g:ScrollPanel width="285px" height="535px" styleName="{style.Scroll}" >
-					 	 			<g:StackLayoutPanel width="285px" height="535px" unit="PX" styleName="StandardStack" ui:field="MethodNavigationStack">
+				 	 			<g:ScrollPanel width="285px" height="535px" styleName="{style.Scroll}" ui:field="_pnlScrollMethod" >
+					 	 			<g:StackLayoutPanel width="273px" height="520px" unit="PX" styleName="StandardStack" ui:field="MethodNavigationStack">
 										<g:stack>
 											<g:header size="41" ui:field="MethodTitle">Method Details</g:header>
 											<g:HTML ui:field="MethodDetailsSummary" />
@@ -50,7 +50,7 @@
 											
 										</g:ScrollPanel>
 										<g:HorizontalPanel width="513px" styleName="FormNav">
-											<g:PushButton ui:field="btnNext" styleName="btnDefault" text="Next"/>
+											<g:PushButton ui:field="btnNext" styleName="btnDefault">> Add Subject Properties</g:PushButton>
 										</g:HorizontalPanel>
 									</g:VerticalPanel>
 									</g:west>

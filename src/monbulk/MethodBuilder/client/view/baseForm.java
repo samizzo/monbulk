@@ -373,6 +373,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 			if(response == "")
 			{
 				tmpField.SetFieldValue(FieldValue.toString());
+				tmpField.Validate(FieldValue.toString());
 				if(this.Presenter!=null){
 					this.Presenter.UpdateValue(this.generalForm);
 					

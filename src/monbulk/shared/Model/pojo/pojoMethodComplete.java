@@ -11,6 +11,7 @@ import com.google.gwt.xml.client.XMLParser;
 import monbulk.client.Monbulk;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Model.IPojo;
+import monbulk.shared.util.GWTLogger;
 import monbulk.shared.util.HtmlFormatter;
 
 import com.google.gwt.xml.client.Document;
@@ -30,7 +31,7 @@ public class pojoMethodComplete implements IPojo{
 	
 	public pojoMethodComplete()
 	{
-		
+		GWTLogger.Log("pmcComplete", "MCP", "Construct", "82");
 		this.MethodDetails = new pojoMethod();
 		this.SubjectProperties = new pojoSubjectProperties();
 		this.allSteps = new HashMap<String,pojoStepDetails>();
@@ -115,7 +116,7 @@ public class pojoMethodComplete implements IPojo{
 		 //Which means is Edit
 		 if(this.MethodID!=null)
 		 {
-			 if(this.MethodID!="")
+			 if(this.MethodID!="new method")
 			 {
 				 Element id = doc.createElement("id");
 				 id.appendChild(doc.createTextNode(this.MethodID));

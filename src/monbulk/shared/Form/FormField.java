@@ -49,7 +49,7 @@ import monbulk.shared.util.GWTLogger;
 			isSummaryField = false;
 			isTitleField = false;
 			hasValue = false;
-			
+			isStatic = false;
 		}
 		public FormField(String FormName,String objectType,Boolean shouldLoad)
 		{
@@ -62,6 +62,7 @@ import monbulk.shared.util.GWTLogger;
 				isSummaryField = false;
 				isTitleField = false;
 				hasValue = false;
+				isStatic = false;
 			}
 		}
 		public FormField(String FormName,String objectType, Object Value)
@@ -76,7 +77,7 @@ import monbulk.shared.util.GWTLogger;
 			this.fieldValidator = null;
 			isSummaryField = false;
 			isTitleField = false;
-			isStatic = true;
+			isStatic = false;
 			hasValue = true;
 		}
 		
@@ -100,6 +101,11 @@ import monbulk.shared.util.GWTLogger;
 		{
 			return this.isStatic;
 		}
+		public void setStatic(Boolean isStatic)
+		{
+			this.isStatic = isStatic;
+			this.setFieldWidget();
+		}
 		@Override
 		public Boolean isSummary()
 		{
@@ -121,12 +127,20 @@ import monbulk.shared.util.GWTLogger;
 			{
 				this.FieldWidget="TextBox";
 				
-				this._FieldVaLueWidget = new TextBox();
+				TextBox tmpBox = new TextBox();
+				
 				//this._FieldVaLueWidget.add
 				
 				this._ValidationWidget = new Label();
 				
-				
+				if(this.isStatic!=null)
+				{
+					if(this.isStatic)
+					{
+						tmpBox.setEnabled(false);
+					}
+				}
+				this._FieldVaLueWidget = tmpBox;
 				this.fieldValidator = new StringValidation(this.FieldName);
 			}
 			else if(FieldType=="Date")
@@ -244,6 +258,9 @@ import monbulk.shared.util.GWTLogger;
 				if(this.fieldValidator.isValueValid(FieldValue))
 				{
 					this._ValidationWidget.setStyleName("Valid");
+					Label tmpLabel = (Label)this._ValidationWidget;
+					tmpLabel.setVisible(true);
+					tmpLabel.setText("");
 					return "";
 				}
 				else

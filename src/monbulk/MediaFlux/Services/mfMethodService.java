@@ -60,7 +60,7 @@ public class mfMethodService extends MethodService {
 						String ID = tmpItem.value();
 						String Description = tmpItem.value("@description");
 						
-						pojoMethod tmpMethod = new pojoMethod();
+						pojoMethod tmpMethod = new pojoMethod(true);
 						
 						tmpMethod.setMethodID(ID);
 						
@@ -124,10 +124,17 @@ public class mfMethodService extends MethodService {
 					try
 					{
 						//Window.alert(xe.stringValue("id"));'
-						
+						String tmpID = xe.toString();
 						if(xe.hasElements())
 						{
-							mu_handler.onUpdateMethod(xe.stringValue("id"));
+							if(xe.stringValue("id")!=null)
+							{
+								mu_handler.onUpdateMethod(xe.stringValue("id"));
+							}
+							else
+							{
+								mu_handler.onUpdateMethod(xe.toString());
+							}
 						}
 						else
 						{

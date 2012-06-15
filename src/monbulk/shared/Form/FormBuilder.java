@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import monbulk.shared.util.HtmlFormatter;
+
 
 
 import com.google.gwt.core.client.GWT;
@@ -198,20 +200,21 @@ public class FormBuilder {
 	public iFormField getFieldItemForName(String FieldName)
 	{
 		Iterator<iFormField> i = this.FieldList.iterator();
-		int j=0;
-		
 		while(i.hasNext())
 		{
 			iFormField tmpItem = i.next();
-			j++;
-			if(tmpItem.GetFieldName().equals(FieldName))
+			String newName = HtmlFormatter.stripFormFieldName(this.FormName, tmpItem.GetFieldName());
+			FieldName =HtmlFormatter.stripFormFieldName(this.FormName, FieldName);
+			if(newName.equals(FieldName))
 			{
 				return tmpItem;
 			}
-			if(j==1000)
+			else if(HtmlFormatter.compareStrings(FieldName,newName))
 			{
-				return null;
+				return tmpItem;
 			}
+			
+		
 		}
 		return null;
 	}

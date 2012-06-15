@@ -16,6 +16,7 @@ import monbulk.MethodBuilder.client.view.MethodBuilderMaster;
 import monbulk.MethodBuilder.client.view.MethodList;
 
 import monbulk.shared.Architecture.IPresenter.DockedPresenter;
+import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Events.DragEvent;
 import monbulk.shared.Events.DragEventHandler;
 import monbulk.shared.Model.pojo.pojoMethod;
@@ -29,7 +30,7 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 public class MethodBuilder extends ResizeComposite implements IWindow,GetDictionaryHandler
 {
 	private iMenuWidget AppletMenu;
-	private DockedPresenter CurrentPresenter;
+	private FormPresenter CurrentPresenter;
 	private String CurrentState;
 	private HandlerManager eventBus;
 	private WindowSettings m_windowSettings;
@@ -41,6 +42,7 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 	
 	public MethodBuilder(HandlerManager evtBus)
 	{
+		
 		
 		m_windowSettings = new WindowSettings();
 		m_windowSettings.width = 1025;
@@ -80,7 +82,7 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 			{
 				this.CurrentState="Create Method";
 				this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
-				this.CurrentPresenter.go(getBodyContainer(),getDockContainer(),getNavigationContainer());
+				this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
 			}
 			else if(initState.equals("Create Method"))
 			{
@@ -89,7 +91,7 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 				//
 					this.CurrentState="Create Method";
 					this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
-					this.CurrentPresenter.go(getBodyContainer(),getDockContainer(),getNavigationContainer());
+					this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
 			
 			}
 			else if(initState.equals("Refresh"))
@@ -99,7 +101,7 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 				tmpMenu.refreshList();
 				this.CurrentState="Create Method";
 				this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
-				this.CurrentPresenter.go(getBodyContainer(),getDockContainer(),getNavigationContainer());
+				this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
 			}
 			
 			else if(initState.equals("NewMethod"))
@@ -109,7 +111,7 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 				//
 					this.CurrentState="Create Method";
 					this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
-					this.CurrentPresenter.go(getBodyContainer(),getDockContainer(),getNavigationContainer());
+					this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
 			
 			}
 			else if(initState.equals("Edit Methods"))
@@ -134,7 +136,7 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 				//String ID = initState.replace("Edit:", "");
 					MethodCreatorPresenter mcp = new MethodCreatorPresenter(this.eventBus, this.loadedMethodID);
 					this.CurrentPresenter = mcp;
-					this.CurrentPresenter.go(getBodyContainer(),getDockContainer(),getNavigationContainer());
+					this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
 				}
 				catch(Exception ex)
 				{

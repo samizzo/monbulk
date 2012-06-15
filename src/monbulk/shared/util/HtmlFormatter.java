@@ -229,4 +229,25 @@ public class HtmlFormatter {
 		
 		return XML;
 	}
+	public static Boolean compareStrings(String Str1, String str2)
+	{
+		if(Str1.contains(str2) && Str1.length() == str2.length())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	public static String stripFormFieldName(String FormName,String FieldToChange)
+	{
+		
+		if(FieldToChange.contains(FormName))
+		{
+			FieldToChange= FieldToChange.replace(FormName, "");
+			FieldToChange= FieldToChange.replace(".", "");
+		}
+		return FieldToChange;
+	}
 }
