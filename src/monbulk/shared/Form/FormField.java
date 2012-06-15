@@ -254,7 +254,7 @@ import monbulk.shared.util.GWTLogger;
 		@Override
 		public String Validate(String FieldValue) {
 			if(this.fieldValidator!=null)
-				{
+			{
 				if(this.fieldValidator.isValueValid(FieldValue))
 				{
 					this._ValidationWidget.setStyleName("Valid");
@@ -268,6 +268,13 @@ import monbulk.shared.util.GWTLogger;
 					this._ValidationWidget.setStyleName("InValid");
 					return fieldValidator.getInvalidReason();
 				}
+			}
+			else
+			{
+				this._ValidationWidget.setStyleName("Valid");
+				Label tmpLabel = (Label)this._ValidationWidget;
+				tmpLabel.setVisible(true);
+				tmpLabel.setText("");
 			}
 			return "";
 		}
