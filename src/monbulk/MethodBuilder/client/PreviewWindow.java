@@ -68,6 +68,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 	}
 	public void loadPreview(StringBuilder tmpList,PreviewWindow.SupportedFormats inputFormat)
 	{
+		_Guide.setStyleName("ValidWindowText");
 		formattedText = tmpList;
 		selectedFormat = inputFormat;
 		_PreviewPanel.clear();
@@ -153,6 +154,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		_Guide.setText("Name of new method:");
 		_PreviewPanel.add(_Guide);
 		_PreviewPanel.add(tmpArea);
+		_Guide.setStyleName("ValidWindowText");
 	}
 	/**
 	 * 
@@ -194,6 +196,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		}
 		_Guide.setText("Saving Method... Please wait.");
 		_PreviewPanel.add(_Guide);
+		_Guide.setStyleName("ValidWindowText");
 		//_PreviewPanel.add(tmpArea);
 		
 		
@@ -270,6 +273,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		else
 		{
 			this._Guide.setText("That method name is already in use, please try another");
+			_Guide.setStyleName("InValidWindowText");
 			Desktop d = Desktop.get();		
 			//this.m_ok.(handleSave);
 			d.show("MethodPreviewWindow",true);
@@ -280,6 +284,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 	{
 		this.m_cancel.setVisible(true);
 		_PreviewPanel.clear();
+		_Guide.setStyleName("ValidWindowText");
 		this._Guide.setText("Are you sure you want to delete the method with id: " + MethodID +"?");
 		final MethodUpdateHandler tmpHandle = this;
 		handleSave = new ClickHandler(){
