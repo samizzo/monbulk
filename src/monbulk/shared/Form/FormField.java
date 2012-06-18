@@ -37,7 +37,7 @@ import monbulk.shared.util.GWTLogger;
 		protected Boolean isStatic;
 		protected Boolean hasValue;
 		protected FormWidget returnWidget;
-		
+		protected Boolean isValid;
 		
 		public FormField(String FormName,String objectType)
 		{
@@ -50,7 +50,9 @@ import monbulk.shared.util.GWTLogger;
 			isTitleField = false;
 			hasValue = false;
 			isStatic = false;
+			isValid = false;
 		}
+		
 		public FormField(String FormName,String objectType,Boolean shouldLoad)
 		{
 			//
@@ -63,6 +65,7 @@ import monbulk.shared.util.GWTLogger;
 				isTitleField = false;
 				hasValue = false;
 				isStatic = false;
+				isValid = true;
 			}
 		}
 		public FormField(String FormName,String objectType, Object Value)
@@ -72,6 +75,7 @@ import monbulk.shared.util.GWTLogger;
 			this.FieldType = objectType;
 			this.FieldValue = Value;
 			setFieldWidget();
+			isValid = false;
 			this.FieldValue = Value;
 			this.FieldWidget="Label";
 			this.fieldValidator = null;
@@ -100,6 +104,24 @@ import monbulk.shared.util.GWTLogger;
 		public Boolean isStatic()
 		{
 			return this.isStatic;
+		}
+		public void setValid(Boolean valid)
+		{
+			this.isValid = valid;
+			Label tmpLabel = (Label)this._ValidationWidget;
+			tmpLabel.setVisible(true);
+			if(valid)
+			{
+				this._ValidationWidget.setStyleName("Valid");
+			}
+			else
+			{
+				this._ValidationWidget.setStyleName("InValid");
+			}
+		}
+		public Boolean getValid()
+		{
+			return this.isValid;
 		}
 		public void setStatic(Boolean isStatic)
 		{
@@ -232,6 +254,11 @@ import monbulk.shared.util.GWTLogger;
 				this.FieldValue = FieldValue;
 				hasValue = true;
 			}
+			else if(FieldValue=="")
+			{
+				hasValue=false;
+				this.FieldValue="";
+			}
 		}
 		@Override
 		public iFormFieldValidation GetFieldValidation() {
@@ -257,24 +284,27 @@ import monbulk.shared.util.GWTLogger;
 			{
 				if(this.fieldValidator.isValueValid(FieldValue))
 				{
-					this._ValidationWidget.setStyleName("Valid");
-					Label tmpLabel = (Label)this._ValidationWidget;
-					tmpLabel.setVisible(true);
-					tmpLabel.setText("");
+					this.setValid(true);
 					return "";
 				}
 				else
 				{
-					this._ValidationWidget.setStyleName("InValid");
+					this.setValid(false);
 					return fieldValidator.getInvalidReason();
 				}
 			}
 			else
 			{
-				this._ValidationWidget.setStyleName("Valid");
-				Label tmpLabel = (Label)this._ValidationWidget;
-				tmpLabel.setVisible(true);
-				tmpLabel.setText("");
+				if(FieldValue!="")
+				{
+					this.setValid(true);
+				}
+				else
+				{
+					this.setValid(false);
+					return "No Value entered for " + this.FieldName;
+				}
+				
 			}
 			return "";
 		}

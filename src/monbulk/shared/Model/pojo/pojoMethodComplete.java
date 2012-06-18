@@ -291,14 +291,11 @@ public class pojoMethodComplete implements IPojo{
 				while(i<tmpList.getLength())
 				{
 					Node tmpNode = tmpList.item(i);
-					//Window.alert("Node is added" + tmpNode.getNodeName());
 					//Have to get attributes
-					//Window.alert("Node Value" + tmpNode.getChildNodes());
+					
 					if(tmpNode.getNodeName().contains("description"))
 					{
-						//Window.alert("Node is added" + tmpNode.getNodeName());
 						this.MethodDetails.setFieldVale(pojoMethod.MethodDescriptionField, tmpNode.getChildNodes().toString());
-						//Window.alert("Exception?");
 					}
 					if(tmpNode.getNodeName().contains("name"))
 					{
@@ -308,7 +305,6 @@ public class pojoMethodComplete implements IPojo{
 					if(tmpNode.getNodeName().contains("subject"))
 					{
 						this.SubjectProperties.readInput("XML", Input);						
-						//Window.alert(document.selectNodes("/response/method/subject/project").toString());
 					}
 					if(tmpNode.getNodeName().contains("step"))
 					{
@@ -327,8 +323,6 @@ public class pojoMethodComplete implements IPojo{
 					
 					i++;
 				}
-		
-				//Window.alert(List);
 			}
 			
 		}

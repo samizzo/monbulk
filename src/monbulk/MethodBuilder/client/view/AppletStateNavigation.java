@@ -42,6 +42,7 @@ public class AppletStateNavigation extends Composite implements IView {
 	public AppletStateNavigation() {
 		initWidget(uiBinder.createAndBindUi(this));
 		User _user = Monbulk.getUser();
+		this.btnCancel.setVisible(false);
 		if(_user.hasRole(Roles.MethodBuilder.READONLY))
 		{
 			

@@ -25,6 +25,12 @@
 			border-top:Solid 1px #999;
 			
 		}
+		.menuStack td:Hover
+		{
+			font-size:10px;
+			height:34px;
+			border-top:Solid 1px #345484;
+		}
 		.MenuScrolling
 		{
 			border-bottom:Solid 2px #999;

@@ -27,6 +27,7 @@ import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Architecture.IView.IFormView;
 import monbulk.shared.Form.FormBuilder;
 
+import monbulk.shared.Form.FormField;
 import monbulk.shared.Form.FormWidget;
 import monbulk.shared.Form.iFormField;
 import monbulk.shared.util.GWTLogger;
@@ -62,22 +63,23 @@ public class baseForm extends VerticalPanel implements IFormView {
 		this.Presenter = presenter;
 		this.allFormItems = new ArrayList<FormWidget>();
 		this.widgetStructure = new ArrayList<HorizontalPanel>();
-		
+		HorizontalPanel errorPanel = new HorizontalPanel();
+		errorPanel.setStyleName("FormErrors");
+		this._errors = new Label();
+		errorPanel.add(_errors);
+		this.add(errorPanel);
+		errorPanel.setVisible(false);
 		VerticalPanel tmpPanel = new VerticalPanel();
 		isLoaded = false;
 	}
 	
 	@Override
 	public Widget asWidget() {
-		
-		//Window.alert(this.getTitle() + "We get here");
 		return this;
 	}
 
 	@Override
 	public void setPresenter(IPresenter presenter) {
-		
-		
 	}
 
 	@Override
@@ -88,14 +90,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 
 	@Override
 	public void ClearForm() {
-		
-		/*Iterator<FormWidget> i = this.allFormItems.iterator();
-		
-		while(i.hasNext())
-		{
-			FormWidget tmpWidg = i.next();
-			tmpWidg.clear();
-		}*/
+	
 		this._formItems.clear();
 	}
 	protected FormWidget getFormWidgetForName(String Name)
@@ -190,6 +185,8 @@ public class baseForm extends VerticalPanel implements IFormView {
 			errorPanel.add(_errors);
 			tmpPanel.add(errorPanel);
 			*/
+			
+			
 			widgetStructure = new ArrayList<HorizontalPanel>();
 			//widgetStructure.add(errorPanel);
 			
@@ -204,6 +201,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 				if(item.getWidgetReference()!=null)
 				{
 					final FormWidget tmpWidg = item.getWidgetReference();
+					
 					if(item.getFieldTypeName()=="List" || item.getFieldTypeName()=="Dictionary")
 					{
 						
@@ -224,7 +222,18 @@ public class baseForm extends VerticalPanel implements IFormView {
 							if(item.GetFieldValue()!=null)
 							{
 								tmpWidg.setListValue(item.GetFieldValue().toString());
+								item.Validate(item.GetFieldValue().toString());
 							}
+							else
+							{
+								FormField tmpField = (FormField)item;
+								tmpField.setValid(false);
+							}
+						}
+						else
+						{
+							FormField tmpField = (FormField)item;
+							tmpField.setValid(false);
 						}
 					}
 					else if(item.getFieldTypeName()=="Button")
@@ -265,6 +274,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 						else
 						{
 							tmpWidg.setFormValue(item.GetFieldValue());
+							item.Validate(item.GetFieldValue().toString());
 						}
 					}
 	
@@ -358,6 +368,13 @@ public class baseForm extends VerticalPanel implements IFormView {
 			GWT.log("Exception caught @ baseForm.LoadForm: Message -" + ex.getMessage());
 		}
 	}
+	/**
+	 * A unique methgod for extension - to perform validation work not covered before
+	 */
+	public void performValidationWork(iFormField tmpField, Object FieldValue)
+	{
+		return;
+	}
 	private final void UpdateValue(String FieldName, Object FieldValue)
 	{
 		//Window.alert(FieldName + ":" + FieldValue);
@@ -374,6 +391,8 @@ public class baseForm extends VerticalPanel implements IFormView {
 			{
 				tmpField.SetFieldValue(FieldValue.toString());
 				tmpField.Validate(FieldValue.toString());
+				this._errors.setVisible(false);
+				this.performValidationWork(tmpField, FieldValue);
 				if(this.Presenter!=null){
 					this.Presenter.UpdateValue(this.generalForm);
 					
@@ -381,9 +400,10 @@ public class baseForm extends VerticalPanel implements IFormView {
 			}
 			else
 			{
-				this.ErrorSummary.add(response);
+				//this.ErrorSummary.add(response);
+				tmpField.SetFieldValue("");
 				this._errors.setText(this._errors.getText() + response);
-				
+				this._errors.setVisible(true);
 			}
 			/*if(this.Presenter!=null){
 				String finalOut = this.Presenter.UpdateValue(this.generalForm);

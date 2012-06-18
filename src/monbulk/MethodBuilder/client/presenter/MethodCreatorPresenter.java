@@ -189,6 +189,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 	 */
 	private void ChangeState(MethodCreatorStates newState)
 	{
+		
 			if(this.CurrentState != null)
 			{
 				try
@@ -246,11 +247,15 @@ public class MethodCreatorPresenter implements FormPresenter{
 	 */
 	@Override
 	public void FormComplete(String FormName,String Command) {
-		GWTLogger.Log("Chasing the number of FormChanges", "MCP", "FormComplete", "246");
+		Desktop d = Desktop.get();
+		final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
 		IFormView currentView =this._AllStates.get(CurrentState);
+		
 		if(FormName==null)
 		{
-			Window.alert("This form is not valid, Please enter some details");
+			//Window.alert("This form is not valid, Please enter some details");
+			m.showInvalid("This form is not valid, Please enter some details", "Save Method Details");
+			d.show(m, true);
 			return;
 		}
 		//Transition between states
@@ -263,9 +268,12 @@ public class MethodCreatorPresenter implements FormPresenter{
 			if(FormName==pojoMethod.FormName)
 			{
 				
-				if(Validation!="")
+				if(Validation.length()!=0)
 				{
-					Window.alert("The Method Details form is not valid:" + Validation);
+					//Window.alert("The Method Details form is not valid:" + Validation);
+					m.showInvalid("" + Validation, "Save Method Details");
+					d.show(m, true);
+	//				d.show(window, centre)
 					return;				
 				}
 				else
@@ -278,9 +286,11 @@ public class MethodCreatorPresenter implements FormPresenter{
 			}
 			else if(FormName==pojoSubjectProperties.FormName)
 			{
-				if(Validation!="")
+				if(Validation.length()!=0)
 				{
-					Window.alert("The Subject form is not valid:" + Validation);
+					m.showInvalid(Validation, "Save Subject Properties");
+					d.show(m, true);
+					//Window.alert("The Subject form is not valid:" + Validation);
 					return;
 				}
 				else
@@ -303,9 +313,10 @@ public class MethodCreatorPresenter implements FormPresenter{
 			}
 			else if(FormName.contains(pojoStepDetails.FormName))
 			{
-				if(Validation!="")
+				if(Validation.length()!=0)
 				{
-					Window.alert("The Step Details form is not valid:" + Validation);
+					m.showInvalid(Validation, "Save Step Details");
+					d.show(m, true);
 					return;
 				}
 				else
@@ -398,19 +409,16 @@ public class MethodCreatorPresenter implements FormPresenter{
 			this.ImplementedMethodView.RemoveListItem(FormName);
 			this.ImplementedMethodView.clearChild();
 			this.ChangeState(MethodCreatorStates.SUBJECT_PROPERTIES);
+			this.ImplementedMethodView.SetMenuIndex(pojoSubjectProperties.FormName);
 		}
 		//Saves a Method into MFlux
 		else if(Command=="Save")
 		{
 			//Validate
-			
 			StringBuilder strTCL = new StringBuilder();
 			strTCL.append(this.mainModel.getStringRpresentation("XML"));
-			Desktop d = Desktop.get();
-			final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
-			
 			String valid = this.mainModel.ValidateForm();
-			String valid2 = valid.replace("<br/>", "");
+			String valid2 = valid.replaceAll("<br/>", "");
 			if(valid2.length()>0)
 			{	
 				m.showInvalid(valid, "Save Method");
@@ -423,9 +431,6 @@ public class MethodCreatorPresenter implements FormPresenter{
 		}
 		else if(Command=="Clone")
 		{
-			
-			Desktop d = Desktop.get();
-			final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
 			if(this.mainModel.getMethodID()==null)
 			{	
 				m.getWindowSettings().windowTitle = "ERROR";
@@ -433,31 +438,35 @@ public class MethodCreatorPresenter implements FormPresenter{
 			}
 			else
 			{
-				StringBuilder strTCL = new StringBuilder();
-				this.mainModel.setAsClone();
-				strTCL.append(this.mainModel.getStringRpresentation("XML"));
-				m.cloneMethod(this.mainModel.getStringRpresentation("XML"), SupportedFormats.XML,this.mainModel.getMethodName());
-				
+				String valid = this.mainModel.ValidateForm();
+				String valid2 = valid.replaceAll("<br/>", "");
+				if(valid2.length()>0)
+				{	
+					m.showInvalid(valid, "Save Method");
+				}
+				else
+				{
+					StringBuilder strTCL = new StringBuilder();
+					this.mainModel.setAsClone();
+					strTCL.append(this.mainModel.getStringRpresentation("XML"));
+					m.cloneMethod(this.mainModel.getStringRpresentation("XML"), SupportedFormats.XML,this.mainModel.getMethodName());
+				}
 			}
 			d.show(m, true);
 		}
 		else if(Command=="DeleteMethod")
 		{
-				Desktop d = Desktop.get();
-				final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
-				
-				if(this.mainModel.getMethodID()==null)
-				{
-					m.getWindowSettings().windowTitle = "ERROR";
-					
-					m.showInvalid("No Method Selected", "Delete Method");
-				}
-				else
-				{
-					m.getWindowSettings().windowTitle = "DELETE";
-					m.confirmDelete(this.mainModel.getMethodID());
-				}
-				d.show(m, true);
+			if(this.mainModel.getMethodID()==null)
+			{
+				m.getWindowSettings().windowTitle = "ERROR";
+				m.showInvalid("No Method Selected", "Delete Method");
+			}
+			else
+			{
+				m.getWindowSettings().windowTitle = "DELETE";
+				m.confirmDelete(this.mainModel.getMethodID());
+			}
+			d.show(m, true);
 		}
 		else if(Command=="Publish")
 		{
@@ -465,9 +474,6 @@ public class MethodCreatorPresenter implements FormPresenter{
 			strTCL.append(HtmlFormatter.GetHTMLUtilityScript("TCL"));
 			strTCL.append(this.mainModel.getStringRpresentation("TCL"));
 			strTCL.append(HtmlFormatter.GetUtilityWriteScript());
-		
-			Desktop d = Desktop.get();
-			final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
 			m.loadPreview(strTCL, SupportedFormats.TCL);
 		    d.show(m, true);
 		}
@@ -476,8 +482,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 			eventBus.fireEvent(new WindowEvent("MethodBuilder", WindowEvent.EventType.CloseWindow));
 		}
 	
-		}
-	
+	}
 	@Override
 	public void FireDragEvent(DragEvent e) {
 		String DataObjectType = e.getName();

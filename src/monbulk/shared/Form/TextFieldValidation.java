@@ -16,12 +16,17 @@ public class TextFieldValidation implements iFormFieldValidation
 		// TODO Auto-generated method stub
 		if(value.contains("<script"))
 		{
-			InvalidReason = this.FieldName + ": Illegal character usage, check you haven't used <Script ";
+			InvalidReason = this.FieldName + "uses an Illegal character, check you haven't used <Script ";
 			return false;
 		}
 		else if(value.length() > 1024)
 		{
-			InvalidReason = this.FieldName + ": String is too long. A Maximum of 1024 characters are permitted";
+			InvalidReason = this.FieldName + " is too long. A Maximum of 1024 characters are permitted";
+			return false;
+		}
+		else if(value.length() == 0)
+		{
+			InvalidReason = "Please provide a value for " + this.FieldName;
 			return false;
 		}
 		else

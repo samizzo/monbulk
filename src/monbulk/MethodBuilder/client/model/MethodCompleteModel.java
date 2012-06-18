@@ -243,11 +243,14 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 	public String ValidateForm() {
 		//super.formData = this.formCompleteModel;
 		String validation = this.ValidateForm(pojoMethod.FormName);
-		validation = validation + "<br/>" + this.ValidateForm(pojoSubjectProperties.FormName);
+		validation = validation + this.ValidateForm(pojoSubjectProperties.FormName);
 		Iterator<Entry<String,pojoStepDetails>> i =  this.CompleteModel.getSteps().entrySet().iterator();
 		while(i.hasNext())
 		{
 			Entry<String,pojoStepDetails> entry = i.next();
+			pojoStepDetails tmpStep = entry.getValue();
+			validation = validation + this.ValidateForm(tmpStep.getFormStructure().getFormName()) ;
+			
 		}
 		return validation;
 	}

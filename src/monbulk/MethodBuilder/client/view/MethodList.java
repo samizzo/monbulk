@@ -11,6 +11,10 @@ import java.util.Map.Entry;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.shared.HandlerManager;
 
 /*GWT Binder Imports */
@@ -205,22 +209,22 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 //		GWT.log("SetActiveMenu Called" + activeItem + count);
 		while(i<count)
 		{
-			Hidden tmpItem = (Hidden)this._MenuStack.getWidget(i, 2);
+			Hidden tmpItem = (Hidden)this._MenuStack.getWidget(i, 1);
 ///			GWT.log("ItemFound:" + tmpItem.getText() + activeItem + tmpItem.getText().length() + activeItem.length());
 			
 			if(tmpItem!=null)
 			{
 				if(tmpItem.getValue().contains(activeItem)&& tmpItem.getValue().length()==activeItem.length())
 				{
-					_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 2px #345484;font-weight:bold;color:#345484;");
-					_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;background-color:#345484;");
+					_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "font-weight:bold;color:#345484;");
+					//_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;background-color:#345484;");
 				//d	_MenuStack.getFlexCellFormatter().getElement(i, 2).setAttribute("style", "background-color:#345484;");
 					GWT.log("ItemFound:" + activeItem);
 				}
 				else
 				{
-					_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 1px #ccc;");
-					_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
+					_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "");
+					//_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
 					//_MenuStack.getFlexCellFormatter().getElement(i, 2).setAttribute("style", "");	
 				}
 			}
@@ -256,9 +260,29 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 					final Label titleLabel = new Label();
 					titleLabel.setText(tmpMethod.getMethodName());
 					titleLabel.addStyleName("menuMethodName");
-					PushButton _edit = new PushButton();
-					_edit.setStyleName("btnEditMethod");
-					_edit.addClickHandler(new ClickHandler()
+					titleLabel.addMouseOverHandler(new MouseOverHandler()
+					{
+
+						@Override
+						public void onMouseOver(MouseOverEvent event) {
+							
+							titleLabel.getElement().setAttribute("style", "font-weight:bold;color:#345484;cursor:pointer;");
+						 	// .getElement(i, 0).setAttribute("style", "border-right:Solid 2px #345484;font-weight:bold;color:#345484;");
+						}
+						
+					});
+					titleLabel.addMouseOutHandler(new MouseOutHandler(){
+
+						@Override
+						public void onMouseOut(MouseOutEvent event) {
+							// 
+							titleLabel.getElement().setAttribute("style", "");
+						}
+						
+					});
+					//PushButton _edit = new PushButton();
+					//_edit.setStyleName("btnEditMethod");
+					titleLabel.addClickHandler(new ClickHandler()
 					{
 	
 						@Override
@@ -274,12 +298,12 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 					
 					//this._MenuStack.setWidget(i,0,tmpItem.asWidget());
 					this._MenuStack.setWidget(i,0,titleLabel);
-					this._MenuStack.setWidget(i,1,_edit);
+					//this._MenuStack.setWidget(i,1,_edit);
 					Hidden tmpHidden = new Hidden();
 					tmpHidden.setValue(tmpMethod.getMethodID());
-					this._MenuStack.setWidget(i,2,tmpHidden);
+					this._MenuStack.setWidget(i,1,tmpHidden);
 					_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 1px #ccc;");
-					_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
+					//_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
 					i++;
 				}
 			}
@@ -308,7 +332,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 				//Use of final to allow access to it in the clickHandlers
 				final int index = i;  //This keeps track of which item we are looking at
 				final pojoMethod tmpMethod = it.next();
-				this.methodList.put(tmpMethod.getMethodName(), tmpMethod);
+				this.methodList.put(tmpMethod.getMethodID(), tmpMethod);
 				
 				final Label titleLabel = new Label();
 				titleLabel.setText(tmpMethod.getMethodName());
@@ -329,9 +353,9 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 			//		
 			//	});
 				
-				PushButton _edit = new PushButton();
-				_edit.setStyleName("btnEditMethod");
-				_edit.addClickHandler(new ClickHandler()
+				///PushButton _edit = new PushButton();
+				//_edit.setStyleName("btnEditMethod");
+				titleLabel.addClickHandler(new ClickHandler()
 				{
 
 					@Override
@@ -344,15 +368,36 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 					}
 					
 				});
-				
+				titleLabel.addMouseOverHandler(new MouseOverHandler()
+				{
+
+					@Override
+					public void onMouseOver(MouseOverEvent event) {
+						
+						titleLabel.getElement().setAttribute("style", "font-weight:bold;color:#345484;cursor:pointer;");
+					 	// .getElement(i, 0).setAttribute("style", "border-right:Solid 2px #345484;font-weight:bold;color:#345484;");
+					}
+					
+				});
+				titleLabel.addMouseOutHandler(new MouseOutHandler(){
+
+					@Override
+					public void onMouseOut(MouseOutEvent event) {
+						// 
+						titleLabel.getElement().setAttribute("style", "");
+					}
+					
+				});
 				//this._MenuStack.setWidget(i,0,tmpItem.asWidget());
 				this._MenuStack.setWidget(i,0,titleLabel);
-				this._MenuStack.setWidget(i,1,_edit);
+				
+				//this._MenuStack.setWidget(i,1,_edit);
 				Hidden tmpHidden = new Hidden();
 				tmpHidden.setValue(tmpMethod.getMethodID());
-				this._MenuStack.setWidget(i,2,tmpHidden);
-				_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "border-right:Solid 1px #ccc;");
-				_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
+				this._MenuStack.setWidget(i,1,tmpHidden);
+				
+				_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "");
+				//_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
 				i++;
 			}
 			

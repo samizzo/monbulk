@@ -19,8 +19,10 @@ import com.google.gwt.user.client.ui.ListBox;
 import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Architecture.IView.IFormView;
 import monbulk.shared.Architecture.IView.IDraggable;
+import monbulk.shared.Form.DictionaryFormField;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Form.FormWidget;
+import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.pojo.pojoMetaData;
 import monbulk.shared.Model.pojo.pojoStepDetails;
 import monbulk.shared.Model.pojo.pojoStudy;
@@ -132,12 +134,31 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 		// TODO Auto-generated method stub
 		
 	}
-
+	/**
+	 * A unique methgod for extension - to perform validation work not covered before
+	 */
+	@Override
+	public void performValidationWork(iFormField tmpField, Object FieldValue)
+	{
+		FormWidget tmpWidg = this.getFormWidgetForName(pojoStepDetails.HasStudyField);
+		if(tmpWidg.getValue()!=null)
+		{
+			if(!(Boolean)tmpWidg.getValue())
+			{
+				this.generalForm.getFieldItemForName(pojoStudy.StudyTypeField).SetFieldValue("");
+				this.generalForm.getFieldItemForName(pojoStudy.DicomModalityField).SetFieldValue("");
+			}
+		}
+		
+		
+	}
 	private final void hideStudyDetails()
 	{
 		this.hideShowWidget(pojoStudy.DicomModalityField,false,false);
 		this.hideShowWidget(pojoStudy.StudyTypeField,false,false);
 		this.hideShowWidget(pojoStudy.STUDY_METADATA,false,false);
+		//
+		
 		this._StepMetaDataList.setVisible(false);
 		
 	}
@@ -158,6 +179,8 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 			{
 				FormWidget tmpForm = this.getFormWidgetForName(pojoStudy.DicomModalityField);
 				ListBox tmpWidg = (ListBox)tmpForm.getFormWidget();
+				tmpWidg.clear();
+				tmpWidg.addItem(DictionaryFormField.defaultField);
 				Collection<Entry> tmpList = dictionary.getEntries();
 				Iterator<Entry> i = tmpList.iterator();
 				int j=0;
@@ -176,12 +199,18 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 					
 					j++;
 				}
+				if(this.DicomValue==null)
+				{
+					tmpWidg.setSelectedIndex(0);	
+				}
 				
 			}
 			if(dictionary.getName()==pojoStudy.STUDYTYPE_DICTIONARY)
 			{
 				FormWidget tmpForm= this.getFormWidgetForName(pojoStudy.StudyTypeField);
 				ListBox tmpWidg = (ListBox)tmpForm.getFormWidget();
+				tmpWidg.clear();
+				tmpWidg.addItem(DictionaryFormField.defaultField);
 				Collection<Entry> tmpList = dictionary.getEntries();
 				Iterator<Entry> i = tmpList.iterator();
 				int k = 0;
@@ -199,6 +228,10 @@ public class StepForm extends SubjectPropertiesForm implements IFormView,IDragga
 					
 						k++;
 					
+				}
+				if(this.studyTypeValue==null)
+				{
+					tmpWidg.setSelectedIndex(0);	
 				}
 			}
 		}

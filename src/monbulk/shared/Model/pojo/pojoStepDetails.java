@@ -334,10 +334,13 @@ public class pojoStepDetails implements IPojo{
 				if(FieldValue.toString().contains("true"))
 				{
 					this.hasStudy = true;
+					
 				}
 				else
 				{
 					this.hasStudy = false;
+					this.relatedStudy.setDICOM(null);
+					this.relatedStudy.setStudyType(null);
 				}
 			}
 			else if(FieldName == pojoStudy.DicomModalityField)

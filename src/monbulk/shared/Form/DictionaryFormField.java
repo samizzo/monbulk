@@ -6,6 +6,8 @@ import java.util.Iterator;
 
 import com.google.gwt.user.client.ui.ListBox;
 
+import monbulk.shared.Form.iFormField.iFormFieldValidation;
+import monbulk.shared.Model.pojo.pojoStudy;
 import monbulk.shared.Services.Dictionary;
 import monbulk.shared.Services.DictionaryService;
 import monbulk.shared.Services.Dictionary.Entry;
@@ -14,15 +16,55 @@ import monbulk.shared.util.GWTLogger;
 
 public class DictionaryFormField extends ListField implements GetDictionaryHandler {
 
-	private String DictionaryName;
+	public class DictionaryValidation implements iFormFieldValidation{
+	private String InvalidReason;
+	private String FieldName;
 	
-	public DictionaryFormField(String FormName,String DictionaryName) {
-		super(FormName,"Not Selected");
+	public DictionaryValidation(String fName)
+	{
+		FieldName = fName;
+	}
+	@Override
+	public boolean isValueValid(String value) {
+		// TODO Auto-generated method stub
 		
+		if(value.length() == 0)
+		{
+			InvalidReason = "Please provide a value for the " + this.FieldName + " field";
+			return false;
+		}
+		else if(value.contains("null"))
+		{
+			InvalidReason = "Please provide a value for the " + this.FieldName + " field";
+			return false;
+		}
+		else if(value.contains(defaultField))
+		{
+			InvalidReason = "Please provide a value for the " + this.FieldName + " field";
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+		
+	}
+
+	@Override
+	public String getInvalidReason() {
+		
+		return InvalidReason;
+	}
+}
+	private String DictionaryName;
+	public static String defaultField = "Not Selected";
+	public DictionaryFormField(String FormName,String DictionaryName) {
+		super(FormName,defaultField);
+		this.fieldValidator = new DictionaryValidation(this.FieldName);
 		ArrayList<String> items = new ArrayList<String>();
-		items.add("Not Selected");
+		items.add(defaultField);
 		this.hasValue=false;
-		super.loadList(items, "Not Selected");
+		super.loadList(items, defaultField);
 		this.DictionaryName = DictionaryName;
 		this.FieldType="Dictionary";
 		this.FieldValue="";
@@ -53,6 +95,7 @@ public class DictionaryFormField extends ListField implements GetDictionaryHandl
 				tmpBox.addItem(item.getTerm());
 				this.Values.add(item.getTerm());
 			}
+			
 		}
 		
 	}

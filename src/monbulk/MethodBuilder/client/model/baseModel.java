@@ -4,9 +4,11 @@ import java.util.Iterator;
 
 import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Architecture.iModel.iFormModel;
+import monbulk.shared.Form.DictionaryFormField;
 import monbulk.shared.Form.FormBuilder;
 import monbulk.shared.Form.iFormField;
 import monbulk.shared.Model.IPojo;
+import monbulk.shared.Model.pojo.pojoStepDetails;
 
 /*
  * Class baseModel
@@ -43,7 +45,7 @@ public abstract class baseModel implements iFormModel{
 		
 		Iterator<iFormField> i = this.formData.getFormDetails().iterator();
 		//Assumedly we should validate as well
-		
+		String Validation ="";
 		while(i.hasNext())
 		{
 			iFormField tmpItem = i.next();
@@ -51,11 +53,64 @@ public abstract class baseModel implements iFormModel{
 			{
 				if(!tmpItem.hasValue())
 				{
-					return "Validation Fails: No Value specified for Field:" + tmpItem.GetFieldName();
+					Validation = Validation + "<p>Please provide a value for the " + tmpItem.GetFieldName() + " field</p>";
+				}
+			}
+			else if(tmpItem.getFieldTypeName()=="List" || tmpItem.getFieldTypeName()=="Dictionary")
+			{
+				if(this.formData.getFormName().contains(pojoStepDetails.FormName))
+				{
+					iFormField tmpField = this.formData.getFieldItemForName(pojoStepDetails.HasStudyField);
+					if(tmpField!=null)
+					{
+						if(tmpField.hasValue())
+						{
+							if(tmpField.GetFieldValue()=="true")
+							{
+								Validation = Validation + ValidateDictionary(tmpItem);
+							}
+						}
+					}
+				}
+				else
+				{
+					Validation  = Validation  + ValidateDictionary(tmpItem);
 				}
 			}
 		}
-		return "";
+		return Validation ;
+	}
+	private String ValidateDictionary(iFormField tmpItem)
+	{
+		if(tmpItem!=null)
+		{
+			if(!tmpItem.hasValue())
+			{
+				return "<p>Please provide a value for the " + tmpItem.GetFieldName() + " field</p>";
+					
+			}
+			else if(tmpItem.GetFieldValue().toString().contains("null"))
+			{
+				return "<p>Please provide a value for the " + tmpItem.GetFieldName() + " field</p>";
+			}
+			else if((tmpItem.GetFieldValue().toString().contains(DictionaryFormField.defaultField)))
+			{
+				return "<p>Please provide a value for the " + tmpItem.GetFieldName() + " field</p>";
+			}
+			else if(tmpItem.GetFieldValue().toString().length()==0)
+			{
+				return "<p>Please provide a value for the " + tmpItem.GetFieldName() + " field</p>";
+			}
+			else
+			{
+				return "";
+			}
+		}
+		else
+		{
+			return "<p>Please provide a value for the " + tmpItem.GetFieldName() + " field</p>";
+		}
+		
 	}
 	@Override
 	public String ValidateForm(String FormName) {

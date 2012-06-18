@@ -16,18 +16,18 @@ public class StringValidation implements iFormFieldValidation{
 			// TODO Auto-generated method stub
 			if(value.contains("<") || value.contains(">") || value.contains("&"))
 			{
-				InvalidReason = this.FieldName + ": Illegal character usage, check you haven't used >, < or & ";
+				InvalidReason = "<p>Illegal character usage in " + this.FieldName + " , check you haven't used >, < or & </p>";
 				return false;
 			}
 			else if(value.length() > 256)
 			{
-				InvalidReason = this.FieldName + ": String is too long. A Maximum of 256 characters are permitted";
+				InvalidReason = "<p>The text in field " + this.FieldName + " is too long. A Maximum of 256 characters are permitted</p>";
 				return false;
 			}
 			else if(value.length() == 0)
 			{
-				InvalidReason = this.FieldName + ": No Value entered";
-				return true;
+				InvalidReason = "<p>Please provide a value for the " + this.FieldName + " field</p>";
+				return false;
 			}
 			else
 			{
