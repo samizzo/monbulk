@@ -1105,6 +1105,14 @@ MethodEditorDynamicFieldsPanel
 	height:30px;
 	border:Solid 2px #333;
 }
+div.formWidget
+{
+	width:300px;
+	background:none;
+	height:30px;
+	border:none;
+	font-style:italic;
+}
 .labelWidget
 {
 

@@ -6,6 +6,7 @@ import monbulk.shared.util.GWTLogger;
 
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -84,7 +85,12 @@ public class FormWidget extends HorizontalPanel{
 	{
 		
 		return this.WidgetList.get(FORM_WIDGET);
-	}	
+	}
+	public void setStaticValue(String Value)
+	{
+		Label tmpLabel = (Label)WidgetList.get(FORM_WIDGET);
+		tmpLabel.setText( Value);
+	}
 	public void setFormValue(Object Value)
 	{
 		@SuppressWarnings("unchecked")

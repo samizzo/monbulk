@@ -95,6 +95,11 @@ public class DictionaryFormField extends ListField implements GetDictionaryHandl
 				tmpBox.addItem(item.getTerm());
 				this.Values.add(item.getTerm());
 			}
+			if(tmpBox.getItemCount()>1)
+			{
+				tmpBox.setSelectedIndex(1);
+				this.SetFieldValue(tmpBox.getValue(tmpBox.getSelectedIndex()));
+			}
 			
 		}
 		

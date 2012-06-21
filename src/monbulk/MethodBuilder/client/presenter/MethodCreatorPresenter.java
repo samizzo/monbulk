@@ -52,7 +52,7 @@ import monbulk.MethodBuilder.shared.iMBModel;
 
 ///I think we can change this just to a view state with a main model that can be queried on each state
 
-public class MethodCreatorPresenter implements FormPresenter{
+public class MethodCreatorPresenter implements FormPresenter, ChangeWindowEventHandler{
 
 	private int countLoads;
 	private MethodCreatorStates CurrentState;
@@ -112,6 +112,16 @@ public class MethodCreatorPresenter implements FormPresenter{
 		this.ImplementedMethodView.setPresenter(this);
 		this.NavigationView = new AppletStateNavigation();
 		this.NavigationView.setPresenter(this);
+		ArrayList<String> tmpList =  new ArrayList<String>();
+		if(ID=="")
+		{
+			tmpList.add("New");
+		}
+		else
+		{
+			tmpList.add("Loaded");
+		}
+		this.NavigationView.setData(tmpList);
 		countLoads = 0;
 		SetStates(ID);
 		bind();
@@ -149,12 +159,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 	 */
 	private void bind()
 	{
-		 eventBus.addHandler(ChangeWindowEvent.TYPE, 
-		    		new ChangeWindowEventHandler(){
-		    			public void onChangeWindow(ChangeWindowEvent event){
-		    				
-		    			}   	
-		    		});
+		 eventBus.addHandler(ChangeWindowEvent.TYPE, this);
 		return;
 	}
 	/**
@@ -254,7 +259,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 		if(FormName==null)
 		{
 			//Window.alert("This form is not valid, Please enter some details");
-			m.showInvalid("This form is not valid, Please enter some details", "Save Method Details");
+			m.showInvalid("This form is not valid, Please enter some details", "Save Method Details",FormName);
 			d.show(m, true);
 			return;
 		}
@@ -271,7 +276,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 				if(Validation.length()!=0)
 				{
 					//Window.alert("The Method Details form is not valid:" + Validation);
-					m.showInvalid("" + Validation, "Save Method Details");
+					m.showInvalid("" + Validation, "Save Method Details",FormName);
 					d.show(m, true);
 	//				d.show(window, centre)
 					return;				
@@ -288,7 +293,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 			{
 				if(Validation.length()!=0)
 				{
-					m.showInvalid(Validation, "Save Subject Properties");
+					m.showInvalid(Validation, "Save Subject Properties",FormName);
 					d.show(m, true);
 					//Window.alert("The Subject form is not valid:" + Validation);
 					return;
@@ -307,6 +312,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 							tmpView.LoadForm(tmpForm);
 							this.ImplementedMethodView.setData(tmpForm);
 							this.ImplementedMethodView.setChild(tmpView.asWidget());
+							this.CurrentState=this.stateSelector.get(MethodCreatorStates.STEP_DETAILS);
 						}
 					}
 				}
@@ -315,7 +321,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 			{
 				if(Validation.length()!=0)
 				{
-					m.showInvalid(Validation, "Save Step Details");
+					m.showInvalid(Validation, "Save Step Details",FormName);
 					d.show(m, true);
 					return;
 				}
@@ -336,6 +342,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 							this.ImplementedMethodView.setData(tmpForm);
 							
 							this.ImplementedMethodView.setChild(tmpView.asWidget());
+							this.CurrentState=this.stateSelector.get(MethodCreatorStates.STEP_DETAILS);
 						}
 					}
 					
@@ -347,6 +354,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 		{
 			if(FormName.contains(pojoStepDetails.FormName))
 			{
+				this.CurrentState=this.stateSelector.get(MethodCreatorStates.STEP_DETAILS);
 				IFormView tmpView = this._AllStates.get(MethodCreatorStates.STEP_DETAILS);
 				this.ImplementedMethodView.clearChild();
 				pojoStepDetails tmpPojo = this.mainModel.getStep(FormName); 
@@ -421,7 +429,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 			String valid2 = valid.replaceAll("<br/>", "");
 			if(valid2.length()>0)
 			{	
-				m.showInvalid(valid, "Save Method");
+				m.showInvalid(valid, "Save Method",FormName);
 			}
 			else
 			{
@@ -434,7 +442,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 			if(this.mainModel.getMethodID()==null)
 			{	
 				m.getWindowSettings().windowTitle = "ERROR";
-				m.showInvalid("No Method Selected", "Clone Method");
+				m.showInvalid("No Method Selected", "Clone Method",FormName);
 			}
 			else
 			{
@@ -442,7 +450,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 				String valid2 = valid.replaceAll("<br/>", "");
 				if(valid2.length()>0)
 				{	
-					m.showInvalid(valid, "Save Method");
+					m.showInvalid(valid, "Save Method",FormName);
 				}
 				else
 				{
@@ -459,7 +467,7 @@ public class MethodCreatorPresenter implements FormPresenter{
 			if(this.mainModel.getMethodID()==null)
 			{
 				m.getWindowSettings().windowTitle = "ERROR";
-				m.showInvalid("No Method Selected", "Delete Method");
+				m.showInvalid("No Method Selected", "Delete Method",FormName);
 			}
 			else
 			{
@@ -603,9 +611,24 @@ public class MethodCreatorPresenter implements FormPresenter{
 		}
 		else
 		{
-			return "Form not found";
+			
+			this.ImplementedMethodView.setData(someFormData);
 		}
 		return "";
+		
+	}
+
+	@Override
+	public void onChangeWindow(ChangeWindowEvent event) {
+		String CurrentForm = this.ImplementedMethodView.getCurrentForm();
+		if(CurrentForm.contains(pojoStepDetails.FormName))
+		{
+			this.FormComplete(CurrentForm, "Edit");
+		}
+		else
+		{
+			this.ChangeState(this.CurrentState);
+		}
 		
 	}
 }

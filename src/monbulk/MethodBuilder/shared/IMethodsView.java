@@ -19,4 +19,5 @@ public interface IMethodsView extends IView{
 	 public void setData(FormBuilder anyBuilder);
 	 public void SetMenuIndex(String IndexName);
 	 public void RemoveListItem(String ListItemName);
+	 public String getCurrentForm();
 }

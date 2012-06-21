@@ -15,6 +15,7 @@ import monbulk.MethodBuilder.client.presenter.MethodCreatorPresenter;
 import monbulk.MethodBuilder.client.view.MethodBuilderMaster;
 import monbulk.MethodBuilder.client.view.MethodList;
 
+import monbulk.client.desktop.Desktop;
 import monbulk.shared.Architecture.IPresenter.DockedPresenter;
 import monbulk.shared.Architecture.IPresenter.FormPresenter;
 import monbulk.shared.Events.DragEvent;
@@ -36,7 +37,7 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 	private WindowSettings m_windowSettings;
 	private String loadedMethodID;
 	private String loadedMethodName;
-	
+	private Boolean isConfirmed;
 	public enum PreLoadedLists{STUDY_TYPES,DICOM_MODALITY,METADATA}
 	private HashMap<PreLoadedLists,ArrayList<String>> loadedLists;
 	
@@ -70,33 +71,46 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 	//We should also be able to launch from a position in History...
 	//Which means knowing the presenter state and the model being used
 
+	private Boolean checkMethodState(String initState)
+	{
+		Desktop d = Desktop.get();
+		final PreviewWindow m = (PreviewWindow )d.getWindow("MethodPreviewWindow");
+		if(this.CurrentPresenter!=null)
+		{
+			if(!initState.equals("InitialiseMethodBuilder"))
+			{
+				if(m.getShouldConfirmStatus())
+				{
+					m.confirmStateChange(initState, this.loadedMethodID);
+					d.show(m, true);
+					return true;
+				}
+				else
+				{
+					m.setShouldConfirmStatus(true);
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+		
+	}
 	public void ChangeAppletState(String initState)
 	{
 		
 		if(!initState.equals(this.CurrentState))
 		{
 			//doMenuTransition(initState);
-			CleanPanels();
-			
-			if(initState.equals("InitialiseMethodBuilder"))
+			if(initState.equals("Refresh"))
 			{
-				this.CurrentState="Create Method";
-				this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
-				this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
-			}
-			else if(initState.equals("Create Method"))
-			{
-				///Basically we need to provide Panels for adding widgets to
-				//And we need to launch a Presenter to control with a DefaultState 
-				//
-					this.CurrentState="Create Method";
-					this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
-					this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
-			
-			}
-			else if(initState.equals("Refresh"))
-			{
-				
+				CleanPanels();
 				MethodList tmpMenu = (MethodList) this.AppletMenu;
 				tmpMenu.refreshList();
 				this.CurrentState="Create Method";
@@ -109,47 +123,62 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 					this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus,this.loadedMethodID);
 				}
 				this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
+				return;
 			}
-			
-			else if(initState.equals("NewMethod"))
+			else if(!this.checkMethodState(initState))
 			{
-				///Basically we need to provide Panels for adding widgets to
-				//And we need to launch a Presenter to control with a DefaultState 
-				//
+				CleanPanels();
+			
+				if(initState.equals("InitialiseMethodBuilder"))
+				{
 					this.CurrentState="Create Method";
 					this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
 					this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
+				}
+				else if(initState.equals("Create Method"))
+				{
+					///Basically we need to provide Panels for adding widgets to
+					//And we need to launch a Presenter to control with a DefaultState 
+					//
+						this.CurrentState="Create Method";
+						this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
+						this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
+				
+				}
+				
+				
+				else if(initState.equals("NewMethod"))
+				{
+					///Basically we need to provide Panels for adding widgets to
+					//And we need to launch a Presenter to control with a DefaultState 
+					//
+						this.CurrentState="Create Method";
+						this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
+						this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
+				
+				}
+				else if(initState.equals("Edit Methods"))
+				{
+					this.CurrentState="Edit Methods";
+				}
 			
-			}
-			else if(initState.equals("Edit Methods"))
-			{
-				this.CurrentState="Edit Methods";
-			}
-			else if(initState.equals("Save"))
-			{
-				
-			}
-			else if(initState.equals("Publish"))
-			{
-				
-			}
-			else if(initState.contains("Edit"))
-			{
-				this.CurrentState="Edit Method";
-				try
+				else if(initState.contains("Edit"))
 				{
-				
-				
-				//String ID = initState.replace("Edit:", "");
-					MethodCreatorPresenter mcp = new MethodCreatorPresenter(this.eventBus, this.loadedMethodID);
-					this.CurrentPresenter = mcp;
-					this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
+					this.CurrentState="Edit Method";
+					try
+					{
+						//String ID = initState.replace("Edit:", "");
+						MethodCreatorPresenter mcp = new MethodCreatorPresenter(this.eventBus, this.loadedMethodID);
+						this.CurrentPresenter = mcp;
+						this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
+					}
+					catch(Exception ex)
+					{
+						GWTLogger.Log("Error occurs @ MethodBuilder.ChangeAppletState:", "MethodBuilder", "ChangeAppletState", "121");
+					}
+					//this.CurrentPresenter.
 				}
-				catch(Exception ex)
-				{
-					GWTLogger.Log("Error occurs @ MethodBuilder.ChangeAppletState:", "MethodBuilder", "ChangeAppletState", "121");
-				}
-				//this.CurrentPresenter.
+				this.isConfirmed=false;
 			}
 		}
 		
@@ -170,7 +199,6 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 	    		new MenuChangeEventHandler(){
 	    			public void onMenuChange(MenuChangeEvent event)
 	    			{
-	    				
 	    				loadedMethodID = event.getNewID();
 	    				 ChangeAppletState(event.getId());
 	    			}

@@ -88,10 +88,19 @@ public class AppletStateNavigation extends Composite implements IView {
 			}
 			else
 			{
-				
 				lblInUse.setVisible(false);
-				lblInUse.setText("Method is already in use.");
 			}
+			if(someList.get(0)=="Loaded")
+			{
+				this.btnClone.setEnabled(true);
+				this.btnDelete.setEnabled(true);
+			}
+			if(someList.get(0)=="New")
+			{
+				this.btnClone.setEnabled(false);
+				this.btnDelete.setEnabled(false);
+			}
+			
 		}
 		
 	}

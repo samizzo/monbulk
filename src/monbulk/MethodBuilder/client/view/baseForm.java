@@ -7,10 +7,13 @@ import java.util.Iterator;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -18,6 +21,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -244,6 +248,8 @@ public class baseForm extends VerticalPanel implements IFormView {
 					}
 					else
 					{
+						if(!item.isStatic())
+						{	
 						@SuppressWarnings("unchecked")
 						HasValue<Object> tmpWidget = (HasValue<Object>)tmpWidg.getFormWidget();
 						tmpWidget.addValueChangeHandler(new ValueChangeHandler<Object>()
@@ -251,7 +257,6 @@ public class baseForm extends VerticalPanel implements IFormView {
 							
 											@Override
 											public void onValueChange(ValueChangeEvent<Object> event) {
-												// TODO Auto-generated method stub
 												//Widget source = (Widget)event.getSource();
 												String FieldName = tmpWidg.getWidgetName();
 												//String FieldName = source.getTitle();
@@ -260,6 +265,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 								}
 									
 								});
+						}
 						if(item.getFieldTypeName()=="Boolean")
 						{
 							if(item.GetFieldValue().toString().contains("true"))
@@ -273,8 +279,28 @@ public class baseForm extends VerticalPanel implements IFormView {
 						}
 						else
 						{
-							tmpWidg.setFormValue(item.GetFieldValue());
-							item.Validate(item.GetFieldValue().toString());
+							if(!item.isStatic())
+							{
+								FocusWidget tmpBox =(FocusWidget)tmpWidg.getFormWidget();
+								tmpBox.addKeyPressHandler(new KeyPressHandler()
+								{
+	
+									@Override
+									public void onKeyPress(KeyPressEvent event) {
+										String FieldName = tmpWidg.getWidgetName();
+										//String FieldName = source.getTitle();
+										UpdateValue(FieldName, tmpWidg.getValue());
+										
+									}
+									
+								});
+								tmpWidg.setFormValue(item.GetFieldValue());
+								item.Validate(item.GetFieldValue().toString());
+							}
+							else
+							{
+								tmpWidg.setStaticValue(item.GetFieldValue().toString());
+							}
 						}
 					}
 	
@@ -390,7 +416,7 @@ public class baseForm extends VerticalPanel implements IFormView {
 			if(response == "")
 			{
 				tmpField.SetFieldValue(FieldValue.toString());
-				tmpField.Validate(FieldValue.toString());
+				//tmpField.hasValue()
 				this._errors.setVisible(false);
 				this.performValidationWork(tmpField, FieldValue);
 				if(this.Presenter!=null){
@@ -404,6 +430,10 @@ public class baseForm extends VerticalPanel implements IFormView {
 				tmpField.SetFieldValue("");
 				this._errors.setText(this._errors.getText() + response);
 				this._errors.setVisible(true);
+				if(this.Presenter!=null){
+					this.Presenter.UpdateValue(this.generalForm);
+					
+				}
 			}
 			/*if(this.Presenter!=null){
 				String finalOut = this.Presenter.UpdateValue(this.generalForm);

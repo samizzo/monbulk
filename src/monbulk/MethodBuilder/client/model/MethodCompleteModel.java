@@ -398,7 +398,10 @@ public class MethodCompleteModel extends baseModel implements iMBModel, MethodSe
 	{
 		return this.CompleteModel.getMethodID();
 	}
-	
+	public String getCurrentStep()
+	{
+		return this.CurrentStep;
+	}
 	
 	
 

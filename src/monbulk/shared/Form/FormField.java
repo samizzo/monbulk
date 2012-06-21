@@ -155,15 +155,16 @@ import monbulk.shared.util.GWTLogger;
 				
 				this._ValidationWidget = new Label();
 				
+				
+				this._FieldVaLueWidget = tmpBox;
+				this.fieldValidator = new StringValidation(this.FieldName);
 				if(this.isStatic!=null)
 				{
 					if(this.isStatic)
 					{
-						tmpBox.setEnabled(false);
+						this._FieldVaLueWidget = new Label();
 					}
 				}
-				this._FieldVaLueWidget = tmpBox;
-				this.fieldValidator = new StringValidation(this.FieldName);
 			}
 			else if(FieldType=="Date")
 			{
@@ -249,16 +250,8 @@ import monbulk.shared.util.GWTLogger;
 		@Override
 		public void SetFieldValue(String FieldValue) {
 			// TODO Auto-generated method stub
-			if(this.Validate(FieldValue)=="")
-			{
 				this.FieldValue = FieldValue;
 				hasValue = true;
-			}
-			else if(FieldValue=="")
-			{
-				hasValue=false;
-				this.FieldValue="";
-			}
 		}
 		@Override
 		public iFormFieldValidation GetFieldValidation() {
@@ -297,18 +290,50 @@ import monbulk.shared.util.GWTLogger;
 			{
 				if(FieldValue!="")
 				{
-					this.setValid(true);
+					if(!this.defaultValidation(FieldValue))
+					{
+						this.setValid(false);
+						return "<p>No Value entered for " + this.FieldName + "</p>";
+						
+					}
+					else
+					{
+						this.setValid(true);
+					}
 				}
 				else
 				{
 					this.setValid(false);
-					return "No Value entered for " + this.FieldName;
+					return "<p>No Value entered for " + this.FieldName +"</p>";
 				}
 				
 			}
 			return "";
 		}
-
+		private Boolean defaultValidation(String Value)
+		{
+			if(Value.contains("\n") && Value.length()==1)
+			{
+				return false;
+			}
+			if(Value.contains("\t") && Value.length()==1)
+			{
+				return false;
+			}
+			if(Value.contains("<script"))
+			{
+				return false;
+			}
+			if(Value.contains(" ") && Value.length()==1)
+			{
+				return false;
+			}
+			if(Value.length()==0)
+			{
+				return false;
+			}
+			return true;
+		}
 		@Override
 		public <H extends EventHandler> HandlerRegistration addHandler(
 				H handler, Type<H> type) {

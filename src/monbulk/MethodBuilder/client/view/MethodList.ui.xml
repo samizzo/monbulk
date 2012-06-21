@@ -19,17 +19,27 @@
 
 		.menuStack td
 		{
-			font-size:10px;
+			font-size:12px;
 			height:34px;
+			vertical-align:middle;
+			
 			background: url(images/SpriteSheetHorizontalTiles.png) 0px -341px;
 			border-top:Solid 1px #999;
 			
 		}
+		.menuStack td div
+		{
+			position: relative;
+			top:5px;
+		}
 		.menuStack td:Hover
 		{
-			font-size:10px;
+			font-size:12px;
 			height:34px;
 			border-top:Solid 1px #345484;
+			color:#345484;
+			font-weight:bold;
+			cursor:pointer;
 		}
 		.MenuScrolling
 		{

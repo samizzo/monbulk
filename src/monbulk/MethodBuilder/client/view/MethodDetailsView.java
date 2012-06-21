@@ -164,47 +164,34 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 		try
 		{
 			this.currentForm = anyBuilder.getFormName();
-		String html ="<table>";
-		//while(anyBuilder.)
-		//How do we know which step we are on? - form Name
-		CustomStackHeader tmpHeader = null;
-		HTML tmpBody = null;
-		Boolean isNewStep = false;
-		//Window.alert("Setting the following:" + this.currentForm);
-		if(anyBuilder.getFormName().contains(pojoStepDetails.FormName))
-		{
+			String html ="<table>";
 		
-			GWT.log("Step Path C");
-			if(StepExists(anyBuilder.getFormName())!=null)
+			//How do we know which step we are on? - form Name
+			CustomStackHeader tmpHeader = null;
+			HTML tmpBody = null;
+			Boolean isNewStep = false;
+		
+			if(anyBuilder.getFormName().contains(pojoStepDetails.FormName))
 			{
-				//if we have an Index, append to existing item
-				tmpHeader =  (CustomStackHeader) this.CurrentSteps.get(anyBuilder.getFormName()).getHeader();
-				tmpBody =  (HTML) this.CurrentSteps.get(anyBuilder.getFormName()).getBody();
-				//this.StepIndex = this.CurrentSteps.get(anyBuilder.getFormName()).getIndex();	
-				//Widget tmpStack = this.MethodNavigationStack.getWidget(tmpStepIndex+ 2);
-				//this.MethodNavigationStack.getVisibleIndex(); MAY WORK as well
-				//this.StepIndex = this.CurrentSteps.get(anyBuilder.getFormName()).getIndex();
+				if(StepExists(anyBuilder.getFormName())!=null)
+				{
+					//if we have an Index, append to existing item
+					tmpHeader =  (CustomStackHeader) this.CurrentSteps.get(anyBuilder.getFormName()).getHeader();
+					tmpBody =  (HTML) this.CurrentSteps.get(anyBuilder.getFormName()).getBody();
+				}
+				else
+				{
+					tmpBody = new HTML();
+					isNewStep = true;
+					CustomTab tmpTab = new CustomTab(this.StepIndex,"New Step",anyBuilder.getFormName());
+					this.CurrentSteps.put(anyBuilder.getFormName(), tmpTab);
+					GWT.log(this.GetIndexList());
+					tmpHeader =  (CustomStackHeader) this.CurrentSteps.get(anyBuilder.getFormName()).getHeader();
+					tmpHeader.setPresenter(thisPresenter);
+					this.MethodNavigationStack.add(tmpTab.getBody(), tmpTab.getHeader(), 41);
+					
+				}
 			}
-			else
-			{
-				GWT.log("Step Path D");
-				
-				//tmpHeader = new CustomStackHeader("New Step",anyBuilder.getFormName());
-				tmpBody = new HTML();
-				isNewStep = true;
-				
-				//StepIndex does not update on loaded - so we try to create a first step agaion
-				CustomTab tmpTab = new CustomTab(this.StepIndex,"New Step",anyBuilder.getFormName());
-				//If not initial Step
-				//this.StepIndex++;
-				this.CurrentSteps.put(anyBuilder.getFormName(), tmpTab);
-				GWT.log(this.GetIndexList());
-				tmpHeader =  (CustomStackHeader) this.CurrentSteps.get(anyBuilder.getFormName()).getHeader();
-				tmpHeader.setPresenter(thisPresenter);
-				this.MethodNavigationStack.add(tmpTab.getBody(), tmpTab.getHeader(), 41);
-				
-			}
-		}
 		Iterator<iFormField> i =anyBuilder.getFormDetails().iterator(); 
 		while(i.hasNext())
 		{
@@ -226,6 +213,7 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 								html = html + "<tr><td class='fieldName'>" + FieldName+ ":</td>";
 								html = html + "<td class='fieldValue'>" + (String)tmpField.GetFieldValue() + "</td></tr>";
 							}
+							
 						}
 					}
 					else if(tmpField.hasValue())
@@ -241,17 +229,46 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 					}
 					
 				}
-				else if(tmpField.isTitle() && tmpField.hasValue() && anyBuilder.getFormName().equals(pojoMethod.FormName))
+				else if(tmpField.isTitle() && anyBuilder.getFormName().equals(pojoMethod.FormName))
 				{
 					//this.MethodTitle.setText((String) tmpField.GetFieldValue());
-					
-					this.MethodNavigationStack.setHeaderHTML(0,(String) tmpField.GetFieldValue());
+					if(tmpField.hasValue())
+					{
+						if(tmpField.GetFieldValue().toString().length()==0)
+						{
+							this.MethodNavigationStack.setHeaderHTML(0,"Method Details");
+						}
+						else
+						{
+							this.MethodNavigationStack.setHeaderHTML(0,(String) tmpField.GetFieldValue());
+						}
+					}
+					else
+					{
+						this.MethodNavigationStack.setHeaderHTML(0,"Method Details");
+					}
 				}
-				else if(tmpField.isTitle() && tmpField.hasValue() && anyBuilder.getFormName().contains(pojoStepDetails.FormName))
+				else if(tmpField.isTitle() && anyBuilder.getFormName().contains(pojoStepDetails.FormName))
 				{
-					GWTLogger.Log("isTitle - should not hit" + tmpField.GetFieldName(), "MethodDetailsView", "setData", "244");
-					String Title = "Step " + this.CurrentSteps.get(anyBuilder.getFormName()).getIndex() + ": " + tmpField.GetFieldValue().toString();
-					tmpHeader.setTitle(Title);
+					if(tmpField.hasValue())
+					{
+						if(tmpField.GetFieldValue().toString().length()==0)
+						{
+							String Title = "Step " + this.CurrentSteps.get(anyBuilder.getFormName()).getIndex() + ": Not Set";
+							tmpHeader.setTitle(Title);	
+						}
+						else
+						{
+							String Title = "Step " + this.CurrentSteps.get(anyBuilder.getFormName()).getIndex() + ": " + tmpField.GetFieldValue().toString();
+							tmpHeader.setTitle(Title);
+						}
+					
+					}
+					else
+					{
+						String Title = "Step " + this.CurrentSteps.get(anyBuilder.getFormName()).getIndex() + ": Not Set";
+						tmpHeader.setTitle(Title);
+					}
 					
 				}
 			}
@@ -465,6 +482,11 @@ public class MethodDetailsView extends Composite implements IMethodsView {
 	{
 		
 		this.thisPresenter.FormComplete(this.currentForm, "Next");
+	}
+	@Override
+	public String getCurrentForm()
+	{
+		return this.currentForm;
 	}
 	/*TODO Implement the handler for navigating from this view
 	 * @UiHandler("btnMethodApp")

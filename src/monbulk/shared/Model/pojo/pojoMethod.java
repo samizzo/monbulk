@@ -215,8 +215,7 @@ public class pojoMethod implements IPojo {
 			iFormField tmpItem = i.next();
 			
 			//BUG: hasValue not set !!
-			if(tmpItem.hasValue())
-			{
+			
 				String FieldName = tmpItem.GetFieldName(); 
 				if(tmpItem.GetFieldName().contains(input.getFormName()))
 				{
@@ -224,8 +223,6 @@ public class pojoMethod implements IPojo {
 					
 				}
 				setFieldVale(FieldName,tmpItem.GetFieldValue() + "");
-				
-			}
 		}
 		
 	}

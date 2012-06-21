@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
 
+import monbulk.MethodBuilder.client.event.ChangeWindowEvent;
 import monbulk.MethodBuilder.client.event.MenuChangeEvent;
 import monbulk.client.desktop.Desktop;
 import monbulk.shared.Services.MethodService;
@@ -43,7 +44,8 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 	protected Label _Guide;
 	private final HandlerManager eventBus;
 	private String MethodID;
-	
+	private Boolean isConfirmDialog;
+	private Boolean retryClone;
 	public PreviewWindow(HandlerManager eventBus) {
 		super("MethodPreviewWindow", "Preview Method Data");
 		this.setWidth("400px");
@@ -56,7 +58,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		this.m_windowSettings.minHeight=200;
 		this.m_cancel.setVisible(false);
 		
-		
+		this.retryClone=false;
 		_framingPanel = new ScrollPanel();
 		//this.setWidget(_framingPanel);
 		m_contentPanel.add(_framingPanel);
@@ -83,10 +85,50 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		
 		
 	}
-	public void showInvalid(String Reasons,String Action)
+	public Boolean getShouldConfirmStatus()
 	{
+		if(this.isConfirmDialog==null)
+		{
+			this.isConfirmDialog = true;
+		}
+		return this.isConfirmDialog;
+	}
+	public void setShouldConfirmStatus(Boolean shouldConfirm){	this.isConfirmDialog = shouldConfirm;}
+	public void confirmStateChange(final String newState,final String newID)
+	{
+		_PreviewPanel.clear();
+		isConfirmDialog = true;
+		_Guide.setText("Are you sure you want to leave the current method? All entered data will be lost.");
+		_Guide.setStyleName("InValidWindowText");
 		
+		_PreviewPanel.add(_Guide);
 		
+		this.m_cancel.setVisible(true);
+		
+		registration = this.m_ok.addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event) {
+				if(isConfirmDialog)
+				{
+					isConfirmDialog=false;
+					eventBus.fireEvent(new MenuChangeEvent(newState,newID));
+					registration.removeHandler();
+				}
+				
+			}
+			
+		});
+	}
+
+	/***
+	 * Method is not valid - show popup with reason why
+	 * @param Reasons
+	 * @param Action
+	 */
+	public void showInvalid(String Reasons,String Action, final String CurrentForm)
+	{
 		_PreviewPanel.clear();
 		_Guide.setText("Unable to " + Action);
 		_Guide.setStyleName("InValidWindowText");
@@ -95,6 +137,25 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		_PreviewPanel.add(_Guide);
 		_PreviewPanel.add(lblReasons);
 		this.m_cancel.setVisible(false);
+		
+		ClickHandler tmpHandler = new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				try
+				{
+					eventBus.fireEvent(new ChangeWindowEvent(CurrentForm, "restart"));
+					registration.removeHandler();
+				}
+				catch(Exception ex)
+				{
+					
+				}
+				
+			}
+			
+		};
+		registration = this.m_ok.addClickHandler(tmpHandler);
 	}
 	/**
 	 * 
@@ -134,7 +195,8 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 						newMethodName = tmpArea.getText();
 						//formattedText.append(tmpList);
 						tmpSvc.checkExists(tmpArea.getText(), tmpHandle);
-							
+						
+						registration.removeHandler();	
 					}
 					else
 					{
@@ -150,8 +212,10 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 			
 		};
 		registration = this.m_ok.addClickHandler(handleSave);
-		
-		_Guide.setText("Name of new method:");
+		if(!this.retryClone)
+		{
+			_Guide.setText("Name of new method:");
+		}
 		_PreviewPanel.add(_Guide);
 		_PreviewPanel.add(tmpArea);
 		_Guide.setStyleName("ValidWindowText");
@@ -167,23 +231,16 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		this.m_cancel.setVisible(false);
 		selectedFormat = inputFormat;
 		_PreviewPanel.clear();
-		final TextArea tmpArea = new TextArea();
-		tmpArea.setHeight("600px");
-		tmpArea.setWidth("600px");
 		//HTML output = new HTML();
 		//output.setHTML(tmpList.toString());
 		tmpList = tmpList.replace("<method>", "");
 		tmpList = tmpList.replace("</method>", "");
-		tmpArea.setText(tmpList);
 		try
 		{
 			MethodService tmpSvc = MethodService.get();
 			if(tmpSvc != null)
 			{
-				tmpSvc.createOrUpdate(tmpArea.getText(), this);
-				
-				
-					
+				tmpSvc.createOrUpdate(tmpList, this);
 			}
 			else
 			{
@@ -198,10 +255,8 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		_PreviewPanel.add(_Guide);
 		_Guide.setStyleName("ValidWindowText");
 		//_PreviewPanel.add(tmpArea);
-		
-		
-		
 	}
+	
 	@Override
 	public void onUpdateMethod(String response) {
 		this.m_cancel.setVisible(false);
@@ -217,16 +272,13 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 			else if(response=="Delete")
 			{
 				_r_text.setText("Success: Your method has been deleted");
-				registration.removeHandler();
+				
 				this.eventBus.fireEvent(new MenuChangeEvent("Refresh",""));
 			}
 			else
 			{
 				_r_text.setText("Success: Your method has been created with ID: " + response);
-				if(registration!=null)
-				{
-					registration.removeHandler();
-				}
+				
 				this.eventBus.fireEvent(new MenuChangeEvent("Refresh",response));
 			}
 		}
@@ -267,6 +319,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 				
 				String fullXML = this.formattedText.toString().replace(this.oldMethodName, this.newMethodName);
 				tmpSvc.createOrUpdate(fullXML, this);
+				this.retryClone=false;
 					
 			}
 		}
@@ -274,9 +327,12 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		{
 			this._Guide.setText("That method name is already in use, please try another");
 			_Guide.setStyleName("InValidWindowText");
+			this.retryClone=true;
+			this.cloneMethod(this.formattedText.toString(), SupportedFormats.XML, this.oldMethodName);
 			Desktop d = Desktop.get();		
 			//this.m_ok.(handleSave);
-			d.show("MethodPreviewWindow",true);
+			d.show(this,true);
+			
 		}
 		
 	}
@@ -303,6 +359,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 					{
 						throw new ServiceRegistry.ServiceNotFoundException(ServiceNames.Methods);
 					}
+					registration.removeHandler(); 
 				}
 				catch (ServiceRegistry.ServiceNotFoundException e)
 				{
@@ -321,7 +378,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		Label _r_text = new Label();
 		
 		_r_text.setText("Success: Your method has been deleted");
-		registration.removeHandler();
+		
 		
 		this._PreviewPanel.clear();
 		_w_response.add(_r_text);
@@ -332,7 +389,7 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 		//d.setSize("200px", "200px");
 		
 		//this.m_ok.(handleSave);
-		d.show("MethodPreviewWindow",true);
+		d.show(this,true);
 		/*if(response=="Delete")
 		{
 			this.eventBus.fireEvent(new MenuChangeEvent("Refresh-Restart"));

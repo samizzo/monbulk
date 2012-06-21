@@ -211,7 +211,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 		{
 			Hidden tmpItem = (Hidden)this._MenuStack.getWidget(i, 1);
 ///			GWT.log("ItemFound:" + tmpItem.getText() + activeItem + tmpItem.getText().length() + activeItem.length());
-			
+			GWT.log("Item collected is: " + tmpItem.getValue());
 			if(tmpItem!=null)
 			{
 				if(tmpItem.getValue().contains(activeItem)&& tmpItem.getValue().length()==activeItem.length())
@@ -223,7 +223,8 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 				}
 				else
 				{
-					_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "");
+					GWT.log("Item reset is " + tmpItem.getValue());
+					_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "font-weight:normal;");
 					//_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
 					//_MenuStack.getFlexCellFormatter().getElement(i, 2).setAttribute("style", "");	
 				}
@@ -260,27 +261,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 					final Label titleLabel = new Label();
 					titleLabel.setText(tmpMethod.getMethodName());
 					titleLabel.addStyleName("menuMethodName");
-					titleLabel.addMouseOverHandler(new MouseOverHandler()
-					{
-
-						@Override
-						public void onMouseOver(MouseOverEvent event) {
-							
-							titleLabel.getElement().setAttribute("style", "font-weight:bold;color:#345484;cursor:pointer;");
-						 	// .getElement(i, 0).setAttribute("style", "border-right:Solid 2px #345484;font-weight:bold;color:#345484;");
-						}
-						
-					});
-					titleLabel.addMouseOutHandler(new MouseOutHandler(){
-
-						@Override
-						public void onMouseOut(MouseOutEvent event) {
-							// 
-							titleLabel.getElement().setAttribute("style", "");
-						}
-						
-					});
-					//PushButton _edit = new PushButton();
+					final int _i = i;
 					//_edit.setStyleName("btnEditMethod");
 					titleLabel.addClickHandler(new ClickHandler()
 					{
@@ -368,26 +349,6 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 					}
 					
 				});
-				titleLabel.addMouseOverHandler(new MouseOverHandler()
-				{
-
-					@Override
-					public void onMouseOver(MouseOverEvent event) {
-						
-						titleLabel.getElement().setAttribute("style", "font-weight:bold;color:#345484;cursor:pointer;");
-					 	// .getElement(i, 0).setAttribute("style", "border-right:Solid 2px #345484;font-weight:bold;color:#345484;");
-					}
-					
-				});
-				titleLabel.addMouseOutHandler(new MouseOutHandler(){
-
-					@Override
-					public void onMouseOut(MouseOutEvent event) {
-						// 
-						titleLabel.getElement().setAttribute("style", "");
-					}
-					
-				});
 				//this._MenuStack.setWidget(i,0,tmpItem.asWidget());
 				this._MenuStack.setWidget(i,0,titleLabel);
 				
@@ -395,7 +356,10 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 				Hidden tmpHidden = new Hidden();
 				tmpHidden.setValue(tmpMethod.getMethodID());
 				this._MenuStack.setWidget(i,1,tmpHidden);
-				
+				if(tmpMethod.getMethodName().length()>38)
+				{
+					_MenuStack.getFlexCellFormatter().setStyleName(i, 0, "long");	
+				}
 				_MenuStack.getFlexCellFormatter().getElement(i, 0).setAttribute("style", "");
 				//_MenuStack.getFlexCellFormatter().getElement(i, 1).setAttribute("style", "padding-left:5px;");
 				i++;

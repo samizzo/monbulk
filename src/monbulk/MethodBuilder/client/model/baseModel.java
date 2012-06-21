@@ -55,6 +55,10 @@ public abstract class baseModel implements iFormModel{
 				{
 					Validation = Validation + "<p>Please provide a value for the " + tmpItem.GetFieldName() + " field</p>";
 				}
+				else
+				{
+					Validation = Validation + tmpItem.Validate(tmpItem.GetFieldValue().toString());
+				}
 			}
 			else if(tmpItem.getFieldTypeName()=="List" || tmpItem.getFieldTypeName()=="Dictionary")
 			{
