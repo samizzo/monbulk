@@ -270,7 +270,7 @@ public class MethodList extends Composite implements iMenuWidget, MethodService.
 						public void onClick(ClickEvent event) {
 							
 							//set selected style/should shuffle as well
-							setActiveMenu(titleLabel.getText());
+							setActiveMenu(tmpMethod.getMethodID());
 							eventBus.fireEvent(new DragEvent(titleLabel.getText(),"EditMethod",index,(IPojo)tmpMethod));
 							
 						}
