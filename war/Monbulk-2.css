@@ -1109,9 +1109,10 @@ div.formWidget
 {
 	width:300px;
 	background:none;
-	height:30px;
+	vertical-align:bottom;
 	border:none;
 	font-style:italic;
+	padding-top:5px;
 }
 .labelWidget
 {
@@ -1151,7 +1152,7 @@ div.formWidget
 	width:100%;
 	border-top:Solid 2px #999;
 	height:100%;
-	float:right;
+	
 }
 .FormNav td
 {
@@ -1258,7 +1259,7 @@ background-position:-333px -918px;
 }
 .tbSearchBox
 {
-	height:22px;
+	height:21px;
 	border:Solid 2px #345484;
 	
 }
