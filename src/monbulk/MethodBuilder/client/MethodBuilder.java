@@ -79,15 +79,22 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 		{
 			if(!initState.equals("InitialiseMethodBuilder"))
 			{
-				if(m.getShouldConfirmStatus())
+				if(this.CurrentPresenter.isModified())
 				{
-					m.confirmStateChange(initState, this.loadedMethodID);
-					d.show(m, true);
-					return true;
+					if(m.getShouldConfirmStatus())
+					{
+						m.confirmStateChange(initState, this.loadedMethodID);
+						d.show(m, true);
+						return true;
+					}
+					else
+					{
+						m.setShouldConfirmStatus(true);
+						return false;
+					}
 				}
 				else
 				{
-					m.setShouldConfirmStatus(true);
 					return false;
 				}
 			}
@@ -117,6 +124,7 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 				if(this.loadedMethodID=="")
 				{
 					this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
+					this.AppletMenu.setActiveMenu("");
 				}
 				else
 				{
@@ -143,7 +151,7 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 						this.CurrentState="Create Method";
 						this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
 						this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
-				
+						this.AppletMenu.setActiveMenu("");
 				}
 				
 				
@@ -155,6 +163,7 @@ public class MethodBuilder extends ResizeComposite implements IWindow,GetDiction
 						this.CurrentState="Create Method";
 						this.CurrentPresenter = new MethodCreatorPresenter(this.eventBus);
 						this.CurrentPresenter.go(getBodyContainer(),getNavigationContainer());
+						this.AppletMenu.setActiveMenu("");
 				
 				}
 				else if(initState.equals("Edit Methods"))

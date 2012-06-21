@@ -15,6 +15,7 @@
 		<pathelement location="${lib}/gwt-user.jar" />
 		<pathelement location="${lib}/gwt-dev.jar" />
 		<pathelement location="${lib}/gwt-dnd.jar" />
+		<pathelement location="${lib}/Daris-1.0" />
 		<pathelement location="${lib}/gwt-servlet.jar" />
 		<pathelement location="${lib}/gwt-servlet-deps.jar" />
 		<pathelement location="${lib}/validation-api-1.0.0.GA.jar" />

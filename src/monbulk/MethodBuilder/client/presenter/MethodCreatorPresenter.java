@@ -70,7 +70,7 @@ public class MethodCreatorPresenter implements FormPresenter, ChangeWindowEventH
 	public final HashMap<MethodCreatorStates,IFormView> _AllStates;
 	private final MethodCompleteModel mainModel; 
 	private final HandlerManager eventBus; 
-	
+	private Boolean hasNewData;
 	
 	public MethodCreatorPresenter(HandlerManager evtBus)
 	{
@@ -115,12 +115,14 @@ public class MethodCreatorPresenter implements FormPresenter, ChangeWindowEventH
 		ArrayList<String> tmpList =  new ArrayList<String>();
 		if(ID=="")
 		{
+			
 			tmpList.add("New");
 		}
 		else
 		{
 			tmpList.add("Loaded");
 		}
+		hasNewData=false;
 		this.NavigationView.setData(tmpList);
 		countLoads = 0;
 		SetStates(ID);
@@ -599,6 +601,7 @@ public class MethodCreatorPresenter implements FormPresenter, ChangeWindowEventH
 	public String UpdateValue(FormBuilder someFormData) {
 		
 		this.mainModel.Update(someFormData);
+		hasNewData=true;
 		//FormBuilder tmpBuilder = this.mainModel.getFormData(this.CurrentState.toString());
 		//GWT.log(someFormDa)
 		IFormView tmpView = this._AllStates.get(this.CurrentState);
@@ -617,7 +620,11 @@ public class MethodCreatorPresenter implements FormPresenter, ChangeWindowEventH
 		return "";
 		
 	}
-
+	@Override
+	public Boolean isModified()
+	{
+		return this.hasNewData;
+	}
 	@Override
 	public void onChangeWindow(ChangeWindowEvent event) {
 		String CurrentForm = this.ImplementedMethodView.getCurrentForm();

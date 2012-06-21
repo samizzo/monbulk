@@ -112,9 +112,16 @@ public class PreviewWindow extends OkCancelWindow implements IWindow, MethodUpda
 			public void onClick(ClickEvent event) {
 				if(isConfirmDialog)
 				{
-					isConfirmDialog=false;
-					eventBus.fireEvent(new MenuChangeEvent(newState,newID));
-					registration.removeHandler();
+					try
+					{
+						isConfirmDialog=false;
+						eventBus.fireEvent(new MenuChangeEvent(newState,newID));
+						registration.removeHandler();
+					}
+					catch(Exception ex)
+					{
+						
+					}
 				}
 				
 			}

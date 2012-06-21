@@ -7,8 +7,11 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -48,12 +51,20 @@ public class SearchWidget extends Composite implements ClickHandler {
 			}
 			
 		});
-		this._tbSearchText.addKeyPressHandler(new KeyPressHandler(){
+		this._tbSearchText.addKeyUpHandler(new KeyUpHandler(){
 
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				// TODO Auto-generated method stub
-				_Controller.Filter(_tbSearchText.getValue());
+						@Override
+			public void onKeyUp(KeyUpEvent event) {
+				int keyCode = event.getNativeKeyCode();
+				if ((keyCode >= 'a' && keyCode <= 'z') ||
+					(keyCode >= 'A' && keyCode <= 'Z' ) ||
+					(keyCode == '.') ||
+					(keyCode == KeyCodes.KEY_BACKSPACE) ||
+					(keyCode == KeyCodes.KEY_DELETE))
+				{
+					_Controller.Filter(_tbSearchText.getValue());
+				}
+				
 			}
 			
 		});

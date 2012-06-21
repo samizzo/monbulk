@@ -173,6 +173,70 @@ html
 	margin-bottom: -2px;
 }
 
+/**Daris Buttons */
+.DarisInterfaceButton
+{
+	color: black;
+	background-position: -4px 0px;
+	width: 44px;
+	height: 46px;
+	background-repeat: no-repeat;
+	background-image: url(images/sprites.png);
+	outline: 0;
+}
+
+.DarisInterfaceButton .html-face
+{
+	text-align: left;
+	width: 150px;
+	height: 46px;
+	line-height: 46px;
+	margin-left: 44px;
+	padding-left: 10px;
+}
+
+.DarisInterfaceButton-up-hovering
+{
+	background-color: #e0e0e0;
+	border-top: solid 1px;
+	border-left: solid 1px;
+	border-bottom: solid 1px;
+	margin-top: -1px;
+	margin-left: -1px;
+	margin-bottom: -1px;
+}
+
+.DarisInterfaceButton-up-hovering .html-face
+{
+	background-color: #e0e0e0;
+	border-top: solid 1px;
+	border-right: solid 1px;
+	border-bottom: solid 1px;
+	margin-top: -1px;
+	margin-bottom: -1px;
+}
+
+.DarisInterfaceButton-down-hovering
+{
+	background-color: #e0e0e0;
+	border-top: solid 1px;
+	border-left: solid 1px;
+	border-bottom: solid 1px;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-bottom: -2px;
+}
+
+.DarisInterfaceButton-down-hovering .html-face
+{
+	background-color: #e0e0e0;
+	border-top: solid 1px;
+	border-right: solid 1px;
+	border-bottom: solid 1px;
+	margin-top: -1px;
+	margin-bottom: -2px;
+}
+
 /* Method builder button styles */
 .MethodBuilderButton
 {

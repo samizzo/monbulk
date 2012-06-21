@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import monbulk.MediaFlux.Services.MediaFluxServices;
 import monbulk.client.desktop.*;
+import monbulk.client.desktop.Apps.DarisInterface;
 import monbulk.shared.util.GWTLogger;
 import monbulk.MetadataEditor.MetadataEditor;
 import monbulk.MetadataEditor.MetadataSelectWindow;
@@ -119,9 +120,12 @@ public class Monbulk implements EntryPoint
 				MethodBuilder mb = new MethodBuilder(d.getEventBus());
 				d.registerWindow(mb);
 			}
-			
+			//To use DaRIS, we'd need a Window Class which calls DObjectBrowser.instance().; 
 			PreviewWindow mp  = new PreviewWindow(d.getEventBus());
 			d.registerWindow(mp);
+			
+			DarisInterface di = new DarisInterface();
+			d.registerWindow(di);
 		}
 		catch (Exception e)
 		{

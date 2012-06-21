@@ -93,6 +93,10 @@ create or make any changes.
 'Admin' access means a user can do everything a user with 'Create' access can
 do, with the addition of being able to remove methods and metadata.
 
+ADDED: 21/6/2012
+A default metadata item to store subject properties has been created. This is also set in the Settings file and 
+installed on Deployment
+
 Services
 ========
 
@@ -150,6 +154,8 @@ The method service provides functionality to:
 	- retrieve an existing method
 	- check if a method exists
 	- create and update existing methods
+	- Delete an existing method
+	- Clone a Method 
 
 User service
 ------------

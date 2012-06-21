@@ -22,5 +22,6 @@ public interface IPresenter {
 			public void FormComplete(String FormName, String CommandName);
 			public abstract void go(final HasWidgets bodyContainer,final HasWidgets navContainer);
 			public void ModelUpdate(String ServiceName);
+			public Boolean isModified();
 	 }	 
 }
