@@ -17,6 +17,7 @@
 	<inherits name="arc.mf.MediafluxClientGUI" />
 	<inherits name="name.pehl.totoe.xml.XML" />
 	<inherits name="com.googlecode.salix.Salix" />
+	<inherits name="com.googlecode.salix.Salix" />
 	<inherits name="daris.DaRIS"/>
 	<!-- Other module inherits                        	              -->
 
@@ -30,4 +31,5 @@
 	<source path='MetadataEditor' />
 	<source path='MediaFlux' />
 	<source path='Desktop' />
+	<source path='test' />
 </module>
