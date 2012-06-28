@@ -1,9 +1,15 @@
 Monbulk
 =======
 
-Monbulk is a lightweight desktop environment that provides a way to easily
-create plugin tools to access MediaFlux via the ajax services a MediaFlux
-server exposes.
+Monbulk is a lightweight desktop environment that provides a way to easily create plugin tools to access MediaFlux via the ajax services a MediaFlux server exposes.
+
+Directory Structure:
+- src (All source code)
+- Docs (Javadocs, Monbulk.htm - an interface Design, MonbulkDroid.zip - a sample Android App version of Monbulk)
+- Test (A sample JUint and GWTTestCase integrqation for testing)
+- War (HTML and CSS - what gets deployed to the web server
+- pkg (All the config tcl-files and the build directory for export to MediaFlux)
+-lib (All referfenced libraries included in the ant build)
 
 The following plugins currently exist:
 
@@ -100,8 +106,7 @@ installed on Deployment
 Services
 ========
 
-The service interface is a convenient way to access the MediaFlux services.
-Initially it was planned to write it in a generic way such that different
+The service interface is a convenient way to access the MediaFlux services. Initially it was planned to write it in a generic way such that different
 implementations of the services could be written and installed, so that,
 for example, the Monbulk plugins could talk to an xnat back end instead (by
 creating xnat versions of all services).  However, this probably won't happen.
@@ -221,3 +226,51 @@ This is currently used for some popup windows such as the metadata select
 window (MetadataSelectWindow.java), the metadata element properties popup
 editor (ElementEditor.java), and some popup windows in the method builder.
 
+MVP Architecture in MethodBuilder
+---------------------------------
+MethodBuilder implements an MVP architecture which then connects into the Desktop. The Presenter is MethodCreatorPresenter and effectively linkes the change in applet state to connections between the Model (MethodCompleteModel) and the Views (MethodDetailsView and forms). Data is transferred between classes using two constructs - namely a FormBuilder class and a pojo. A pojo is the DataObject which builds all the fields and generated the formStructure using the FormBuilder. It then sends this FormBuilder to the model which updates changes as required.
+
+NB: The Architectural structure is defined via a number of interfaces available in momnbulk.shared.architecture.
+
+The FormBuilder is the structure which the View baseForm builds upon. Validation, types and update functionality are mainly collected there. StepForm, SubjectPropertiesForm and MethodForm all extend this base form to provide the form User Interface for the basic data model.
+
+The data model for MethodBuilder is basically MethodDetails->SubjectProperties(1)->StepDetails(Many). However there are encapsualted data types in Step such as a one-to-many reference to metaData and a one-to-one reference to a Study. The SubjectProperties also has a one-to-many reference to Metadata. 
+
+State changes which occur in the Method Builder Presenter include:
+- Save
+- EditMethod
+- Next (Specific Form)
+- EditForm(Specific Form)
+- LoadMethod
+- NewMethod
+- CloneMethod
+- DeleteMethod
+
+All state changes are taken care of in the FormComplete method in MethodCreatorPresenter
+
+A MethodBuilderMaster is also used for defining the layout of the Method Builder. This could be replaced to quickly change the layout of the form. It must create a container for the Navigation Buttons, MethodDetailsView and MethodList. The MethodBuilderMaster is loaded into an AppletWindow to add it into the Desktop.
+
+Events are also used for updating state: WindowChangeEvent is used for the PreviewWindow to update the MethodBuilder, whilst DragEvent and IDraggable interfaces are used to connect the MetaData addition to both the View Layer and the Presenter/Model Layers.
+
+FormBuilder
+-----------
+FormBuilder is basically used to build the structure of FormFields and validation from any POJO (plain old java object). This means that the baseForm class can dynamically create the interface and Update the Presenter just by Linking a FormBuilder to the POJO. This is done for exstensibility.
+
+A FormBuilder is an array of IFormFields (Interface). Several formFields are defined which implement this interface, including the base class FormField which covers a lot. Creation of FormFields allows you to extend the capabilites of FormBuilder and still link it to a POJO. You need to ensure you take care of Validation and provide a FormWidget (any GWT Widget) for the View Layer. It is good if the FormWidget extends the HasValue interface in order for Update to work effectively but not necessary - as seen in the ButtonFormField.
+
+
+MethodBuilder DataLayer
+-------------------------
+The Data Layer effectively connects the service layer to the POJO. When a get service is called it is parsed by the POJO which is then sent to update any presenter or view layers. All POJO data classes extend IPojo so that any POJO can be parsed to any Presenter and any View. It is up to the Presenter logic to define how the data is then used. 
+
+Similarly the POJO is responsible for creating and reading any service xml. This was done with the hope of using the Piriti library which parses XML and JSON into readers and writers according to an annotated POJO. This would be the next build steps for the DataModel.
+
+Android
+--------
+You can use phoneGap and call services remotely if you want to install any module on to andorid. An example is proivided in the Docs folder. You can add MGWT if you want to add more tablet like Interaction like finger scrolling and finger zoom.
+
+Testing
+-------
+A very quick demo if testing was created using an extension of the GWTTestCase. This is available in the test folder. You can also test the model, POJO, formBuilder and Presenters with JUnit since they are separated by the interface.
+
+In order to test services without Mediaflux, you need to extend the baseServices and register them in Monbulk. You can then just feed any expected xml without using the network
