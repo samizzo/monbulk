@@ -22,20 +22,30 @@ import monbulk.MethodBuilder.client.MethodBuilder;
 import monbulk.MethodBuilder.client.PreviewWindow;
 import monbulk.shared.Services.User;
 import monbulk.shared.Services.UserService;
-
 /**
  * Monbulk entry point.
+ * 
+ * @author Sam Izzo, Andrew Glenn
+ *
  */
 public class Monbulk implements EntryPoint
 {
 	private static User s_user = null;
 	private static Settings s_settings = null;
 
+	/**
+	 * Gets the settings from the Dictionary
+	 * @return Settings
+	 */
 	public static Settings getSettings()
 	{
 		return s_settings;
 	}
 	
+	/**
+	 * Gets the Current User
+	 * @return User
+	 */
 	public static User getUser()
 	{
 		return s_user;
